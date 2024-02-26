@@ -1,11 +1,13 @@
 
-=== Microblog 微博===
+=== 微博 Microblog===
 
 Contributors: WebersonGao sgcoskey, vgitman, VegetarianZombie
 Donate link: https://www.webersongao.com/ https://boolesrings.org
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
+Tested up to: 6.4.3
 Stable tag: 1.0
+License: GPLv2 or later
 
 Add a microblog to your site; display the microposts in a widget or using a shortcode.
 
@@ -54,7 +56,12 @@ If you are having trouble viewing your microposts, try visiting your permalinks 
 1.0 initial release
 
 
-简单说就是，上传文件包-安装激活-插件设置-进入控制面板，调整必要配置项就可以了，如果有bug，联系我。
+简单说就是，
+1、上传文件包-安装激活-插件设置-进入控制面板，
+2、新建页面，复制粘贴 [microblog] 这个内容，保存发布就可以了
+3、如果想使用小工具，自己添加，前台查看即可
+
+不满意？打开微博的控制面板，调整必要配置项就可以了，还有bug？联系我。
 
 后续开发计划：
 

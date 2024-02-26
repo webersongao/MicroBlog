@@ -11,9 +11,10 @@ Based on simple-microblogging plugin developed by original Samuel Coskey, Victor
 */
 
 /*
- * admin Panel
+ * Admin Panel
 */
 
+// Enqueue admin scripts and styles
 function microblog_admin_enqueue_scripts() {
     $plugin_data = get_plugin_data( __FILE__ ); 
     $plugin_version = ( $plugin_data && isset( $plugin_data['Version'] ) )  ? $plugin_data['Version'] : '1.0';
@@ -21,9 +22,8 @@ function microblog_admin_enqueue_scripts() {
 }
 add_action( 'admin_enqueue_scripts', 'microblog_admin_enqueue_scripts' );
 
-// 创建控制面板页面
+// Create admin settings page
 function microblog_admin_settings() {
-    // 检查用户权限
     if (!current_user_can('manage_options')) {
         return;
     }
@@ -32,7 +32,6 @@ function microblog_admin_settings() {
         <h2>微博-控制面板</h2>
         <form method="post" action="options.php">
             <?php
-            // WordPress 提供的设置存储功能
             settings_fields('microblog_plugin_settings');
             do_settings_sections('microblog-settings');
             submit_button('保存 设置');
@@ -42,70 +41,72 @@ function microblog_admin_settings() {
     <?php
 }
 
-// 添加设置字段和选项
+// Add admin menu
+add_action('admin_menu', 'microblog_add_admin_menu');
+function microblog_add_admin_menu() {
+    add_menu_page('微博 MicroBlog', '微博设置', 'manage_options', 'microblog-settings', 'microblog_admin_settings');
+}
+
+// Register plugin settings
 function microblog_plugin_setting_admin() {
-    // 注册设置存储
     register_setting(
-        'microblog_plugin_settings', // 设置组名
-        'microblog_setting_data'   // 设置选项名
+        'microblog_plugin_settings',
+        'microblog_setting_data'
     );
 
-    // 添加设置节 base
+    // General settings section
     add_settings_section(
-        'general_settings_section_base',   // 节ID
-        '基本设置',    // 节标题
-        'general_settings_section_basecallback', // 显示节内容的回调函数
-        'microblog-settings'   // 页面slug
+        'general_settings_section_base',
+        '基本设置',
+        'general_settings_section_base_callback',
+        'microblog-settings'
     );
 
-    // 添加设置字段
+    // Add settings fields
     add_settings_field(
-        'microblog_post_title_show',       // 字段ID
-        '标题显示',                // 字段标签
-        'microblog_post_title_show_input', // 字段输入的回调函数
-        'microblog-settings',           // 页面slug
-        'general_settings_section_base'             // 节ID
+        'microblog_post_title_show',
+        '标题显示',
+        'microblog_post_title_show_input',
+        'microblog-settings',
+        'general_settings_section_base'
     );
 
     add_settings_field(
-        'microblog_post_title_listdate',       
-        '显示日期',         
-        'microblog_post_title_listdate_input', 
-        'microblog-settings',           
-        'general_settings_section_base'             
+        'microblog_post_title_listdate',
+        '显示日期',
+        'microblog_post_title_listdate_input',
+        'microblog-settings',
+        'general_settings_section_base'
     );
 
-    // --------------   短代码 ------------ //
-    // 添加设置节 短代码
+    // Shortcode settings section
     add_settings_section(
-        'general_settings_section_shortcode', 
+        'general_settings_section_shortcode',
         '</br>短代码设置',   
-        'general_settings_section_shortcodecallback', 
-        'microblog-settings'  
+        'general_settings_section_shortcode_callback',
+        'microblog-settings'
     );
 
     add_settings_field(
-        'microblog_post_title_listnumber',       
-        '每页微博数',         
+        'microblog_post_title_listnumber',
+        '每页微博数',
         'microblog_post_title_listNumber_input',
-        'microblog-settings',           
-        'general_settings_section_shortcode' 
+        'microblog-settings',
+        'general_settings_section_shortcode'
     );
 
-    // 添加设置字段
     add_settings_field(
-        'microblog_post_title_position',       
-        '标题展示位置',        
-        'microblog_post_title_position_input', 
-        'microblog-settings',          
-        'general_settings_section_shortcode'             
+        'microblog_post_title_position',
+        '标题展示位置',
+        'microblog_post_title_position_input',
+        'microblog-settings',
+        'general_settings_section_shortcode'
     );
-
 }
 add_action('admin_init', 'microblog_plugin_setting_admin');
 
-// 显示设置节内容
-function general_settings_section_basecallback() {
+// Display general settings section content
+function general_settings_section_base_callback() {
     $out = '';
     $out .= '<div class="microblog-admin-header" style="margin-bottom: 15px;">';
     $out .= '<div class="microblog-admin-leftbar">';
@@ -118,12 +119,12 @@ function general_settings_section_basecallback() {
     echo $out;
 }
 
-
-function general_settings_section_shortcodecallback() {
+// Display shortcode settings section content
+function general_settings_section_shortcode_callback() {
     echo '<p>请打开标题显示: 基础设置 -> 标题显示 </p>';
 }
 
-// 显示设置字段输入框
+// Display settings fields input
 function microblog_post_title_show_input() {
     $options = get_option('microblog_setting_data');
     $value = isset($options['mb_title_show']) ? $options['mb_title_show'] : false;
@@ -173,6 +174,5 @@ function microblog_post_title_position_input() {
     </label>
     <?php
 }
-
 
 ?>

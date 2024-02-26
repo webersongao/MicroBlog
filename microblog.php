@@ -1,6 +1,6 @@
 <?php
 /*
- * Plugin Name: Gao MicroBlog
+ * Plugin Name: 微博 MicroBlog
  * Plugin URI: https://www.webersongao.com/microposts
  * Description: Use your WordPress site as a microblog; display the microposts in a widget or using a shortcode.
  * Version: 1.0
@@ -323,11 +323,12 @@ function fix_category_pagination($qs) {
 add_filter('request', 'fix_category_pagination');
 
 // 注册微博设置页面
+add_action('admin_menu', 'microblog_setting_page');
 function microblog_setting_page() {
     if (!function_exists('microblog_admin_settings')) {
         require_once 'microblog-admin.php';
     }
-    add_management_page('微博 Microblog - 控制面板', '微博设置', 'manage_options', 'microblog-settings', 'microblog_admin_settings');
+    add_management_page('微博 Microblog - 控制面板', '微博设置', 'manage_options', __FILE__, 'microblog_admin_settings');
 }
 
 // 添加插件设置链接
