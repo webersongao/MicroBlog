@@ -121,7 +121,8 @@ class Microblog_Widget extends WP_Widget {
             $post_title = the_title('', '', false);
             if ($post_title) {
                 $out .= "<div class='microblog-widget-head'>";
-                $out .= "<span class='microblog-widget-head-title'>" . $post_title . ":" . " </span>";
+                $out .= "<span class='microblog-widget-head-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
+                
                 $out .= "</div>";
             }
             $out .= "<div class='microblog-widget-content'>";
