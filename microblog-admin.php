@@ -15,7 +15,9 @@ Based on simple-microblogging plugin developed by original Samuel Coskey, Victor
 */
 
 function microblog_admin_enqueue_scripts() {
-    wp_enqueue_style( 'microblog-admin-css', plugin_dir_url( __FILE__ ) . 'css/admin-style.css' );
+    $plugin_data = get_plugin_data( __FILE__ ); 
+    $plugin_version = ( $plugin_data && isset( $plugin_data['Version'] ) )  ? $plugin_data['Version'] : '1.0';
+    wp_enqueue_style( 'microblog-admin-css', plugin_dir_url( __FILE__ ) . 'css/admin-style.css', array(), $plugin_version );
 }
 add_action( 'admin_enqueue_scripts', 'microblog_admin_enqueue_scripts' );
 
@@ -108,9 +110,9 @@ function general_settings_section_basecallback() {
     $out .= '<div class="microblog-admin-header" style="margin-bottom: 15px;">';
     $out .= '<div class="microblog-admin-leftbar">';
     $out .= '<span class="microblog-admin-logo">';
-    $out .= '<img src="' . plugin_dir_url(__FILE__) . 'images/microblog-logo.png">';
+    $out .= '<img src="' . esc_url(plugin_dir_url(__FILE__)) . 'images/microblog-logo.png">';
     $out .= '</span>';
-    $out .= '<span class="microblog-admin-bar-span">MicroBlog - 基于WP开发的微博/说说插件 No2</span><span class="microblog-admin-bar-free">Free V1.0</span>';
+    $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP开发的微博/说说插件 No1', 'microblog') . '</span><span class="microblog-admin-bar-free">' . esc_html__('Free V1.0', 'microblog') . '</span>';
     $out .= '</div>';
     $out .= '</div>';
     echo $out;
@@ -151,8 +153,8 @@ function microblog_post_title_listNumber_input() {
 
     ?>
     <label>
-        <input type='number' name='microblog_setting_data[mb_codepost_num]' value='<?php echo $value; ?>' min='3' max='20' />
-        &nbsp;显示数量[3, 20]
+        <input type='number' name='microblog_setting_data[mb_codepost_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
+        &nbsp;<?php esc_html_e('显示数量[3, 20]', 'microblog'); ?>
     </label>
     <?php
 }
@@ -162,11 +164,11 @@ function microblog_post_title_position_input() {
     $value = isset($options['mb_title_position']) ? $options['mb_title_position'] : array();
     ?>
     <label>
-        <input type='checkbox' name='microblog_setting_data[mb_title_position][]' value='titletop' <?php if (in_array('titletop', $value)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='microblog_setting_data[mb_title_position][]' value='<?php echo esc_attr('titletop'); ?>' <?php if (in_array('titletop', $value)) echo 'checked="checked"'; ?> />
         头像下方
     </label>
     <label>
-        <input type='checkbox' name='microblog_setting_data[mb_title_position][]' value='titlebottom' <?php if (in_array('titlebottom', $value)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='microblog_setting_data[mb_title_position][]' value='<?php echo esc_attr('titlebottom'); ?>' <?php if (in_array('titlebottom', $value)) echo 'checked="checked"'; ?> />
         正文下方（评论按钮左侧）
     </label>
     <?php

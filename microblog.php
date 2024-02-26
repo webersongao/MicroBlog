@@ -1,16 +1,16 @@
 <?php
 /*
- * Plugin Name: 微博 MicroBlog
+ * Plugin Name: Gao MicroBlog
  * Plugin URI: https://www.webersongao.com/microposts
- * Description: Use your wordpress site as a microblog; display the microposts in a widget or using a shortcode.
+ * Description: Use your WordPress site as a microblog; display the microposts in a widget or using a shortcode.
  * Version: 1.0
  * Author: WebersonGao
  * Author URI: https://www.webersongao.com
- Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
+ * Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
  */
 
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
-
+$plugin_version = '1.0'; // 插件版本号
 
 add_action('init', 'create_micropost_type');
 function create_micropost_type() {
@@ -27,10 +27,9 @@ function create_micropost_type() {
         'public' => true,
         'rewrite' => array('slug' => 'microposts'),
         'supports' => array('title', 'editor'),
-        // 'supports' => array('title', 'editor', 'author', 'comments'),
-        //  'taxonomies' => array ( 'category', 'post_tag' ),
     ));
 }
+
 // 激活插件时刷新重写规则
 register_activation_hook(__FILE__, 'microblog_rewrite_flush');
 function microblog_rewrite_flush() {
@@ -65,20 +64,20 @@ class Microblog_Widget extends WP_Widget {
         $instance = wp_parse_args((array) $instance, $defaults);
         ?>
         <p>
-            <label for="<?php echo $this->get_field_id('title'); ?>">标题:</label>
-            <input type="text" name="<?php echo $this->get_field_name('title') ?>" id="<?php echo $this->get_field_id('title') ?> " value="<?php echo $instance['title'] ?>" size="20">
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>">标题:</label>
+            <input type="text" name="<?php echo esc_attr($this->get_field_name('title')) ?>" id="<?php echo esc_attr($this->get_field_id('title')) ?> " value="<?php echo esc_attr($instance['title']) ?>" size="20">
         </p>
         <p>
-            <label for="<?php echo $this->get_field_id('numberposts'); ?>">展示数量:</label>
-            <input type="text" name="<?php echo $this->get_field_name('numberposts'); ?>" id="<?php echo $this->get_field_id('numberposts'); ?>" value="<?php echo $instance['numberposts']; ?>">
+            <label for="<?php echo esc_attr($this->get_field_id('numberposts')); ?>">展示数量:</label>
+            <input type="text" name="<?php echo esc_attr($this->get_field_name('numberposts')); ?>" id="<?php echo esc_attr($this->get_field_id('numberposts')); ?>" value="<?php echo esc_attr($instance['numberposts']); ?>">
         </p>
         <p>
-            <input type="checkbox" id="<?php echo $this->get_field_id('use_excerpt'); ?>" name="<?php echo $this->get_field_name('use_excerpt'); ?>" <?php if ($instance['use_excerpt']) echo 'checked="checked"' ?> />
-            <label for="<?php echo $this->get_field_id('use_excerpt'); ?>">是否显示摘要 ?</label>
+            <input type="checkbox" id="<?php echo esc_attr($this->get_field_id('use_excerpt')); ?>" name="<?php echo esc_attr($this->get_field_name('use_excerpt')); ?>" <?php if ($instance['use_excerpt']) echo 'checked="checked"' ?> />
+            <label for="<?php echo esc_attr($this->get_field_id('use_excerpt')); ?>">是否显示摘要 ?</label>
         </p>
         <p>
-            <input type="checkbox" id="<?php echo $this->get_field_id('rss'); ?>" name="<?php echo $this->get_field_name('rss'); ?>" <?php if ($instance['rss']) echo 'checked="checked"' ?> />
-            <label for="<?php echo $this->get_field_id('rss'); ?>">是否展示RSS链接?</label>
+            <input type="checkbox" id="<?php echo esc_attr($this->get_field_id('rss')); ?>" name="<?php echo esc_attr($this->get_field_name('rss')); ?>" <?php if ($instance['rss']) echo 'checked="checked"' ?> />
+            <label for="<?php echo esc_attr($this->get_field_id('rss')); ?>">是否展示RSS链接?</label>
         </p>
         <?php
     }
@@ -114,43 +113,43 @@ class Microblog_Widget extends WP_Widget {
         $query_results = new WP_Query($query);
 
         // build the widget contents!
-        // 微博小部件的HTML结构调整
+        $out = ''; // 定义输出变量
         $out .= "<ul class='microblog-widget'>";
-        while ( $query_results->have_posts() ) {
-        $query_results->the_post();
-        $out .= "<li>";
-        $post_title = the_title( '', '', false );
-        if ( $post_title ) {
-            $out .= "<div class='microblog-widget-head'>";
-            $out .= "<span class='microblog-widget-head-title'>" . $post_title .":". " </span>";
+        while ($query_results->have_posts()) {
+            $query_results->the_post();
+            $out .= "<li>";
+            $post_title = the_title('', '', false);
+            if ($post_title) {
+                $out .= "<div class='microblog-widget-head'>";
+                $out .= "<span class='microblog-widget-head-title'>" . $post_title . ":" . " </span>";
+                $out .= "</div>";
+            }
+            $out .= "<div class='microblog-widget-content'>";
+            if ($use_excerpt) {
+                add_filter('excerpt_more', 'micropost_excerpt_more');
+                $out .= "<p>" . get_the_excerpt() . "</p>";
+                remove_filter('excerpt_more', 'micropost_excerpt_more');
+            } else {
+                $out .= trim($post->post_content);
+            }
             $out .= "</div>";
+            $out .= "<div class='microblog-widget-bottom'>";
+            if ($show_date) {
+                $out .= "<span class='microblog-widget-bottom-date'>" . get_the_date(get_option('date_format')) . "</span>";
+            }
+            $out .= "<span class='microblog-widget-bottom-comment'>" . "<a target='_blank' href='" . get_permalink() . "'>" . "<img src='" . plugins_url('/images/post-comment-icon.png', __FILE__) . "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a>";
+            $out .= "</span>";
+            $out .= "</div>";
+            $out .= "</li><hr>";
         }
-        $out .= "<div class='microblog-widget-content'>";
-        if ( $use_excerpt ) {
-            add_filter('excerpt_more', 'micropost_excerpt_more');
-            $out .= "<p>" . get_the_excerpt() . "</p>";
-            remove_filter('excerpt_more', 'micropost_excerpt_more');
-        } else {
-            // $out .= $post->post_content;
-            $out .=  trim($post->post_content);
-        }
-        $out .= "</div>";
-        $out .= "<div class='microblog-widget-bottom'>";
-        if ($show_date) {
-            $out .= "<span class='microblog-widget-bottom-date'>" . get_the_date(get_option('date_format')) . "</span>";
-        }
-        $out .= "<span class='microblog-widget-bottom-comment'>"."<a target='_blank' href='" .get_permalink() . "'>" . "<img src='" . plugins_url( '/images/post-comment-icon.png', __FILE__ ) . "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a>";
-        $out .= "</span>";
-        $out .= "</div>";
-        $out .= "</li><hr>";
-    }
         $out .= "</ul>";
-        
+
         // Print the widget for the sidebar
         echo $before_widget;
         echo $before_title;
         echo $title;
         if ($rss) {
+            $rssout = "";
             $rssout .= "<span class='microblog-widget-rss'>";
             $rssout .= '<a target ="_blank" href="' . get_site_url() . '/microposts/feed" class="rss"><img src="' . site_url() . '/wp-includes/images/rss.png" style="width: 18px; height: 18px;"></a>';
             $rssout .= "</span>";
@@ -171,19 +170,20 @@ class Microblog_Widget extends WP_Widget {
 */
 add_shortcode('microblog', 'microblog_shortcode');
 function microblog_shortcode($atts) {
-    
+
     $options = get_option('microblog_setting_data');
-        
+
     extract(shortcode_atts(array(
         'null_text' => '(none)',
         'date_format' => get_option('date_format'),
         'use_excerpt' => '',
         'q' => '',
     ), $atts));
-    
+
+    global $post; // 添加全局变量 $post
     $show_date = (isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
     $numvalue = (isset($options) && isset($options['mb_codepost_num'])) ? intval($options['mb_codepost_num']) : 5;
-    
+
     $args = array(
         'post_type' => 'micropost',
         'orderby' => 'date',
@@ -197,10 +197,10 @@ function microblog_shortcode($atts) {
         $q = sanitize_text_field($atts['q']);
         $args['s'] = $q;
     }
-    
+
     $title_show = (isset($options) && isset($options['mb_title_show'])) ? $options['mb_title_show'] : false;
     $position_option = isset($options) && isset($options['mb_title_position']) && is_array($options['mb_title_position']);
-    
+
     $query_results = new WP_Query($args);
     $out = "<div class='microblog-shortcode'>";
     if ($query_results->have_posts()) {
@@ -208,8 +208,9 @@ function microblog_shortcode($atts) {
         $out .= "<ul class='microblog-shortcode-post'>";
         while ($query_results->have_posts()) {
             $query_results->the_post();
-            $author_avatar = get_avatar(get_post_field('post_author', get_the_ID()), 25); 
-            $author_name = get_the_author_meta('display_name', get_the_author_ID());
+            global $post; // 添加全局变量 $post
+            $author_avatar = get_avatar(get_the_author_meta('ID'), 25);
+            $author_name = get_the_author_meta('display_name', get_the_author_meta('ID'));
             $out .= "<li>";
             $out .= "<div class='microblog-shortcode-post-head'>";
             $out .= "<span class='microblog-shortcode-post-avatar'>" . $author_avatar . "</span>";
@@ -218,7 +219,7 @@ function microblog_shortcode($atts) {
                 $out .= "<span class='microblog-shortcode-post-date'>" . get_the_date($date_format) . "</span>";
             }
             $out .= "</div>";
-            
+
             $post_title = (get_the_title() && $title_show) ? get_the_title() : '';
             if (strlen($post_title) && $position_option && (in_array('titletop', $options['mb_title_position']))) {
                 $out .= "<div class='microblog-shortcode-post-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></div>";
@@ -253,7 +254,7 @@ function microblog_shortcode($atts) {
     } else {
         $out .= "<div class='microblog-shortcode'><p>" . wp_kses($null_text, array()) . "</p></div>";
     }
-    
+
     $out .= "</div>";
     wp_reset_postdata();
     microblog_enqueue_scripts_and_styles();
@@ -273,9 +274,11 @@ function micropost_shortcode_content() {
     return $post_content;
 }
 
+// 引入js
 function microblog_enqueue_scripts_and_styles() {
-    wp_enqueue_style('microblog-style', plugins_url('css/microblog-cdn-style.css', __FILE__));
-    wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', __FILE__), array(), '1.0', true);
+    global $plugin_version; // 添加全局变量 $plugin_version
+    wp_enqueue_style('microblog-style', plugins_url('css/microblog-cdn-style.css', __FILE__), array(), $plugin_version);
+    wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', __FILE__), array(), $plugin_version, true);
 }
 
 // Add rewrite rule for microblog permalink structure
@@ -320,12 +323,11 @@ function fix_category_pagination($qs) {
 add_filter('request', 'fix_category_pagination');
 
 // 注册微博设置页面
-add_action('admin_menu', 'microblog_setting_page');
 function microblog_setting_page() {
     if (!function_exists('microblog_admin_settings')) {
         require_once 'microblog-admin.php';
     }
-    add_management_page('微博 Microblog - 控制面板', '微博设置', 'manage_options', __FILE__, 'microblog_admin_settings');
+    add_management_page('微博 Microblog - 控制面板', '微博设置', 'manage_options', 'microblog-settings', 'microblog_admin_settings');
 }
 
 // 添加插件设置链接
