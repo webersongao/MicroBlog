@@ -1,0 +1,19 @@
+/*
+PluName: 微博 MicroBlog
+PluLink: https://www.webersongao.com/microposts
+Desc: 将您的WordPress网站用作微博；在小部件中显示微博或使用短代码显示微博。
+Ver: 1.0
+Author: WebersonGao
+AuthorLink: https://www.webersongao.com
+Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
+*/
+
+.microblog-admin-header { width: 100%; height: 58px; line-height: 58px; background-color: #06c; position: relative; margin-top: 15px;
+}
+.microblog-admin-leftbar { position: absolute; left: 15px; color: #fff;}
+.microblog-admin-logo { display: inline-block; }
+.microblog-admin-logo img { height:35px; position: absolute; top: 50%; transform: translateY(-50%);}
+.microblog-admin-bar-span { display: inline-block; height: 30px; line-height: 30px; border-left: 1px solid #fff; padding-left: 10px; font-size: 20px; margin-left: 50px;
+}
+.microblog-admin-bar-free { background-color: #52b754; font-size: 12px; padding: 2px 5px; border-radius: 3px; margin-left: 10px;
+}

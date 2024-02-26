@@ -1,0 +1,43 @@
+/*
+PluName: 微博 MicroBlog
+PluLink: https://www.webersongao.com/microposts
+Desc: 将您的WordPress网站用作微博；在小部件中显示微博或使用短代码显示微博。
+Ver: 1.0
+Author: WebersonGao
+AuthorLink: https://www.webersongao.com
+Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
+*/
+
+/* 短代码样式 */
+.microblog-shortcode { display: block; }
+.microblog-shortcode-content { display: block; }
+.microblog-shortcode-post { margin: 20px 10px; }
+.microblog-shortcode-post hr { margin-top: 1rem; margin-bottom: 1rem; }
+.microblog-shortcode-post-head { display: block; }
+.microblog-shortcode-post-avatar { margin-left: 5px; margin-right: 10px; }
+.microblog-shortcode-post-avatar img { border-radius: 3px; }
+.microblog-shortcode-post-username { color: #666; font-weight: bold; }
+.microblog-shortcode-post-date { color: #6666669c; margin-right: 10px; float: right; }
+.microblog-shortcode-post-title { color: #666; font-size: 16px; font-weight: bold; margin-top: 10px; }
+.microblog-shortcode-post-title a { color: #666; }
+.microblog-shortcode-post-content { color: #666; font-size: 16px; font-weight: 400; margin-top: 10px; }
+.microblog-shortcode-post-comment { margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+.microblog-shortcode-post-comment a { color: #666; font-size: 14px; }
+.microblog-shortcode-post-comment-title { font-weight: bold; margin-right: auto; }
+.microblog-shortcode-post-comment-link { margin-right: 10px; margin-left: auto; }
+.microblog-shortcode-pagelink { color: #666; text-align: center; }
+.microblog-shortcode-pagelink a { color: #666; margin: 0 5px; display: inline-block; text-decoration: none; }
+.microblog-shortcode-loadmore { text-align: right; margin-right: 10px; margin-bottom: 20px; }
+.microblog-shortcode-loadmore a { color: #666; }
+
+/* 小部件样式 */
+.microblog-widget hr { margin-top: 3rem; }
+.microblog-widget-rss { float: right; margin-right: 5px; }
+.microblog-widget-head { display: block; }
+.microblog-widget-head-title { color: #666; margin-right: 5px; font-weight: bold; white-space: normal; }
+.microblog-widget-content { margin-top: 5px; }
+.microblog-widget-content p { color: #666; }
+.microblog-widget-bottom { display: block; }
+.microblog-widget-bottom-date { color: #6666669c; margin-left: 5px; float: left; }
+.microblog-widget-bottom-comment { margin-right: 5px; float: right; }
+.microblog-widget-bottom-comment a { color: #666; }
