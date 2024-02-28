@@ -67,13 +67,22 @@ function microblog_plugin_data_activation() {
         );
         add_option('microblog_setting_data', $defaults);
     }
+    // 刷新重写规则
+    microblog_rewrite_flush();
 }
 
-// 激活插件时刷新重写规则
-register_activation_hook(__FILE__, 'microblog_rewrite_flush');
 function microblog_rewrite_flush() {
     create_micropost_type();
     flush_rewrite_rules();
+}
+
+// 注册卸载插件时运行的函数
+register_uninstall_hook( __FILE__, 'microblog_plugin_uninstall' );
+function microblog_plugin_uninstall() {
+    // 删除选项
+    delete_option('microblog_setting_data');
+    delete_option('widget_microblog_widget');
+    // 还可以执行其他清理操作，如删除数据库条目等
 }
 
 /*
