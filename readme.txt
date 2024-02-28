@@ -6,7 +6,7 @@ Donate link: https://www.webersongao.com/ https://boolesrings.org
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
-Stable tag: 1.0
+Stable tag: 1.2
 License: GPLv2 or later
 
 Add a microblog to your site; display the microposts in a widget or using a shortcode.
@@ -53,11 +53,22 @@ If you are having trouble viewing your microposts, try visiting your permalinks 
 
 == Changelog ==
 
-1.0 initial release
+1.2 
+新增：
+.1编辑器跟随站点配置（古腾堡或经典编辑器）
+.2编辑器特性选项支持自定义（作者，特色图片 微博摘要）
+优化：
+.1插件激活时，未初始化配置项的bug
+
+1.1 
+新增支持微博图片九宫格，支持lightbox开关
+
+1.0 
+初次发布（编辑/发布，短代码插入，小工具插入，控制面板等基本功能）
 
 
 简单说就是，
-1、上传文件包-安装激活-插件设置-进入控制面板，
+1、上传文件包-安装激活-插件设置-进入控制面板（使用服务端文件管理-上传）
 2、新建页面，复制粘贴 [microblog] 这个内容，保存发布就可以了
 3、如果想使用小工具，自己添加，前台查看即可
 
@@ -69,6 +80,9 @@ If you are having trouble viewing your microposts, try visiting your permalinks 
 2、支持中英文切换 + 评论外漏（目前仅展示数量）
 3、支持图片九宫格
 4、还没想好~ 
+
+
+
 
 欢迎多提意见，如果你也想折腾，欢迎联系~
 
