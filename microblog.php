@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: 微博 MicroBlog
- * Plugin URI: https://www.webersongao.com/microposts
+ * Plugin URI: https://www.webersongao.com/tag/microblog
  * Description: Use your WordPress site as a microblog; display the microposts in a widget or using a shortcode.
  * Version: 1.2
  * Author: WebersonGao

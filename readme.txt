@@ -40,12 +40,16 @@ then The output can then be further formatted using CSS.
 
 == Installation ==
 
-Nothing unusual here!
+1、Manual extraction and upload: Attempt to manually extract the plugin zip package, and then upload the extracted plugin folder to the wp-content/plugins directory of your WordPress installation using FTP or a file manager.
+
+2、##Special note: 
+Due to file compression issues, installing the plugin via uploading the zip package through the WordPress backend is temporarily unsupported.
 
 == Screenshots ==
 
 1. A rendered widget containing my two microposts
 2. The widget configuration box
+3. Microblog Administration Panel
 
 == Other notes ==
 
@@ -53,39 +57,38 @@ If you are having trouble viewing your microposts, try visiting your permalinks 
 
 == Changelog ==
 
-1.2 
-新增：
-.1编辑器跟随站点配置（古腾堡或经典编辑器）
-.2编辑器特性选项支持自定义（作者，特色图片 微博摘要）
-优化：
-.1插件激活时，未初始化配置项的bug
+1.2
+New:
+- Editor follows site configuration (Gutenberg or classic editor).
+- Editor feature options support customization (author, featured image, microblog excerpt).
+Optimization:
+- Fixed bug of uninitialized configuration items when plugin is activated.
 
-1.1 
-新增支持微博图片九宫格，支持lightbox开关
+1.1
+New: Supports microblog image grid, with support for lightbox toggle.
 
-1.0 
-初次发布（编辑/发布，短代码插入，小工具插入，控制面板等基本功能）
+1.0
+Initial release (basic functions including editing/publishing, shortcode insertion, widget insertion, control panel).
 
+In simple terms:
+1. Upload the file package - install and activate - configure the plugin - enter the control panel (use server-side file management - upload).
+2. Create a new page, copy and paste `[microblog]` into the "page" where you want it displayed, then save and publish.
+3. If you want to use widgets, add them in your backend, and view them on the frontend.
 
-简单说就是，
-1、上传文件包-安装激活-插件设置-进入控制面板（使用服务端文件管理-上传）
-2、新建页面，复制粘贴 [microblog] 这个内容，保存发布就可以了
-3、如果想使用小工具，自己添加，前台查看即可
+Not satisfied yet? Open the microblog control panel, adjust the necessary configurations, and if there are still bugs, contact me.
 
-不满意？打开微博的控制面板，调整必要配置项就可以了，还有bug？联系我。
+Future development plans:
 
-后续开发计划：
+1. Move all parameters to the control panel (completed).
+2. Support switching between Chinese and English + external comments (in progress).
+3. Support image grid (completed).
+4. Still thinking~
 
-1、将所有参数移至控制面板 （限定作者，排序方式等）
-2、支持中英文切换 + 评论外漏（目前仅展示数量）
-3、支持图片九宫格
-4、还没想好~ 
+More features await your suggestions!
 
+Feel free to provide feedback, and if you're interested in tinkering, feel free to contact me~
 
+Email: Gao@btbk.org
+Twitter: https://twitter.com/WebersonGao
+More information: https://www.webersongao.com/tag/microblog
 
-
-欢迎多提意见，如果你也想折腾，欢迎联系~
-
-邮箱：Gao@btbk.org
-推特：https://twitter.com/WebersonGao
-更多介绍：https://www.webersongao.com/tag/microblog
