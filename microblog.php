@@ -3,18 +3,40 @@
  * Plugin Name: 微博 MicroBlog
  * Plugin URI: https://www.webersongao.com/microposts
  * Description: Use your WordPress site as a microblog; display the microposts in a widget or using a shortcode.
- * Version: 1.1
+ * Version: 1.2
  * Author: WebersonGao
  * Author URI: https://www.webersongao.com
  * Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
  */
 
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
-$plugin_version = '1.1'; // 插件版本号
+$plugin_version = '1.2'; // 插件版本号
 
 add_action('init', 'create_micropost_type');
 function create_micropost_type() {
-    $use_block_editor = use_block_editor_for_post_type('post');
+    $options = get_option('microblog_setting_data');
+    $supports = array('title', 'editor','comments'); // 默认支持的参数
+
+    // 如果$options存在并且不为空，则更新supports参数
+    if (!empty($options)) {
+        if (isset($options['mb_editor_func'])) {
+            $editor_func = $options['mb_editor_func'];
+            if (in_array('mb_author', $editor_func)) {
+                $supports[] = 'author';
+            }
+            if (in_array('mb_thumbnail', $editor_func)) {
+                $supports[] = 'thumbnail';
+            }
+            if (in_array('mb_excerpt', $editor_func)) {
+                $supports[] = 'excerpt';
+            }
+            // 检查是否存在重复的支持项
+            $supports = array_unique($supports);
+        }
+    }
+    $valid_supports = array('title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments');
+    $supports = array_intersect($supports, $valid_supports);
+    if (empty($supports)) { $supports = array('title', 'editor','comments');}
     register_post_type('micropost', array(
         'labels' => array(
             'name' => __('微博'),
@@ -27,11 +49,24 @@ function create_micropost_type() {
         'menu_position' => 5,
         'public' => true,
         'rewrite' => array('slug' => 'microposts'),
-        'supports' => array('title', 'editor'),
-        // 'supports' => array('title', 'editor', 'author', 'comments'),
+        'supports' => $supports, // 更新为动态获取的支持项
         'show_in_rest' => use_block_editor_for_post_type('post'), // 跟站点编辑器保持一致
         //  'taxonomies' => array ( 'category', 'post_tag' ),
     ));
+}
+
+// 注册激活插件时，设置默认数据
+register_activation_hook( __FILE__, 'microblog_plugin_data_activation' );
+function microblog_plugin_data_activation() {
+    $options = get_option('microblog_setting_data');
+    if (empty($options)) {
+        $defaults = array(
+            'mb_title_show' => true, // 默认为显示标题
+            'mb_date_show' => true, // 默认为显示日期
+            'mb_title_position' => array('titlebottom'), // 默认标题位置为 titlebottom
+        );
+        add_option('microblog_setting_data', $defaults);
+    }
 }
 
 // 激活插件时刷新重写规则
