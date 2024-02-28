@@ -3,17 +3,18 @@
  * Plugin Name: 微博 MicroBlog
  * Plugin URI: https://www.webersongao.com/microposts
  * Description: Use your WordPress site as a microblog; display the microposts in a widget or using a shortcode.
- * Version: 1.0
+ * Version: 1.1
  * Author: WebersonGao
  * Author URI: https://www.webersongao.com
  * Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
  */
 
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
-$plugin_version = '1.0'; // 插件版本号
+$plugin_version = '1.1'; // 插件版本号
 
 add_action('init', 'create_micropost_type');
 function create_micropost_type() {
+    $use_block_editor = use_block_editor_for_post_type('post');
     register_post_type('micropost', array(
         'labels' => array(
             'name' => __('微博'),
@@ -27,6 +28,9 @@ function create_micropost_type() {
         'public' => true,
         'rewrite' => array('slug' => 'microposts'),
         'supports' => array('title', 'editor'),
+        // 'supports' => array('title', 'editor', 'author', 'comments'),
+        'show_in_rest' => use_block_editor_for_post_type('post'), // 跟站点编辑器保持一致
+        //  'taxonomies' => array ( 'category', 'post_tag' ),
     ));
 }
 
@@ -181,7 +185,7 @@ function microblog_shortcode($atts) {
         'q' => '',
     ), $atts));
 
-    global $post; // 添加全局变量 $post
+    global $post;
     $show_date = (isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
     $numvalue = (isset($options) && isset($options['mb_codepost_num'])) ? intval($options['mb_codepost_num']) : 5;
 
@@ -233,6 +237,42 @@ function microblog_shortcode($atts) {
             } else {
                 $out .= micropost_shortcode_content();
             }
+            /* =======   图片九宫格  --- 开始   */
+            $post_content = get_the_content();
+            $is_light_box = (isset($options) && isset($options['mb_image_lightbox']) && $options['mb_image_lightbox']) ? true : false;
+            $count = 0;
+            if ($is_light_box) {
+                // 兼容light-box效果的正则
+                if (preg_match_all('/<a\s[^>]*?href="([^"]+)"[^>]*?>\s*<img[^>]*?>\s*<\/a>/', $post_content, $matches)) {
+                    $count = count($matches[0]); // 获取匹配到的元素数量
+                }
+            } else {
+                //（纯图片）确保在匹配 <img> 标签时尽可能地少匹配字符，这样可以避免匹配到多个 <img> 标签作为一个整体
+                if (preg_match_all('/<img.+?src=[\'"]([^\'"]+)[\'"].*?>/i', $post_content, $matches)) {
+                    $count = count($matches[0]); // 获取匹配到的元素数量
+                }
+            }
+
+            // $out = '';
+            if (!empty($count)) {
+                if ($count == 1) {
+                    // 单张 宽度 300 ，居中显示
+                    $out .= "<div class='microblog-shortcode-post-content-image-single'>";
+                } elseif ($count == 2) {
+                    // 两张 宽度 300 ，居中显示
+                    $out .= "<div class='microblog-shortcode-post-content-image-double'>"; 
+                } else {
+                    // 其他情况下的操作 九宫格
+                    $out .= "<div class='microblog-shortcode-post-content-image-grid'>";
+                }
+            
+                foreach ($matches[0] as $img_html) {
+                    $out .= "<div class='microblog-shortcode-post-content-image-item'>$img_html</div>"; 
+                }
+            
+                $out .= "</div>";
+            }
+            // =======   图片九宫格  --- 结束 ----- */   
             $out .= "</div>";
             // 底部评论按钮
             $out .= "<div class='microblog-shortcode-post-comment'>";
@@ -270,6 +310,9 @@ function micropost_excerpt_more($more) {
 function micropost_shortcode_content() {
     global $post;
     $post_content = $post->post_content;
+    //精确地匹配包含单个 <img> 元素的 <a> 标签，即 <a> 标签内只有一个 <img> 元素，没有其他内容
+    $post_content = preg_replace('/<a\s[^>]*><img[^>]+><\/a>/', '', $post_content);
+    // 移除 caption 标签
     $post_content = preg_replace('/\[caption[^\]]*\]|\[\/caption\]/', '', $post_content);
     $post_content = trim(str_replace('&nbsp;', '', $post_content));
     return $post_content;
@@ -278,8 +321,8 @@ function micropost_shortcode_content() {
 // 引入js
 function microblog_enqueue_scripts_and_styles() {
     global $plugin_version; // 添加全局变量 $plugin_version
-    wp_enqueue_style('microblog-style', plugins_url('css/microblog-cdn-style.css', __FILE__), array(), $plugin_version);
-    wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', __FILE__), array(), $plugin_version, true);
+    wp_enqueue_style('microblog-style', plugins_url('css/microblog-style.css', __FILE__), array(), $plugin_version);
+    // wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', __FILE__), array(), $plugin_version, true);
 }
 
 // Add rewrite rule for microblog permalink structure
@@ -340,5 +383,12 @@ function microblog_setting_action_links($links, $file) {
     }
     return $links;
 }
+
+
+
+
+
+
+
 
 ?>

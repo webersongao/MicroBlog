@@ -4,7 +4,7 @@
 PluName: 微博 MicroBlog
 PluLink: https://www.webersongao.com/microposts
 Desc: 将您的WordPress网站用作微博；在小部件中显示微博或使用短代码显示微博。
-Ver: 1.0
+Ver: 1.1
 Author: WebersonGao
 AuthorLink: https://www.webersongao.com
 Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
@@ -17,8 +17,9 @@ Based on simple-microblogging plugin developed by original Samuel Coskey, Victor
 // Enqueue admin scripts and styles
 function microblog_admin_enqueue_scripts() {
     $plugin_data = get_plugin_data( __FILE__ ); 
-    $plugin_version = ( $plugin_data && isset( $plugin_data['Version'] ) )  ? $plugin_data['Version'] : '1.0';
+    $plugin_version = ( $plugin_data && isset( $plugin_data['Version'] ) )  ? $plugin_data['Version'] : '1.1';
     wp_enqueue_style( 'microblog-admin-css', plugin_dir_url( __FILE__ ) . 'css/admin-style.css', array(), $plugin_version );
+    wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', __FILE__), array(), $plugin_version, true);
 }
 add_action( 'admin_enqueue_scripts', 'microblog_admin_enqueue_scripts' );
 
@@ -94,11 +95,17 @@ function microblog_plugin_setting_admin() {
         'microblog-settings',
         'general_settings_section_shortcode'
     );
-
     add_settings_field(
         'microblog_post_title_position',
         '标题展示位置',
         'microblog_post_title_position_input',
+        'microblog-settings',
+        'general_settings_section_shortcode'
+    );
+    add_settings_field(
+        'microblog_post_image_lightbox',
+        '开启LightBox',
+        'microblog_post_image_lightbox_input',
         'microblog-settings',
         'general_settings_section_shortcode'
     );
@@ -113,7 +120,7 @@ function general_settings_section_base_callback() {
     $out .= '<span class="microblog-admin-logo">';
     $out .= '<img src="' . esc_url(plugin_dir_url(__FILE__)) . 'images/microblog-logo.png">';
     $out .= '</span>';
-    $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP开发的微博/说说插件 No1', 'microblog') . '</span><span class="microblog-admin-bar-free">' . esc_html__('Free V1.0', 'microblog') . '</span>';
+    $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP开发的微博/说说插件 No1', 'microblog') . '</span><span class="microblog-admin-bar-free">' . esc_html__('Free V1.1', 'microblog') . '</span>';
     $out .= '</div>';
     $out .= '</div>';
     echo $out;
@@ -156,6 +163,19 @@ function microblog_post_title_listNumber_input() {
     <label>
         <input type='number' name='microblog_setting_data[mb_codepost_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
         &nbsp;<?php esc_html_e('显示数量[3, 20]', 'microblog'); ?>
+    </label>
+    <?php
+}
+
+function microblog_post_image_lightbox_input() {
+    $options = get_option('microblog_setting_data');
+    $value = isset($options['mb_image_lightbox']) ? $options['mb_image_lightbox'] : false;
+    ?>
+    <label>
+    <input type='checkbox' name='microblog_setting_data[mb_image_lightbox]' value='1' <?php checked($value, true); ?> />
+    是否开启？（请确认已安装 
+    <a href="https://wordpress.org/plugins/simple-lightbox" target="_blank">Simple Lightbox插件</a> 
+    或者 当前主题支持 <a href="https://fooplugins.com/what-is-a-lightbox-in-wordpress" target="_blank">Lightbox效果</a> ）
     </label>
     <?php
 }

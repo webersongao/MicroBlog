@@ -6,7 +6,7 @@ Donate link: https://www.webersongao.com/ https://boolesrings.org
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 
 Add a microblog to your site; display the microposts in a widget or using a shortcode.
@@ -52,6 +52,9 @@ Nothing unusual here!
 If you are having trouble viewing your microposts, try visiting your permalinks preference pane and clicking `Save changes`.
 
 == Changelog ==
+
+1.1 
+新增支持微博图片九宫格，支持lightbox开关
 
 1.0 initial release
 
