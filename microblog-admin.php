@@ -131,7 +131,7 @@ function microblog_plugin_setting_admin() {
 function microblog_setting_data_sanitize($input) {
     if (isset($input['mb_slug_name']) && $input['mb_slug_name'] !== '') {
         $slug_name = strtolower(sanitize_title($input['mb_slug_name']));
-        if (preg_match('/^[a-z0-9]{3,15}$/', $slug_name)) {
+        if (preg_match('/^[a-z0-9]{1,10}$/', $slug_name)) {
             $input['mb_slug_name'] = $slug_name;
             update_global_microblog_option($slug_name);
         } else {
@@ -139,7 +139,7 @@ function microblog_setting_data_sanitize($input) {
             add_settings_error(
                 'microblog_setting_data', // 设置页面的唯一标识符
                 'invalid-slug', // 错误代码，用于后续检索和处理错误
-                'slug不合法，仅支持小写字母和数字，长度在3到15之间。', // 错误消息
+                'slug不合法，仅支持小写字母和数字，长度在1到10之间。', // 错误消息
                 'error' // 消息类型（error, warning, success, info）
             );
             return get_option('microblog_setting_data'); // 返回之前保存的设置数据
@@ -245,8 +245,8 @@ function microblog_post_slug_name_callback() {
     $options = get_option('microblog_setting_data');
     $value = isset($options['mb_slug_name']) ? sanitize_title($options['mb_slug_name']) : ''; // 获取已保存的设置值
     ?>
-    <input type='text' name='microblog_setting_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='15' style='width: 150px;' />
-    <p class="description">❎ 仅支持字母和数字，长度(3,15)（为空则默认：microposts，如microposts/feed/ 或 microposts/123.html）</p>
+    <input type='text' name='microblog_setting_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='10' style='width: 100px;' />
+    <p class="description">❎ 仅支持字母和数字，长度(1,10)（为空则默认：microposts，如microposts/feed/ 或 microposts/123.html）</p>
     <?php
 }
 
