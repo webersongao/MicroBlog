@@ -128,28 +128,24 @@ function microblog_plugin_setting_admin() {
     );
 }
 
-
 function microblog_setting_data_sanitize($input) {
     if (isset($input['mb_slug_name'])) {
-        $slug_name = sanitize_title($input['mb_slug_name']); // 使用 WordPress 提供的函数过滤 slug name
-        if (preg_match('/^[a-zA-Z0-9]{3,15}$/', $slug_name)) { // 使用正则表达式验证 slug name 格式
-            $input['mb_slug_name'] = $slug_name; // 如果格式正确，保存到设置中
+        $slug_name = strtolower(sanitize_title($input['mb_slug_name']));
+        if (preg_match('/^[a-z0-9]{3,15}$/', $slug_name)) {
+            $input['mb_slug_name'] = $slug_name;
+            update_global_microblog_option($slug_name);
         } else {
-            // 如果 slug 名不符合要求，弹窗提醒用户并停止保存
+            // 如果 slug 名不符合要求，添加错误消息
             add_settings_error(
                 'microblog_setting_data', // 设置页面的唯一标识符
                 'invalid-slug', // 错误代码，用于后续检索和处理错误
-                'slug不合法，仅支持字母和数字，长度在3到15之间。', // 错误消息
+                'slug不合法，仅支持小写字母和数字，长度在3到15之间。', // 错误消息
                 'error' // 消息类型（error, warning, success, info）
             );
             return get_option('microblog_setting_data'); // 返回之前保存的设置数据
         }
-    // 当用户更新设置项后，调用该函数来更新全局变量
-    update_global_microblog_option($slug_name);
     }
-    // 更新 register_post_type 的 supports 参数
-    update_micropost_type_supports($input);
-    // 返回已处理过的选项
+    update_micropost_type_supports($input); // 更新 register_post_type 的 supports 参数
     return $input;
 }
 
