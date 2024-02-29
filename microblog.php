@@ -194,11 +194,11 @@ class Microblog_SideWidget extends WP_Widget {
                  $out .= "<span class='microblog-widget-bottom-comment'>" . "<a target='_blank' href='" . get_permalink() . "'>" . "<img src='" . plugins_url('/images/post-comment-icon.png', __FILE__) . "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a>" . "</span>";
                 }
                 $out .= "</div>"; 
+                $out .= "<div style='clear:both;'></div>";
             }
             $out .= "</li><hr>";
         }
         $out .= "</ul>";
-
         // Print the widget for the sidebar
         echo $before_widget;
         echo $before_title;
@@ -464,5 +464,6 @@ function microblog_setting_action_links($links, $file) {
     }
     return $links;
 }
+
 
 ?>

@@ -37,7 +37,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 .microblog-shortcode-loadmore a { color: #666; }
 
 /* 小部件样式 */
-.microblog-widget hr { margin-top: 3rem; }
 .microblog-widget-rss { float: right; margin-right: 5px; }
 .microblog-widget-head { display: block; }
 .microblog-widget-head-title { color: #666; margin-right: 5px; font-weight: bold; white-space: normal; }
