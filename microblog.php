@@ -358,18 +358,17 @@ function micropost_excerpt_more($more) {
     return ' ...';
 }
 
-// short post_content
 function micropost_shortcode_content() {
     global $post;
     $post_content = $post->post_content;
-    //精确地匹配包含单个 <img> 元素的 <a> 标签，即 <a> 标签内只有一个 <img> 元素，没有其他内容
-    $post_content = preg_replace('/<a\s[^>]*><img[^>]+><\/a>/', '', $post_content);
-    // 移除 caption 标签
-    $post_content = preg_replace('/\[caption[^\]]*\]|\[\/caption\]/', '', $post_content);
+    // 古腾堡
+    $post_content = preg_replace('/<!--\s*\/?wp:[^\>]+-->|<figure[^>]*>.*?<\/figure>|<figcaption[^>]*>.*?<\/figcaption>/s', '', $post_content);
+    // 经典编辑器
+    $post_content = preg_replace('/\[caption[^\]]*\]|\[\/caption\]|<a\s[^>]*><img[^>]+><\/a>/', '', $post_content);
+    // 移除&nbsp;并修剪内容
     $post_content = trim(str_replace('&nbsp;', '', $post_content));
     return $post_content;
 }
-
 
 // -----------   shortcode 结束 --------------
 
