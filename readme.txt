@@ -6,7 +6,7 @@ Donate link: https://www.webersongao.com/ https://boolesrings.org
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
-Stable tag: 1.3
+Stable tag: 1.4
 License: GPLv2 or later
 
 Add a microblog to your site; display the microposts in a widget or using a shortcode.
@@ -56,6 +56,10 @@ Due to file compression issues, installing the plugin via uploading the zip pack
 If you are having trouble viewing your microposts, try visiting your permalinks preference pane and clicking `Save changes`.
 
 == Changelog ==
+
+1.4
+Optimization: Adjusted abnormal spacing when the bottom toolbar of the widget is not displayed.
+Bug Fix: Fixed a bug where the comment button still appeared when comments were disabled for a microblog.
 
 1.3
 Additions:

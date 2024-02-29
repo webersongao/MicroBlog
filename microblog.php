@@ -3,7 +3,7 @@
  * Plugin Name: 微博 MicroBlog
  * Plugin URI: https://www.webersongao.com/tag/microblog
  * Description: Use your WordPress site as a microblog; display the micrposts in a widget or using a shortcode.
- * Version: 1.3
+ * Version: 1.4
  * Author: WebersonGao
  * Author URI: https://www.webersongao.com
  * Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
@@ -12,7 +12,7 @@
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
 
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
-$plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.3';
+$plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.4';
 global $microblog_slug_name, $plugin_version;
 
 add_action('init', 'create_micropost_type');
