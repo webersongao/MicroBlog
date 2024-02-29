@@ -12,7 +12,7 @@
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
 
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
-$plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.2';
+$plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.3';
 global $microblog_slug_name, $plugin_version;
 
 add_action('init', 'create_micropost_type');
@@ -89,14 +89,14 @@ function microblog_plugin_uninstall() {
 }
 
 /*
- * Microblog widget code
+ * MicroBlog widget code
 */
 add_action('widgets_init', 'load_microblog_widget');
 function load_microblog_widget() {
-    register_widget('Microblog_Widget');
+    register_widget('Microblog_SideWidget');
 }
 
-class Microblog_Widget extends WP_Widget {
+class Microblog_SideWidget extends WP_Widget {
 
     public function __construct() {
         parent::__construct(
@@ -218,7 +218,7 @@ class Microblog_Widget extends WP_Widget {
 }
 
 /*
- * Microblog shortcode code
+ * MicroBlog shortcode code
 */
 add_shortcode('microblog', 'microblog_shortcode');
 function microblog_shortcode($atts) {
@@ -448,7 +448,7 @@ function microblog_setting_page() {
     if (!function_exists('microblog_admin_settings')) {
         require_once 'microblog-admin.php';
     }
-    add_management_page('微博 Microblog - 控制面板', '微博设置', 'manage_options', __FILE__, 'microblog_admin_settings');
+    add_management_page('微博 MicroBlog - 控制面板', '微博设置', 'manage_options', __FILE__, 'microblog_admin_settings');
 }
 
 // 添加插件设置链接

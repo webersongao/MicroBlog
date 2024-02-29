@@ -1,12 +1,12 @@
 
-=== 微博 Microblog===
+=== 微博 MicroBlog===
 
 Contributors: WebersonGao sgcoskey, vgitman, VegetarianZombie
 Donate link: https://www.webersongao.com/ https://boolesrings.org
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv2 or later
 
 == 核心 ==
@@ -56,6 +56,11 @@ License: GPLv2 or later
 如果您无法查看您的微博，请尝试访问您的固定链接首选项窗格，然后点击`保存更改`。
 
 == 更新日志 ==
+
+1.3 
+新增：
+URL slug 支持自定义，例如改为microblog，则微博地址为 microblog/post_id.html ，Rss地址为microblog/feed， slug默认为microposts 
+
 
 1.2 
 新增：

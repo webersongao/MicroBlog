@@ -4,7 +4,6 @@
 PluName: 微博 MicroBlog
 PluLink: https://www.webersongao.com/tag/microblog
 Desc: 将您的WordPress网站用作微博；在小部件中显示微博或使用短代码显示微博。
-Ver: 1.2
 Author: WebersonGao
 AuthorLink: https://www.webersongao.com
 Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
@@ -179,13 +178,14 @@ function update_micropost_type_supports($options) {
 
 // Display general settings section content
 function general_settings_section_header() {
+    global $plugin_version;
     $out = '';
     $out .= '<div class="microblog-admin-header" style="margin-bottom: 15px;">';
     $out .= '<div class="microblog-admin-leftbar">';
     $out .= '<span class="microblog-admin-logo">';
     $out .= '<img src="' . esc_url(plugin_dir_url(__FILE__)) . 'images/microblog-logo.png">';
     $out .= '</span>';
-    $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', 'microblog') . '</span><span class="microblog-admin-bar-free">' . esc_html__('Free V1.2', 'microblog') . '</span>';
+    $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', 'microblog') . '</span><span class="microblog-admin-bar-free">' . esc_html__('Free V' . $plugin_version, 'microblog') . '</span>';
     $out .= '</div>';
     $out .= '</div>';
     echo $out;

@@ -1,12 +1,12 @@
 
-=== 微博 Microblog===
+=== 微博 MicroBlog===
 
 Contributors: WebersonGao sgcoskey, vgitman, VegetarianZombie
 Donate link: https://www.webersongao.com/ https://boolesrings.org
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv2 or later
 
 Add a microblog to your site; display the microposts in a widget or using a shortcode.
@@ -49,13 +49,17 @@ Due to file compression issues, installing the plugin via uploading the zip pack
 
 1. A rendered widget containing my two microposts
 2. The widget configuration box
-3. Microblog Administration Panel
+3. MicroBlog Administration Panel
 
 == Other notes ==
 
 If you are having trouble viewing your microposts, try visiting your permalinks preference pane and clicking `Save changes`.
 
 == Changelog ==
+
+1.3
+Additions:
+Support for customizing URL slug. For example, changing it to "microblog" would result in the microblog URL being microblog/post_id.html and the RSS feed URL being microblog/feed. The default slug is microposts.
 
 1.2
 New:
