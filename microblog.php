@@ -421,11 +421,6 @@ function custom_microblog_permalink($permalink, $post) {
     return $permalink;
 }
 
-add_action('init', 'custom_microblog_flush_rewrite_rules');
-function custom_microblog_flush_rewrite_rules() {
-    flush_rewrite_rules();
-}
-
 // 处理分页
 add_filter('request', 'remove_page_from_query_string');
 function remove_page_from_query_string($query_string) {

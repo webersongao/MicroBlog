@@ -129,7 +129,7 @@ function microblog_plugin_setting_admin() {
 }
 
 function microblog_setting_data_sanitize($input) {
-    if (isset($input['mb_slug_name'])) {
+    if (isset($input['mb_slug_name']) && $input['mb_slug_name'] !== '') {
         $slug_name = strtolower(sanitize_title($input['mb_slug_name']));
         if (preg_match('/^[a-z0-9]{3,15}$/', $slug_name)) {
             $input['mb_slug_name'] = $slug_name;
