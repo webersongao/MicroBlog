@@ -185,13 +185,16 @@ class Microblog_SideWidget extends WP_Widget {
                 $out .= trim($post->post_content);
             }
             $out .= "</div>";
-            $out .= "<div class='microblog-widget-bottom'>";
-            if ($show_date) {
-                $out .= "<span class='microblog-widget-bottom-date'>" . get_the_date(get_option('date_format')) . "</span>";
+            if (comments_open() || $show_date) {
+                $out .= "<div class='microblog-widget-bottom'>";
+                if ($show_date) {
+                    $out .= "<span class='microblog-widget-bottom-date'>" . get_the_date(get_option('date_format')) . "</span>";
+                }
+                if (comments_open()) {
+                 $out .= "<span class='microblog-widget-bottom-comment'>" . "<a target='_blank' href='" . get_permalink() . "'>" . "<img src='" . plugins_url('/images/post-comment-icon.png', __FILE__) . "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a>" . "</span>";
+                }
+                $out .= "</div>"; 
             }
-            $out .= "<span class='microblog-widget-bottom-comment'>" . "<a target='_blank' href='" . get_permalink() . "'>" . "<img src='" . plugins_url('/images/post-comment-icon.png', __FILE__) . "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a>";
-            $out .= "</span>";
-            $out .= "</div>";
             $out .= "</li><hr>";
         }
         $out .= "</ul>";
@@ -260,7 +263,7 @@ function microblog_shortcode($atts) {
         $out .= "<ul class='microblog-shortcode-post'>";
         while ($query_results->have_posts()) {
             $query_results->the_post();
-            global $post; // 添加全局变量 $post
+            // global $post; // 添加全局变量 $post
             $author_avatar = get_avatar(get_the_author_meta('ID'), 25);
             $author_name = get_the_author_meta('display_name', get_the_author_meta('ID'));
             $out .= "<li>";
@@ -299,8 +302,6 @@ function microblog_shortcode($atts) {
                     $count = count($matches[0]); // 获取匹配到的元素数量
                 }
             }
-
-            // $out = '';
             if (!empty($count)) {
                 if ($count == 1) {
                     // 单张 宽度 300 ，居中显示
@@ -316,18 +317,22 @@ function microblog_shortcode($atts) {
                 foreach ($matches[0] as $img_html) {
                     $out .= "<div class='microblog-shortcode-post-content-image-item'>$img_html</div>"; 
                 }
-            
                 $out .= "</div>";
             }
             // =======   图片九宫格  --- 结束 ----- */   
             $out .= "</div>";
             // 底部评论按钮
-            $out .= "<div class='microblog-shortcode-post-comment'>";
-            if (strlen($post_title) && $position_option && (in_array('titlebottom', $options['mb_title_position']))) {
-                $out .= "<span class='microblog-shortcode-post-comment-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
+            $titleShow = (strlen($post_title) && $position_option && (in_array('titlebottom', $options['mb_title_position']))) ? true : false;
+            if ($titleShow || comments_open()){
+                $out .= "<div class='microblog-shortcode-post-comment'>";
+                if ($titleShow) {
+                    $out .= "<span class='microblog-shortcode-post-comment-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
+                }
+                if (comments_open()) {
+                    $out .= "<span class='microblog-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugins_url('/images/post-comment-icon.png', __FILE__) . "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
+                }
+                $out .= "</div>";
             }
-            $out .= "<span class='microblog-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugins_url('/images/post-comment-icon.png', __FILE__) . "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";
-            $out .= "</div>";
             $out .= "</li><hr>";
         }
         $out .= "</ul>";
@@ -459,12 +464,5 @@ function microblog_setting_action_links($links, $file) {
     }
     return $links;
 }
-
-
-
-
-
-
-
 
 ?>
