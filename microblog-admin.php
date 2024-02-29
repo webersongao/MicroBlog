@@ -16,8 +16,7 @@ Based on simple-microblogging plugin developed by original Samuel Coskey, Victor
 
 // Enqueue admin scripts and styles
 function microblog_admin_enqueue_scripts() {
-    $plugin_data = get_plugin_data( __FILE__ ); 
-    $plugin_version = ( $plugin_data && isset( $plugin_data['Version'] ) )  ? $plugin_data['Version'] : '1.2';
+    global $plugin_version;
     wp_enqueue_style( 'microblog-admin-css', plugin_dir_url( __FILE__ ) . 'css/admin-style.css', array(), $plugin_version );
     wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', __FILE__), array(), $plugin_version, true);
 }
@@ -34,6 +33,7 @@ function microblog_admin_settings() {
         <div class="general_settings_header">
            <?php general_settings_section_header(); ?>
         </div>
+        <?php settings_errors('microblog_setting_data'); ?>
         <form method="post" action="options.php">
             <?php
             settings_fields('microblog_plugin_settings');
@@ -68,7 +68,7 @@ function microblog_plugin_setting_admin() {
         'general_settings_section_base_callback',
         'microblog-settings'
     );
-    // Add settings fields
+
     add_settings_field(
         'microblog_post_title_show',
         '标题',
@@ -87,6 +87,13 @@ function microblog_plugin_setting_admin() {
         'microblog_post_editor_func',
         '编辑器',
         'microblog_post_editor_func_callback',
+        'microblog-settings',
+        'general_settings_section_base'
+    );
+    add_settings_field(
+        'microblog_post_slug_name',
+        'URL slug',
+        'microblog_post_slug_name_callback',
         'microblog-settings',
         'general_settings_section_base'
     );
@@ -115,14 +122,32 @@ function microblog_plugin_setting_admin() {
     );
     add_settings_field(
         'microblog_post_image_lightbox',
-        '影箱LightBox',
+        '灯箱LightBox',
         'microblog_post_image_lightbox_input',
         'microblog-settings',
         'general_settings_section_shortcode'
     );
 }
 
+
 function microblog_setting_data_sanitize($input) {
+    if (isset($input['mb_slug_name'])) {
+        $slug_name = sanitize_title($input['mb_slug_name']); // 使用 WordPress 提供的函数过滤 slug name
+        if (preg_match('/^[a-zA-Z0-9]{3,15}$/', $slug_name)) { // 使用正则表达式验证 slug name 格式
+            $input['mb_slug_name'] = $slug_name; // 如果格式正确，保存到设置中
+        } else {
+            // 如果 slug 名不符合要求，弹窗提醒用户并停止保存
+            add_settings_error(
+                'microblog_setting_data', // 设置页面的唯一标识符
+                'invalid-slug', // 错误代码，用于后续检索和处理错误
+                'slug不合法，仅支持字母和数字，长度在3到15之间。', // 错误消息
+                'error' // 消息类型（error, warning, success, info）
+            );
+            return get_option('microblog_setting_data'); // 返回之前保存的设置数据
+        }
+    // 当用户更新设置项后，调用该函数来更新全局变量
+    update_global_microblog_option($slug_name);
+    }
     // 更新 register_post_type 的 supports 参数
     update_micropost_type_supports($input);
     // 返回已处理过的选项
@@ -168,7 +193,7 @@ function general_settings_section_header() {
 
 // Display general settings section content
 function general_settings_section_base_callback() {
-    echo '<p>请确认已插入 [microblog] 到页面 或 已添加[微博]小工具</p>';
+    echo '<p>请确认已插入 [microblog] 到页面 或 已添加 [微博] 小工具</p>';
 }
 
 // Display shortcode settings section content
@@ -220,6 +245,15 @@ function microblog_post_editor_func_callback() {
     <?php
 }
 
+function microblog_post_slug_name_callback() {
+    $options = get_option('microblog_setting_data');
+    $value = isset($options['mb_slug_name']) ? sanitize_title($options['mb_slug_name']) : ''; // 获取已保存的设置值
+    ?>
+    <input type='text' name='microblog_setting_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='15' style='width: 150px;' />
+    <p class="description">❎ 仅支持字母和数字，长度(3,15)（为空则默认：microposts，如microposts/feed/ 或 microposts/123.html）</p>
+    <?php
+}
+
 
 function microblog_post_title_listNumber_input() {
     $options = get_option('microblog_setting_data');
@@ -242,7 +276,7 @@ function microblog_post_image_lightbox_input() {
     <input type='checkbox' name='microblog_setting_data[mb_image_lightbox]' value='1' <?php checked($value, true); ?> />
     是否开启？（请确认已安装 
     <a href="https://wordpress.org/plugins/simple-lightbox" target="_blank">Simple Lightbox插件</a> 
-    或者 当前主题支持 <a href="https://fooplugins.com/what-is-a-lightbox-in-wordpress" target="_blank">Lightbox效果</a> ）
+    或 当前主题支持 <a href="https://fooplugins.com/what-is-a-lightbox-in-wordpress" target="_blank">Lightbox效果</a> ）
     </label>
     <?php
 }

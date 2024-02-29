@@ -2,7 +2,7 @@
 /*
  * Plugin Name: 微博 MicroBlog
  * Plugin URI: https://www.webersongao.com/tag/microblog
- * Description: Use your WordPress site as a microblog; display the microposts in a widget or using a shortcode.
+ * Description: Use your WordPress site as a microblog; display the micrposts in a widget or using a shortcode.
  * Version: 1.2
  * Author: WebersonGao
  * Author URI: https://www.webersongao.com
@@ -10,13 +10,16 @@
  */
 
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
-$plugin_version = '1.2'; // 插件版本号
+
+$plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
+$plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.2';
+global $microblog_slug_name, $plugin_version;
 
 add_action('init', 'create_micropost_type');
 function create_micropost_type() {
     $options = get_option('microblog_setting_data');
-    $supports = array('title', 'editor','comments'); // 默认支持的参数
-
+    $supports = array('title', 'editor','comments','comments'); // 默认支持的参数
+    $slug_name = get_microblog_slug_name(); // 使用函数获取微博 Slug 名称
     // 如果$options存在并且不为空，则更新supports参数
     if (!empty($options)) {
         if (isset($options['mb_editor_func'])) {
@@ -48,7 +51,7 @@ function create_micropost_type() {
         'menu_icon' => 'dashicons-format-status',
         'menu_position' => 5,
         'public' => true,
-        'rewrite' => array('slug' => 'microposts'),
+        'rewrite' => array('slug' => $slug_name), // 使用动态获取的 slug
         'supports' => $supports, // 更新为动态获取的支持项
         'show_in_rest' => use_block_editor_for_post_type('post'), // 跟站点编辑器保持一致
         //  'taxonomies' => array ( 'category', 'post_tag' ),
@@ -200,7 +203,7 @@ class Microblog_Widget extends WP_Widget {
         if ($rss) {
             $rssout = "";
             $rssout .= "<span class='microblog-widget-rss'>";
-            $rssout .= '<a target ="_blank" href="' . get_site_url() . '/microposts/feed" class="rss"><img src="' . site_url() . '/wp-includes/images/rss.png" style="width: 18px; height: 18px;"></a>';
+            $rssout .= '<a target="_blank" href="' . get_site_url() . '/' . get_microblog_slug_name() . '/feed" class="rss"><img src="' . site_url() . '/wp-includes/images/rss.png" style="width: 18px; height: 18px;"></a>';
             $rssout .= "</span>";
             echo $rssout;
         }
@@ -335,7 +338,7 @@ function microblog_shortcode($atts) {
         $out .= "</div>";
         // 查看所有
         $out .= "<div class='microblog-shortcode-loadmore'>";
-        $out .= "<a target='_blank' href='/microposts'><img src='" . plugins_url('/images/post-more-icon.png', __FILE__) . "' style='width: 16px; height: 16px;'>&nbsp;查看全部...</a></div>";
+        $out .= "<a target='_blank' href='" . home_url(get_microblog_slug_name()) . "'><img src='" . plugins_url('/images/post-more-icon.png', __FILE__) . "' style='width: 16px; height: 16px;'>&nbsp;查看全部...</a></div>";
     } else {
         $out .= "<div class='microblog-shortcode'><p>" . wp_kses($null_text, array()) . "</p></div>";
     }
@@ -362,9 +365,36 @@ function micropost_shortcode_content() {
     return $post_content;
 }
 
+
+// -----------   shortcode 结束 --------------
+
+
+function get_microblog_slug_name() {
+    global $microblog_slug_name;
+    if (!empty($microblog_slug_name)) {
+        return $microblog_slug_name;
+    }
+    $options = get_option('microblog_setting_data');
+    $slug_name = isset($options['mb_slug_name']) ? $options['mb_slug_name'] : 'microposts'; 
+    $slug_name = preg_replace('/[^a-zA-Z0-9]/', '', $slug_name); // 过滤非法字符
+    if (empty($slug_name)) { $slug_name = 'microposts'; }
+
+    // 设置全局变量
+    $microblog_slug_name = $slug_name;
+
+    return $slug_name;
+}
+
+// 更新全局变量的示例
+function update_global_microblog_option($new_value) {
+    if (!is_string($new_value)) { return; }
+    global $microblog_slug_name;
+    $microblog_slug_name = $new_value;
+}
+
 // 引入js
 function microblog_enqueue_scripts_and_styles() {
-    global $plugin_version; // 添加全局变量 $plugin_version
+    global $plugin_version;
     wp_enqueue_style('microblog-style', plugins_url('css/microblog-style.css', __FILE__), array(), $plugin_version);
     // wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', __FILE__), array(), $plugin_version, true);
 }
@@ -372,14 +402,16 @@ function microblog_enqueue_scripts_and_styles() {
 // Add rewrite rule for microblog permalink structure
 add_action('init', 'custom_microblog_rewrite_rule');
 function custom_microblog_rewrite_rule() {
-    add_rewrite_rule('^microposts/([0-9]+)\.html/?$', 'index.php?post_type=micropost&p=$matches[1]', 'top');
+    $slug_name = get_microblog_slug_name(); // 获取微博的 slug
+    add_rewrite_rule('^' . $slug_name . '/([0-9]+)\.html/?$', 'index.php?post_type=micropost&p=$matches[1]', 'top');
 }
 
 // Modify microblog permalink structure
 add_filter('post_type_link', 'custom_microblog_permalink', 10, 2);
 function custom_microblog_permalink($permalink, $post) {
     if ('micropost' === get_post_type($post)) {
-        return home_url('microposts/' . $post->ID . '.html');
+        $slug_name = get_microblog_slug_name();
+        return home_url($slug_name . '/' . $post->ID . '.html');
     }
     return $permalink;
 }
