@@ -175,12 +175,14 @@ function general_settings_section_header() {
     $out .= '<span class="microblog-admin-logo">';
     $out .= '<img src="' . esc_url(plugin_dir_url(dirname(__FILE__))) . 'images/microblog-logo.png">';
     $out .= '</span>';
+    // translators: %s is replaced with the plugin version
     $free_version_text = sprintf(esc_html__('Free V%s', 'microblog'), $plugin_version);
     $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', 'microblog') . '</span><span class="microblog-admin-bar-free">' . $free_version_text . '</span>';
     $out .= '</div>';
     $out .= '</div>';
     echo wp_kses_post($out);
 }
+
 
 // Display general settings section content
 function general_settings_section_base_callback() {
