@@ -112,19 +112,19 @@ class Microblog_SideWidget extends WP_Widget {
         }
         $out .= "</ul>";
         // Print the widget for the sidebar
-        echo $before_widget;
-        echo $before_title;
-        echo $title;
+        echo wp_kses_post($before_widget);
+        echo wp_kses_post($before_title);
+        echo esc_html($title);
         if ($show_rss) {
             $rssout = "";
             $rssout .= "<span class='microblog-widget-rss'>";
-            $rssout .= '<a target="_blank" href="' . get_site_url() . '/' . get_microblog_slug_name() . '/feed" class="rss"><img src="' . site_url() . '/wp-includes/images/rss.png" style="width: 18px; height: 18px;"></a>';
+            $rssout .= '<a target="_blank" href="' . esc_url(get_site_url() . '/' . get_microblog_slug_name() . '/feed') . '" class="rss"><img src="' . esc_url(site_url() . '/wp-includes/images/rss.png') . '" style="width: 18px; height: 18px;"></a>';
             $rssout .= "</span>";
-            echo $rssout;
+            echo wp_kses_post($rssout);
         }
-        echo $after_title;
-        echo $out;
-        echo $after_widget;
+        echo wp_kses_post($after_title);
+        echo wp_kses_post($out);
+        echo wp_kses_post($after_widget);        
 
         // Clean up
         wp_reset_postdata();
