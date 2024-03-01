@@ -57,6 +57,9 @@ If you are having trouble viewing your microposts, try visiting your permalinks 
 
 == Changelog ==
 
+1.5
+Optimization: Optimized code structure to improve query performance and reduce URL refresh.
+
 1.4
 Optimization: Adjusted abnormal spacing when the bottom toolbar of the widget is not displayed.
 Bug Fix: Fixed a bug where the comment button still appeared when comments were disabled for a microblog.

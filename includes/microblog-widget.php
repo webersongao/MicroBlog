@@ -1,0 +1,135 @@
+<?php
+// microblog-widget.php
+
+require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
+
+add_action('widgets_init', 'load_microblog_widget');
+function load_microblog_widget() {
+    register_widget('Microblog_SideWidget');
+}
+
+class Microblog_SideWidget extends WP_Widget {
+
+    public function __construct() {
+        parent::__construct(
+            'microblog_widget',
+            '微博',
+            array('description' => '允许您显示微博条目列表，并将它们从文章中排除。')
+        );
+    }
+
+    public function form($instance) {
+        $defaults = array(
+            'numberposts' => '5',
+            'title' => '',
+            'rss' => '',
+        );
+        $instance = wp_parse_args((array) $instance, $defaults);
+        ?>
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('title')); ?>">标题:</label>
+            <input type="text" name="<?php echo esc_attr($this->get_field_name('title')) ?>" id="<?php echo esc_attr($this->get_field_id('title')) ?> " value="<?php echo esc_attr($instance['title']) ?>" size="20">
+        </p>
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('numberposts')); ?>">展示数量:</label>
+            <input type="text" name="<?php echo esc_attr($this->get_field_name('numberposts')); ?>" id="<?php echo esc_attr($this->get_field_id('numberposts')); ?>" value="<?php echo esc_attr($instance['numberposts']); ?>">
+        </p>
+        <p>
+            <input type="checkbox" id="<?php echo esc_attr($this->get_field_id('use_excerpt')); ?>" name="<?php echo esc_attr($this->get_field_name('use_excerpt')); ?>" <?php if ($instance['use_excerpt']) echo 'checked="checked"' ?> />
+            <label for="<?php echo esc_attr($this->get_field_id('use_excerpt')); ?>">是否显示摘要 ?</label>
+        </p>
+        <p>
+            <input type="checkbox" id="<?php echo esc_attr($this->get_field_id('rss')); ?>" name="<?php echo esc_attr($this->get_field_name('rss')); ?>" <?php if ($instance['rss']) echo 'checked="checked"' ?> />
+            <label for="<?php echo esc_attr($this->get_field_id('rss')); ?>">是否展示RSS链接?</label>
+        </p>
+        <?php
+    }
+
+    public function update($new_instance, $old_instance) {
+        $instance = $old_instance;
+        $instance['title'] = $new_instance['title'];
+        $instance['numberposts'] = $new_instance['numberposts'];
+        $instance['use_excerpt'] = $new_instance['use_excerpt'];
+        $instance['rss'] = $new_instance['rss'];
+
+        return $instance;
+    }
+
+    public function widget($args, $instance) {
+        extract($args);
+        $title = sanitize_text_field($instance['title']);
+        $numberposts = $instance['numberposts'];
+        $use_excerpt = $instance['use_excerpt'];
+        $show_rss = $instance['rss'];
+
+        // retrieve posts information from database
+        $query = array(
+            'post_type' => 'micropost',
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'posts_per_page' => $numberposts,
+            'post_status' => 'publish',
+            'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
+        );
+        $options = get_option('microblog_setting_data');
+        $show_date = (isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
+        $query_results = new WP_Query($query);
+
+        // build the widget contents!
+        $out = ''; // 定义输出变量
+        $out .= "<ul class='microblog-widget'>";
+        while ($query_results->have_posts()) {
+            $query_results->the_post();
+            $out .= "<li>";
+            $post_title = the_title('', '', false);
+            if ($post_title) {
+                $out .= "<div class='microblog-widget-head'>";
+                $out .= "<span class='microblog-widget-head-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
+                
+                $out .= "</div>";
+            }
+            $out .= "<div class='microblog-widget-content'>";
+            if ($use_excerpt) {
+                add_filter('excerpt_more', 'micropost_excerpt_more');
+                $out .= "<p>" . get_the_excerpt() . "</p>";
+                remove_filter('excerpt_more', 'micropost_excerpt_more');
+            } else {
+                $out .= trim($post->post_content);
+            }
+            $out .= "</div>";
+            if (comments_open() || $show_date) {
+                $out .= "<div class='microblog-widget-bottom'>";
+                if ($show_date) {
+                    $out .= "<span class='microblog-widget-bottom-date'>" . get_the_date(get_option('date_format')) . "</span>";
+                }
+                if (comments_open()) {
+                 $out .= "<span class='microblog-widget-bottom-comment'>" . "<a target='_blank' href='" . get_permalink() . "'>" . "<img src='" . plugins_url('/images/post-comment-icon.png', __FILE__) . "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a>" . "</span>";
+                }
+                $out .= "</div>"; 
+                $out .= "<div style='clear:both;'></div>";
+            }
+            $out .= "</li><hr>";
+        }
+        $out .= "</ul>";
+        // Print the widget for the sidebar
+        echo $before_widget;
+        echo $before_title;
+        echo $title;
+        if ($show_rss) {
+            $rssout = "";
+            $rssout .= "<span class='microblog-widget-rss'>";
+            $rssout .= '<a target="_blank" href="' . get_site_url() . '/' . get_microblog_slug_name() . '/feed" class="rss"><img src="' . site_url() . '/wp-includes/images/rss.png" style="width: 18px; height: 18px;"></a>';
+            $rssout .= "</span>";
+            echo $rssout;
+        }
+        echo $after_title;
+        echo $out;
+        echo $after_widget;
+
+        // Clean up
+        wp_reset_postdata();
+        microblog_enqueue_scripts_and_styles();
+    }
+}
+
+?>

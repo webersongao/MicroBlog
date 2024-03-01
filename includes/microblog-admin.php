@@ -13,19 +13,19 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
  * Admin Panel
 */
 
+require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
+
 // Enqueue admin scripts and styles
 function microblog_admin_enqueue_scripts() {
     global $plugin_version;
-    wp_enqueue_style( 'microblog-admin-css', plugin_dir_url( __FILE__ ) . 'css/admin-style.css', array(), $plugin_version );
-    wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', __FILE__), array(), $plugin_version, true);
+    wp_enqueue_style('microblog-admin-css', plugin_dir_url(__FILE__) . '../css/admin-style.css', array(), $plugin_version);
+    wp_enqueue_script('microblog-script', plugin_dir_url(__FILE__) . '../js/microblog-script.js', array(), $plugin_version, true);
 }
 add_action( 'admin_enqueue_scripts', 'microblog_admin_enqueue_scripts' );
 
 // Create admin settings page
 function microblog_admin_settings() {
-    if (!current_user_can('manage_options')) {
-        return;
-    }
+    if (!current_user_can('manage_options')) { return; }
     ?>
     <div class="wrap">
         <h2>控制面板 | 微博MicroBlog</h2>
@@ -43,12 +43,6 @@ function microblog_admin_settings() {
     </div>
 
     <?php
-}
-
-// Add admin menu
-add_action('admin_menu', 'microblog_add_admin_menu');
-function microblog_add_admin_menu() {
-    add_menu_page('微博 MicroBlog', '微博设置', 'manage_options', 'microblog-settings', 'microblog_admin_settings');
 }
 
 // Register plugin settings
@@ -142,17 +136,18 @@ function microblog_setting_data_sanitize($input) {
                 'slug不合法，仅支持小写字母和数字，长度在1到10之间。', // 错误消息
                 'error' // 消息类型（error, warning, success, info）
             );
-            return get_option('microblog_setting_data'); // 返回之前保存的设置数据
+            return get_option('microblog_setting_data');
         }
     }
     update_micropost_type_supports($input); // 更新 register_post_type 的 supports 参数
+    flush_rewrite_rules(); // 刷新重写规则
     return $input;
 }
 
-        
+// 更新自定义文章类型的支持项
 function update_micropost_type_supports($options) {
     if (empty($options)) { return; }
-    $supports = array('title', 'editor'); // 默认支持的参数
+    $supports = array('title', 'editor','comments'); // 默认支持的参数
     // 根据用户选项更新 supports 参数
     if (isset($options['mb_editor_func'])) {
         $editor_func = $options['mb_editor_func'];
@@ -166,11 +161,10 @@ function update_micropost_type_supports($options) {
             $supports[] = 'excerpt';
         }
     }
-    // 更新 register_post_type 的 supports 参数
-    $args = get_post_type_object('micropost');
-    $args->supports = $supports;
-    register_post_type('micropost', $args);
+    register_micropost_type($supports); // 更新自定义文章类型的支持项
 }
+
+
 
 // Display general settings section content
 function general_settings_section_header() {
@@ -179,7 +173,7 @@ function general_settings_section_header() {
     $out .= '<div class="microblog-admin-header" style="margin-bottom: 15px;">';
     $out .= '<div class="microblog-admin-leftbar">';
     $out .= '<span class="microblog-admin-logo">';
-    $out .= '<img src="' . esc_url(plugin_dir_url(__FILE__)) . 'images/microblog-logo.png">';
+    $out .= '<img src="' . esc_url(plugin_dir_url(dirname(__FILE__))) . 'images/microblog-logo.png">';
     $out .= '</span>';
     $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', 'microblog') . '</span><span class="microblog-admin-bar-free">' . esc_html__('Free V' . $plugin_version, 'microblog') . '</span>';
     $out .= '</div>';
@@ -194,7 +188,7 @@ function general_settings_section_base_callback() {
 
 // Display shortcode settings section content
 function general_settings_section_shortcode_callback() {
-    echo '<p>请打开标题显示: 基础设置 -> 标题显示 </p>';
+    echo '<p>请确认已打开【标题显示】功能: 基础设置 -> 标题 </p>';
 }
 
 // Display settings fields input
