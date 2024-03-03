@@ -9,97 +9,99 @@ Tested up to: 6.4.3
 Stable tag: 1.5
 License: GPLv2 or later
 
-Add a microblog to your site; display the microposts in a widget or using a shortcode.
+== 核心 ==
 
-== Description ==
+将微博添加到您的网站；在小部件中显示微博或使用短代码显示微博。
 
-This simple plugin allows you to easily post short messages such as thoughts and updates.  These messages will not appear in your stream of posts; instead you can display them in a widget in yours sidebar.  You can also display them in any post or page by using the `[microblog]` shortcode.
+== 描述 ==
 
-To get started, just look for the new `Microposts` administration panel in your dashboard.  Click `Add new` and then compose a short message in the same way that you normally compose your posts.  If you give the micropost a title, then it will be displayed in bold and used as the first few words of the micropost.
+这个简单的插件使您可以轻松发布短消息，如想法和更新。 这些消息不会出现在您的帖子流中； 相反，您可以在侧边栏的小部件中显示它们。 您还可以在任何帖子或页面中使用`[microblog]`短代码来显示它们。
 
-Then, either add the widget to your sidebar or add the `[microblog]` shortcode into your site, and that's it!
+要开始，请在您的仪表板中查找新的`微博`管理面板。 点击`添加新的`，然后以您通常撰写帖子的方式撰写短消息。 如果您给微博添加标题，它将以粗体显示，并用作微博的前几个单词。
+
+然后，要么将小部件添加到侧边栏，要么将`[microblog]`短代码添加到您的网站中，就这样！
+
+`[microblog]`短代码支持几个选项：
+
+* **null_text**：如果未返回结果，则显示此文本。 默认为`(none)`。
+
+* **date_format**：如果显示日期，则将使用此php日期格式。 默认是来自常规设置页面的日期格式值。 我建议使用`"F j"`，它显示为"May 12"。
+
+* **use_excerpt**：如果定义，则使用帖子摘录而不是整个内容。 我们建议撰写简短的微博，但如果您更喜欢撰写较长的微博，则可以使用此选项将其截断。 不幸的是，Wordpress摘录不允许链接或其他html，请使用插件[高级摘录](http://wordpress.org/extend/plugins/advanced-excerpt/)来解决此问题！
+
+* **q**：要添加到查询中的任意＆分隔参数。 有关可用语法，请参阅[WP_Query](http://codex.wordpress.org/Class_Reference/WP_Query/#Parameters)页面。 例如，要仅按升序显示来自作者`jack`的帖子，您将写入`[microblog q="author_name=jack&order=ASC"]`。
+
+也许您可以在面板上调整`num`和`show_date`，
+
+* **num**：要显示的微博数量。 默认为`5`。 最小3到最大20：[3,20]
+
+* **show_date**：如果选中，则创建日期将显示在微博之前。
+
+然后输出可以使用CSS进一步格式化。
+
+== 安装 ==
+
+1、手动解压并上传： 尝试手动解压插件 zip 包，并将解压后的插件文件夹通过 FTP 或文件管理器上传到 WordPress 的 wp-content/plugins 目录中。
+2、特别说明：因为文件压缩问题，暂不支持通过 WordPress 后台上传插件的 zip 包的方式安装
+
+== 截图 ==
+
+1. 包含两条微博的渲染小部件
+2. 小部件配置框
+3、微博管理后台
 
 
-The `[microblog]` shortcode supports several options:
+== 其他说明 ==
 
-* **null_text**: If no results are returned, shows this text.  Defaults to `(none)`.
+如果您无法查看您的微博，请尝试访问您的固定链接首选项窗格，然后点击`保存更改`。
 
-* **date_format**: If showing the date, this php date format will be used.  The default is the Date Format value from the General Settings page.  I recommend `"F j"`, which displays as "May 12".
-
-* **use_excerpt**: If defined, use the post excerpt instead of the entire contents.  We recommend writing short microposts, but if you prefer to write longer ones, this can be used to truncate them.  Unfortunately, Wordpress excerpts don't allow links or other html, use the plugin [Advanced Excerpt](http://wordpress.org/extend/plugins/advanced-excerpt/) to remedy this!
-
-* **q**: Arbitrary &-separated arguments to add to the query.  See the [WP_Query](http://codex.wordpress.org/Class_Reference/WP_Query/#Parameters) page for available syntax.  For example, to show only posts from author `jack` in ascending instead of descending order, you would write `[microblog q="author_name=jack&order=ASC"]`.
-
-mayb you can adjust number and show_date on Pannel,
-
-* **num**: The number of microposts to show.  Defaults to `5`.  min 3 to max 20 : [3,20]
-
-* **show_date**: If checked, the creation date will precede the microposts.
-
-then The output can then be further formatted using CSS. 
-
-== Installation ==
-
-1、Manual extraction and upload: Attempt to manually extract the plugin zip package, and then upload the extracted plugin folder to the wp-content/plugins directory of your WordPress installation using FTP or a file manager.
-
-2、##Special note: 
-Due to file compression issues, installing the plugin via uploading the zip package through the WordPress backend is temporarily unsupported.
-
-== Screenshots ==
-
-1. A rendered widget containing my two microposts
-2. The widget configuration box
-3. MicroBlog Administration Panel
-
-== Other notes ==
-
-If you are having trouble viewing your microposts, try visiting your permalinks preference pane and clicking `Save changes`.
-
-== Changelog ==
+== 更新日志 ==
 
 1.5
-Optimization: Optimized code structure to improve query performance and reduce URL refresh.
+优化：优化代码结构，提升查询性能 减少URl刷新
 
 1.4
-Optimization: Adjusted abnormal spacing when the bottom toolbar of the widget is not displayed.
-Bug Fix: Fixed a bug where the comment button still appeared when comments were disabled for a microblog.
+优化：小工具底部工具条不展示时，调整异常的间距
+修复bug：当微博关闭评论后，评论按钮依然显示的bug
 
-1.3
-Additions:
-Support for customizing URL slug. For example, changing it to "microblog" would result in the microblog URL being microblog/post_id.html and the RSS feed URL being microblog/feed. The default slug is microposts.
+1.3 
+新增：
+URL slug 支持自定义，例如改为microblog，则微博地址为 microblog/post_id.html ，Rss地址为microblog/feed， slug默认为microposts 
 
-1.2
-New:
-- Editor follows site configuration (Gutenberg or classic editor).
-- Editor feature options support customization (author, featured image, microblog excerpt).
-Optimization:
-- Fixed bug of uninitialized configuration items when plugin is activated.
 
-1.1
-New: Supports microblog image grid, with support for lightbox toggle.
+1.2 
+新增：
+.1编辑器跟随站点配置（古腾堡或经典编辑器）
+.2编辑器特性选项支持自定义（作者，特色图片 微博摘要）
+优化：
+.1插件激活时，未初始化配置项的bug
 
-1.0
-Initial release (basic functions including editing/publishing, shortcode insertion, widget insertion, control panel).
+1.1 
+新增支持微博图片九宫格，支持lightbox开关
 
-In simple terms:
-1. Upload the file package - install and activate - configure the plugin - enter the control panel (use server-side file management - upload).
-2. Create a new page, copy and paste `[microblog]` into the "page" where you want it displayed, then save and publish.
-3. If you want to use widgets, add them in your backend, and view them on the frontend.
+1.0 
+初次发布（编辑/发布，短代码插入，小工具插入，控制面板等基本功能）
 
-Not satisfied yet? Open the microblog control panel, adjust the necessary configurations, and if there are still bugs, contact me.
 
-Future development plans:
+简单说就是，
+1、上传文件包-安装激活-插件设置-进入控制面板（使用服务端文件管理-上传）
+2、新建页面，复制粘贴 [microblog] 到你期待展示的“页面”中，保存发布就可以了
+3、如果想使用小工具，自己后台添加，前台查看即可
 
-1. Move all parameters to the control panel (completed).
-2. Support switching between Chinese and English + external comments (in progress).
-3. Support image grid (completed).
-4. Still thinking~
+还不满意？打开微博的控制面板，调整必要配置项就可以了，还有bug？联系我。
 
-More features await your suggestions!
+后续开发计划：
 
-Feel free to provide feedback, and if you're interested in tinkering, feel free to contact me~
+1、将所有参数移至控制面板 （已完成）
+2、支持中英文切换 + 评论外漏（开发中）
+3、支持图片九宫格 （已完成）
+4、还没想好~ 
 
-Email: Gao@btbk.org
-Twitter: https://twitter.com/WebersonGao
-More information: https://www.webersongao.com/tag/microblog
+更多功能，等你来提~
 
+
+欢迎多提意见，如果你也想折腾，欢迎联系~
+
+邮箱：Gao@btbk.org
+推特：https://twitter.com/WebersonGao
+更多介绍：https://www.webersongao.com/tag/microblog
