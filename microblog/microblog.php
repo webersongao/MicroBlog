@@ -10,12 +10,16 @@
  */
 
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
+define('MICROBLOG_PLUGIN_FILE', __FILE__);
+define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
 $plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.5';
 global $plugin_version;
 
 // 加载其他功能模块文件
+
+
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-index.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-widget.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-shortcode.php');
