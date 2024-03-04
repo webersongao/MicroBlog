@@ -61,7 +61,14 @@ function microblog_enqueue_scripts_and_styles() {
     // wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', dirname(__FILE__)), array(), $plugin_version, true);
 }
 
-
+// 全站Feed中格式化输出 微博 标题
+function formart_microblog_feed_title($title, $post_id) {
+    $post_type = get_post_type($post_id);
+    if ($post_type === 'micropost') {
+        return '【微博】：' . $title;
+    }
+    return $title;
+}
 
 
 

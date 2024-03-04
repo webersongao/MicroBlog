@@ -28,14 +28,26 @@ function create_micropost_type() {
     register_micropost_type($supports);
 }
 
-// 微博Rss的每页数量限制
-add_action('pre_get_posts', 'limit_rss_posts_per_page');
-function limit_rss_posts_per_page($query) {
-    // $options = get_option('microblog_setting_data');
-    // $page_num = isset($options['mb_postrss_num']) ? intval($options['mb_postrss_num']) : 10;
-    $page_num = 10;
-    if ($query->is_feed && $query->is_main_query() && $query->get('post_type') === 'micropost') {
-        $query->set('posts_per_rss', $page_num); // 设置每页 15 个文章
+// 合并mocroblog的feed输出 ，并格式化标题
+add_action('pre_get_posts', 'customize_main_query');
+function customize_main_query($query) {
+    $feed_miropost = true;
+    if (is_admin() || !$query->is_main_query() || !($query->is_feed)) {
+        return;
+    }
+    
+    if ($query->get('post_type') === 'micropost') {
+        // $page_num = isset($options['mb_postrss_num']) ? intval($options['mb_postrss_num']) : 10;
+        $page_num = 10;//
+        $query->set('posts_per_rss', $page_num); 
+    } else {
+        if ($feed_miropost){
+            if (!is_post_type_archive('micropost')){
+                $query->set('post_type', array('post', 'micropost'));
+            }
+            // 仅在全站Feed中格式化输出
+            add_filter('the_title', 'formart_microblog_feed_title', 10, 2);
+        }
     }
 }
 
