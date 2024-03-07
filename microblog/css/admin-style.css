@@ -22,3 +22,17 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 #micropost-content { width: 100%;  max-width: 100%;  margin-bottom: 10px; padding: 5px; }
 #micropost-title { margin-bottom: 10px; }
 .button.button-primary.button-large { display: block; max-width: 200px;  border: none; }
+
+#micropost-message {
+    color:#2271b1;
+}
+#quick-micropost-form .button.button-primary.button-large {
+    margin-right: 10px; /* 按钮与消息之间的间距 */
+}
+
+#quick-micropost-form .micropost-message {
+    flex-grow: 1; /* 消息填充剩余空间 */
+}
+
+
+
