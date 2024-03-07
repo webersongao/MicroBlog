@@ -8,17 +8,30 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 */
 
 document.addEventListener('DOMContentLoaded', function () {
-    var currentPageURL = window.location.href;
-    if (currentPageURL.includes('post_type=micropost')) {
-        var postTypeLinks = document.querySelectorAll('a[href*="post_type=micropost"]');
-        postTypeLinks.forEach(function (link) {
-            if (link.textContent && link.textContent.trim() === '写文章') {
-                link.textContent = '发微博';
+    // Function to update links text and target
+    function updateLinksTextAndTarget(selector, searchText, newText, newTarget) {
+        var links = document.querySelectorAll(selector);
+        links.forEach(function (link) {
+            if (link.textContent && link.textContent.trim() === searchText) {
+                link.textContent = newText;
+                if (newTarget) {
+                    link.setAttribute('target', newTarget);
+                }
             }
         });
+    }
+
+    // Update links and page title based on the current page URL
+    var currentPageURL = window.location.href;
+    if (currentPageURL.includes('post_type=micropost')) {
+        updateLinksTextAndTarget('a[href*="post_type=micropost"]', '写文章', '发微博');
+        updateLinksTextAndTarget('li#wp-admin-bar-archive a.ab-item', '查看文章', '微博列表', '_blank');
+
         var pageTitle = document.title;
         if (pageTitle && pageTitle.includes('写文章')) {
             document.title = pageTitle.replace(/写文章/g, '发微博');
         }
+    } else {
+        updateLinksTextAndTarget('a[href*="post_type=micropost"]', '写文章', '发微博');
     }
 });
