@@ -1,0 +1,274 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: micro-micronews\n"
+"POT-Creation-Date: 2024-06-02 13:12+0530\n"
+"PO-Revision-Date: 2024-06-02 13:10+0530\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: index.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: includes/admin.php:11 includes/admin.php:17
+msgid "MicroNews"
+msgstr ""
+
+#: includes/admin.php:12 includes/admin.php:18 includes/admin.php:535
+msgid "Add New"
+msgstr ""
+
+#: includes/admin.php:13 includes/admin.php:19
+msgid "Settings"
+msgstr ""
+
+#: includes/admin.php:39 includes/admin.php:52 includes/admin.php:62
+#: includes/admin.php:72 includes/admin.php:83 includes/admin.php:99
+#: includes/admin.php:112 includes/admin.php:121 includes/admin.php:130
+#: includes/admin.php:139 includes/admin.php:145 includes/admin.php:151
+#: includes/admin.php:157 includes/admin.php:163 includes/admin.php:169
+#: includes/admin.php:175 includes/admin.php:183
+msgid "Changes saved!"
+msgstr ""
+
+#: includes/admin.php:44
+msgid "Number of post cannot left blank, reverted to default."
+msgstr ""
+
+#: includes/admin.php:192
+msgid "MicroNews Settings"
+msgstr ""
+
+#: includes/admin.php:196
+msgid "Functional"
+msgstr ""
+
+#: includes/admin.php:198
+msgid "Number of news to display"
+msgstr ""
+
+#: includes/admin.php:203
+msgid "Load More navigation"
+msgstr ""
+
+#: includes/admin.php:207
+msgid "Open link in new tab"
+msgstr ""
+
+#: includes/admin.php:211
+msgid "Swap news when navigating"
+msgstr ""
+
+#: includes/admin.php:213
+msgid "Disabling this will append news when Load More is clicked."
+msgstr ""
+
+#: includes/admin.php:216 index.php:154
+msgid "Header"
+msgstr ""
+
+#: includes/admin.php:218
+msgid "Title over news"
+msgstr ""
+
+#: includes/admin.php:223
+msgid "Head text color"
+msgstr ""
+
+#: includes/admin.php:240
+msgid "Head gighlight color"
+msgstr ""
+
+#: includes/admin.php:256
+msgid "Head background color"
+msgstr ""
+
+#: includes/admin.php:271
+msgid "Display"
+msgstr ""
+
+#: includes/admin.php:273
+msgid "Full story text"
+msgstr ""
+
+#: includes/admin.php:278
+msgid "Title color"
+msgstr ""
+
+#: includes/admin.php:294
+msgid "Text color"
+msgstr ""
+
+#: includes/admin.php:309
+msgid "Link color"
+msgstr ""
+
+#: includes/admin.php:331
+msgid "Date format"
+msgstr ""
+
+#: includes/admin.php:351
+msgid "Enable colorful borders"
+msgstr ""
+
+#: includes/admin.php:355
+msgid "Enable link hover effect"
+msgstr ""
+
+#: includes/admin.php:359
+msgid "Input"
+msgstr ""
+
+#: includes/admin.php:361
+msgid "HTML parsing while adding news"
+msgstr ""
+
+#: includes/admin.php:363
+msgid ""
+"Try not to use improper markup if HTML parsing is enabled otherwise it could "
+"break up your whole site."
+msgstr ""
+
+#: includes/admin.php:366
+msgid "Access"
+msgstr ""
+
+#: includes/admin.php:368
+msgid "Enable access to editors"
+msgstr ""
+
+#: includes/admin.php:370
+msgid "Users with access level of editor."
+msgstr ""
+
+#: includes/admin.php:377
+msgid "Download Backup of your MicroNews data"
+msgstr ""
+
+#: includes/admin.php:377
+msgid "Download"
+msgstr ""
+
+#: includes/admin.php:381
+msgid "Update table storage"
+msgstr ""
+
+#: includes/admin.php:381
+msgid "Update"
+msgstr ""
+
+#: includes/admin.php:382
+msgid "Create a backup first."
+msgstr ""
+
+#: includes/admin.php:419
+msgid "Updated Successfully!"
+msgstr ""
+
+#: includes/admin.php:437
+msgid ""
+"URGENT: DATABASE UPDATE REQUIRED! Use button at the end of Settings page."
+msgstr ""
+
+#: includes/admin.php:492
+msgid "New Post Added."
+msgstr ""
+
+#: includes/admin.php:495
+msgid "Don't you think atleast title is necessary."
+msgstr ""
+
+#: includes/admin.php:501
+msgid "MicroNews Add New Post"
+msgstr ""
+
+#: includes/admin.php:508
+msgid "Title"
+msgstr ""
+
+#: includes/admin.php:512
+msgid "Content"
+msgstr ""
+
+#: includes/admin.php:516
+msgid "Link"
+msgstr ""
+
+#: includes/admin.php:521 includes/core.php:278
+msgid "Category Key"
+msgstr ""
+
+#: includes/core.php:129 includes/core.php:275
+msgid "on"
+msgstr ""
+
+#: includes/core.php:221
+msgid "Updated successfully."
+msgstr ""
+
+#: includes/core.php:223 includes/core.php:235
+msgid "Serious error occured."
+msgstr ""
+
+#: includes/core.php:233
+msgid "Deleted successfully."
+msgstr ""
+
+#: includes/core.php:256
+msgid "MicroNews Posts"
+msgstr ""
+
+#: includes/core.php:280
+msgid "Reference Link"
+msgstr ""
+
+#: includes/core.php:296
+msgid "Page"
+msgstr ""
+
+#: includes/core.php:303
+msgid "Home"
+msgstr ""
+
+#: index.php:88
+msgid "Micro news data will output where this widget resides."
+msgstr ""
+
+#: index.php:131
+msgid "Number of news"
+msgstr ""
+
+#: index.php:146
+msgid "Category"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "micro-micronews"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/webersongao/micronews"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Spread the news in shortest possible way. Use links to refer data and title "
+"to concise it."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "WebersonGao"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://webersongao.com/"
+msgstr ""
