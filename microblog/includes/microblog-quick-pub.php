@@ -1,10 +1,10 @@
 <?php
-// microblog-widget.php
 
-require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 /*
 Description: 在仪表板中添加一个小部件，用于快速发布微博类型的文章。
 */
+
+require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 
 // 注册插件小部件
 function register_quick_micropost_widget() {
@@ -18,9 +18,8 @@ add_action('wp_dashboard_setup', 'register_quick_micropost_widget');
 
 // 小部件内容
 function display_quick_micropost_widget() {
-    // 添加HTML表单
     ?>
-    <form id="quick-micropost-form" method="post" action="<?php echo admin_url('admin-post.php'); ?>">
+    <form id="quick-micropost-form" method="post" action="">
         <label for="micropost-title">标题：</label>
         <input type="text" id="micropost-title" name="micropost_title" placeholder=" 标题">
         <label for="micropost-content">内容：</label>
@@ -38,25 +37,30 @@ function handle_quick_micropost_submission() {
     if (isset($_POST['micropost_content']) && isset($_POST['quick-micropost-nonce'])) {
         if (wp_verify_nonce($_POST['quick-micropost-nonce'], 'quick-micropost-action')) {
             $post_title = isset($_POST['micropost_title']) ? sanitize_text_field($_POST['micropost_title']) : '微博 ' . date('Y-m-d H:i');
-            $post_id = wp_insert_post(array(
-                'post_title' => $post_title, // 使用用户输入的标题，或者默认标题
-                'post_content' => sanitize_textarea_field($_POST['micropost_content']),
-                'post_type' => 'micropost', // 自定义文章类型
-                'post_status' => 'publish' // 可自定义发布状态
-            ));
-            if (!is_wp_error($post_id)) {
-                // 发布成功
-                echo '<p>微博已成功发布！</p>';
+            $post_content = isset($_POST['micropost_content']) ? sanitize_textarea_field($_POST['micropost_content']) : '';
+            if (strlen($post_content) < 10) {
+                $message = '微博内容不可少于10个字，请重新输入。';
             } else {
-                // 发布失败
-                echo '<p>发布微博时出错，请稍后重试。</p>';
+                $post_id = wp_insert_post(array(
+                    'post_title' => $post_title,
+                    'post_content' => $post_content,
+                    'post_type' => 'micropost',
+                    'post_status' => 'publish'
+                ));
+                if (!is_wp_error($post_id)) {
+                    $message = '微博发布成功！';
+                } else {
+                    $message = '发布微博时出错，请稍后重试。';
+                }
             }
         } else {
-            // 非法请求
-            echo '<p>非法请求！</p>';
+            $message = '非法请求！';
         }
+        echo $message;
     }
 }
+
+// 注册 admin-post.php 处理程序
 add_action('admin_post_quick_micropost', 'handle_quick_micropost_submission');
 add_action('admin_post_nopriv_quick_micropost', 'handle_quick_micropost_submission');
 
