@@ -27,7 +27,7 @@ function display_quick_micropost_widget() {
         <input type="hidden" name="action" value="quick_micropost">
         <input type="submit" value="发布微博" class="button button-primary button-large">
         <?php wp_nonce_field('quick-micropost-action', 'quick-micropost-nonce'); ?>
-        <span id="micropost-message" class="micropost-message">ssss</span>
+        <span id="micropost-message" class="micropost-message"></span>
     </form>
     <?php
 }

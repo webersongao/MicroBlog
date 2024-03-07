@@ -6,7 +6,7 @@ Donate link: https://www.webersongao.com/ https://boolesrings.org
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
-Stable tag: 1.5
+Stable tag: 1.6
 License: GPLv2 or later
 
 == 核心 ==
@@ -56,6 +56,10 @@ License: GPLv2 or later
 如果您无法查看您的微博，请尝试访问您的固定链接首选项窗格，然后点击`保存更改`。
 
 == 更新日志 ==
+
+1.6
+新增：新增仪表盘快捷发布
+优化：按钮 写文章，改为 发微博等文案
 
 1.5
 优化：优化代码结构，提升查询性能 减少URl刷新
