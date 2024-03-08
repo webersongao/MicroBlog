@@ -19,15 +19,15 @@ add_action('wp_dashboard_setup', 'register_quick_micropost_widget');
 // 小部件内容
 function display_quick_micropost_widget() {
     ?>
-    <form id="quick-micropost-form" method="post" action="">
-        <label for="micropost-title">标题：</label>
-        <input type="text" id="micropost-title" name="micropost_title" placeholder=" 标题">
+    <form id="quick-micropost-form" method="post" action="<?php echo admin_url('admin-post.php'); ?>">
+        <label for="quick-micropost-title">标题：</label>
+        <input type="text" id="quick-micropost-title" name="micropost_title" placeholder=" 标题">
         <label for="micropost-content">内容：</label>
-        <textarea id="micropost-content" name="micropost_content" rows="5" cols="15" placeholder=" 请输入微博内容"></textarea>
+        <textarea id="quick-micropost-content" name="micropost_content" rows="5" cols="15" placeholder=" 请输入微博内容"></textarea>
         <input type="hidden" name="action" value="quick_micropost">
-        <input type="submit" value="发布微博" class="button button-primary button-large">
+        <input type="submit" value="发布微博" class="button button-primary button-large button-quick-gao">
         <?php wp_nonce_field('quick-micropost-action', 'quick-micropost-nonce'); ?>
-        <span id="micropost-message" class="micropost-message"></span>
+        <span id="quick-micropost-message" class="quick-micropost-message"></span>
     </form>
     <?php
 }
@@ -56,9 +56,12 @@ function handle_quick_micropost_submission() {
         } else {
             $message = '非法请求！';
         }
-        echo $message;
+        // 将消息存储为查询参数以便在页面刷新后显示
+        wp_safe_redirect(add_query_arg('micropost_quick_message', urlencode($message), wp_get_referer()));
+        exit();
     }
 }
+
 
 // 注册 admin-post.php 处理程序
 add_action('admin_post_quick_micropost', 'handle_quick_micropost_submission');

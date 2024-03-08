@@ -51,24 +51,14 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         updateLinksTextAndTarget('a[href*="post_type=micropost"]', '写文章', '发微博');
     }
+    
+    // ======= 快速发微博 状态提示
+    var urlParams = new URLSearchParams(window.location.search);
+    var message = urlParams.get('micropost_quick_message');
+    // 如果消息存在，则填充到 #micropost-message 元素中
+    if (message) {
+       document.getElementById('quick-micropost-message').textContent = message;
+    }
 });
 
-
-jQuery("#quick-micropost-form").submit(function (event) {
-    event.preventDefault();
-    jQuery.ajax({
-        type: "POST",
-        url: "<?php echo admin_url('admin-post.php'); ?>",
-        data: jQuery("#quick-micropost-form").serialize(), // 将表单数据序列化
-        success: function (response) {
-            jQuery("#micropost-message").html(response);
-            // 清空标题和内容输入框
-            jQuery("#micropost-title").val('');
-            jQuery("#micropost-content").val('');
-            setTimeout(function () {
-                jQuery("#micropost-message").html('');
-            }, 2000);
-        }
-    });
-});
 
