@@ -54,10 +54,13 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // ======= 快速发微博 状态提示
     var urlParams = new URLSearchParams(window.location.search);
-    var message = urlParams.get('micropost_quick_message');
+    var message = urlParams.get('micropost_message');
     // 如果消息存在，则填充到 #micropost-message 元素中
     if (message) {
-       document.getElementById('quick-micropost-message').textContent = message;
+        var messageLink = document.querySelector('#quick-micropost-message a');
+        if (messageLink) {
+            messageLink.textContent = message;
+        }
     }
 });
 

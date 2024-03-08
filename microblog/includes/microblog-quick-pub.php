@@ -27,7 +27,7 @@ function display_quick_micropost_widget() {
         <input type="hidden" name="action" value="quick_micropost">
         <input type="submit" value="发布微博" class="button button-primary button-large button-quick-gao">
         <?php wp_nonce_field('quick-micropost-action', 'quick-micropost-nonce'); ?>
-        <span id="quick-micropost-message" class="quick-micropost-message"></span>
+        <span id="quick-micropost-message" class="quick-micropost-message"><a href="<?php echo admin_url('edit.php?post_type=micropost'); ?>"></a></span>
     </form>
     <?php
 }
@@ -37,31 +37,41 @@ function handle_quick_micropost_submission() {
     if (isset($_POST['micropost_content']) && isset($_POST['quick-micropost-nonce'])) {
         if (wp_verify_nonce($_POST['quick-micropost-nonce'], 'quick-micropost-action')) {
             $post_title = isset($_POST['micropost_title']) ? sanitize_text_field($_POST['micropost_title']) : '微博 ' . date('Y-m-d H:i');
-            $post_content = isset($_POST['micropost_content']) ? sanitize_textarea_field($_POST['micropost_content']) : '';
-            if (strlen($post_content) < 10) {
+            $post_content = isset($_POST['micropost_content']) ? wp_kses_post($_POST['micropost_content']) : '';
+            if (mb_strlen($post_content) < 10) {
                 $message = '微博内容不可少于10个字，请重新输入。';
             } else {
+                $paragraph_blocks = '';
+                $block_editor = use_block_editor_for_post_type('post');
+                if ($block_editor) {
+                    $paragraphs = explode("\n", $post_content);
+                    foreach ($paragraphs as $paragraph) {
+                        $paragraph_blocks .= '<!-- wp:paragraph -->' . "\n" . "<p>" . trim($paragraph) . "</p>" . "\n". '<!-- /wp:paragraph -->' . "\n\n";
+                    }
+                    $paragraph_blocks = rtrim($paragraph_blocks);
+                } else {
+                    $paragraph_blocks = $post_content;
+                }
                 $post_id = wp_insert_post(array(
                     'post_title' => $post_title,
-                    'post_content' => $post_content,
+                    'post_content' => $paragraph_blocks,
                     'post_type' => 'micropost',
                     'post_status' => 'publish'
                 ));
                 if (!is_wp_error($post_id)) {
-                    $message = '微博发布成功！';
+                    $message = '微博发布成功~';
                 } else {
-                    $message = '发布微博时出错，请稍后重试。';
+                    $message = '发布微博时出错~';
                 }
             }
         } else {
             $message = '非法请求！';
         }
         // 将消息存储为查询参数以便在页面刷新后显示
-        wp_safe_redirect(add_query_arg('micropost_quick_message', urlencode($message), wp_get_referer()));
+        wp_safe_redirect(add_query_arg('micropost_message', urlencode($message), wp_get_referer()));
         exit();
     }
 }
-
 
 // 注册 admin-post.php 处理程序
 add_action('admin_post_quick_micropost', 'handle_quick_micropost_submission');
