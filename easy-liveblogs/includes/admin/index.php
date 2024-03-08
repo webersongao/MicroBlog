@@ -1,0 +1,2 @@
+<?php
+/* Quite revealing! */

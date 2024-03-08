@@ -1,0 +1,386 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Liveblogs\n"
+"POT-Creation-Date: 2022-05-12 22:48+0200\n"
+"PO-Revision-Date: 2022-05-12 22:49+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: easy-liveblogs.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: easy-liveblogs.php:131
+#, php-format
+msgid "There is %s update."
+msgstr "Er is %s update."
+
+#: easy-liveblogs.php:132
+#, php-format
+msgid "There are %s updates."
+msgstr "Er zijn %s updates."
+
+#: easy-liveblogs.php:133
+msgid "That's it."
+msgstr "Dat was het."
+
+#: includes/admin/elb-pages.php:15
+msgid "Easy Liveblog Settings"
+msgstr "Easy Liveblog Instellingen"
+
+#: includes/admin/elb-pages.php:15
+msgid "Settings"
+msgstr "Instellingen"
+
+#: includes/admin/elb-pages.php:28
+msgid "Easy Liveblogs Settings"
+msgstr "Easy Liveblog Instellingen"
+
+#: includes/admin/elb-pages.php:33
+msgid "Plugin settings have been updated."
+msgstr "De plugin-instellingen zijn bijgewerkt."
+
+#: includes/admin/elb-register-settings.php:99
+msgid "Theme"
+msgstr "Thema"
+
+#: includes/admin/elb-register-settings.php:100
+msgid "Select a theme for your liveblog."
+msgstr "Selecteer een thema voor de liveblogs."
+
+#: includes/admin/elb-register-settings.php:103
+msgid "Light"
+msgstr "Licht"
+
+#: includes/admin/elb-register-settings.php:104
+msgid "Dark"
+msgstr "Donker"
+
+#: includes/admin/elb-register-settings.php:105
+msgid "Light (Less theme dependent)"
+msgstr "Licht (minder afhankelijk van het thema)"
+
+#: includes/admin/elb-register-settings.php:106
+msgid "None"
+msgstr "Geen"
+
+#: includes/admin/elb-register-settings.php:112
+msgid "Display author"
+msgstr "Toon auteur"
+
+#: includes/admin/elb-register-settings.php:113
+msgid "Display the author name on liveblog entries."
+msgstr "Geef de naam van de auteur weer in liveblog-items."
+
+#: includes/admin/elb-register-settings.php:118
+msgid "Display social sharing"
+msgstr "Toon delen op social media"
+
+#: includes/admin/elb-register-settings.php:119
+msgid "Display the social sharing options."
+msgstr "Geef de opties voor sociaal delen weer."
+
+#: includes/admin/elb-register-settings.php:124
+msgid "Update interval"
+msgstr "Update interval"
+
+#: includes/admin/elb-register-settings.php:125
+msgid "Per how many seconds should be checked for new liveblog updates."
+msgstr "Per hoeveel seconden gecontroleerd moet worden op liveblog updates."
+
+#: includes/admin/elb-register-settings.php:133
+msgid "Show entries"
+msgstr "Toon items"
+
+#: includes/admin/elb-register-settings.php:134
+msgid "The amount of entries visible before the load more button."
+msgstr "Het aantal items dat zichtbaar is voor de toon meer button."
+
+#: includes/admin/elb-register-settings.php:142
+msgid "Post types"
+msgstr "Post types"
+
+#: includes/admin/elb-register-settings.php:143
+msgid "Select the post types that need to support liveblogs."
+msgstr "Selecteer de post types die liveblogs moeten ondersteunen."
+
+#: includes/admin/elb-register-settings.php:150
+msgid "Prefix title"
+msgstr "Voorvoegsel titel"
+
+#: includes/admin/elb-register-settings.php:151
+msgid "Automatically puts \"Liveblog\" in front of your liveblogs titles."
+msgstr "Zet automatisch \"Liveblog\" voor uw titels van liveblogs."
+
+#: includes/admin/elb-register-settings.php:156
+msgid "Entry date format"
+msgstr "Datum-notatie liveblog-items"
+
+#: includes/admin/elb-register-settings.php:157
+msgid "The format of the date displayed on liveblog entries."
+msgstr "De notatie van de datum die wordt weergegeven bij liveblog-items."
+
+#: includes/admin/elb-register-settings.php:160
+msgid "Human readable"
+msgstr "Menselijk leesbaar"
+
+#: includes/admin/elb-register-settings.php:161
+#, php-format
+msgid "Date and time format: %s"
+msgstr "Datum- en tijdnotatie: %s"
+
+#: includes/admin/elb-register-settings.php:162
+#, php-format
+msgid "Date: %s"
+msgstr "Datum: %s"
+
+#: includes/admin/elb-register-settings.php:163
+#, php-format
+msgid "Time: %s"
+msgstr "Tijd: %s"
+
+#: includes/admin/elb-register-settings.php:168
+msgid "Enable caching"
+msgstr "Caching inschakelen"
+
+#: includes/admin/elb-register-settings.php:169
+msgid "Caches the liveblog feed with the selected method."
+msgstr "Cachet de liveblogfeed met de geselecteerde methode."
+
+#: includes/admin/elb-register-settings.php:172
+msgid "Disabled"
+msgstr "Uitgeschakeld"
+
+#: includes/admin/elb-register-settings.php:173
+msgid "Transient"
+msgstr ""
+
+#: includes/admin/elb-register-settings.php:174
+msgid "Object"
+msgstr ""
+
+#: includes/admin/elb-register-settings.php:179
+msgid "Append timestamp"
+msgstr "Tijdstempel toevoegen"
+
+#: includes/admin/elb-register-settings.php:180
+msgid "Appends a timestamp to the liveblog feed URL."
+msgstr ""
+"Hiermee wordt een tijdstempel toegevoegd aan de URL van de liveblog-feed."
+
+#: includes/admin/elb-register-settings.php:197
+#, php-format
+msgid "The callback function used for the %s setting is missing."
+msgstr "De callback-functie voor %s ontbreekt."
+
+#: includes/class-elb-liveblog.php:98
+#, php-format
+msgid ""
+"<a class=\"elb-view-liveblog-link button\" href=\"%s\">View the liveblog</a>"
+msgstr ""
+"<a class=\"elb-view-liveblog-link button\" href=\"%s\">Bekijk de liveblog</a>"
+
+#: includes/class-elb-liveblog.php:113
+msgid "The liveblog has ended."
+msgstr "Dit liveblog is afgelopen."
+
+#: includes/class-elb-liveblog.php:117
+msgid "No liveblog updates yet."
+msgstr "Er zijn nog geen liveblog-updates."
+
+#: includes/class-elb-liveblog.php:164
+msgid "Load more"
+msgstr "Toon meer"
+
+#: includes/elb-filters.php:56
+msgid "Liveblogs"
+msgstr "Liveblogs"
+
+#: includes/elb-filters.php:86 includes/elb-functions.php:265
+msgid "Closed"
+msgstr "Gesloten"
+
+#: includes/elb-filters.php:143 includes/elb-functions.php:354
+#: includes/elb-metabox.php:18 includes/elb-metabox.php:21
+msgid "Liveblog"
+msgstr "Liveblog"
+
+#: includes/elb-functions.php:264
+msgid "Open"
+msgstr "Open"
+
+#: includes/elb-functions.php:454
+msgid "Edit This"
+msgstr "Bewerk dit"
+
+#: includes/elb-functions.php:596
+#, php-format
+msgctxt "%s = human-readable time difference"
+msgid "%s ago"
+msgstr "%s geleden"
+
+#: includes/elb-metabox.php:84
+msgid "Enable liveblog"
+msgstr "Liveblog inschakelen"
+
+#: includes/elb-metabox.php:92
+msgid "Status"
+msgstr "Status"
+
+#: includes/elb-metabox.php:100
+msgid "API-endpoint URL"
+msgstr ""
+
+#: includes/elb-metabox.php:129
+#, php-format
+msgid "This item is attached to a <a href=\"%s\">closed</a> liveblog."
+msgstr "Dit item is gekoppeld aan een <a href=\"%s\">gesloten</a> liveblog."
+
+#: includes/elb-metabox.php:132
+msgid "Select liveblog"
+msgstr "Selecteer liveblog"
+
+#: includes/elb-metabox.php:142
+msgid "Direct link to entry"
+msgstr "Directe link naar item"
+
+#: includes/elb-metabox.php:147
+msgid "There is no liveblog created yet."
+msgstr "Er is nog geen liveblog gemaakt."
+
+#: includes/elb-post-types.php:11
+msgctxt "post type general name"
+msgid "Liveblog Entries"
+msgstr "Liveblog Items"
+
+#: includes/elb-post-types.php:12
+msgctxt "post type singular name"
+msgid "Entry"
+msgstr "Item"
+
+#: includes/elb-post-types.php:13
+msgid "Add New"
+msgstr "Voeg toe"
+
+#: includes/elb-post-types.php:14
+msgid "Add New Entry"
+msgstr "Nieuw item toevoegen"
+
+#: includes/elb-post-types.php:15
+msgid "Edit Entry"
+msgstr "Bewerk item"
+
+#: includes/elb-post-types.php:16
+msgid "New Entry"
+msgstr "Nieuw item"
+
+#: includes/elb-post-types.php:17
+msgid "All Liveblog Entries"
+msgstr "Alle liveblog-items"
+
+#: includes/elb-post-types.php:18
+msgid "View Entry"
+msgstr "Bekijk item"
+
+#: includes/elb-post-types.php:19
+msgid "Search Liveblog Entries"
+msgstr "Zoek liveblog-items"
+
+#: includes/elb-post-types.php:20
+msgid "No Liveblog Entries found"
+msgstr "Geen liveblog-items gevonden"
+
+#: includes/elb-post-types.php:21
+msgid "No Liveblog Entries found in Trash"
+msgstr "Geen liveblog-items gevonden in de prullenbak"
+
+#. Plugin Name of the plugin/theme
+#: includes/elb-post-types.php:23
+msgid "Easy Liveblogs"
+msgstr "Easy Liveblogs"
+
+#: templates/post.php:14
+#, php-format
+msgid "By %s"
+msgstr "Door %s"
+
+#: templates/sharing.php:5
+msgid "Share via Facebook"
+msgstr "Deel via Facebook"
+
+#: templates/sharing.php:9
+msgid "Share via Twitter"
+msgstr "Deel via Twitter"
+
+#: templates/sharing.php:13
+msgid "Share via email"
+msgstr "Deel via e-mail"
+
+#. Plugin URI of the plugin/theme
+msgid "https://vanrossum.dev"
+msgstr "https://vanrossum.dev/nl"
+
+#. Description of the plugin/theme
+msgid ""
+"Live blogging made easy with the Easy Liveblogs plugin from vanrossum.dev."
+msgstr ""
+"Live bloggen wordt gemakkelijk gemaakt met de Easy Liveblogs-plugin van "
+"vanrossum.dev."
+
+#. Author of the plugin/theme
+msgid "Jeffrey van Rossum"
+msgstr "Jeffrey van Rossum"
+
+#. Author URI of the plugin/theme
+msgid "https://www.vanrossum.dev"
+msgstr "https://www.vanrossum.dev"
+
+#~ msgid "https://doubletakepigeon.com/easy-liveblogs"
+#~ msgstr "https://doubletakepigeon.com/easy-liveblogs"
+
+#~ msgid "Double Take Pigeon"
+#~ msgstr "Double Take Pigeon"
+
+#~ msgid "https://www.doubletakepigeon.com"
+#~ msgstr "https://www.doubletakepigeon.com"
+
+#~ msgid "Your license appears to be invalid."
+#~ msgstr "Uw licentie lijkt ongeldig te zijn."
+
+#~ msgid "Your license key is valid."
+#~ msgstr "Uw licentiesleutel is geldig."
+
+#~ msgid "General"
+#~ msgstr "Algemeen"
+
+#~ msgid "License"
+#~ msgstr "Licentie"
+
+#~ msgid "License key"
+#~ msgstr "Licentiesleutel"
+
+#~ msgid "Your plugin license key."
+#~ msgstr "Jouw plugin licentiesteutel."
+
+#~ msgid "An error occurred, please try again."
+#~ msgstr "Er is een fout opgetreden. Probeer het alsjeblieft opnieuw."
+
+#~ msgid "%1$s License Key"
+#~ msgstr "%1$s Licentiesleutel"
+
+#~ msgid "Deactivate License"
+#~ msgstr "De-activeer licentie"
+
+#~ msgid "Liveblog Entries"
+#~ msgstr "Liveblog Items"

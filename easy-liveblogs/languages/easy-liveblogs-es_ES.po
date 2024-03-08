@@ -1,0 +1,353 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Liveblogs\n"
+"POT-Creation-Date: 2023-03-20 22:42+0100\n"
+"PO-Revision-Date: 2023-03-20 22:43+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: easy-liveblogs.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: easy-liveblogs.php:131
+#, php-format
+msgid "There is %s update."
+msgstr "Hay %s actualización."
+
+#: easy-liveblogs.php:132
+#, php-format
+msgid "There are %s updates."
+msgstr "Hay %s actualizaciones."
+
+#: easy-liveblogs.php:133
+msgid "That's it."
+msgstr "Eso es todo."
+
+#: includes/admin/elb-pages.php:15
+msgid "Easy Liveblog Settings"
+msgstr "Ajustes de Easy Liveblog"
+
+#: includes/admin/elb-pages.php:15
+msgid "Settings"
+msgstr "Ajustes"
+
+#: includes/admin/elb-pages.php:28
+msgid "Easy Liveblogs Settings"
+msgstr "Ajustes de Easy Liveblogs"
+
+#: includes/admin/elb-pages.php:33
+msgid "Plugin settings have been updated."
+msgstr "Los ajustes del plugin han sido actualizados."
+
+#: includes/admin/elb-register-settings.php:99
+msgid "Theme"
+msgstr "Tema"
+
+#: includes/admin/elb-register-settings.php:100
+msgid "Select a theme for your liveblog."
+msgstr "Selecciona un tema para tu liveblog."
+
+#: includes/admin/elb-register-settings.php:103
+msgid "Light"
+msgstr "Claro"
+
+#: includes/admin/elb-register-settings.php:104
+msgid "Dark"
+msgstr "Oscuro"
+
+#: includes/admin/elb-register-settings.php:105
+msgid "Light (Less theme dependent)"
+msgstr "Claro (Menos dependiente del tema)"
+
+#: includes/admin/elb-register-settings.php:106
+msgid "None"
+msgstr "Ninguno"
+
+#: includes/admin/elb-register-settings.php:112
+msgid "Display author"
+msgstr "Mostrar autor"
+
+#: includes/admin/elb-register-settings.php:113
+msgid "Display the author name on liveblog entries."
+msgstr "Mostrar el nombre del autor en las entradas del liveblog."
+
+#: includes/admin/elb-register-settings.php:118
+msgid "Display social sharing"
+msgstr "Mostrar Compartir en redes sociales"
+
+#: includes/admin/elb-register-settings.php:119
+msgid "Display the social sharing options."
+msgstr "Mostrar las opciones para compartir en redes sociales."
+
+#: includes/admin/elb-register-settings.php:124
+msgid "Update interval"
+msgstr "Actualizar intervalo de refresco"
+
+#: includes/admin/elb-register-settings.php:125
+msgid "Per how many seconds should be checked for new liveblog updates."
+msgstr ""
+"¿Cada cuantos segundos debe comprobar si hay nuevas actualizaciones del "
+"liveblog?"
+
+#: includes/admin/elb-register-settings.php:133
+msgid "Show entries"
+msgstr "Mostrar entradas"
+
+#: includes/admin/elb-register-settings.php:134
+msgid "The amount of entries visible before the load more button."
+msgstr "Cantidad de entradas visibles antes de mostrar el botón de ver más."
+
+#: includes/admin/elb-register-settings.php:142
+msgid "Post types"
+msgstr "Tipos de post"
+
+#: includes/admin/elb-register-settings.php:143
+msgid "Select the post types that need to support liveblogs."
+msgstr ""
+"Selecciona el tipo de post en el que quieres que se muestren liveblogs."
+
+#: includes/admin/elb-register-settings.php:150
+msgid "Prefix title"
+msgstr "Prefijo del título"
+
+#: includes/admin/elb-register-settings.php:151
+msgid "Automatically puts \"Liveblog\" in front of your liveblogs titles."
+msgstr ""
+"Escribir automáticamente \"Liveblog\" al inicio de los títulos de tus "
+"liveblogs."
+
+#: includes/admin/elb-register-settings.php:156
+msgid "Entry date format"
+msgstr "Formato de la fecha de las entradas"
+
+#: includes/admin/elb-register-settings.php:157
+msgid "The format of the date displayed on liveblog entries."
+msgstr "Formato de la fecha mostrada en las entradas del liveblog."
+
+#: includes/admin/elb-register-settings.php:160
+msgid "Human readable"
+msgstr ""
+
+#: includes/admin/elb-register-settings.php:161
+#, php-format
+msgid "Date and time format: %s"
+msgstr "Formato de la fecha y hora: %s"
+
+#: includes/admin/elb-register-settings.php:162
+#, php-format
+msgid "Date: %s"
+msgstr "Fecha: %s"
+
+#: includes/admin/elb-register-settings.php:163
+#, php-format
+msgid "Time: %s"
+msgstr "Hora: %s"
+
+#: includes/admin/elb-register-settings.php:168
+msgid "Enable caching"
+msgstr "Habilitar caché"
+
+#: includes/admin/elb-register-settings.php:169
+msgid "Caches the liveblog feed with the selected method."
+msgstr "Almacena el feed del liveblog con el método seleccionado."
+
+#: includes/admin/elb-register-settings.php:172
+msgid "Disabled"
+msgstr "Deshabilitado"
+
+#: includes/admin/elb-register-settings.php:173
+msgid "Transient"
+msgstr "Temporal"
+
+#: includes/admin/elb-register-settings.php:174
+msgid "Object"
+msgstr "Objeto"
+
+#: includes/admin/elb-register-settings.php:179
+msgid "Append timestamp"
+msgstr "Añadir marca de tiempo"
+
+#: includes/admin/elb-register-settings.php:180
+msgid "Appends a timestamp to the liveblog feed URL."
+msgstr "Añade una marca de tiempo a la URL del liveblog."
+
+#: includes/admin/elb-register-settings.php:197
+#, php-format
+msgid "The callback function used for the %s setting is missing."
+msgstr "La función de rellamada usada para %s no existe."
+
+#: includes/class-elb-liveblog.php:98
+#, php-format
+msgid ""
+"<a rel=\"noamphtml\" class=\"elb-view-liveblog-link button\" "
+"href=\"%s\">View the liveblog</a>"
+msgstr ""
+"<a rel=\"noamphtml\" class=\"elb-view-liveblog-link button\" href=\"%s\">Ver "
+"el liveblog</a>"
+
+#: includes/class-elb-liveblog.php:115
+msgid "The liveblog has ended."
+msgstr "El liveblog ha finalizado."
+
+#: includes/class-elb-liveblog.php:119
+msgid "No liveblog updates yet."
+msgstr "No hay actualizaciones todavía."
+
+#: includes/class-elb-liveblog.php:166
+msgid "Load more"
+msgstr "Cargar más"
+
+#: includes/elb-filters.php:56
+msgid "Liveblogs"
+msgstr "Liveblogs"
+
+#: includes/elb-filters.php:86 includes/elb-functions.php:265
+msgid "Closed"
+msgstr "Cerrado"
+
+#: includes/elb-filters.php:143 includes/elb-functions.php:354
+#: includes/elb-metabox.php:18 includes/elb-metabox.php:21
+msgid "Liveblog"
+msgstr "Liveblog"
+
+#: includes/elb-functions.php:264
+msgid "Open"
+msgstr "Abrir"
+
+#: includes/elb-functions.php:459
+msgid "Edit This"
+msgstr "Editar"
+
+#: includes/elb-functions.php:610
+#, php-format
+msgctxt "%s = human-readable time difference"
+msgid "%s ago"
+msgstr "hace %s"
+
+#: includes/elb-metabox.php:84
+msgid "Enable liveblog"
+msgstr "Habilitar liveblog"
+
+#: includes/elb-metabox.php:92
+msgid "Status"
+msgstr "Estatus"
+
+#: includes/elb-metabox.php:100
+msgid "API-endpoint URL"
+msgstr "Enlace del API-endpoint"
+
+#: includes/elb-metabox.php:129
+#, php-format
+msgid "This item is attached to a <a href=\"%s\">closed</a> liveblog."
+msgstr "Esta entrada está adjuntada a un liveblog <a href=\"%s\">cerrado</a>."
+
+#: includes/elb-metabox.php:132
+msgid "Select liveblog"
+msgstr "Seleccionar liveblog"
+
+#: includes/elb-metabox.php:142
+msgid "Direct link to entry"
+msgstr "Enlace directo a la entrada del liveblog"
+
+#: includes/elb-metabox.php:147
+msgid "There is no liveblog created yet."
+msgstr "No hay liveblogs creados todavia"
+
+#: includes/elb-post-types.php:11
+msgctxt "post type general name"
+msgid "Liveblog Entries"
+msgstr "Entradas del Liveblog"
+
+#: includes/elb-post-types.php:12
+msgctxt "post type singular name"
+msgid "Entry"
+msgstr "Entrada"
+
+#: includes/elb-post-types.php:13
+msgid "Add New"
+msgstr "Añadir nueva"
+
+#: includes/elb-post-types.php:14
+msgid "Add New Entry"
+msgstr "Añadir nueva entrada"
+
+#: includes/elb-post-types.php:15
+msgid "Edit Entry"
+msgstr "Editar entrada"
+
+#: includes/elb-post-types.php:16
+msgid "New Entry"
+msgstr "Nueva entrada"
+
+#: includes/elb-post-types.php:17
+msgid "All Liveblog Entries"
+msgstr "Todas las entradas de Liveblog"
+
+#: includes/elb-post-types.php:18
+msgid "View Entry"
+msgstr "Ver entrada"
+
+#: includes/elb-post-types.php:19
+msgid "Search Liveblog Entries"
+msgstr "Seleccionar entradas de Liveblog"
+
+#: includes/elb-post-types.php:20
+msgid "No Liveblog Entries found"
+msgstr "No se han encontrado entradas de Liveblog"
+
+#: includes/elb-post-types.php:21
+msgid "No Liveblog Entries found in Trash"
+msgstr "No se han encontrado entradas de Liveblog en la papelera de reciclaje"
+
+#. Plugin Name of the plugin/theme
+#: includes/elb-post-types.php:23
+msgid "Easy Liveblogs"
+msgstr ""
+
+#: templates/post.php:14
+#, php-format
+msgid "By %s"
+msgstr "Por %s"
+
+#: templates/sharing.php:5
+msgid "Share via Facebook"
+msgstr "Compartir vía Facebook"
+
+#: templates/sharing.php:9
+msgid "Share via Twitter"
+msgstr "Compartir vía Twitter"
+
+#: templates/sharing.php:13
+msgid "Share via email"
+msgstr "Compartir vía email"
+
+#. Plugin URI of the plugin/theme
+msgid "https://vanrossum.dev"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Live blogging made easy with the Easy Liveblogs plugin from vanrossum.dev."
+msgstr ""
+"El liveblogging es más sencillo con el plugin Easy Liveblogs de vanrossum."
+"dev."
+
+#. Author of the plugin/theme
+msgid "Jeffrey van Rossum"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://www.vanrossum.dev"
+msgstr ""
