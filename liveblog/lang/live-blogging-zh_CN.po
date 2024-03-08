@@ -1,0 +1,291 @@
+# Translation of the WordPress plugin Live Blogging 2.1 by Chris Northwood.
+# Copyright (C) 2010 Chris Northwood
+# This file is distributed under the same license as the Live Blogging package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Live Blogging 2.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/live-blogging\n"
+"POT-Creation-Date: 2010-08-12 19:03+0000\n"
+"PO-Revision-Date: 2010-08-16 00:50+0800\n"
+"Last-Translator: lonelicloud <haoxian.zeng@gmail.com>\n"
+"Language-Team: http://cnzhx.net/ <haoxian.zeng@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: CHINA\n"
+
+#: live-blogging.php:50
+msgid "Live Blog Entries"
+msgstr "所有话题"
+
+#: live-blogging.php:51
+msgid "Live Blog Entry"
+msgstr "微博话题"
+
+#: live-blogging.php:52
+msgid "Add New Entry"
+msgstr "新建话题"
+
+#: live-blogging.php:53
+#: live-blogging.php:55
+msgid "Edit Entry"
+msgstr "编辑话题"
+
+#: live-blogging.php:54
+msgid "New Entry"
+msgstr "新话题"
+
+#: live-blogging.php:56
+msgid "Search Entries"
+msgstr "搜索话题"
+
+#: live-blogging.php:57
+msgid "No entries found"
+msgstr "没有找到话题"
+
+#: live-blogging.php:58
+msgid "No entries found in trash"
+msgstr "垃圾箱中没有微博话题"
+
+#: live-blogging.php:60
+msgid "Individual entries for a live blog"
+msgstr "微博的各个话题"
+
+#. #-#-#-#-#  plugin.pot (Live Blogging 2.1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: live-blogging.php:153
+msgid "Live Blogging"
+msgstr "Live Blogging（WP微博）"
+
+#: live-blogging.php:156
+#: live-blogging.php:1020
+msgid "Migrate Live Blogging"
+msgstr "迁移WordPress微博"
+
+#: live-blogging.php:160
+#: live-blogging.php:580
+msgid "Meteor Status"
+msgstr "Meteor 状态"
+
+#: live-blogging.php:162
+msgid "Enable Live Blog"
+msgstr "启用微博"
+
+#: live-blogging.php:163
+msgid "Select Live Blog"
+msgstr "选择微博"
+
+#: live-blogging.php:171
+msgid "Live Blogging Options"
+msgstr "WordPress微博选项"
+
+#: live-blogging.php:179
+msgid "It appears you have live blogs created in version 1 of the plugin."
+msgstr "好像有通过该插件版本1创建的微博。"
+
+#: live-blogging.php:180
+msgid "Click here to update your legacy live blogs."
+msgstr "单击此处升级您的旧版WordPress微博。"
+
+#: live-blogging.php:188
+msgid "Automatic Updating"
+msgstr "自动升级"
+
+#: live-blogging.php:192
+msgid "Method to use for live blog reader updating"
+msgstr "为微博读者选择更新模式"
+
+#: live-blogging.php:194
+msgid "Poll (default, requires no special configuration)"
+msgstr "轮询（默认，不需要进行特别配置）"
+
+#: live-blogging.php:195
+msgid "Stream using Meteor (lower server load and faster updates, but needs special configuration)"
+msgstr "使用 Meteor 的平滑模式（较低的服务器负荷，快速更新，但是需要进行特别配置）"
+
+#: live-blogging.php:196
+msgid "Disable automatic updates"
+msgstr "禁用自动更新"
+
+#: live-blogging.php:201
+msgid "Enable auto-updating of comments (this will not work on some themes, please read the documentation!)"
+msgstr "启用评论自动更新（在某些主题中可能无法工作，请阅读文档）"
+
+#: live-blogging.php:207
+msgid "Posting to Twitter"
+msgstr "发布到Twitter"
+
+#: live-blogging.php:214
+#: live-blogging.php:233
+msgid "Connect with Twitter"
+msgstr "连接Twitter"
+
+#: live-blogging.php:219
+msgid "You are already connected to Twitter. Click the image below to change the account you are connected to."
+msgstr "您已经连接到Twitter。单击下面的图片以改变您连接到的账户。"
+
+#: live-blogging.php:224
+msgid "You are not yet connected to Twitter. Click the image below to connect."
+msgstr "您还没有连接到Twitter。单击下面的图片进行连接。"
+
+#: live-blogging.php:237
+msgid "Unable to connect to Twitter at this time."
+msgstr "目前无法连接到Twitter。"
+
+#: live-blogging.php:247
+msgid "Enable posting to Twitter"
+msgstr "启用发布到Twitter"
+
+#: live-blogging.php:256
+msgid "Twitter functionality disabled due to missing PHP CURL module"
+msgstr "因为缺失PHP CURL模块，Twitter功能被禁用"
+
+#: live-blogging.php:263
+msgid "Live Blog Style"
+msgstr "WordPress微博样式"
+
+#: live-blogging.php:267
+msgid "How should new entries appear?"
+msgstr "如何显示新话题？"
+
+#: live-blogging.php:269
+msgid "The latest entry at the top"
+msgstr "新话题在上面"
+
+#: live-blogging.php:270
+msgid "The latest entry at the bottom"
+msgstr "新话题在下面"
+
+#: live-blogging.php:275
+msgid "Date specifier for live blog entries (see <a href=\"http://uk3.php.net/manual/en/function.date.php\">PHP's date function</a> for allowable strings)"
+msgstr "为WordPress微博话题指定日期格式（参阅 <a href=\"http://uk3.php.net/manual/en/function.date.php\">PHP日期函数</a> 获取允许的字符串格式信息）"
+
+#: live-blogging.php:280
+msgid "Style for live blogging entries ($DATE gets replaced with the entry date/time, in the format specified above, $CONTENT with the body of the entry and $AUTHOR with the name of that author)"
+msgstr "为WordPress微博话题指定样式（$DATE 表示话题日期/时间，使用上面指定的格式，$CONTENT 表示话题内容，而 $AUTHOR 表示作者名称）"
+
+#: live-blogging.php:286
+msgid "Meteor Configuration"
+msgstr "Meteor 配置（请参考 <a href=\"http://meteorserver.org/\">http://meteorserver.org/</a>"
+
+#: live-blogging.php:289
+msgid "Meteor Subscriber Host (the publicly accessible URL of your Meteor server - can be left blank if not using Meteor)"
+msgstr "Meteor 订阅主机（您的Meteor服务器的公开URL地址——如果不使用Meteor，可以留空）"
+
+#: live-blogging.php:294
+msgid "Meteor Controller Host (the private IP of the Meteor server - can be left blank if not using Meteor)"
+msgstr "Meteor 控制主机（Meteor服务器的私有IP——如果不使用Meteor，可以留空）"
+
+#: live-blogging.php:299
+msgid "Meteor Controller Port (can be left blank if not using Meteor)"
+msgstr "Meteor 控制端口（如果不使用Meteor，可以留空）"
+
+#: live-blogging.php:304
+msgid "Meteor Identifier (a unique string to identify this WordPress install - can be left blank if not using Meteor)"
+msgstr "Meteor 标识符（一个标识该WordPress安装的唯一字符串——如果不使用Meteor，可以留空）"
+
+#: live-blogging.php:310
+msgid "Advanced Settings"
+msgstr "高级设置"
+
+#: live-blogging.php:314
+msgid "Actions to be unhooked when displaying live blog content (advanced feature that can be used to work around badly coded plugins that mangle individual live blog entries in undesirable ways, e.g., some bookmarking plugins)"
+msgstr "在显示微博内容时要解除挂钩的动作（能够与其它插件协同工作的高级特性。某些编写不好的插件可能会使微博条目显示混乱，例如一些书签插件。）"
+
+#: live-blogging.php:326
+#: live-blogging.php:347
+msgid "Delete Unhook"
+msgstr "删除解除挂钩"
+
+#: live-blogging.php:340
+msgid "Add Unhook"
+msgstr "增加解除挂钩"
+
+#: live-blogging.php:362
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: live-blogging.php:383
+msgid "Enable live blogging on this post"
+msgstr "为这篇文章启用微博特性"
+
+#: live-blogging.php:384
+msgid "Please remember to include the [liveblog] shortcode where you want the liveblog in this post to appear."
+msgstr "请记得将简码 [liveblog] 插入到帖子中你希望显示微博的地方。"
+
+#: live-blogging.php:450
+#: live-blogging.php:485
+msgid "There are no currently active live blogs."
+msgstr "目前没有激活的微博。"
+
+#: live-blogging.php:454
+msgid "Select live blog"
+msgstr "选择微博"
+
+#: live-blogging.php:567
+msgid "Live Blog"
+msgstr "微博"
+
+#: live-blogging.php:576
+msgid "Access Denied"
+msgstr "访问被拒绝"
+
+#: live-blogging.php:589
+msgid "Unable to establish connection to Meteor:"
+msgstr "无法建立到 Meteor 的连接："
+
+#: live-blogging.php:605
+msgid "Connection to Meteor not configured."
+msgstr "没有为 Meteor 配置连接。"
+
+#: live-blogging.php:924
+msgid "Every 5 minutes"
+msgstr "每隔5分钟"
+
+#: live-blogging.php:1032
+msgid "Click the button below to upgrade legacy live blogs to the new system. To avoid timeout errors, only 25 entries at a time will be translated. For blogs with large numbers of live blog entries, it may be necessary to run this multiple times to convert them all."
+msgstr "单击下面的按钮将旧版WordPress微博升级到新版本。为了避免出现超时错误，每次只能转换25个条目。对于已有较多WordPress微博条目的博客，可能需要多次进行转换。"
+
+#: live-blogging.php:1033
+msgid "Start"
+msgstr "开始"
+
+#: live-blogging.php:1078
+#, php-format
+msgid "%d entry left to migrate"
+msgid_plural "%d entries left to migrate."
+msgstr[0] "剩余 %d 个条目等待迁移。"
+msgstr[1] "剩余 %d 个条目需要迁移。"
+
+#: live-blogging.php:1081
+#: live-blogging.php:1114
+msgid "Next batch"
+msgstr "下一组"
+
+#: live-blogging.php:1111
+#, php-format
+msgid "%d description left to migrate"
+msgid_plural "%d descriptions left to migrate."
+msgstr[0] "剩余 %d 个描述等待迁移。"
+msgstr[1] "剩余 %d 个描述等待迁移。"
+
+#. Plugin URI of the plugin/theme
+msgid "http://wordpress.org/extend/plugins/live-blogging/"
+msgstr "http://wordpress.org/extend/plugins/live-blogging/"
+
+#. Description of the plugin/theme
+msgid "Plugin to support automatic live blogging"
+msgstr "实时博文插件。能够创建类似微博功能的插件，还能够将话题自动更新到Twitter。"
+
+#. Author of the plugin/theme
+msgid "Chris Northwood"
+msgstr "Chris Northwood"
+
+#. Author URI of the plugin/theme
+msgid "http://www.pling.org.uk/"
+msgstr "http://www.pling.org.uk/"
+

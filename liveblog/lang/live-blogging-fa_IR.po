@@ -1,0 +1,254 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: live-blogging\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-09-03 19:02+0330\n"
+"PO-Revision-Date: 2010-09-07 01:18+0330\n"
+"Last-Translator: Rasoul.moshrefizadeh <rasoul.moshrefizadeh@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: C:\\Users\\ريالشس\\Downloads\\live-blogging\n"
+"X-Poedit-SearchPath-0: C:\\Users\\ريالشس\\Downloads\\live-blogging\n"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:50
+msgid "Live Blog Entries"
+msgstr "Live Blog Posts"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:51
+msgid "Live Blog Entry"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:52
+msgid "Add New Entry"
+msgstr "اضافه کردن نوشته جدید"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:53
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:55
+msgid "Edit Entry"
+msgstr "ویرایش نوشته"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:54
+msgid "New Entry"
+msgstr "پست جدید"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:56
+msgid "Search Entries"
+msgstr "جستجوی نوشته ها"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:57
+msgid "No entries found"
+msgstr "هیچ پستی یافت نشد"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:58
+msgid "No entries found in trash"
+msgstr "هیچ پستی در زباله دان یافت نشد"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:60
+msgid "Individual entries for a live blog"
+msgstr "نوشته های انفرادی برای وبلاگ نویسی زنده"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:164
+msgid "Live Blogging"
+msgstr "وبلاگ نویسی زنده"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:167
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:1035
+msgid "Migrate Live Blogging"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:171
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:595
+msgid "Meteor Status"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:173
+msgid "Enable Live Blog"
+msgstr "فعال کردن Live Blog"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:174
+msgid "Select Live Blog"
+msgstr " وبلاگ نویسی زنده"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:182
+msgid "Live Blogging Options"
+msgstr "تنظیمات وبلاگ نویسی زنده"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:190
+msgid "It appears you have live blogs created in version 1 of the plugin."
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:191
+msgid "Click here to update your legacy live blogs."
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:199
+msgid "Automatic Updating"
+msgstr "بروز رسانی خودکار"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:203
+msgid "Method to use for live blog reader updating"
+msgstr "تنظمات مربوط به نمایش پست ها برای خوانندگان"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:205
+msgid "Poll (default, requires no special configuration)"
+msgstr "پیش فرض(بدون نیاز به هیچ پیکر بندی خاص)"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:206
+msgid "Stream using Meteor (lower server load and faster updates, but needs special configuration)"
+msgstr "Stream using Meteor (کم تر شدن سر لود سرور و سریعتر شدن آپدیت ها،اما نیاز به تنظیمات خاص دارد)"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:207
+msgid "Disable automatic updates"
+msgstr "غیر فعال کردن بروز رسانی خودکار"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:212
+msgid "Enable auto-updating of comments (this will not work on some themes, please read the documentation!)"
+msgstr "فعال کردن خودکار به روز رسانی نظرات(این قابلیت ممکن است بر روی بعضی از قالب ها کار نکند،لطفا مستندات را مطالعه نمایید)"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:218
+msgid "Posting to Twitter"
+msgstr "ارسال به توییتر"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:225
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:244
+msgid "Connect with Twitter"
+msgstr "اتصال به توییتر"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:230
+msgid "You are already connected to Twitter. Click the image below to change the account you are connected to."
+msgstr "شما در حال حاظر به توییتر متصل هستید، با کلیک بر روی تصویر زیر اکانتی که به آن متصل هستید را تغییر دهید"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:235
+msgid "You are not yet connected to Twitter. Click the image below to connect."
+msgstr "شما هنوز به توییتر متصل نشده اید.برای اتصال به توییتر بر روی تصویر زیر کلیک کنید"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:248
+msgid "Unable to connect to Twitter at this time."
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:258
+msgid "Enable posting to Twitter"
+msgstr "فعال کردن قابلیت ارسال به توییتر"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:267
+msgid "Twitter functionality disabled due to missing PHP CURL module"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:274
+msgid "Live Blog Style"
+msgstr "استایل وبلاگ نویسی زنده"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:278
+msgid "How should new entries appear?"
+msgstr " پست های  جدید در کجا ظاهر شوند؟"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:280
+msgid "The latest entry at the top"
+msgstr "قرار گرفتن آخرین پست در بالای صفحه"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:281
+msgid "The latest entry at the bottom"
+msgstr "قرار گرفتن آخرین پست در پایین صفحه"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:286
+msgid "Date specifier for live blog entries (see <a href=\"http://uk3.php.net/manual/en/function.date.php\">PHP's date function</a> for allowable strings)"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:291
+msgid "Style for live blogging entries ($DATE gets replaced with the entry date/time, in the format specified above, $CONTENT with the body of the entry and $AUTHOR with the name of that author)"
+msgstr "تظیمات استایل نوشته های وبلاگ نویسی زنده( $DATE به عنوان تاریخ یا ساعت هر ورودی , در قالب مشخص شده دربالا نمایش داده میشود, $CONTENT نشان دهنده بدنه هر ورودی است $AUTHOR نویسنده هر ورودی را مشخص می کند)"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:297
+msgid "Meteor Configuration"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:300
+msgid "Meteor Subscriber Host (the publicly accessible URL of your Meteor server - can be left blank if not using Meteor)"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:305
+msgid "Meteor Controller Host (the private IP of the Meteor server - can be left blank if not using Meteor)"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:310
+msgid "Meteor Controller Port (can be left blank if not using Meteor)"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:315
+msgid "Meteor Identifier (a unique string to identify this WordPress install - can be left blank if not using Meteor)"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:321
+msgid "Advanced Settings"
+msgstr "تنظیمات پیشرفته"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:325
+msgid "Actions to be unhooked when displaying live blog content (advanced feature that can be used to work around badly coded plugins that mangle individual live blog entries in undesirable ways, e.g., some bookmarking plugins)"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:337
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:358
+msgid "Delete Unhook"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:351
+msgid "Add Unhook"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:373
+msgid "Save Changes"
+msgstr "ذخیره تغییرات"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:394
+msgid "Enable live blogging on this post"
+msgstr "فعال کردن وبلاگ نویسی زنده برای این پست"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:395
+msgid "Please remember to include the [liveblog] shortcode where you want the liveblog in this post to appear."
+msgstr "لطفا به یاد داشته باشید که حتما تگ [liveblog] را در یک جای مناسب درون پست قرار دهید"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:461
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:500
+msgid "There are no currently active live blogs."
+msgstr "در حال حاظر سیستم وبلاگ نویسی زنده به درستی فعال نشده است"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:467
+msgid "Select live blog"
+msgstr "وبلاگ نویسی زنده"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:582
+msgid "Live Blog"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:591
+msgid "Access Denied"
+msgstr "امکان دسترسی وجود ندارد"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:604
+msgid "Unable to establish connection to Meteor:"
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:620
+msgid "Connection to Meteor not configured."
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:939
+msgid "Every 5 minutes"
+msgstr "هر 5 دقیقه"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:1047
+msgid "Click the button below to upgrade legacy live blogs to the new system. To avoid timeout errors, only 25 entries at a time will be translated. For blogs with large numbers of live blog entries, it may be necessary to run this multiple times to convert them all."
+msgstr ""
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:1048
+msgid "Start"
+msgstr "شروع"
+
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:1096
+#: C:\Users\ÑíÇáÔÓ\Downloads\live-blogging/live-blogging.php:1129
+msgid "Next batch"
+msgstr "دسته بعدی"
+
