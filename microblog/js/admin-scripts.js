@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (searchButton && searchButton.value === '搜索文章') {
         searchButton.value = '搜索微博';
     }
-    
+
     // Function to update links text and target
     function updateLinksTextAndTarget(selector, searchText, newText, newTarget) {
         var links = document.querySelectorAll(selector);
@@ -51,11 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         updateLinksTextAndTarget('a[href*="post_type=micropost"]', '写文章', '发微博');
     }
-    
+
     // ======= 快速发微博 状态提示
     var urlParams = new URLSearchParams(window.location.search);
     var message = urlParams.get('micropost_message');
-    // 如果消息存在，则填充到 #micropost-message 元素中
     if (message) {
         var messageLink = document.querySelector('#quick-micropost-message a');
         if (messageLink) {
@@ -63,5 +62,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
-
-
