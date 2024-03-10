@@ -20,6 +20,7 @@ global $plugin_version;
 // 加载其他功能模块文件
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-index.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-widget.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/microblog-forward.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-shortcode.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-quick-pub.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/micropost-functions.php');
