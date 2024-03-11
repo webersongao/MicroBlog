@@ -31,7 +31,8 @@ function create_micropost_type() {
 // 合并mocroblog的feed输出 ，并格式化标题
 add_action('pre_get_posts', 'customize_main_query');
 function customize_main_query($query) {
-    $feed_miropost = true;
+    $options = get_option('microblog_setting_data');
+    $feed_miropost = isset($options['mb_rss_feed']) ? $options['mb_rss_feed'] : false;
     if (is_admin() || !$query->is_main_query() || !($query->is_feed)) {
         return;
     }

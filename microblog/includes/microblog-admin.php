@@ -77,6 +77,13 @@ function microblog_plugin_setting_admin() {
         'general_settings_section_base'
     );
     add_settings_field(
+        'microblog_post_rss_feed',
+        'RSS订阅',
+        'microblog_post_rss_feed_input',
+        'microblog-settings',
+        'general_settings_section_base'
+    );
+    add_settings_field(
         'microblog_post_editor_func',
         '编辑器',
         'microblog_post_editor_func_callback',
@@ -214,6 +221,17 @@ function microblog_post_title_listdate_input() {
     <label>
         <input type='checkbox' name='microblog_setting_data[mb_date_show]' value='1' <?php checked($value, true); ?> />
         是否显示时间
+    </label>
+    <?php
+}
+
+function microblog_post_rss_feed_input() {
+    $options = get_option('microblog_setting_data');
+    $value = isset($options['mb_rss_feed']) ? $options['mb_rss_feed'] : false;
+    ?>
+    <label>
+        <input type='checkbox' name='microblog_setting_data[mb_rss_feed]' value='1' <?php checked($value, true); ?> />
+        是否加入全站Feed
     </label>
     <?php
 }
