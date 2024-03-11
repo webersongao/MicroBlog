@@ -12,15 +12,13 @@ function microblog_shortcode($atts) {
 
     extract(shortcode_atts(array(
         'null_text' => '(none)',
-        'date_format' => get_option('date_format'),
         'use_excerpt' => '',
         'q' => '',
     ), $atts));
 
-    global $post;
-    $show_date = (isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
+    $show_date = true;// (isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
     $numvalue = (isset($options) && isset($options['mb_codepost_num'])) ? intval($options['mb_codepost_num']) : 5;
-
+    
     $args = array(
         'post_type' => 'micropost',
         'orderby' => 'date',
@@ -41,11 +39,11 @@ function microblog_shortcode($atts) {
     $query_results = new WP_Query($args);
     $out = "<div class='microblog-shortcode'>";
     if ($query_results->have_posts()) {
+            global $post;
         $out .= "<div class='microblog-shortcode-content'>";
         $out .= "<ul class='microblog-shortcode-post'>";
         while ($query_results->have_posts()) {
             $query_results->the_post();
-            // global $post; // 添加全局变量 $post
             $author_avatar = get_avatar(get_the_author_meta('ID'), 25);
             $author_name = get_the_author_meta('display_name', get_the_author_meta('ID'));
             $out .= "<li>";
@@ -53,7 +51,7 @@ function microblog_shortcode($atts) {
             $out .= "<span class='microblog-shortcode-post-avatar'>" . $author_avatar . "</span>";
             $out .= "<span class='microblog-shortcode-post-username'>" . $author_name . "</span>";
             if ($show_date) {
-                $out .= "<span class='microblog-shortcode-post-date'>" . get_the_date($date_format) . "</span>";
+                $out .= "<span class='microblog-shortcode-post-date'>" . micropost_format_time(strtotime($post->post_date)) . "</span>";
             }
             $out .= "</div>";
 
@@ -147,10 +145,5 @@ function micropost_shortcode_content() {
     $post_content = trim(str_replace('&nbsp;', '', $post_content));
     return $post_content;
 }
-
-
-
-
-
 
 ?>

@@ -60,6 +60,7 @@ function microblog_plugin_data_activation() {
         $defaults = array(
             'mb_title_show' => true, // 默认为显示标题
             'mb_date_show' => true, // 默认为显示日期
+            'mb_date_format' => 'date_format_date', // 时间格式 跟随站点->日期设置项
             'mb_title_position' => array('titlebottom'), // 默认标题位置为 titlebottom
         );
         add_option('microblog_setting_data', $defaults);

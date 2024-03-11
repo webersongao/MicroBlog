@@ -34,6 +34,40 @@ function update_global_microblog_option($new_value) {
 }
 
 
+function micropost_format_time($post_time) {
+    $options = get_option('microblog_setting_data');
+    $date_format = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
+    if ($date_format == 'date_format_time'){
+        return date('m-d H:i', $post_time);
+    } elseif ($date_format == 'date_format_date') {
+        return date_i18n(get_option('date_format'), $post_time);
+    } elseif ($date_format == 'date_format_vague') {
+        // 格式化模糊时间
+        return post_fuzzy_time($post_time);
+    }
+    return date_i18n(get_option('date_format'), $post_time);
+}
+
+function post_fuzzy_time($post_time) {
+    $time_diff = time() - $post_time;
+    if ($time_diff < 60) {
+        return '刚刚';
+    } elseif ($time_diff < 3600) {
+        $minutes = round($time_diff / 60);
+        return $minutes . '分钟前';
+    } elseif ($time_diff < 86400) {
+        $hours = round($time_diff / 3600);
+        return $hours . '小时前';
+    } elseif ($time_diff < 2592000) { // 30 * 24 * 3600
+        $days = round($time_diff / 86400);
+        return $days . '天前';
+    } elseif ($time_diff < 31536000) { // 365 * 24 * 3600
+        return date('m/d H:i', $post_time);
+    } else {
+        return date_i18n(get_option('date_format'), $post_time);
+    }
+}
+
 function micropost_excerpt_more($more) {
     return ' ...';
 }

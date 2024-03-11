@@ -72,9 +72,10 @@ class Microblog_SideWidget extends WP_Widget {
             'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
         );
         $options = get_option('microblog_setting_data');
-        $show_date = (isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
+        $show_date = true;//(isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
+        
         $query_results = new WP_Query($query);
-
+        global $post;
         // build the widget contents!
         $out = ''; // 定义输出变量
         $out .= "<ul class='microblog-widget'>";
@@ -100,7 +101,7 @@ class Microblog_SideWidget extends WP_Widget {
             if (comments_open() || $show_date) {
                 $out .= "<div class='microblog-widget-bottom'>";
                 if ($show_date) {
-                    $out .= "<span class='microblog-widget-bottom-date'>" . get_the_date(get_option('date_format')) . "</span>";
+                    $out .= "<span class='microblog-widget-bottom-date'>" . micropost_format_time(strtotime($post->post_date)) . "</span>";
                 }
                 if (comments_open()) {
                  $out .= "<span class='microblog-widget-bottom-comment'>" . "<a target='_blank' href='" . get_permalink() . "'>" . "<img src='" . plugins_url('/images/post-comment-icon.png', __FILE__) . "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a>" . "</span>";

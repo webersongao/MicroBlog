@@ -70,13 +70,6 @@ function microblog_plugin_setting_admin() {
         'general_settings_section_base'
     );
     add_settings_field(
-        'microblog_post_title_listdate',
-        '日期',
-        'microblog_post_title_listdate_input',
-        'microblog-settings',
-        'general_settings_section_base'
-    );
-    add_settings_field(
         'microblog_post_rss_feed',
         'RSS订阅',
         'microblog_post_rss_feed_input',
@@ -87,6 +80,13 @@ function microblog_plugin_setting_admin() {
         'microblog_post_editor_func',
         '编辑器',
         'microblog_post_editor_func_callback',
+        'microblog-settings',
+        'general_settings_section_base'
+    );
+    add_settings_field(
+        'microblog_post_title_listdate',
+        '时间格式',
+        'microblog_post_title_listdate_input',
         'microblog-settings',
         'general_settings_section_base'
     );
@@ -216,14 +216,23 @@ function microblog_post_title_show_input() {
 
 function microblog_post_title_listdate_input() {
     $options = get_option('microblog_setting_data');
-    $value = isset($options['mb_date_show']) ? $options['mb_date_show'] : false;
+    $value = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
     ?>
-    <label>
-        <input type='checkbox' name='microblog_setting_data[mb_date_show]' value='1' <?php checked($value, true); ?> />
-        是否显示时间
+    <label class="microblog-admin-option-label">
+        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_time'); ?>' <?php checked($value, 'date_format_time'); ?> />
+        时间格式(<?php echo date_i18n('m-d H:i', time()); ?>)
+    </label>
+    <label class="microblog-admin-option-label">
+        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_date'); ?>' <?php checked($value, 'date_format_date'); ?> />
+        日期格式(<?php echo date_i18n(get_option('date_format')) ?>)
+    </label>
+    <label class="microblog-admin-option-label">
+        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_vague'); ?>' <?php checked($value, 'date_format_vague'); ?> />
+        1分钟前/3天前...
     </label>
     <?php
 }
+
 
 function microblog_post_rss_feed_input() {
     $options = get_option('microblog_setting_data');
@@ -242,15 +251,15 @@ function microblog_post_editor_func_callback() {
     $options = get_option('microblog_setting_data');
     $editor_func = isset($options['mb_editor_func']) ? $options['mb_editor_func'] : array();
     ?>
-    <label class="microblog-admin-checkbox-label">
+    <label class="microblog-admin-option-label">
         <input type='checkbox' name='microblog_setting_data[mb_editor_func][]' value='mb_author' <?php if (in_array('mb_author', $editor_func)) echo 'checked="checked"'; ?> />
         作者
     </label>
-    <label class="microblog-admin-checkbox-label">
+    <label class="microblog-admin-option-label">
         <input type='checkbox' name='microblog_setting_data[mb_editor_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
         特色图片
     </label>
-    <label class="microblog-admin-checkbox-label">
+    <label class="microblog-admin-option-label">
         <input type='checkbox' name='microblog_setting_data[mb_editor_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
         微博摘要
     </label>
@@ -297,7 +306,7 @@ function microblog_post_title_position_input() {
     $options = get_option('microblog_setting_data');
     $value = isset($options['mb_title_position']) ? $options['mb_title_position'] : array();
     ?>
-    <label class="microblog-admin-checkbox-label">
+    <label class="microblog-admin-option-label">
         <input type='checkbox' name='microblog_setting_data[mb_title_position][]' value='<?php echo esc_attr('titletop'); ?>' <?php if (in_array('titletop', $value)) echo 'checked="checked"'; ?> />
         头像下方
     </label>
