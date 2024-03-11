@@ -19,7 +19,7 @@ add_action('wp_dashboard_setup', 'register_quick_micropost_widget');
 // 小部件内容
 function display_quick_micropost_widget() {
     ?>
-    <form id="quick-micropost-form" method="post" action="<?php echo admin_url('admin-post.php'); ?>">
+    <form id="quick-micropost-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
         <label for="quick-micropost-title">标题：</label>
         <input type="text" id="quick-micropost-title" name="micropost_title" placeholder=" 标题">
         <label for="micropost-content">内容：</label>
@@ -27,7 +27,7 @@ function display_quick_micropost_widget() {
         <input type="hidden" name="action" value="quick_micropost">
         <input type="submit" value="发布微博" class="button button-primary button-large button-quick-gao">
         <?php wp_nonce_field('quick-micropost-action', 'quick-micropost-nonce'); ?>
-        <span id="quick-micropost-message" class="quick-micropost-message"><a href="<?php echo admin_url('edit.php?post_type=micropost'); ?>"></a></span>
+        <span id="quick-micropost-message" class="quick-micropost-message"><a href="<?php echo esc_url(admin_url('edit.php?post_type=micropost')); ?>"></a></span>
     </form>
     <?php
 }
@@ -36,7 +36,7 @@ function display_quick_micropost_widget() {
 function handle_quick_micropost_submission() {
     if (isset($_POST['micropost_content']) && isset($_POST['quick-micropost-nonce'])) {
         if (wp_verify_nonce($_POST['quick-micropost-nonce'], 'quick-micropost-action')) {
-            $post_title = isset($_POST['micropost_title']) ? sanitize_text_field($_POST['micropost_title']) : '微博 ' . date('Y-m-d H:i');
+            $post_title = isset($_POST['micropost_title']) ? sanitize_text_field($_POST['micropost_title']) : '微博 ' . gmdate('Y-m-d H:i');
             $post_content = isset($_POST['micropost_content']) ? wp_kses_post($_POST['micropost_content']) : '';
             if (mb_strlen($post_content) < 10) {
                 $message = '微博内容不可少于10个字，请重新输入。';
