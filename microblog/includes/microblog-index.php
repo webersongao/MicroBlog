@@ -38,15 +38,14 @@ function customize_main_query($query) {
     }
     
     if ($query->get('post_type') === 'micropost') {
-        // $page_num = isset($options['mb_postrss_num']) ? intval($options['mb_postrss_num']) : 10;
-        $page_num = 10;//
+        $feed_num = get_option('posts_per_rss'); // 获取“Feed 中显示最近”的数量
+        $page_num = $feed_num ? intval($feed_num) : 10;
         $query->set('posts_per_rss', $page_num); 
     } else {
         if ($feed_miropost){
             if (!is_post_type_archive('micropost')){
                 $query->set('post_type', array('post', 'micropost'));
             }
-            // 仅在全站Feed中格式化输出
             add_filter('the_title', 'formart_microblog_feed_title', 10, 2);
         }
     }
@@ -58,14 +57,12 @@ function microblog_plugin_data_activation() {
     $options = get_option('microblog_setting_data');
     if (empty($options)) {
         $defaults = array(
-            'mb_title_show' => true, // 默认为显示标题
-            'mb_date_show' => true, // 默认为显示日期
-            'mb_date_format' => 'date_format_date', // 时间格式 跟随站点->日期设置项
-            'mb_title_position' => array('titlebottom'), // 默认标题位置为 titlebottom
+            'mb_title_show' => true,
+            'mb_date_format' => 'date_format_vague',
+            'mb_title_position' => array('titlebottom'),
         );
         add_option('microblog_setting_data', $defaults);
     }
-    // 刷新重写规则
     microblog_rewrite_flush();
 }
 

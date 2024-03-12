@@ -221,7 +221,7 @@ function microblog_post_title_listdate_input() {
     <label class="microblog-admin-option-label">
         <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_notime'); ?>' <?php checked($value, 'date_format_notime'); ?> />
         不显示时间
-        <!--echo date_i18n('m-d H:i', time());-->
+        <!--echo date_i18n('m-d H:i', current_time('timestamp'));-->
     </label>
     <label class="microblog-admin-option-label">
         <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_date'); ?>' <?php checked($value, 'date_format_date'); ?> />
