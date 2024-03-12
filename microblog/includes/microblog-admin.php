@@ -225,7 +225,7 @@ function microblog_post_title_listdate_input() {
     </label>
     <label class="microblog-admin-option-label">
         <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_date'); ?>' <?php checked($value, 'date_format_date'); ?> />
-        <?php echo date_i18n(get_option('date_format')) ?>
+        <?php echo esc_html( date_i18n( get_option('date_format') ) ); ?>
     </label>
     <label class="microblog-admin-option-label">
         <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_vague'); ?>' <?php checked($value, 'date_format_vague'); ?> />

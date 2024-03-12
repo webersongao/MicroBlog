@@ -65,7 +65,7 @@ function post_fuzzy_time($post_time) {
         $days = round($time_diff / 86400);
         return $days . '天前';
     } elseif ($time_diff < 31536000) { // 365 * 24 * 3600
-        return date('m/d H:i', $post_time);
+        return gmdate('m/d H:i', $post_time);
     } else {
         return date_i18n(get_option('date_format'), $post_time);
     }
