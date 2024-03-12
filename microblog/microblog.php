@@ -3,7 +3,7 @@
  * Plugin Name: 微博 MicroBlog
  * Plugin URI: https://www.webersongao.com/tag/microblog
  * Description: Use your WordPress site as a microblog; display the micrposts in a widget or using a shortcode.
- * Version: 1.6
+ * Version: 1.6.1
  * Author: WebersonGao
  * Author URI: https://www.webersongao.com
  * Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
@@ -14,7 +14,7 @@ define('MICROBLOG_PLUGIN_FILE', __FILE__);
 define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
-$plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.6';
+$plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.6.1';
 global $plugin_version;
 
 // 加载其他功能模块文件
@@ -42,6 +42,28 @@ function microblog_setting_action_links($links, $file) {
         $links[] = '<a href="tools.php?page=' . MICROBLOG_BASEFOLDER . '/microblog.php">设置</a>';
     }
     return $links;
+}
+
+// 注册激活插件时，设置默认数据
+register_activation_hook( __FILE__, 'microblog_plugin_data_activation' );
+function microblog_plugin_data_activation() {
+    $options = get_option('microblog_setting_data');
+    if (empty($options)) {
+        $defaults = array(
+            'mb_title_show' => true,
+            'mb_date_format' => 'date_format_vague',
+            'mb_title_position' => array('titlebottom'),
+        );
+        add_option('microblog_setting_data', $defaults);
+    }
+}
+// 注册卸载插件时运行的函数
+register_uninstall_hook( __FILE__, 'microblog_plugin_uninstall' );
+function microblog_plugin_uninstall() {
+    // 删除选项
+    delete_option('microblog_setting_data');
+    delete_option('widget_microblog_widget');
+    // 还可以执行其他清理操作，如删除数据库条目等
 }
 
 ?>

@@ -6,7 +6,7 @@ Donate link: https://www.webersongao.com/ https://boolesrings.org
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
-Stable tag: 1.6
+Stable tag: 1.6.1
 License: GPLv2 or later
 
 == 核心 ==
@@ -24,8 +24,6 @@ License: GPLv2 or later
 `[microblog]`短代码支持几个选项：
 
 * **null_text**：如果未返回结果，则显示此文本。 默认为`(none)`。
-
-* **date_format**：如果显示日期，则将使用此php日期格式。 默认是来自常规设置页面的日期格式值。 我建议使用`"F j"`，它显示为"May 12"。
 
 * **use_excerpt**：如果定义，则使用帖子摘录而不是整个内容。 我们建议撰写简短的微博，但如果您更喜欢撰写较长的微博，则可以使用此选项将其截断。 不幸的是，Wordpress摘录不允许链接或其他html，请使用插件[高级摘录](http://wordpress.org/extend/plugins/advanced-excerpt/)来解决此问题！
 
@@ -56,6 +54,10 @@ License: GPLv2 or later
 如果您无法查看您的微博，请尝试访问您的固定链接首选项窗格，然后点击`保存更改`。
 
 == 更新日志 ==
+
+1.6.1
+新增：时间格式 及 是否开启全站Feed订阅
+优化：插件激活写入默认配置，插件卸载清理所有配置项，不留垃圾，不拉屎~
 
 1.6
 新增：新增仪表盘快捷发布

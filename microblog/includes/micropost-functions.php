@@ -24,6 +24,7 @@ function register_micropost_type($supports) {
     //  'taxonomies' => array ( 'category', 'post_tag' ),
     );
     register_post_type('micropost', $args);
+    flush_rewrite_rules();
 }
 
 // 更新全局变量的示例

@@ -6,7 +6,7 @@ Donate link: https://www.webersongao.com/ https://boolesrings.org
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
-Stable tag: 1.6
+Stable tag: 1.6.1
 License: GPLv2 or later
 
 Add a microblog to your site; display the microposts in a widget or using a shortcode.
@@ -23,8 +23,6 @@ Then, either add the widget to your sidebar or add the `[microblog]` shortcode i
 The `[microblog]` shortcode supports several options:
 
 * **null_text**: If no results are returned, shows this text.  Defaults to `(none)`.
-
-* **date_format**: If showing the date, this php date format will be used.  The default is the Date Format value from the General Settings page.  I recommend `"F j"`, which displays as "May 12".
 
 * **use_excerpt**: If defined, use the post excerpt instead of the entire contents.  We recommend writing short microposts, but if you prefer to write longer ones, this can be used to truncate them.  Unfortunately, Wordpress excerpts don't allow links or other html, use the plugin [Advanced Excerpt](http://wordpress.org/extend/plugins/advanced-excerpt/) to remedy this!
 
@@ -56,6 +54,14 @@ Due to file compression issues, installing the plugin via uploading the zip pack
 If you are having trouble viewing your microposts, try visiting your permalinks preference pane and clicking `Save changes`.
 
 == Changelog ==
+
+1.6.1
+Added: Time format and option to enable global feed subscription.
+Optimized: Default configuration written upon plugin activation, all configuration items cleaned up upon plugin uninstallation, leaving no junk behind.
+
+1.6
+Added: Dashboard quick publishing feature.
+Optimized: Changed the "Write a post" button text to "Post a microblog" and similar.
 
 1.5
 Optimization: Optimized code structure to improve query performance and reduce URL refresh.

@@ -3,7 +3,6 @@
 
 require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 
-
 add_action('init', 'create_micropost_type');
 function create_micropost_type() {
     $options = get_option('microblog_setting_data');
@@ -49,35 +48,6 @@ function customize_main_query($query) {
             add_filter('the_title', 'formart_microblog_feed_title', 10, 2);
         }
     }
-}
-
-// 注册激活插件时，设置默认数据
-register_activation_hook( __FILE__, 'microblog_plugin_data_activation' );
-function microblog_plugin_data_activation() {
-    $options = get_option('microblog_setting_data');
-    if (empty($options)) {
-        $defaults = array(
-            'mb_title_show' => true,
-            'mb_date_format' => 'date_format_vague',
-            'mb_title_position' => array('titlebottom'),
-        );
-        add_option('microblog_setting_data', $defaults);
-    }
-    microblog_rewrite_flush();
-}
-
-function microblog_rewrite_flush() {
-    create_micropost_type();
-    flush_rewrite_rules();
-}
-
-// 注册卸载插件时运行的函数
-register_uninstall_hook( __FILE__, 'microblog_plugin_uninstall' );
-function microblog_plugin_uninstall() {
-    // 删除选项
-    delete_option('microblog_setting_data');
-    delete_option('widget_microblog_widget');
-    // 还可以执行其他清理操作，如删除数据库条目等
 }
 
 // Add rewrite rule for microblog permalink structure

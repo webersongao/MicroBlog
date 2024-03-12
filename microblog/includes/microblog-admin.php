@@ -234,7 +234,6 @@ function microblog_post_title_listdate_input() {
     <?php
 }
 
-
 function microblog_post_rss_feed_input() {
     $options = get_option('microblog_setting_data');
     $value = isset($options['mb_rss_feed']) ? $options['mb_rss_feed'] : false;
