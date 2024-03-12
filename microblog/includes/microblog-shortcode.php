@@ -146,4 +146,9 @@ function micropost_shortcode_content() {
     return $post_content;
 }
 
+
+
+
+
+
 ?>

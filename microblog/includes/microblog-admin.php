@@ -97,7 +97,6 @@ function microblog_plugin_setting_admin() {
         'microblog-settings',
         'general_settings_section_base'
     );
-
     // Shortcode settings section
     add_settings_section(
         'general_settings_section_shortcode',
@@ -127,12 +126,13 @@ function microblog_plugin_setting_admin() {
         'microblog-settings',
         'general_settings_section_shortcode'
     );
+    
 }
 
 function microblog_setting_data_sanitize($input) {
     if (isset($input['mb_slug_name']) && $input['mb_slug_name'] !== '') {
         $slug_name = strtolower(sanitize_title($input['mb_slug_name']));
-        if (preg_match('/^[a-z0-9]{1,10}$/', $slug_name)) {
+        if (preg_match('/^[a-z0-9]{1,20}$/', $slug_name)) {
             $input['mb_slug_name'] = $slug_name;
             update_global_microblog_option($slug_name);
         } else {
@@ -219,12 +219,13 @@ function microblog_post_title_listdate_input() {
     $value = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
     ?>
     <label class="microblog-admin-option-label">
-        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_time'); ?>' <?php checked($value, 'date_format_time'); ?> />
-        时间格式(<?php echo date_i18n('m-d H:i', time()); ?>)
+        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_notime'); ?>' <?php checked($value, 'date_format_notime'); ?> />
+        不显示时间
+        <!--echo date_i18n('m-d H:i', time());-->
     </label>
     <label class="microblog-admin-option-label">
         <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_date'); ?>' <?php checked($value, 'date_format_date'); ?> />
-        日期格式(<?php echo date_i18n(get_option('date_format')) ?>)
+        <?php echo date_i18n(get_option('date_format')) ?>
     </label>
     <label class="microblog-admin-option-label">
         <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_vague'); ?>' <?php checked($value, 'date_format_vague'); ?> />
@@ -270,11 +271,10 @@ function microblog_post_slug_name_callback() {
     $options = get_option('microblog_setting_data');
     $value = isset($options['mb_slug_name']) ? sanitize_title($options['mb_slug_name']) : ''; // 获取已保存的设置值
     ?>
-    <input type='text' name='microblog_setting_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='10' style='width: 100px;' />
-    <p class="description">❎ 仅支持字母和数字，长度(1,10)（为空则默认：microposts，如microposts/feed/ 或 microposts/123.html）</p>
+    <input type='text' name='microblog_setting_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='20' style='width: 120px;' />
+    <p class="description">仅支持字母和数字，长度(1,20)为空则默认：microposts，如microposts/feed/ 或 microposts/123.html）</p>
     <?php
 }
-
 
 function microblog_post_title_listNumber_input() {
     $options = get_option('microblog_setting_data');

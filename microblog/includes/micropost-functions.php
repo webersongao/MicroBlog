@@ -37,8 +37,9 @@ function update_global_microblog_option($new_value) {
 function micropost_format_time($post_time) {
     $options = get_option('microblog_setting_data');
     $date_format = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
-    if ($date_format == 'date_format_time'){
-        return date('m-d H:i', $post_time);
+    if ($date_format == 'date_format_notime'){
+        // return date('m-d H:i', $post_time);
+        return '';
     } elseif ($date_format == 'date_format_date') {
         return date_i18n(get_option('date_format'), $post_time);
     } elseif ($date_format == 'date_format_vague') {
@@ -67,6 +68,12 @@ function post_fuzzy_time($post_time) {
         return date_i18n(get_option('date_format'), $post_time);
     }
 }
+
+
+
+
+
+
 
 function micropost_excerpt_more($more) {
     return ' ...';
