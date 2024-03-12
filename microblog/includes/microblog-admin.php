@@ -271,7 +271,7 @@ function microblog_post_slug_name_callback() {
     $value = isset($options['mb_slug_name']) ? sanitize_title($options['mb_slug_name']) : ''; // 获取已保存的设置值
     ?>
     <input type='text' name='microblog_setting_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='20' style='width: 120px;' />
-    <p class="description">仅支持字母和数字，长度(1,20)为空则默认：microposts，如microposts/feed/ 或 microposts/123.html）</p>
+    <p class="description">仅支持字母和数字，长度(1,20) 为空则默认microposts（如microposts/feed/ 或 microposts/123.html）</p>
     <?php
 }
 
