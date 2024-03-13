@@ -6,7 +6,7 @@
  * Version: 1.6.1
  * Author: WebersonGao
  * Author URI: https://www.webersongao.com
- * Based on simple-microblogging plugin developed by original Samuel Coskey, Victoria Gitman(http://boolesrings.org),obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
+ * Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
  */
 
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
@@ -14,7 +14,7 @@ define('MICROBLOG_PLUGIN_FILE', __FILE__);
 define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
-$plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.6.1';
+$plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '';
 global $plugin_version;
 
 // 加载其他功能模块文件
