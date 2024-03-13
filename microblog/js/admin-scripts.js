@@ -15,16 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
             element.textContent = newText;
         }
     }
-
-    // Update search label
-    updateTextContent('.search-box label[for="post-search-input"]', '搜索文章:', '搜索微博:');
-
-    // Update search button value
-    var searchButton = document.getElementById('search-submit');
-    if (searchButton && searchButton.value === '搜索文章') {
-        searchButton.value = '搜索微博';
-    }
-
     // Function to update links text and target
     function updateLinksTextAndTarget(selector, searchText, newText, newTarget) {
         var links = document.querySelectorAll(selector);
@@ -44,21 +34,29 @@ document.addEventListener('DOMContentLoaded', function () {
         updateLinksTextAndTarget('a[href*="post_type=micropost"]', '写文章', '发微博');
         updateLinksTextAndTarget('li#wp-admin-bar-archive a.ab-item', '查看文章', '微博列表', '_blank');
 
+        updateTextContent('.search-box label[for="post-search-input"]', '搜索文章:', '搜索微博:');
+
         var pageTitle = document.title;
+        var searchButton = document.getElementById('search-submit');
         if (pageTitle && pageTitle.includes('写文章')) {
             document.title = pageTitle.replace(/写文章/g, '发微博');
+        }
+        if (searchButton && searchButton.value === '搜索文章') {
+            searchButton.value = '搜索微博';
         }
     } else {
         updateLinksTextAndTarget('a[href*="post_type=micropost"]', '写文章', '发微博');
     }
 
     // ======= 快速发微博 状态提示
-    var urlParams = new URLSearchParams(window.location.search);
-    var message = urlParams.get('micropost_message');
-    if (message) {
-        var messageLink = document.querySelector('#quick-micropost-message a');
-        if (messageLink) {
-            messageLink.textContent = message;
+    if (window.location.pathname === '/wp-admin/index.php') {
+        var urlParams = new URLSearchParams(window.location.search);
+        var message = urlParams.get('micropost_message');
+        if (message) {
+            var messageLink = document.querySelector('#quick-micropost-message a');
+            if (messageLink) {
+                messageLink.textContent = message;
+            }
         }
     }
 });

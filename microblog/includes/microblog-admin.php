@@ -17,11 +17,13 @@ require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 
 // Enqueue admin scripts and styles
 function microblog_admin_enqueue_scripts() {
-    global $plugin_version;
-    wp_enqueue_style('microblog-admin-css', plugin_dir_url(__FILE__) . '../css/admin-style.css', array(), $plugin_version);
-    wp_enqueue_script('microblog-script', plugin_dir_url(__FILE__) . '../js/admin-scripts.js', array(), $plugin_version, true);
+    if (is_admin()) {
+        global $plugin_version;
+        wp_enqueue_style('microblog-admin-css', plugin_dir_url(__FILE__) . '../css/admin-style.css', array(), $plugin_version);
+        wp_enqueue_script('microblog-script', plugin_dir_url(__FILE__) . '../js/admin-scripts.js', array(), $plugin_version, true);
+    }
 }
-add_action( 'admin_enqueue_scripts', 'microblog_admin_enqueue_scripts' );
+add_action('admin_enqueue_scripts', 'microblog_admin_enqueue_scripts');
 
 // Create admin settings page
 function microblog_admin_settings() {
