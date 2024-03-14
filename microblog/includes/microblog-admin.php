@@ -203,7 +203,7 @@ function general_settings_section_base_callback() {
 
 // Display shortcode settings section content
 function general_settings_section_shortcode_callback() {
-    echo '<p>请确认已打开【标题显示】功能: 基础设置 -> 标题 </p>';
+    echo '<p>请确认已打开【标题显示】功能 </p>';
 }
 
 // Display settings fields input
