@@ -104,7 +104,9 @@ class Microblog_SideWidget extends WP_Widget {
                     $out .= "<span class='microblog-widget-bottom-date'>" . micropost_format_time(strtotime($post->post_date)) . "</span>";
                 }
                 if (comments_open()) {
-                 $out .= "<span class='microblog-widget-bottom-comment'>" . "<a target='_blank' href='" . get_permalink() . "'>" . "<img src='" . plugin_dir_url(dirname(__FILE__)) .'images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a>" . "</span>";
+                    $out .= "<span class='microblog-widget-bottom-comment'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a>" . "</span>";
+                } else {
+                    $out .= "<span class='microblog-widget-bottom-comment'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
                 }
                 $out .= "</div>"; 
                 $out .= "<div style='clear:both;'></div>";

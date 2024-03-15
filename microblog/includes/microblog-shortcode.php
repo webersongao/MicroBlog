@@ -110,6 +110,8 @@ function microblog_shortcode($atts) {
                 }
                 if (comments_open()) {
                     $out .= "<span class='microblog-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
+                } else {
+                    $out .= "<span class='microblog-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
                 }
                 $out .= "</div>";
             }
