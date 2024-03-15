@@ -30,17 +30,16 @@ function create_micropost_type() {
 // 合并mocroblog的feed输出 ，并格式化标题
 add_action('pre_get_posts', 'customize_main_query');
 function customize_main_query($query) {
-    $options = get_option('microblog_setting_data');
-    $feed_miropost = isset($options['mb_rss_feed']) ? $options['mb_rss_feed'] : false;
     if (is_admin() || !$query->is_main_query() || !($query->is_feed)) {
         return;
     }
-    
     if ($query->get('post_type') === 'micropost') {
         $feed_num = get_option('posts_per_rss'); // 获取“Feed 中显示最近”的数量
         $page_num = $feed_num ? intval($feed_num) : 10;
         $query->set('posts_per_rss', $page_num); 
     } else {
+        $options = get_option('microblog_setting_data');
+        $feed_miropost = isset($options['mb_rss_feed']) ? $options['mb_rss_feed'] : false;
         if ($feed_miropost){
             if (!is_post_type_archive('micropost')){
                 $query->set('post_type', array('post', 'micropost'));
