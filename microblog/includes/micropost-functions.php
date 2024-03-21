@@ -65,7 +65,7 @@ function post_fuzzy_time($post_time) {
         $days = round($time_diff / 86400);
         return $days . '天前';
     } elseif ($time_diff < 31536000) { // 365 * 24 * 3600
-        return gmdate('m/d H:i', $post_time);
+        return date('m/d H:i', $post_time);
     } else {
         return date_i18n(get_option('date_format'), $post_time);
     }
@@ -94,7 +94,7 @@ function get_microblog_slug_name() {
 // 引入js
 function microblog_enqueue_scripts_and_styles() {
     global $plugin_version;
-    wp_enqueue_style('microblog-style', plugins_url('css/microblog-style.css', dirname(__FILE__)), array(), $plugin_version);
+    wp_enqueue_style('microblog-style', plugins_url('css/microblog-style.css', dirname(__FILE__)), array(), $plugin_version, 'all', true);
     // wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', dirname(__FILE__)), array(), $plugin_version, true);
 }
 
