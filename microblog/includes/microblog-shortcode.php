@@ -102,13 +102,16 @@ function microblog_shortcode($atts) {
             // =======   图片九宫格  --- 结束 ----- */   
             $out .= "</div>";
             // 底部评论按钮
+            $outtopics = get_micropost_tags();
             $titleShow = (strlen($post_title) && $position_option && (in_array('titlebottom', $options['mb_title_position']))) ? true : false;
             if ($titleShow || comments_open()){
                 $out .= "<div class='microblog-shortcode-post-comment'>";
                 if ($titleShow) {
                     $out .= "<span class='microblog-shortcode-post-comment-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
                 }
-                $out .= "<span class='microblog-shortcode-post-comment-topics'>" . get_micropost_tags() . "</span>";
+                if (!empty($outtopics)){
+                    $out .= "<span class='microblog-shortcode-post-comment-topics'>" . get_micropost_tags() . "</span>";
+                }
                 if (comments_open()) {
                     $out .= "<span class='microblog-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
                 } else {
