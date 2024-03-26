@@ -128,7 +128,6 @@ function microblog_plugin_setting_admin() {
         'microblog-settings',
         'general_settings_section_shortcode'
     );
-    
 }
 
 function microblog_setting_data_sanitize($input) {
@@ -156,6 +155,7 @@ function microblog_setting_data_sanitize($input) {
 // 更新自定义文章类型的支持项
 function update_micropost_type_supports($options) {
     if (empty($options)) { return; }
+    $microtag = false;
     $supports = array('title', 'editor','comments'); // 默认支持的参数
     // 根据用户选项更新 supports 参数
     if (isset($options['mb_editor_func'])) {
@@ -169,8 +169,11 @@ function update_micropost_type_supports($options) {
         if (in_array('mb_excerpt', $editor_func)) {
             $supports[] = 'excerpt';
         }
+        if (in_array('mb_posttag', $editor_func)) {
+            $microtag = true;
+        }
     }
-    register_micropost_type($supports); // 更新自定义文章类型的支持项
+    register_micropost_type($supports, $microtag); // 更新自定义文章类型的支持项
 }
 
 
@@ -262,6 +265,10 @@ function microblog_post_editor_func_callback() {
     <label class="microblog-admin-option-label">
         <input type='checkbox' name='microblog_setting_data[mb_editor_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
         特色图片
+    </label>
+    <label class="microblog-admin-option-label">
+        <input type='checkbox' name='microblog_setting_data[mb_editor_func][]' value='mb_posttag' <?php if (in_array('mb_posttag', $editor_func)) echo 'checked="checked"'; ?> />
+        话题标签
     </label>
     <label class="microblog-admin-option-label">
         <input type='checkbox' name='microblog_setting_data[mb_editor_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />

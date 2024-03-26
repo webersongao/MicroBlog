@@ -6,7 +6,7 @@ Donate link: https://www.webersongao.com/ https://boolesrings.org
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
-Stable tag: 1.6.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 
 Add a microblog to your site; display the microposts in a widget or using a shortcode.
@@ -54,6 +54,14 @@ Due to file compression issues, installing the plugin via uploading the zip pack
 If you are having trouble viewing your microposts, try visiting your permalinks preference pane and clicking `Save changes`.
 
 == Changelog ==
+
+Version 1.7.0
+New Features:
+1. Microblog Topics
+2. Support for REST API
+3. Microblog Reposting (Partially Enabled)
+Optimizations:
+- Adjusted backend JavaScript logic for replacing text, now using native string text~
 
 1.6.1
 Added: Time format and option to enable global feed subscription.

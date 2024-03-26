@@ -5,9 +5,10 @@ require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 
 add_action('init', 'create_micropost_type');
 function create_micropost_type() {
+    $microtag = false;
     $options = get_option('microblog_setting_data');
-    $supports = array('title', 'editor', 'comments'); // 默认支持的参数
 
+    $supports = array('title', 'editor', 'comments'); // 默认支持的参数
     // 如果$options存在并且不为空，则更新supports参数
     if (!empty($options) && isset($options['mb_editor_func'])) {
         $editor_func = $options['mb_editor_func'];
@@ -20,11 +21,14 @@ function create_micropost_type() {
         if (in_array('mb_excerpt', $editor_func)) {
             $supports[] = 'excerpt';
         }
+        if (in_array('mb_posttag', $editor_func)) {
+            $microtag = true;
+        }
         // 检查是否存在重复的支持项
         $supports = array_unique($supports);
     }
 
-    register_micropost_type($supports);
+    register_micropost_type($supports, $microtag);
 }
 
 // 合并mocroblog的feed输出 ，并格式化标题

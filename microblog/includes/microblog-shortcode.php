@@ -108,6 +108,7 @@ function microblog_shortcode($atts) {
                 if ($titleShow) {
                     $out .= "<span class='microblog-shortcode-post-comment-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
                 }
+                $out .= "<span class='microblog-shortcode-post-comment-topics'>" . get_micropost_tags() . "</span>";
                 if (comments_open()) {
                     $out .= "<span class='microblog-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
                 } else {
@@ -136,6 +137,19 @@ function microblog_shortcode($atts) {
     return $out;
 }
 
+function get_micropost_tags() {
+    global $post;
+    $tags_string = '';
+    $post_tags = has_term('', 'micropost_topic', $post) ? wp_get_post_terms($post->ID, 'micropost_topic') : array();
+    if (!empty($post_tags)) {
+        foreach ($post_tags as $tag) {
+            $tags_string .= '<a href="' . get_term_link($tag) . '" target="_blank">' . '#' . $tag->name . '# ' . "</a>";
+        }
+    }
+    return $tags_string;
+}
+
+
 function micropost_shortcode_content() {
     global $post;
     $post_content = $post->post_content;
@@ -145,6 +159,7 @@ function micropost_shortcode_content() {
     $post_content = preg_replace('/\[caption[^\]]*\]|\[\/caption\]|<a\s[^>]*><img[^>]+><\/a>/', '', $post_content);
     // 移除&nbsp;并修剪内容
     $post_content = trim(str_replace('&nbsp;', '', $post_content));
+    
     return $post_content;
 }
 

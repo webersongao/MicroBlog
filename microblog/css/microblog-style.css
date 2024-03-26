@@ -18,33 +18,34 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 .microblog-shortcode-post-username { color: #666; font-weight: bold; }
 .microblog-shortcode-post-date { color: #6666669c; margin-right: 10px; float: right; }
 .microblog-shortcode-post-title { color: #666; font-size: 16px; font-weight: bold; margin-top: 10px; }
-.microblog-shortcode-post-title a { color: #666; text-decoration: none;}
+.microblog-shortcode-post-title a { color: #666; }
 .microblog-shortcode-post-content { color: #666; font-size: 16px; font-weight: 400; margin-top: 10px; }
-.microblog-shortcode-post-content p { text-indent: 0em; }
 
-.microblog-shortcode-post-content-image-single { display: grid; grid-gap: 10px; margin: 10px auto; max-width: 300px; grid-auto-rows: minmax(auto, auto);}
-.microblog-shortcode-post-content-image-double { display: grid; grid-gap: 20px; margin: 10px auto; max-width: calc(100% - 30px); grid-template-columns: repeat(2, minmax(0, 300px)); grid-auto-rows: minmax(auto, auto); justify-content: center;}
-.microblog-shortcode-post-content-image-grid { display: grid; grid-gap: 10px; margin: 10px auto;grid-template-columns: repeat(3, 1fr); grid-auto-rows: minmax(100px, auto);}
+.microblog-shortcode-post-content-image-single { display: grid; grid-gap: 10px; margin: 10px auto; max-width: 300px; grid-auto-rows: minmax(auto, auto); }
+.microblog-shortcode-post-content-image-double { display: grid; grid-gap: 20px; margin: 10px auto; max-width: calc(100% - 30px); /* 父容器宽度减去两个间距的值 */ grid-template-columns: repeat(2, minmax(0, 300px)); /* 两张图片宽度最大为 300px，但会根据父容器大小自适应 */ grid-auto-rows: minmax(auto, auto); justify-content: center; /* 水平居中显示 */ }
+.microblog-shortcode-post-content-image-grid { display: grid; grid-gap: 10px; margin: 10px auto;grid-template-columns: repeat(3, 1fr); grid-auto-rows: minmax(100px, auto); /* 控制行高，这里设置为自动调整高度 */ }
 .microblog-shortcode-post-content-image-item { max-height: 500px; overflow: hidden; }
-.microblog-shortcode-post-content-image-item img, .microblog-shortcode-post-content-image-item a img { max-width: 100%; display: block; width: 100%; height: 100% !important; object-fit: cover; border-radius: 5px; }
+.microblog-shortcode-post-content-image-item img, .microblog-shortcode-post-content-image-item a img { max-width: 100%;/*height: auto;*/ display: block; width: 100%; height: 100% !important; object-fit: cover; /* 确保图片完全填充 */ border-radius: 5px; }
 
 .microblog-shortcode-post-comment { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
 .microblog-shortcode-post-comment a { color: #666; font-size: 14px; }
-.microblog-shortcode-post-comment-title { font-weight: bold; margin-right: auto; }
-.microblog-shortcode-post-comment-link { margin-right: 10px; margin-left: auto; }
+.microblog-shortcode-post-comment-title, .microblog-shortcode-post-comment-link { flex-shrink: 0;}
+.microblog-shortcode-post-comment-title { font-weight: bold; margin-right: 10px; }
+.microblog-shortcode-post-comment-topics {display: flex; flex-grow: 1;overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.microblog-shortcode-post-comment-link { margin-right: 10px; margin-left: 20px; }
 .microblog-shortcode-pagelink { color: #666; text-align: center; }
 .microblog-shortcode-pagelink a { color: #666; margin: 0 5px; display: inline-block; text-decoration: none; }
 .microblog-shortcode-loadmore { text-align: right; margin-right: 10px; margin-bottom: 20px; }
-.microblog-shortcode-loadmore a { color: #666; text-decoration: none;}
+.microblog-shortcode-loadmore a { color: #666; }
 
 /* 小部件样式 */
 .microblog-widget-rss { float: right; margin-right: 5px; }
 .microblog-widget-head { display: block; }
 .microblog-widget-head-title { color: #666; margin-right: 5px; font-weight: bold; white-space: normal; }
-.microblog-widget-head-title a { color: #666; text-decoration: none;}
+.microblog-widget-head-title a { color: #666; }
 .microblog-widget-content { margin-top: 5px; }
 .microblog-widget-content p { color: #666; }
 .microblog-widget-bottom { display: block; }
 .microblog-widget-bottom-date { color: #6666669c; margin-left: 5px; float: left; }
 .microblog-widget-bottom-comment { margin-right: 5px; float: right; }
-.microblog-widget-bottom-comment a { color: #666; text-decoration: none;}
+.microblog-widget-bottom-comment a { color: #666; }

@@ -8,45 +8,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 */
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Function to update text content
-    function updateTextContent(selector, searchText, newText) {
-        var element = document.querySelector(selector);
-        if (element && element.textContent.trim() === searchText) {
-            element.textContent = newText;
-        }
-    }
-    // Function to update links text and target
-    function updateLinksTextAndTarget(selector, searchText, newText, newTarget) {
-        var links = document.querySelectorAll(selector);
-        links.forEach(function (link) {
-            if (link.textContent && link.textContent.trim() === searchText) {
-                link.textContent = newText;
-                if (newTarget) {
-                    link.setAttribute('target', newTarget);
-                }
-            }
-        });
-    }
-
-    // Update links and page title based on the current page URL
-    var currentPageURL = window.location.href;
-    if (currentPageURL.includes('post_type=micropost')) {
-        updateLinksTextAndTarget('a[href*="post_type=micropost"]', '写文章', '发微博');
-        updateLinksTextAndTarget('li#wp-admin-bar-archive a.ab-item', '查看文章', '微博列表', '_blank');
-
-        updateTextContent('.search-box label[for="post-search-input"]', '搜索文章:', '搜索微博:');
-
-        var pageTitle = document.title;
-        var searchButton = document.getElementById('search-submit');
-        if (pageTitle && pageTitle.includes('写文章')) {
-            document.title = pageTitle.replace(/写文章/g, '发微博');
-        }
-        if (searchButton && searchButton.value === '搜索文章') {
-            searchButton.value = '搜索微博';
-        }
-    } else {
-        updateLinksTextAndTarget('a[href*="post_type=micropost"]', '写文章', '发微博');
-    }
 
     // ======= 快速发微博 状态提示
     if (window.location.pathname === '/wp-admin/index.php') {
