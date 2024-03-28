@@ -19,31 +19,31 @@ function register_micropost_type($supports, $tageEnable = false) {
         'search_items' => __('搜索微博'),
         'edit_item' => __('编辑该微博'),
         'not_found' => __('未找到相关微博'),
-        'description' => __('通过 MicroBlog 你可以轻松创建一条微博，通过短代码或插件增加到某页面或边栏'),
+        'item_updated' => __('微博已更新'),
+        'item_published' => __('微博已发布'),
+        'not_found_in_trash' => __('回收站中没有微博'),
+        'item_scheduled' => __('该微博已加入发布计划'),
+        'featured_image' => __('微博头图'),
+        'filter_items_list' => __('筛选微博列表'),
+        'filter_by_date' => __('按微博日期筛选'),
+        'set_featured_image' => __('设置微博头图'),
+        'use_featured_image' => __('使用微博头图'),
+        'remove_featured_image' => __('移除微博头图'),
+        'item_reverted_to_draft' => __('该微博已恢复为草稿'),
+        'items_list' => __('微博列表'),
+        'items_list_navigation' => __('微博列表导航'),
+        'item_published_privately' => __('该微博已私密发布'),
         
         
         // 以下为实验数据，边用边改
         'new_item' => __('微博-new_item'),
-        'not_found_in_trash' => __('微博-not_found_in_trash'),
         'parent_item_colon' => __('微博-parent_item_colon'),
         'archives' => __('微博-archives'),
         'attributes' => __('微博-attributes'),
         'insert_into_item' => __('微博-insert_into_item'),
         'uploaded_to_this_item' => __('微博-uploaded_to_this_item'),
-        'featured_image' => __('微博-featured_image'),
-        'set_featured_image' => __('微博-set_featured_image'),
-        'remove_featured_image' => __('微博-remove_featured_image'),
-        'use_featured_image' => __('微博-use_featured_image'),
-        'filter_items_list' => __('微博-filter_items_list'),
-        'filter_by_date' => __('微博-filter_by_date'),
-        'items_list_navigation' => __('微博-items_list_navigation'),
-        'items_list' => __('微博-items_list'),
-        'item_published' => __('微博-item_published'),
-        'item_published_privately' => __('微博-item_published_privately'),
-        'item_reverted_to_draft' => __('微博-item_reverted_to_draft'),
         'item_trashed' => __('微博-item_trashed'),
-        'item_scheduled' => __('微博-item_scheduled'),
-        'item_updated' => __('微博-item_updated'),
+
         'item_link' => __('微博-item_link'),
         'item_link_description' => __('微博-item_link_description'),
     );
@@ -59,6 +59,7 @@ function register_micropost_type($supports, $tageEnable = false) {
         'rewrite' => array('slug' => $slug_name), // 使用动态获取的 slug
         'supports' => $supports, // 更新为动态获取的支持项
         'show_in_rest' => use_block_editor_for_post_type('post'), // 跟站点编辑器保持一致
+        'description' => __('通过 MicroBlog 你可以轻松创建一条微博，通过短代码或插件增加到某页面或边栏'),
         // 'taxonomies' => array ('micropost_topic' ),
     );
     register_post_type('micropost', $args);
@@ -85,6 +86,7 @@ function register_micropost_taxonomy($enable) {
             'most_used' => __('常用话题'),
             'not_found' => __('未找到该话题'),
             'choose_from_most_used' => __('选择已有话题'),
+            'separate_items_with_commas' => __('多个话题请用英文逗号（,）分开'),
             
             // 以下为实验数据，边用边改
             'all_items' => __('微话-all_items'),
@@ -92,7 +94,6 @@ function register_micropost_taxonomy($enable) {
             'parent_item' => __('微话-parent_item'),
             'update_item' => __('微话-update_item'),
             'new_item_name' => __('微话-new_item_name'),
-            'separate_items_with_commas' => __('多个话题请用英文逗号（,）分开'),
             'no_terms' => __('微话-no_terms'),
             'filter_by_item' => __('微话-filter_by_item'),
             'back_to_items' => __('微话-back_to_items'),
