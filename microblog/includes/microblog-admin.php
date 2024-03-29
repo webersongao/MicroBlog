@@ -190,6 +190,7 @@ function general_settings_section_header() {
     // translators: %s is replaced with the plugin version
     $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', 'microblog') . '</span>';
     if (strlen(strval($plugin_version)) > 1) {
+        // translators: %s 是版本号的占位符
         $free_version_text = sprintf(esc_html__('Free V%s', 'microblog'), $plugin_version);
         $out .= '<a href="https://github.com/webersongao/microblog" target="_blank" class="microblog-admin-bar-free">' . $free_version_text . '</a>';
     }
