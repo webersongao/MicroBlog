@@ -1,8 +1,8 @@
 
 === 微博 MicroBlog===
 
-Contributors: WebersonGao sgcoskey, vgitman, VegetarianZombie
-Donate link: https://www.webersongao.com/ https://boolesrings.org
+Contributors: WebersonGao
+Donate link: https://www.webersongao.com 
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
@@ -15,17 +15,15 @@ License: GPLv2 or later
 
 == 描述 ==
 
-这个简单的插件使您可以轻松发布短消息，如想法和更新。 这些消息不会出现在您的帖子流中； 相反，您可以在侧边栏的小部件中显示它们。 您还可以在任何帖子或页面中使用`[microblog]`短代码来显示它们。
+这个简单的插件使您可以轻松发布短消息，如微博、说说。 这些消息不会出现在您的帖子流中； 相反，您可以在侧边栏的小部件中显示它们。 您还可以在任何帖子或页面中使用`[microblog]`短代码来显示它们。
 
-要开始，请在您的仪表板中查找新的`微博`管理面板。 点击`添加新的`，然后以您通常撰写帖子的方式撰写短消息。 如果您给微博添加标题，它将以粗体显示，并用作微博的前几个单词。
+使用时，请在您的仪表板中查找新的`微博`管理面板。 点击`发微博`，然后以您通常撰写文章的方式撰写微博。 如果您给微博添加标题，它将以粗体显示，或者你可以直接隐藏微博。
 
 然后，要么将小部件添加到侧边栏，要么将`[microblog]`短代码添加到您的网站中，就这样！
 
 `[microblog]`短代码支持几个选项：
 
 * **null_text**：如果未返回结果，则显示此文本。 默认为`(none)`。
-
-* **date_format**：如果显示日期，则将使用此php日期格式。 默认是来自常规设置页面的日期格式值。 我建议使用`"F j"`，它显示为"May 12"。
 
 * **use_excerpt**：如果定义，则使用帖子摘录而不是整个内容。 我们建议撰写简短的微博，但如果您更喜欢撰写较长的微博，则可以使用此选项将其截断。 不幸的是，Wordpress摘录不允许链接或其他html，请使用插件[高级摘录](http://wordpress.org/extend/plugins/advanced-excerpt/)来解决此问题！
 
