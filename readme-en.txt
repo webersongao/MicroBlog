@@ -43,15 +43,27 @@ then The output can then be further formatted using CSS.
 2、##Special note: 
 Due to file compression issues, installing the plugin via uploading the zip package through the WordPress backend is temporarily unsupported.
 
-== Screenshots ==
-
-1. A rendered widget containing my two microposts
-2. The widget configuration box
-3. MicroBlog Administration Panel
-
 == Other notes ==
 
 If you are having trouble viewing your microposts, try visiting your permalinks preference pane and clicking `Save changes`.
+
+In simple terms:
+1. Upload the file package - install and activate - configure the plugin - enter the control panel (use server-side file management - upload).
+2. Create a new page, copy and paste `[microblog]` into the "page" where you want it displayed, then save and publish.
+3. If you want to use widgets, add them in your backend, and view them on the frontend.
+
+Not satisfied yet? Open the microblog control panel, adjust the necessary configurations, and if there are still bugs, contact me.
+
+
+== Future development plans ==
+
+1、Referencing easy-liveblogs (developed by Jeffrey van Rossum) and liveblog (developed by WordPress.com VIP, Big Bite Creativ...), we aim to implement popup comments and exposed comments.
+2、Support embedding Weibo topics and @mention functionality within the editor, with individuals being notified via email when mentioned (similar to distributed microblogging).
+3、Long-term plans include:
+   - Developing a more visually appealing and aesthetically pleasing UI for shortcodes, potentially even creating a dedicated theme for Weibo.
+
+More features await your suggestions!
+
 
 == Changelog ==
 
@@ -95,21 +107,6 @@ New: Supports microblog image grid, with support for lightbox toggle.
 1.0
 Initial release (basic functions including editing/publishing, shortcode insertion, widget insertion, control panel).
 
-In simple terms:
-1. Upload the file package - install and activate - configure the plugin - enter the control panel (use server-side file management - upload).
-2. Create a new page, copy and paste `[microblog]` into the "page" where you want it displayed, then save and publish.
-3. If you want to use widgets, add them in your backend, and view them on the frontend.
-
-Not satisfied yet? Open the microblog control panel, adjust the necessary configurations, and if there are still bugs, contact me.
-
-Future development plans:
-
-1. Move all parameters to the control panel (completed).
-2. Support switching between Chinese and English + external comments (in progress).
-3. Support image grid (completed).
-4. Still thinking~
-
-More features await your suggestions!
 
 Feel free to provide feedback, and if you're interested in tinkering, feel free to contact me~
 
