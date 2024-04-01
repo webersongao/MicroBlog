@@ -38,28 +38,31 @@ function microblog_shortcode($atts) {
 
     $query_results = new WP_Query($args);
     $out = "<div class='microblog-shortcode'>";
+    $out .= "<hr>";
     if ($query_results->have_posts()) {
             global $post;
-        $out .= "<div class='microblog-shortcode-content'>";
-        $out .= "<ul class='microblog-shortcode-post'>";
+        $out .= "<div class='mb-shortcode-content'>";
+        // $out .= "<ul>";
+        $out .= "<div class='mb-shortcode-post'>";
         while ($query_results->have_posts()) {
             $query_results->the_post();
             $author_avatar = get_avatar(get_the_author_meta('ID'), 25);
             $author_name = get_the_author_meta('display_name', get_the_author_meta('ID'));
-            $out .= "<li>";
-            $out .= "<div class='microblog-shortcode-post-head'>";
-            $out .= "<span class='microblog-shortcode-post-avatar'>" . $author_avatar . "</span>";
-            $out .= "<span class='microblog-shortcode-post-username'>" . $author_name . "</span>";
+            // $out .= "<li>";
+            $out .= "<div class='mb-shortcode-post-main micropost-main-" . get_the_ID() . "'>";
+            $out .= "<div class='mb-shortcode-post-head'>";
+            $out .= "<span class='mb-shortcode-post-avatar'>" . $author_avatar . "</span>";
+            $out .= "<span class='mb-shortcode-post-username'>" . $author_name . "</span>";
             if ($show_date) {
-                $out .= "<span class='microblog-shortcode-post-date'>" . micropost_format_time(strtotime($post->post_date)) . "</span>";
+                $out .= "<span class='mb-shortcode-post-date'>" . micropost_format_time(strtotime($post->post_date)) . "</span>";
             }
             $out .= "</div>";
 
             $post_title = (get_the_title() && $title_show) ? get_the_title() : '';
             if (strlen($post_title) && $position_option && (in_array('titletop', $options['mb_title_position']))) {
-                $out .= "<div class='microblog-shortcode-post-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></div>";
+                $out .= "<div class='mb-shortcode-post-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></div>";
             }
-            $out .= "<div class='microblog-shortcode-post-content'>";
+            $out .= "<div class='mb-shortcode-post-content'>";
             if ($use_excerpt) {
                 add_filter('excerpt_more', 'micropost_excerpt_more');
                 $out .= "<p>" . get_the_excerpt() . "</p>";
@@ -85,17 +88,17 @@ function microblog_shortcode($atts) {
             if (!empty($count)) {
                 if ($count == 1) {
                     // 单张 宽度 300 ，居中显示
-                    $out .= "<div class='microblog-shortcode-post-content-image-single'>";
+                    $out .= "<div class='mb-shortcode-post-content-image-single'>";
                 } elseif ($count == 2) {
                     // 两张 宽度 300 ，居中显示
-                    $out .= "<div class='microblog-shortcode-post-content-image-double'>"; 
+                    $out .= "<div class='mb-shortcode-post-content-image-double'>"; 
                 } else {
                     // 其他情况下的操作 九宫格
-                    $out .= "<div class='microblog-shortcode-post-content-image-grid'>";
+                    $out .= "<div class='mb-shortcode-post-content-image-grid'>";
                 }
             
                 foreach ($matches[0] as $img_html) {
-                    $out .= "<div class='microblog-shortcode-post-content-image-item'>$img_html</div>"; 
+                    $out .= "<div class='mb-shortcode-post-content-image-item'>$img_html</div>"; 
                 }
                 $out .= "</div>";
             }
@@ -105,30 +108,32 @@ function microblog_shortcode($atts) {
             $outtopics = get_micropost_tags();
             $titleShow = (strlen($post_title) && $position_option && (in_array('titlebottom', $options['mb_title_position']))) ? true : false;
             if ($titleShow || comments_open()){
-                $out .= "<div class='microblog-shortcode-post-comment'>";
+                $out .= "<div class='mb-shortcode-post-comment'>";
                 if ($titleShow) {
-                    $out .= "<span class='microblog-shortcode-post-comment-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
+                    $out .= "<span class='mb-shortcode-post-comment-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
                 }
                 if (!empty($outtopics)){
-                    $out .= "<span class='microblog-shortcode-post-comment-topics'>" . get_micropost_tags() . "</span>";
+                    $out .= "<span class='mb-shortcode-post-comment-topics'>" . get_micropost_tags() . "</span>";
                 }
                 if (comments_open()) {
-                    $out .= "<span class='microblog-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
+                    $out .= "<span class='mb-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
                 } else {
-                    $out .= "<span class='microblog-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
+                    $out .= "<span class='mb-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
                 }
                 $out .= "</div>";
             }
-            $out .= "</li><hr>";
+            $out .= "</div>";
+            // $out .= "</li>";
+            $out .= "<hr>";
         }
-        $out .= "</ul>";
+        // $out .= "</ul>";
         $out .= "</div>";
         // 分页按钮
-        $out .= "<div class='microblog-shortcode-pagelink'>";
+        $out .= "<div class='mb-shortcode-pagelink'>";
         $out .= paginate_links(array('total' => $query_results->max_num_pages));
         $out .= "</div>";
         // 查看所有
-        $out .= "<div class='microblog-shortcode-loadmore'>";
+        $out .= "<div class='mb-shortcode-loadmore'>";
         $out .= "<a target='_blank' href='" . home_url(get_microblog_slug_name()) . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;查看全部...</a></div>";
     } else {
         $out .= "<div class='microblog-shortcode'><p>" . wp_kses($null_text, array()) . "</p></div>";

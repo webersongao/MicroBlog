@@ -152,9 +152,6 @@ function post_fuzzy_time($post_time) {
     } elseif ($time_diff < 86400) {
         $hours = round($time_diff / 3600);
         return $hours . '小时前';
-    } elseif ($time_diff < 2592000) { // 30 * 24 * 3600
-        $days = round($time_diff / 86400);
-        return $days . '天前';
     } elseif ($time_diff < 31536000) { // 365 * 24 * 3600
         return gmdate('m/d H:i', $post_time);
     } else {
