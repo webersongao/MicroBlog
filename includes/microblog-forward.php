@@ -21,7 +21,7 @@ function get_recent_microposts() {
     ));
 }
 
-// 获取转发微博的 HTML
+// 获取转发微博的 HTML (不可使用 esc_html 转译）
 function get_forward_select_html($forward_id, $recent_posts) {
     ob_start();
     ?>
@@ -68,13 +68,13 @@ function display_forward_meta_box($post) {
                 }
             }
             ?>
-            <label for="forward_id">已转发微博：</label>
-            <input type="text" id="forward_title" name="forward_title" value="<?php echo esc_attr($forward_title); ?>" readonly><br>
+            <label for="forward_id">已转发微博：</label><br><br>
+            <input type="text" id="forward_title" name="forward_title" value="<?php echo esc_attr($forward_title); ?>" readonly><br><br>
             <label for="forward_id">修改转发为其他：</label><br><br>
-            <?php echo esc_html(get_forward_select_html($forward_id, $recent_posts)); ?>
+            <?php echo get_forward_select_html($forward_id, $recent_posts); ?>
             <?php
         } else {
-            echo esc_html(get_forward_select_html($forward_id, $recent_posts));
+            echo get_forward_select_html($forward_id, $recent_posts);
         }
     } else {
         if (isset($_GET['post_type']) && $_GET['post_type'] === 'micropost') {
@@ -97,7 +97,7 @@ function display_forward_meta_box($post) {
                 <?php
             } else {
                 $recent_posts = get_recent_microposts();
-                echo esc_html(get_forward_select_html($forward_id, $recent_posts));
+                echo get_forward_select_html($forward_id, $recent_posts);
             }
         } 
     }
