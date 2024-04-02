@@ -82,6 +82,10 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     text-indent: 0em;
 }
 
+.mb-shortcode-post-content a {
+    color: #21759b;
+}
+
 .mb-shortcode-post-content-image-single {
     display: grid;
     grid-gap: 10px;
