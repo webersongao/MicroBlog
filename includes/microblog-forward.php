@@ -53,7 +53,7 @@ function display_forward_meta_box($post) {
     // 检查当前页面是否为编辑页面并且文章类型为 micropost
     if (isset($_GET['action']) && $_GET['action'] === 'edit') {
         $recent_posts = get_recent_microposts();
-        $forward_id = get_post_meta($post->ID, 'forward_id', true);
+        $forward_id = get_post_meta($post->ID, '_micro_blog_forward_id', true);
         $forward_post = (absint($forward_id) !== 0) ? get_post($forward_id) : null;
         if ($forward_post) {
             $forward_title = '';
@@ -106,7 +106,7 @@ function display_forward_meta_box($post) {
 function save_forward_id($post_id) {
     $forward_id = absint($_POST['forward_id']) ?: (absint($_GET['forward_id']) ?: 0);
     if ($forward_id !== 0) {
-        update_post_meta($post_id, 'forward_id', $forward_id);
+        update_post_meta($post_id, '_micro_blog_forward_id', $forward_id);
     }
 }
 add_action('save_post', 'save_forward_id');
