@@ -227,16 +227,16 @@ function microblog_post_title_listdate_input() {
     $value = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
     ?>
     <label class="microblog-admin-option-label">
-        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_notime'); ?>' <?php checked($value, 'date_format_notime'); ?> />
+        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_hide'); ?>' <?php checked($value, 'date_hide'); ?> />
         不显示时间
         <!--echo date_i18n('m-d H:i', current_time('timestamp'));-->
     </label>
     <label class="microblog-admin-option-label">
-        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_date'); ?>' <?php checked($value, 'date_format_date'); ?> />
+        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_date'); ?>' <?php checked($value, 'date_date'); ?> />
         <?php echo esc_html( date_i18n( get_option('date_format') ) ); ?>
     </label>
     <label class="microblog-admin-option-label">
-        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_format_vague'); ?>' <?php checked($value, 'date_format_vague'); ?> />
+        <input type='radio' name='microblog_setting_data[mb_date_format]' value='<?php echo esc_attr('date_human'); ?>' <?php checked($value, 'date_human'); ?> />
         1分钟前/3天前...
     </label>
     <?php

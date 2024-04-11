@@ -51,7 +51,7 @@ function microblog_plugin_data_activation() {
     if (empty($options)) {
         $defaults = array(
             'mb_title_show' => true,
-            'mb_date_format' => 'date_format_vague',
+            'mb_date_format' => 'date_human',
             'mb_title_position' => array('titlebottom'),
         );
         add_option('microblog_setting_data', $defaults);
