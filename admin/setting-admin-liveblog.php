@@ -14,7 +14,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 */
 
 // Function to display microlive settings section
-function microblog_microlive_settings_section() {
+function microblog_liveblog_settings_section() {
     ?>
     <div class="microlive_settings_header">
         <?php microlive_settings_section_header(); ?>
@@ -31,7 +31,7 @@ function microblog_microlive_settings_section() {
 }
 
 function microlive_settings_section_header() {
-    echo '<h3>' . esc_html__('MicroLive Settings', 'microblog') . '</h3>';
+    // echo '<h3>' . esc_html__('MicroLive Tab', 'microblog') . '</h3>';
 }
 
 
@@ -48,7 +48,7 @@ function microblog_liveblog_setting_admin() {
         // liveblog settings section
         add_settings_section(
             'general_settings_section_666',
-            '</br>微直播',   
+            '</br>微直播设置',   
             'general_settings_section_666_callback',
             'microblog-liveblog-settings'
         );

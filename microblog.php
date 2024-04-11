@@ -30,7 +30,7 @@ require_once(plugin_dir_path(__FILE__) . 'includes/micropost-functions.php');
 add_action('admin_menu', 'microblog_setting_page');
 function microblog_setting_page() {
     if (!function_exists('microblog_admin_settings')) {
-        require_once 'includes/microblog-admin-general.php';
+        require_once 'admin/microblog-admin.php';
     }
     add_management_page('微博 MicroBlog - 控制面板', '微博设置', 'manage_options', __FILE__, 'microblog_admin_settings');
 }

@@ -13,69 +13,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
  * Admin Panel
 */
 
-require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
-require_once(plugin_dir_path(__FILE__) . 'microblog-admin-liveblog.php');
-
-// Enqueue admin scripts and styles
-function microblog_admin_enqueue_scripts() {
-    if (is_admin()) {
-        global $plugin_version;
-        wp_enqueue_style('microblog-admin-css', plugin_dir_url(__FILE__) . '../css/admin-style.css', array(), $plugin_version);
-        wp_enqueue_script('microblog-script', plugin_dir_url(__FILE__) . '../js/admin-scripts.js', array(), $plugin_version, true);
-    }
-}
-add_action('admin_enqueue_scripts', 'microblog_admin_enqueue_scripts');
-
-// Create admin settings page
-function microblog_admin_settings() {
-    if (!current_user_can('manage_options')) { return; }
-    ?>
-    <div class="wrap">
-        <h2>控制面板 | 微博MicroBlog</h2>
-        <div class="admin_settings_header">
-            <?php admin_settings_section_header(); ?>
-        </div>
-        <!-- Add tab navigation -->
-        <h2 class="nav-tab-wrapper">
-            <a href="?page=MicroBlog%2Fmicroblog.php&tab=general" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'general') ? 'nav-tab-active' : ''; ?>">General</a>
-            <a href="?page=MicroBlog%2Fmicroblog.php&tab=liveblog" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : ''; ?>">MicroLive</a>
-        </h2>
-        <div class="wrap">
-            <?php
-            // Display the appropriate settings section based on the selected tab
-            if (isset($_GET['tab']) && $_GET['tab'] === 'liveblog') {
-                microblog_microlive_settings_section();
-            } else {
-                microblog_general_settings_section();
-            }
-            ?>
-        </div>
-    </div>
-    <?php
-}
-
-// Display general settings section content
-function admin_settings_section_header() {
-    global $plugin_version;
-    $out = '';
-    $out .= '<div class="microblog-admin-header" style="margin-bottom: 15px;">';
-    $out .= '<div class="microblog-admin-leftbar">';
-    $out .= '<span class="microblog-admin-logo">';
-    $out .= '<img src="' . esc_url(plugin_dir_url(dirname(__FILE__))) . 'images/microblog-logo.png">';
-    $out .= '</span>';
-    // translators: %s is replaced with the plugin version
-    $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', 'microblog') . '</span>';
-    if (strlen(strval($plugin_version)) > 1) {
-        // translators: %s 是版本号的占位符
-        $free_version_text = sprintf(esc_html__('Free V%s', 'microblog'), $plugin_version);
-        $out .= '<a href="https://github.com/webersongao/microblog" target="_blank" class="microblog-admin-bar-free">' . $free_version_text . '</a>';
-    }
-    $out .= '</div>';
-    $out .= '</div>';
-    echo wp_kses_post($out);
-}
-
-
 // Function to display general settings section
 function microblog_general_settings_section() {
     ?>
@@ -94,7 +31,7 @@ function microblog_general_settings_section() {
 }
 
 function general_settings_section_header() {
-    echo '<h3>' . esc_html__('General Tab Settings', 'microblog') . '</h3>';
+    // echo '<h3>' . esc_html__('General Tab', 'microblog') . '</h3>';
 }
 
 

@@ -123,6 +123,11 @@ function mbfun_get_live_settings() {
 	return $settings;
 }
 
+function mbfun_get_gallery_settings() {
+	$settings = get_option( 'microblog_gallery_data', array() );
+	return $settings;
+}
+
 function mbfun_get_general_settings() {
 	$settings = get_option( 'microblog_general_data', array() );
 	return $settings;
