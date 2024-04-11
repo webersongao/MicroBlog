@@ -8,7 +8,7 @@ add_shortcode('microblog', 'microblog_shortcode');
 
 function microblog_shortcode($atts) {
 
-    $options = get_option('microblog_setting_data');
+    $options = mbfun_get_general_settings();
 
     extract(shortcode_atts(array(
         'null_text' => '(none)',

@@ -30,7 +30,7 @@ require_once(plugin_dir_path(__FILE__) . 'includes/micropost-functions.php');
 add_action('admin_menu', 'microblog_setting_page');
 function microblog_setting_page() {
     if (!function_exists('microblog_admin_settings')) {
-        require_once 'includes/microblog-admin.php';
+        require_once 'includes/microblog-admin-general.php';
     }
     add_management_page('微博 MicroBlog - 控制面板', '微博设置', 'manage_options', __FILE__, 'microblog_admin_settings');
 }
@@ -47,21 +47,21 @@ function microblog_setting_action_links($links, $file) {
 // 注册激活插件时，设置默认数据
 register_activation_hook( __FILE__, 'microblog_plugin_data_activation' );
 function microblog_plugin_data_activation() {
-    $options = get_option('microblog_setting_data');
+    $options = mbfun_get_general_settings();
     if (empty($options)) {
         $defaults = array(
             'mb_title_show' => true,
             'mb_date_format' => 'date_human',
             'mb_title_position' => array('titlebottom'),
         );
-        add_option('microblog_setting_data', $defaults);
+        add_option('microblog_general_data', $defaults);
     }
 }
 // 注册卸载插件时运行的函数
 register_uninstall_hook( __FILE__, 'microblog_plugin_uninstall' );
 function microblog_plugin_uninstall() {
     // 删除选项
-    delete_option('microblog_setting_data');
+    delete_option('microblog_general_data');
     delete_option('widget_microblog_widget');
     // 还可以执行其他清理操作，如删除数据库条目等
 }

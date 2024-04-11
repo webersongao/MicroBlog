@@ -118,6 +118,16 @@ function register_micropost_taxonomy($enable) {
     register_taxonomy_for_object_type('micropost_topic', 'micropost');
 }
 
+function mbfun_get_live_settings() {
+	$settings = get_option( 'microblog_liveblog_data', array() );
+	return $settings;
+}
+
+function mbfun_get_general_settings() {
+	$settings = get_option( 'microblog_general_data', array() );
+	return $settings;
+}
+
 // 更新全局变量的示例
 function update_global_microblog_option($new_value) {
     if (!is_string($new_value)) { return; }
@@ -128,7 +138,7 @@ function update_global_microblog_option($new_value) {
 
 function micropost_format_time($post_time) {
     
-    $options = get_option('microblog_setting_data');
+    $options = mbfun_get_general_settings();
     $date_format = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
     if ($date_format == 'date_hide'){
         // return date('m-d H:i', $post_time);
@@ -168,7 +178,7 @@ function get_microblog_slug_name() {
     if (!empty($microblog_slug_name)) {
         return $microblog_slug_name;
     }
-    $options = get_option('microblog_setting_data');
+    $options = mbfun_get_general_settings();
     $slug_name = isset($options['mb_slug_name']) ? $options['mb_slug_name'] : 'microposts'; 
     $slug_name = preg_replace('/[^a-zA-Z0-9]/', '', $slug_name); // 过滤非法字符
     if (empty($slug_name)) { $slug_name = 'microposts'; }

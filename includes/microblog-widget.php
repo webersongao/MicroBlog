@@ -71,7 +71,7 @@ class Microblog_SideWidget extends WP_Widget {
             'post_status' => 'publish',
             'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
         );
-        $options = get_option('microblog_setting_data');
+        $options = mbfun_get_general_settings();
         $show_date = true;//(isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
         
         $query_results = new WP_Query($query);
