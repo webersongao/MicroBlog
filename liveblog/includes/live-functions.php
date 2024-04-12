@@ -68,11 +68,11 @@ function mlb_locate_template( $template_names, $load = false, $require_once = tr
 			$located = trailingslashit( mlb_get_templates_dir() ) . $template_name;
 			break;
 		}
+
 	}
 
 	if ( ( true == $load ) && ! empty( $located ) ) {
 		load_template( $located, $require_once );
-
 	} else {
 
 		return $located;
@@ -85,7 +85,7 @@ function mlb_locate_template( $template_names, $load = false, $require_once = tr
  * @return string
  */
 function mlb_get_templates_dir() {
-	return MLB_PATH . 'templates';
+	return mbfun_get_plugin_path() . 'templates';
 }
 
 /**
@@ -205,15 +205,15 @@ function mlb_get_liveblogs_count( $args = array() ) {
 function mlb_is_liveblog() {
 	global $post;
 
-	$liveblog = false;
+	$is_liveblog = false;
 
 	if ( ! empty( $post->ID ) ) {
 		if ( get_post_meta( $post->ID, '_micro_post_live_enable', true ) ) {
-			$liveblog = true;
+			$is_liveblog = true;
 		}
 	}
 
-	return apply_filters( 'mlb_is_liveblog', $liveblog );
+	return apply_filters( 'mlb_is_liveblog', $is_liveblog );
 }
 
 /**

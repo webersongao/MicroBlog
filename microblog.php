@@ -19,9 +19,6 @@ define('MICROBLOG_PLUGIN_PATH', plugin_dir_path(__FILE__));
 
 define( 'MICROBLOG_DOMAIN', 'microblogs-lang' );
 
-// self::$instance->plugin_path = plugin_dir_path( __FILE__ );
-// self::$instance->plugin_url  = plugin_dir_url( __FILE__ );
-
 $microblog_slug_name = 'microposts';
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
 $plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.7.0';

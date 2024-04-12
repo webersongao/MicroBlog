@@ -13,9 +13,6 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 	class Micro_Liveblog {
 		private static $instance = null;
 		private $plugin_path;
-		private $plugin_url;
-		private $plugin_version = '2.3.5';
-
 		/**
 		 * @deprecated 2.0.0
 		 */
@@ -29,9 +26,6 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 				self::$instance = new Micro_Liveblog();
 
 				self::$instance->plugin_path = plugin_dir_path( __FILE__ );
-				self::$instance->plugin_url  = plugin_dir_url( __FILE__ );
-
-				self::$instance->define_constants();
 				self::$instance->includes();
 
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
@@ -69,13 +63,6 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 		}
 
 		/**
-		 * Get plugin URL
-		 */
-		public function get_plugin_url() {
-			return $this->plugin_url;
-		}
-
-		/**
 		 * Get plugin path
 		 */
 		public function get_plugin_path() {
@@ -100,12 +87,12 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 		 */
 		public function register_scripts() {
 			if ( is_admin() ) {
-				wp_register_script( 'selectize', $this->get_plugin_url() . 'assets/selectize/selectize.min.js', array( 'jquery' ), '0.12.4' );
-				wp_register_script( 'mlb-admin', $this->get_plugin_url() . 'assets/js/liveblog-admin.js', array( 'jquery', 'selectize' ), $this->get_plugin_version() );
+				wp_register_script( 'selectize', mbfun_get_plugin_url() . 'liveblog/assets/selectize/selectize.min.js', array( 'jquery' ), '0.12.4' );
+				wp_register_script( 'mlb-admin', mbfun_get_plugin_url() . 'liveblog/assets/js/liveblog-admin.js', array( 'jquery', 'selectize' ), $this->get_plugin_version() );
 			}
 
 			if ( ! is_admin() ) {
-				wp_register_script( 'micro_lb', $this->get_plugin_url() . 'assets/js/liveblog.js', array( 'jquery' ), $this->get_plugin_version() );
+				wp_register_script( 'micro_lb', mbfun_get_plugin_url() . 'liveblog/assets/js/liveblog.js', array( 'jquery' ), $this->get_plugin_version() );
 				wp_localize_script(
 					'micro_lb',
 					'micro_lb',
@@ -130,8 +117,8 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 
 			if ( is_admin() ) {
 
-				wp_register_style( 'selectize', $this->get_plugin_url() . 'assets/selectize/selectize.default.css', null, '0.12.4' );
-				wp_register_style( 'mlb-admin', $this->get_plugin_url() . 'assets/css/liveblog-admin.css', null, $this->get_plugin_version() );
+				wp_register_style( 'selectize', mbfun_get_plugin_url() . 'liveblog/assets/selectize/selectize.default.css', null, '0.12.4' );
+				wp_register_style( 'mlb-admin', mbfun_get_plugin_url() . 'liveblog/assets/css/liveblog-admin.css', null, mbfun_get_plugin_version() );
 
 				wp_enqueue_style( 'mlb-admin' );
 
@@ -140,7 +127,7 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 				$theme = mlb_get_theme();
 
 				if ( $theme !== 'none' ) {
-					wp_register_style( 'mlb-theme-' . $theme, $this->get_plugin_url() . 'assets/css/themes/' . $theme . '.css', null, $this->get_plugin_version() );
+					wp_register_style( 'mlb-theme-' . $theme, mbfun_get_plugin_url() . 'liveblog/assets/css/themes/' . $theme . '.css', null, mbfun_get_plugin_version() );
 				}
 
 				wp_enqueue_style( 'mlb-theme-' . $theme );
@@ -159,21 +146,6 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 				load_textdomain( MICROBLOG_DOMAIN, $mofile_global );
 			} else {
 				load_plugin_textdomain( MICROBLOG_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-			}
-		}
-
-		/**
-		 * Define Constants
-		 */
-		private function define_constants() {
-			if ( ! defined( 'MLB_PATH' ) ) {
-				define( 'MLB_PATH', $this->get_plugin_path() );
-			}
-			if ( ! defined( 'MLB_URL' ) ) {
-				define( 'MLB_URL', $this->get_plugin_url() );
-			}
-			if ( ! defined( 'MLB_VERSION' ) ) {
-				define( 'MLB_VERSION', $this->plugin_version );
 			}
 		}
 
