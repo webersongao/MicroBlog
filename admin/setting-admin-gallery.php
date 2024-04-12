@@ -32,7 +32,7 @@ function microblog_gallery_settings_section() {
 
 function microblog_gallery_settings_section_header() {
     echo '</br>';
-    // echo '<h3>' . esc_html__('Gallery Tab', 'microblog') . '</h3>';
+    // echo '<h3>' . esc_html__('Gallery Tab', MICROBLOG_DOMAIN ) . '</h3>';
 }
 
 add_action('admin_init', 'microblog_gallery_setting_admin');
@@ -83,7 +83,7 @@ function microblog_77111_listnumber_input() {
     ?>
     <label>
         <input type='number' name='microblog_gallery_data[mb_co4st_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
-        &nbsp;<?php esc_html('每页直播显示数量 ( 区间:[3, 20] )', 'microblog'); ?>
+        &nbsp;<?php esc_html('每页直播显示数量 ( 区间:[3, 20] )', MICROBLOG_DOMAIN ); ?>
     </label>
     <?php
 }

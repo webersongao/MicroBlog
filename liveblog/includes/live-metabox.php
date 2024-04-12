@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 function mlb_add_meta_box() {
 	$post_types = mlb_get_supported_post_types();
 	foreach ( $post_types as $post_type ) {
-		add_meta_box( 'mlb_liveblog_meta_box', __( '连载Live', MLB_TEXT_DOMAIN ), 'mlb_render_liveblog_meta_box', $post_type, 'normal', 'high' );
+		add_meta_box( 'mlb_liveblog_meta_box', __( '连载Live', MICROBLOG_DOMAIN ), 'mlb_render_liveblog_meta_box', $post_type, 'normal', 'high' );
 	}
-	add_meta_box( 'mlb_entry_meta_box', __( '连载Live-原文', MLB_TEXT_DOMAIN ), 'mlb_render_entry_meta_box', 'microlive', 'normal', 'high' );
+	add_meta_box( 'mlb_entry_meta_box', __( '连载Live-原文', MICROBLOG_DOMAIN ), 'mlb_render_entry_meta_box', 'microlive', 'normal', 'high' );
 }
 add_action( 'add_meta_boxes', 'mlb_add_meta_box' );
 
@@ -79,7 +79,7 @@ function mlb_render_liveblog_options( $post_id ) {
 	?>
 	<label for="mlb-is-liveblog">
 		<input type="checkbox" name="_micro_post_live_enable" value="1" <?php checked( $is_liveblog, '1', true ); ?> id="mlb-is-liveblog">
-		<?php _e( 'Enable liveblog', MLB_TEXT_DOMAIN ); ?>
+		<?php _e( 'Enable liveblog', MICROBLOG_DOMAIN ); ?>
 	</label>
 	<?php
 
@@ -87,7 +87,7 @@ function mlb_render_liveblog_options( $post_id ) {
 		$status = get_post_meta( $post_id, '_micro_post_live_status', true );
 		?>
 		<div class="mlb-input-group">
-			<label for="mlb_status"><?php _e( 'Status', MLB_TEXT_DOMAIN ); ?></label>
+			<label for="mlb_status"><?php _e( 'Status', MICROBLOG_DOMAIN ); ?></label>
 			<select name="_micro_post_live_status" id="mlb_status">
 				<?php foreach ( mlb_get_liveblog_status_options() as $option_value => $option_name ) { ?>
 					<option value="<?php echo $option_value; ?>" <?php selected( $option_value, $status, true ); ?>><?php echo $option_name; ?></option>
@@ -95,7 +95,7 @@ function mlb_render_liveblog_options( $post_id ) {
 			</select>
 		</div>
 		<div class="mlb-input-group">
-			<label for="mlb-liveblog-endpoint"><?php _e( 'API-endpoint URL', MLB_TEXT_DOMAIN ); ?></label>
+			<label for="mlb-liveblog-endpoint"><?php _e( 'API-endpoint URL', MICROBLOG_DOMAIN ); ?></label>
 			<input type="text" id="mlb-liveblog-endpoint" onclick="this.focus(); this.select()" value="<?php echo mlb_get_liveblog_api_endpoint( $post_id ); ?>" readonly="readonly" class="widefat">
 		</div>
 		<?php
@@ -124,10 +124,10 @@ function mlb_render_entry_options( $post_id ) {
 	?>
 
 	<?php if ( $status === 'closed' ) { ?>
-		<p><?php printf( __( 'This item is attached to a <a href="%s">closed</a> liveblog, Display this when it is open. ', MLB_TEXT_DOMAIN ), get_edit_post_link( $liveblog ) ); ?></p>
+		<p><?php printf( __( 'This item is attached to a <a href="%s">closed</a> liveblog, Display this when it is open. ', MICROBLOG_DOMAIN ), get_edit_post_link( $liveblog ) ); ?></p>
 	<?php } elseif ( $liveblogs ) { ?>
 		<div class="mlb-input-group">
-			<label for="mlb-liveblog"><?php _e( 'Select liveblog', MLB_TEXT_DOMAIN ); ?></label>
+			<label for="mlb-liveblog"><?php _e( 'Select liveblog', MICROBLOG_DOMAIN ); ?></label>
 			<select name="_micro_live_post_id" id="mlb-liveblog" class="mlb-selectize">
 				<?php foreach ( $liveblogs as $liveblog_id => $liveblog_title ) { ?>
 					<option value="<?php echo $liveblog_id; ?>" <?php selected( $liveblog, $liveblog_id, true ); ?>><?php echo $liveblog_title; ?></option>
@@ -137,14 +137,14 @@ function mlb_render_entry_options( $post_id ) {
 
 		<?php if ( ! empty( $liveblog ) ) { ?>
 			<div class="mlb-input-group">
-				<label for="mlb-liveblog-entry-link"><?php _e( 'Direct link to entry', MLB_TEXT_DOMAIN ); ?></label>
+				<label for="mlb-liveblog-entry-link"><?php _e( 'Direct link to entry', MICROBLOG_DOMAIN ); ?></label>
 				<input type="text" id="mlb-liveblog-entry-link" onclick="this.focus(); this.select()" value="<?php echo mlb_get_entry_url( $post_id ); ?>" readonly="readonly" class="widefat">
 			</div>
 		<?php } ?>
 	<?php } else { ?>
-		<p><?php _e( 'There is no liveblog created yet.', MLB_TEXT_DOMAIN ); ?></p>
+		<p><?php _e( 'There is no liveblog created yet.', MICROBLOG_DOMAIN ); ?></p>
 		<?php if ( ! empty( $liveblog ) ) { ?>
-		<p><?php printf( __( 'Alternatively, you can enable the <a href="%s">disabled</a> liveblog status ', MLB_TEXT_DOMAIN ), get_edit_post_link( $liveblog ) ); ?></p>
+		<p><?php printf( __( 'Alternatively, you can enable the <a href="%s">disabled</a> liveblog status ', MICROBLOG_DOMAIN ), get_edit_post_link( $liveblog ) ); ?></p>
 		<?php } ?>
 	<?php } ?>
 

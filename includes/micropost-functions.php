@@ -1,8 +1,6 @@
 <?php
 // micropost-functions.php
 
-global $microblog_slug_name;
-
 function mbfun_register_micropost_type($supports, $tageEnable = false) {
 
     $slug_name = microblog_get_microposts_slug_name();
@@ -210,6 +208,34 @@ function microblog_formart_micropost_feed_title($title, $post_id) {
     return $title;
 }
 
+
+
+
+function mbfun_get_plugin_url() {
+
+    return MICROBLOG_PLUGIN_URL;
+}
+
+/**
+ * Get plugin path
+ */
+function mbfun_get_plugin_path() {
+
+    return MICROBLOG_PLUGIN_PATH;
+}
+
+/**
+ * Get plugin version.
+ *
+ * @return string
+ */
+function mbfun_get_plugin_version() {
+    if ( function_exists( 'wp_get_environment_type' ) && wp_get_environment_type() === 'development' ) {
+        return time();
+    }
+    global $plugin_version;
+    return $plugin_version;
+}
 
 
 

@@ -11,14 +11,26 @@
 
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
 define('MICROBLOG_PLUGIN_FILE', __FILE__);
-define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
 
+define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('MICROBLOG_PLUGIN_PATH', plugin_dir_path(__FILE__));
+
+define( 'MICROBLOG_DOMAIN', 'micro-liveblogs' );
+
+// self::$instance->plugin_path = plugin_dir_path( __FILE__ );
+// self::$instance->plugin_url  = plugin_dir_url( __FILE__ );
+
+$microblog_slug_name = 'microposts';
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
 $plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.7.0';
-global $plugin_version;
+
+global $microblog_slug_name , $plugin_version;
+
+// 核心功能函数
+require_once(plugin_dir_path(__FILE__) . 'includes/micropost-functions.php');
 
 // 加载其他功能模块文件
-// require_once(plugin_dir_path(__FILE__) . 'liveblog/liveblog-index.php');
+require_once(plugin_dir_path(__FILE__) . 'liveblog/liveblog-index.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-index.php');
 
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-widget.php');
@@ -27,8 +39,7 @@ require_once(plugin_dir_path(__FILE__) . 'includes/microblog-shortcode.php');
 // require_once(plugin_dir_path(__FILE__) . 'includes/microblog-forward.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-quick-pub.php');
 
-// 核心功能函数
-require_once(plugin_dir_path(__FILE__) . 'includes/micropost-functions.php');
+
 
 // 注册微博设置页面
 add_action('admin_menu', 'microblog_setting_page');

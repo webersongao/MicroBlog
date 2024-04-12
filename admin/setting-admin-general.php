@@ -32,7 +32,7 @@ function microblog_general_settings_section() {
 
 function microblog_general_settings_section_header() {
     echo '</br>';
-    // echo '<h3>' . esc_html__('General Tab', 'microblog') . '</h3>';
+    // echo '<h3>' . esc_html__('General Tab', MICROBLOG_DOMAIN ) . '</h3>';
 }
 
 
@@ -265,7 +265,7 @@ function microblog_post_title_listNumber_input() {
     ?>
     <label>
         <input type='number' name='microblog_general_data[mb_codepost_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
-        &nbsp;<?php esc_html('每页显示数量 ( 区间:[3, 20] )', 'microblog'); ?>
+        &nbsp;<?php esc_html('每页显示数量 ( 区间:[3, 20] )', MICROBLOG_DOMAIN ); ?>
     </label>
     <?php
 }

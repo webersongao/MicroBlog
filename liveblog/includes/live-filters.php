@@ -53,7 +53,7 @@ function mlb_liveblogs_add_quicklinks( $quicklinks ) {
 		$current = isset( $_GET['is-mlb-liveblog'] ) ? 'current' : null;
 
 		$quicklinks['mlb_liveblogs'] = sprintf(
-			'<a href="%s" class="' . $current . '">' . __( 'Liveblogs', MLB_TEXT_DOMAIN ) . ' <span class="count">(%d)</span></a>',
+			'<a href="%s" class="' . $current . '">' . __( 'Liveblogs', MICROBLOG_DOMAIN ) . ' <span class="count">(%d)</span></a>',
 			admin_url( 'edit.php?post_type=' . get_query_var( 'post_type' ) ) . '&amp;is-mlb-liveblog=1',
 			$liveblog_count
 		);
@@ -140,7 +140,7 @@ add_action( 'loop_start', 'mlb_apply_title_prefix_filter_condition', 1, 10 );
  * @return array
  */
 function mlb_set_show_liveblog_column( $columns ) {
-	$columns['mlb_liveblog'] = __( '连载原文', MLB_TEXT_DOMAIN );
+	$columns['mlb_liveblog'] = __( '连载原文', MICROBLOG_DOMAIN );
 
 	return $columns;
 }

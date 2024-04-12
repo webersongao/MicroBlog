@@ -15,7 +15,6 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 		private $plugin_path;
 		private $plugin_url;
 		private $plugin_version = '2.3.5';
-		private $text_domain    = 'micro-liveblogs';
 
 		/**
 		 * @deprecated 2.0.0
@@ -53,7 +52,7 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 		public function includes() {
 			global $mlb_options;
 
-			require_once $this->get_plugin_path() . 'includes/admin/live-settings-section.php';
+			require_once mbfun_get_plugin_path() . 'admin/live-settings-section.php';
 
 			$mlb_options = mlb_get_settings();
 
@@ -64,7 +63,7 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 			require_once $this->get_plugin_path() . 'includes/live-shortcodes.php';
 			require_once $this->get_plugin_path() . 'includes/live-filters.php';
 			require_once $this->get_plugin_path() . 'includes/live-social-logos.php';
-			require_once $this->get_plugin_path() . 'includes/admin/live-admin-settings.php';
+			require_once mbfun_get_plugin_path() . 'admin/live-admin-settings.php';
 			require_once $this->get_plugin_path() . 'includes/api/class-feedfactory.php';
 			require_once $this->get_plugin_path() . 'includes/api/class-liveentry.php';
 			require_once $this->get_plugin_path() . 'includes/api/class-livefeed.php';
@@ -117,9 +116,9 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 						'datetime_format' => mlb_get_option( 'entry_date_format', 'human' ),
 						'locale'          => get_locale(),
 						'interval'        => mlb_get_update_interval(),
-						'new_post_msg'    => __( 'There is %s update.', MLB_TEXT_DOMAIN ),
-						'new_posts_msg'   => __( 'There are %s updates.', MLB_TEXT_DOMAIN ),
-						'now_more_posts'  => __( "That's All.", MLB_TEXT_DOMAIN ),
+						'new_post_msg'    => __( 'There is %s update.', MICROBLOG_DOMAIN ),
+						'new_posts_msg'   => __( 'There are %s updates.', MICROBLOG_DOMAIN ),
+						'now_more_posts'  => __( "That's All.", MICROBLOG_DOMAIN ),
 					)
 				);
 
@@ -155,14 +154,14 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 		 * Load textdomain
 		 */
 		public function load_textdomain() {
-			$mofile = sprintf( '%1$s-%2$s.mo', MLB_TEXT_DOMAIN, get_locale() );
+			$mofile = sprintf( '%1$s-%2$s.mo', MICROBLOG_DOMAIN, get_locale() );
 
 			$mofile_global = WP_LANG_DIR . '/plugins/micro-liveblogs/' . $mofile;
 
 			if ( file_exists( $mofile_global ) ) {
-				load_textdomain( MLB_TEXT_DOMAIN, $mofile_global );
+				load_textdomain( MICROBLOG_DOMAIN, $mofile_global );
 			} else {
-				load_plugin_textdomain( MLB_TEXT_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+				load_plugin_textdomain( MICROBLOG_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 			}
 		}
 
@@ -178,9 +177,6 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 			}
 			if ( ! defined( 'MLB_VERSION' ) ) {
 				define( 'MLB_VERSION', $this->plugin_version );
-			}
-			if ( ! defined( 'MLB_TEXT_DOMAIN' ) ) {
-				define( 'MLB_TEXT_DOMAIN', $this->text_domain );
 			}
 		}
 

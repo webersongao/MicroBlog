@@ -68,9 +68,9 @@ function microblog_admin_section_header() {
     $out .= '<img src="' . esc_url(plugin_dir_url(dirname(__FILE__))) . 'assets/images/microblog-logo.png">';
     $out .= '</span>';
     // translators: %s is replaced with the plugin version
-    $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', 'microblog') . '</span>';
+    $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', MICROBLOG_DOMAIN ) . '</span>';
     if (strlen(strval($plugin_version)) > 1) {
-        $free_version_text = sprintf(esc_html__('Free V%s', 'microblog'), $plugin_version);
+        $free_version_text = sprintf(esc_html__('Free V%s', MICROBLOG_DOMAIN ), $plugin_version);
         $out .= '<a href="https://github.com/webersongao/microblog" target="_blank" class="microblog-admin-bar-free">' . $free_version_text . '</a>';
     }
     $out .= '</div>';

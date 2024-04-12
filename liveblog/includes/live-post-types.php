@@ -7,19 +7,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function mlb_setup_post_types() {
 	$labels = array(
-		'name'               => _x( '连载', 'post type general name', MLB_TEXT_DOMAIN ),
-		'singular_name'      => _x( 'Live Entry', 'post type singular name', MLB_TEXT_DOMAIN ),
-		'add_new'            => __( 'Add New', MLB_TEXT_DOMAIN ),
-		'add_new_item'       => __( 'Add New Entry', MLB_TEXT_DOMAIN ),
-		'edit_item'          => __( 'Edit Entry', MLB_TEXT_DOMAIN ),
-		'new_item'           => __( 'New Entry', MLB_TEXT_DOMAIN ),
-		'all_items'          => __( '连载列表', MLB_TEXT_DOMAIN ),
-		'view_item'          => __( 'View Entry', MLB_TEXT_DOMAIN ),
-		'search_items'       => __( 'Search Liveblog Entries', MLB_TEXT_DOMAIN ),
-		'not_found'          => __( 'No Liveblog Entries found', MLB_TEXT_DOMAIN ),
-		'not_found_in_trash' => __( 'No Liveblog Entries found in Trash', MLB_TEXT_DOMAIN ),
+		'name'               => _x( '连载', 'post type general name', MICROBLOG_DOMAIN ),
+		'singular_name'      => _x( 'Live Entry', 'post type singular name', MICROBLOG_DOMAIN ),
+		'add_new'            => __( 'Add New', MICROBLOG_DOMAIN ),
+		'add_new_item'       => __( 'Add New Entry', MICROBLOG_DOMAIN ),
+		'edit_item'          => __( 'Edit Entry', MICROBLOG_DOMAIN ),
+		'new_item'           => __( 'New Entry', MICROBLOG_DOMAIN ),
+		'all_items'          => __( '连载列表', MICROBLOG_DOMAIN ),
+		'view_item'          => __( 'View Entry', MICROBLOG_DOMAIN ),
+		'search_items'       => __( 'Search Liveblog Entries', MICROBLOG_DOMAIN ),
+		'not_found'          => __( 'No Liveblog Entries found', MICROBLOG_DOMAIN ),
+		'not_found_in_trash' => __( 'No Liveblog Entries found in Trash', MICROBLOG_DOMAIN ),
 		'parent_item_colon'  => '',
-		'menu_name'          => __( '连载', MLB_TEXT_DOMAIN ),
+		'menu_name'          => __( '连载', MICROBLOG_DOMAIN ),
 	);
 	$args   = array(
 		'labels'          => apply_filters( 'mlb_post_type_labels', $labels ),

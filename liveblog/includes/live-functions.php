@@ -264,8 +264,8 @@ function mlb_get_liveblog_status_options() {
 	return apply_filters(
 		'mlb_liveblog_status_options',
 		array(
-			'open'   => __( 'Open', MLB_TEXT_DOMAIN ),
-			'closed' => __( 'Closed', MLB_TEXT_DOMAIN ),
+			'open'   => __( 'Open', MICROBLOG_DOMAIN ),
+			'closed' => __( 'Closed', MICROBLOG_DOMAIN ),
 		)
 	);
 }
@@ -383,7 +383,7 @@ function mlb_get_theme() {
  * @return string
  */
 function mlb_get_liveblog_title_prefix() {
-	return apply_filters( 'mlb_liveblog_title_prefix', __( 'Liveblog', MLB_TEXT_DOMAIN ) . ' - ' );
+	return apply_filters( 'mlb_liveblog_title_prefix', __( 'Liveblog', MICROBLOG_DOMAIN ) . ' - ' );
 }
 
 /**
@@ -664,7 +664,7 @@ function mlb_get_entry_display_date() {
 
 	if ( $display === 'human' ) {
 		?>
-			<time class="mlb-js-update-time" datetime="<?php echo get_the_time( 'Y-m-d H:i' ); ?>"><?php printf( _x( '%s ago', '%s = human-readable time difference', MLB_TEXT_DOMAIN ), human_time_diff( get_the_time( 'U' ), current_time( 'timestamp' ) ) ); ?></time>
+			<time class="mlb-js-update-time" datetime="<?php echo get_the_time( 'Y-m-d H:i' ); ?>"><?php printf( _x( '%s ago', '%s = human-readable time difference', MICROBLOG_DOMAIN ), human_time_diff( get_the_time( 'U' ), current_time( 'timestamp' ) ) ); ?></time>
 		<?php
 	} else {
 		if ( $display === 'time' ) {

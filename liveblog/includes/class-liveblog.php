@@ -95,7 +95,7 @@ class MLB_Liveblog {
 
 		// AMP is not supported at this moment
 		if ( function_exists( 'amp_is_request' ) && amp_is_request() ) {
-            $content .= '<p>' . sprintf( __( '<a rel="noamphtml" class="mlb-view-liveblog-link button" href="%s">View the liveblog</a>', MLB_TEXT_DOMAIN ), esc_url( amp_remove_paired_endpoint( amp_get_current_url() ) ) . '#mlb-liveblog' ) . '</p>';
+            $content .= '<p>' . sprintf( __( '<a rel="noamphtml" class="mlb-view-liveblog-link button" href="%s">View the liveblog</a>', MICROBLOG_DOMAIN ), esc_url( amp_remove_paired_endpoint( amp_get_current_url() ) ) . '#mlb-liveblog' ) . '</p>';
 
 			return apply_filters( 'mlb_liveblog_html', $content );
 		}
@@ -112,11 +112,11 @@ class MLB_Liveblog {
 
 		$content .= '<div id="mlb-liveblog" class="' . implode( ' ', $classes ) . '" data-append-timestamp="' . mlb_get_option( 'append_timestamp', false ) . '" data-status="' . mlb_get_liveblog_status() . '" data-highlighted-entry="' . mlb_get_highlighted_entry_id() . '" data-show-entries="' . mlb_get_show_entries() . '" data-endpoint="' . $this->endpoint . '">';
 
-		$content .= '<div class="mlb-liveblog-closed-message" style="display: none;">' . __( 'The liveblog has ended.', MLB_TEXT_DOMAIN ) . '</div>';
+		$content .= '<div class="mlb-liveblog-closed-message" style="display: none;">' . __( 'The liveblog has ended.', MICROBLOG_DOMAIN ) . '</div>';
 
 		$content .= '<button id="mlb-show-new-posts" class="mlb-button button" style="display: none;"></button>';
 
-		$content .= '<div class="mlb-no-liveblog-entries-message" style="display: none;">' . __( 'No liveblog updates yet.', MLB_TEXT_DOMAIN ) . '</div>';
+		$content .= '<div class="mlb-no-liveblog-entries-message" style="display: none;">' . __( 'No liveblog updates yet.', MICROBLOG_DOMAIN ) . '</div>';
 
 		$content .= '<ul class="mlb-liveblog-list"></ul>';
 
@@ -163,7 +163,7 @@ class MLB_Liveblog {
 				</g>
 			</svg></div>';
 
-		$content .= '<button id="mlb-load-more" style="display: none;" class="mlb-button button">' . __( 'Load more', MLB_TEXT_DOMAIN ) . '</button>';
+		$content .= '<button id="mlb-load-more" style="display: none;" class="mlb-button button">' . __( 'Load more', MICROBLOG_DOMAIN ) . '</button>';
 
 		$content .= '</div>';
 
