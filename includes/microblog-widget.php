@@ -24,6 +24,7 @@ class Microblog_SideWidget extends WP_Widget {
     public function form($instance) {
         $defaults = array(
             'numberposts' => '5',
+            'use_excerpt' => '',
             'title' => '',
             'rss' => '',
         );
