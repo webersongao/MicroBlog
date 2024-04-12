@@ -53,7 +53,7 @@ function microblog_liveblog_setting_admin() {
 
 		add_settings_section(
 			'microblog_liveblog_section_' . $section,
-			'微直播设置',
+			'微连载设置',
 			'__return_false',
 			'microblog_liveblog_section_' . $section
 		);

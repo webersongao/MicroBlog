@@ -140,7 +140,7 @@ add_action( 'loop_start', 'mlb_apply_title_prefix_filter_condition', 1, 10 );
  * @return array
  */
 function mlb_set_show_liveblog_column( $columns ) {
-	$columns['mlb_liveblog'] = __( '直播原文', MICROBLOG_DOMAIN );
+	$columns['mlb_liveblog'] = __( '连载原文', MICROBLOG_DOMAIN );
 
 	return $columns;
 }
@@ -222,7 +222,7 @@ function mlb_add_post_dropdown_filter_to_manage_posts() {
 	$liveblogs = mlb_get_liveblogs_by_status( 'all' );
 
 	echo '<select name="live_id">';
-		echo sprintf( '<option value="%s" %s>%s</option>', esc_attr( 'all' ), $true, esc_html( '全部直播' ) );
+		echo sprintf( '<option value="%s" %s>%s</option>', esc_attr( 'all' ), $true, esc_html( '全部连载' ) );
 		foreach ( $liveblogs as $liveblog_id => $liveblog_title ) {
 			$display_title = mb_strlen( $liveblog_title ) > 6 ? mb_substr( $liveblog_title, 0, 6 ) . '...' : $liveblog_title;
 			$selected = selected( $liveblog_id, get_query_var( 'live_id' ), false );

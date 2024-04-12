@@ -42,7 +42,7 @@ function microblog_admin_settings() {
         <!-- Add tab navigation -->
         <h2 class="nav-tab-wrapper">
             <a href="?page=<?php echo MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=micropost" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'micropost') ? 'nav-tab-active' : ''; ?>">微博</a>
-            <a href="?page=<?php echo MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=liveblog" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : ''; ?>">微直播</a>
+            <a href="?page=<?php echo MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=liveblog" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : ''; ?>">微连载</a>
             <a href="?page=<?php echo MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=general" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'general') ? 'nav-tab-active' : ''; ?>">基础设置</a>    
         </h2>
         <div class="wrap">

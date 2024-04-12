@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 function mlb_add_meta_box() {
 	$post_types = mlb_get_supported_post_types();
 	foreach ( $post_types as $post_type ) {
-		add_meta_box( 'mlb_liveblog_meta_box', __( '直播Live', MICROBLOG_DOMAIN ), 'mlb_render_liveblog_meta_box', $post_type, 'normal', 'high' );
+		add_meta_box( 'mlb_liveblog_meta_box', __( '连载Live', MICROBLOG_DOMAIN ), 'mlb_render_liveblog_meta_box', $post_type, 'normal', 'high' );
 	}
-	add_meta_box( 'mlb_entry_meta_box', __( '直播Live-原文', MICROBLOG_DOMAIN ), 'mlb_render_entry_meta_box', 'microlive', 'normal', 'high' );
+	add_meta_box( 'mlb_entry_meta_box', __( '连载Live-原文', MICROBLOG_DOMAIN ), 'mlb_render_entry_meta_box', 'microlive', 'normal', 'high' );
 }
 add_action( 'add_meta_boxes', 'mlb_add_meta_box' );
 
