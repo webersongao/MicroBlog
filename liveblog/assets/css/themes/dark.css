@@ -1,0 +1,130 @@
+@import "../liveblog.css";
+
+.mlb-liveblog ul.mlb-liveblog-list {
+	border-left: 1px dotted #eee;
+}
+
+.mlb-liveblog .mlb-liveblog-post {
+	position: relative;
+	padding-bottom: 30px;
+}
+
+.mlb-liveblog .mlb-liveblog-post:last-child {
+	margin-bottom: 30px;
+}
+
+.mlb-liveblog .mlb-liveblog-post::before {
+	content: '';
+	display: block;
+	position: absolute;
+	left: -36px;
+	top: 9px;
+	width: 11px;
+	height: 11px;
+	line-height: 11px;
+	font-size: 11px;
+	border-radius: 50%;
+}
+
+.mlb-liveblog-post::before {
+	background-color: #fff;
+	border: 3px solid #eee;
+}
+
+.mlb-liveblog-post-title {
+	padding-top: 0.5em !important;
+	font-size: 20px !important;
+	margin-top: 0 !important;
+	margin-bottom: 10px !important;
+}
+
+.mlb-liveblog-bottom {
+	margin-top: 20px;
+	padding-bottom: 20px;
+}
+
+.mlb-liveblog-action-share {
+	float: right;
+	margin-right: 10px;
+}
+
+.mlb-liveblog-content {
+	width: 100%;
+	overflow: hidden;
+}
+
+.mlb-liveblog-content p:last-of-type {
+	margin-bottom: 0;
+}
+
+.mlb-liveblog-closed-message,
+.mlb-no-liveblog-entries-message {
+	font-style: italic;
+	margin: 15px 0;
+}
+
+.mlb-liveblog-action-edit {
+	float: left;
+	width: 44px;
+	height: 20px;
+	font-size: 12px;
+	border-color: gray;
+	background: #efedf1;
+	border-radius: 3px;
+	text-align: center;
+}
+
+.mlb-liveblog-action-edit a {
+	display: block;
+}
+
+.mlb-is-editor .mlb-liveblog-action-edit {
+	display: block;
+}
+
+.mlb-liveblog-head {
+	margin-bottom: 5px;
+}
+
+.mlb-liveblog-post-time {
+	margin: 0;
+	padding: 0;
+	font-size: 14px !important;
+	color: #eee;
+	float: right;
+}
+
+.mlb-liveblog-post-author {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-right: 10px;
+}
+
+.mlb-liveblog-post-author-name {
+	font-size: 13px;
+	margin-left: 8px;
+}
+
+.mlb-liveblog-post-author-avatar img {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	vertical-align: middle;
+}
+
+.mlb-liveblog-action-share a {
+	color: rgb(122 119 119 / 60%);
+}
+
+.mlb-liveblog-action-share a:hover {
+	color: rgb(59 57 57 / 60%);
+}
+
+.mlb-button {
+	color: #000;
+}
+
+#mlb-show-new-posts {
+	margin-bottom: 15px;
+}

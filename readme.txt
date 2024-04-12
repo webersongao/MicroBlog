@@ -59,7 +59,7 @@ License: GPLv2 or later
 
 == 后续开发计划 ==
 
-1、参考easy-liveblogs（Jeffrey van Rossum开发） 和 liveblog（WordPress.com VIP, Big Bite Creativ...开发）实现弹窗评论，以及评论外露
+1、参考easy-liveblogs（doumao team开发） 和 liveblog（WordPress.com VIP, Big Bite Creativ...开发）实现弹窗评论，以及评论外露
 2、支持在编辑器内嵌入 微博话题 及 @功能，被@的人会受到邮件通知（类似于分布式微博）
 3、远期规划：
      更漂亮，更美观的短代码UI，甚至开发微博专属主题
@@ -113,3 +113,11 @@ URL slug 支持自定义，例如改为microblog，则微博地址为 microblog/
 邮箱：Gao@btbk.org
 推特：https://twitter.com/WebersonGao
 更多介绍：https://www.webersongao.com/tag/microblog
+
+
+
+
+ToDo：
+
+is_user_logged_in 不可用
+mlb_get_liveblogs_by_status( 'used' ); 不可用

@@ -57,7 +57,7 @@ Not satisfied yet? Open the microblog control panel, adjust the necessary config
 
 == Future development plans ==
 
-1、Referencing easy-liveblogs (developed by Jeffrey van Rossum) and liveblog (developed by WordPress.com VIP, Big Bite Creativ...), we aim to implement popup comments and exposed comments.
+1、Referencing easy-liveblogs (developed by doumao team) and liveblog (developed by WordPress.com VIP, Big Bite Creativ...), we aim to implement popup comments and exposed comments.
 2、Support embedding Weibo topics and @mention functionality within the editor, with individuals being notified via email when mentioned (similar to distributed microblogging).
 3、Long-term plans include:
    - Developing a more visually appealing and aesthetically pleasing UI for shortcodes, potentially even creating a dedicated theme for Weibo.

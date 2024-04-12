@@ -1,0 +1,105 @@
+@import "../liveblog.css";
+
+.mlb-liveblog ul.mlb-liveblog-list {
+	border-left: 1px dotted #bbb;
+}
+
+.mlb-liveblog-post::before {
+	background-color: #eee;
+	border: 3px solid #ddd;
+}
+
+.mlb-liveblog-post-title {
+	padding-top: 0.5em !important;
+	font-size: 20px !important;
+	margin-top: 0 !important;
+	margin-bottom: 10px !important;
+}
+
+.mlb-liveblog-bottom {
+	margin-top: 20px;
+	padding-bottom: 20px;
+}
+
+.mlb-liveblog-action-share {
+	float: right;
+	margin-right: 10px;
+}
+
+.mlb-liveblog-action-share a {
+	color: rgba(0, 0, 0, .5);
+	display: inline-block;
+}
+
+.mlb-liveblog-action-share a:hover {
+	color: rgba(0, 0, 0, 1);
+}
+
+.mlb-liveblog-content {
+	width: 100%;
+	overflow: hidden;
+}
+
+.mlb-liveblog-content p:last-of-type {
+	margin-bottom: 0;
+}
+
+.mlb-liveblog-closed-message,
+.mlb-no-liveblog-entries-message {
+	font-style: italic;
+	margin: 15px 0;
+}
+
+.mlb-liveblog-action-edit {
+	float: left;
+	width: 44px;
+	height: 20px;
+	font-size: 12px;
+	border-color: gray;
+	background: #efedf1;
+	border-radius: 3px;
+	text-align: center;
+}
+
+.mlb-liveblog-action-edit a {
+	display: block;
+}
+
+.mlb-liveblog-head {
+	margin-bottom: 5px;
+}
+
+.mlb-liveblog-post-time {
+	margin: 0;
+	padding: 0;
+	font-size: 14px !important;
+	color: #666;
+	float: right;
+}
+
+.mlb-liveblog-post-author {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-right: 10px;
+}
+
+.mlb-liveblog-post-author-name {
+	font-size: 13px;
+	margin-left: 8px;
+}
+
+.mlb-liveblog-post-author-avatar img {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	vertical-align: middle;
+}
+
+.mlb-button {
+	color: #999;
+}
+
+#mlb-show-new-posts {
+	margin-bottom: 15px;
+}
