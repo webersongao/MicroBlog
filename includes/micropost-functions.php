@@ -131,6 +131,12 @@ function mbfun_get_gallery_settings() {
 	return $settings;
 }
 
+function mbfun_get_general_slug_name() {
+	$options = mbfun_get_general_settings();
+    $slug_name = isset($options['mb_slug_name']) ? $options['mb_slug_name'] : 'microposts'; 
+	return $slug_name;
+}
+
 // 更新全局变量的示例
 function mbfun_update_global_microblog_option($new_value) {
     if (!is_string($new_value)) { return; }
@@ -181,8 +187,7 @@ function microblog_get_microposts_slug_name() {
     if (!empty($microblog_slug_name)) {
         return $microblog_slug_name;
     }
-    $options = mbfun_get_general_settings();
-    $slug_name = isset($options['mb_slug_name']) ? $options['mb_slug_name'] : 'microposts'; 
+    $slug_name = mbfun_get_general_slug_name(); 
     $slug_name = preg_replace('/[^a-zA-Z0-9]/', '', $slug_name); // 过滤非法字符
     if (empty($slug_name)) { $slug_name = 'microposts'; }
 
@@ -209,6 +214,40 @@ function microblog_formart_micropost_feed_title($title, $post_id) {
 }
 
 
+# 首页查询微博数量
+# =======================================================
+function mbfun_get_recent_microblogs($atts = array()) {
+    // 设置默认参数
+    $defaults = array(
+        'post_type' => 'micropost',
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'posts_per_page' => 10,
+        'post_status' => 'publish',
+        'paged' => 1,
+    );
+    $args = wp_parse_args($atts, $defaults);
+    if (isset($atts['q'])) {
+        $q = sanitize_text_field($atts['q']);
+        $args['s'] = $q;
+    }
+    $microblogs_query = new WP_Query($args);
+    $recent_microblogs = array();
+    while ($microblogs_query->have_posts()) {
+        $microblogs_query->the_post();
+    
+        $microblog = array(
+            'title' => get_the_title(),
+            'content' => get_the_content(),
+            'permalink' => get_permalink(),
+            'publish_time' => get_the_date('Y年n月j日'),
+            // 可以根据需要添加其他字段
+        );
+        $recent_microblogs[] = $microblog;
+    }
+    wp_reset_postdata();
+    return $recent_microblogs;
+}
 
 
 function mbfun_get_plugin_url() {
