@@ -83,7 +83,7 @@ function mbfun_display_forward_meta_box($post) {
     } else {
         if (isset($_GET['post_type']) && $_GET['post_type'] === 'micropost') {
             // 获取 forward_id 参数
-            $forward_id = absint($_GET['forward_id']) ?: 0;
+            $forward_id = (isset($_GET['forward_id']) && absint($_GET['forward_id'])) ?: 0;
             $forward_post = ($forward_id !== 0) ? get_post($forward_id) : null;
             if ($forward_post) {
                 $forward_title = '';
@@ -108,7 +108,18 @@ function mbfun_display_forward_meta_box($post) {
 }
 
 function mbfun_save_forward_id($post_id) {
-    $forward_id = absint($_POST['forward_id']) ?: (absint($_GET['forward_id']) ?: 0);
+    if (!isset($_GET['post_type']) || 'micropost' !== $_GET['post_type']) {
+        return;
+    }
+    if ('micropost' !== get_post_type($post_id)) {
+        return;
+    }
+    $forward_id = 0;
+    if (isset($_POST['forward_id']) && is_numeric($_POST['forward_id'])) {
+        $forward_id = absint($_POST['forward_id']);
+    } elseif (isset($_GET['forward_id']) && is_numeric($_GET['forward_id'])) {
+        $forward_id = absint($_GET['forward_id']);
+    }
     if ($forward_id !== 0) {
         update_post_meta($post_id, '_micro_blog_forward_id', $forward_id);
     }
