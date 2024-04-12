@@ -35,19 +35,19 @@ msgstr ""
 msgid "That's it."
 msgstr ""
 
-#: includes/admin/live-admin-settings.php:13
+#: includes/admin/live-settings-section.php:13
 msgid "连载直播 | 配置项"
 msgstr ""
 
-#: includes/admin/live-admin-settings.php:13
+#: includes/admin/live-settings-section.php:13
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/live-admin-settings.php:26
+#: includes/admin/live-settings-section.php:26
 msgid "连载直播 | 配置项"
 msgstr ""
 
-#: includes/admin/live-admin-settings.php:31
+#: includes/admin/live-settings-section.php:31
 msgid "Plugin settings have been updated."
 msgstr ""
 

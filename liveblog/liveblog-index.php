@@ -63,7 +63,6 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 			require_once $this->get_plugin_path() . 'includes/live-shortcodes.php';
 			require_once $this->get_plugin_path() . 'includes/live-filters.php';
 			require_once $this->get_plugin_path() . 'includes/live-social-logos.php';
-			require_once mbfun_get_plugin_path() . 'admin/live-admin-settings.php';
 			require_once $this->get_plugin_path() . 'includes/api/class-feedfactory.php';
 			require_once $this->get_plugin_path() . 'includes/api/class-liveentry.php';
 			require_once $this->get_plugin_path() . 'includes/api/class-livefeed.php';

@@ -5,6 +5,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Add options link
+ */
+function mlb_add_options_link() {
+	add_submenu_page( 'edit.php?post_type=microlive', __( '连载直播 | 配置项', MICROBLOG_DOMAIN ), __( '连载Settings', MICROBLOG_DOMAIN ), 'manage_options', 'live-settings', 'mlb_options_page' );
+}
+add_action( 'admin_menu', 'mlb_add_options_link' );
+
+/**
+ * Options page
+ */
+function mlb_options_page() {
+	ob_start();
+	?>
+	<div class="wrap">
+		<h2><?php _e( '连载直播 | 配置项', MICROBLOG_DOMAIN ); ?></h2>
+		<form method="post" action="options.php">
+			<?php if ( isset( $_GET['settings-updated'] ) ) { ?>
+				<div class="updated"><p><?php _e( 'Plugin settings have been updated.', MICROBLOG_DOMAIN ); ?></p></div>
+			<?php } ?>
+			<?php settings_fields( 'microlive_settings_data' ); ?>
+			<?php do_settings_sections( 'mlb_settings_general' ); ?>
+			<?php submit_button(); ?>
+
+		</form>
+	</div>
+
+	<?php
+
+	echo ob_get_clean();
+}
+
+
+/**
  * Register settings
  *
  * @return void
@@ -48,42 +81,6 @@ function mlb_register_settings() {
 	}
 }
 add_action( 'admin_init', 'mlb_register_settings' );
-
-/**
- * Get settings
- */
-function mlb_get_settings() {
-	$settings = get_option( 'microlive_settings_data', array() );
-
-	return apply_filters( 'mlb_settings', $settings );
-}
-
-/**
- * Get global options
- *
- * @return array
- */
-function mlb_get_options() {
-	global $mlb_options;
-
-	return ! empty( $mlb_options ) ? $mlb_options : array();
-}
-
-/**
- * Get an option
- *
- * Looks to see if the specified setting exists, returns default if not
- *
- * @return mixed
- */
-function mlb_get_option( $key = '', $default = false ) {
-	global $mlb_options;
-
-	$value = ! empty( $mlb_options[ $key ] ) ? $mlb_options[ $key ] : $default;
-	$value = apply_filters( 'mlb_get_option', $value, $key, $default );
-
-	return apply_filters( 'mlb_get_option_' . $key, $value, $key, $default );
-}
 
 /**
  * Get registered settings

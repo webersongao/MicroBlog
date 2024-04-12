@@ -277,6 +277,41 @@ function mbfun_get_plugin_version() {
 }
 
 
+/**
+ * Get settings
+ */
+function mlb_get_settings() {
+	$settings = get_option( 'microlive_settings_data', array() );
+	return apply_filters( 'mlb_settings', $settings );
+}
+
+/**
+ * Get global options
+ *
+ * @return array
+ */
+function mlb_get_options() {
+	global $mlb_options;
+
+	return ! empty( $mlb_options ) ? $mlb_options : array();
+}
+
+/**
+ * Get an option
+ *
+ * Looks to see if the specified setting exists, returns default if not
+ *
+ * @return mixed
+ */
+function mlb_get_option( $key = '', $default = false ) {
+	global $mlb_options;
+
+	$value = ! empty( $mlb_options[ $key ] ) ? $mlb_options[ $key ] : $default;
+	$value = apply_filters( 'mlb_get_option', $value, $key, $default );
+
+	return apply_filters( 'mlb_get_option_' . $key, $value, $key, $default );
+}
+
 
 
 ?>

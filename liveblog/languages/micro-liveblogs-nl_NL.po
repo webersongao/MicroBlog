@@ -35,19 +35,19 @@ msgstr "Er zijn %s updates."
 msgid "That's it."
 msgstr "Dat was het."
 
-#: includes/admin/live-admin-settings.php:15
+#: includes/admin/live-settings-section.php:15
 msgid "连载直播 | 配置项"
 msgstr "Micro Liveblog Instellingen"
 
-#: includes/admin/live-admin-settings.php:15
+#: includes/admin/live-settings-section.php:15
 msgid "Settings"
 msgstr "Instellingen"
 
-#: includes/admin/live-admin-settings.php:28
+#: includes/admin/live-settings-section.php:28
 msgid "连载直播 | 配置项"
 msgstr "Micro Liveblog Instellingen"
 
-#: includes/admin/live-admin-settings.php:33
+#: includes/admin/live-settings-section.php:33
 msgid "Plugin settings have been updated."
 msgstr "De plugin-instellingen zijn bijgewerkt."
 
