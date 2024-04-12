@@ -14,6 +14,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 */
 
 require_once(plugin_dir_path(__FILE__) . 'setting-admin-general.php');
+require_once(plugin_dir_path(__FILE__) . 'setting-admin-gallery.php');
 require_once(plugin_dir_path(__FILE__) . 'setting-admin-liveblog.php');
 
 // Enqueue admin scripts and styles
@@ -37,9 +38,9 @@ function microblog_admin_settings() {
         </div>
         <!-- Add tab navigation -->
         <h2 class="nav-tab-wrapper">
-            <a href="?page=MicroBlog%2Fmicroblog.php&tab=general" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'general') ? 'nav-tab-active' : ''; ?>">基础设置</a>
-            <!-- <a href="?page=MicroBlog%2Fmicroblog.php&tab=gallery" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'gallery') ? 'nav-tab-active' : ''; ?>">微相册</a> -->
-            <a href="?page=MicroBlog%2Fmicroblog.php&tab=liveblog" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : ''; ?>">微直播</a>
+        <a href="?page=<?php echo MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=general" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'general') ? 'nav-tab-active' : ''; ?>">基础设置</a>
+        <a href="?page=<?php echo MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=gallery" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'gallery') ? 'nav-tab-active' : ''; ?>">微相册</a>
+        <a href="?page=<?php echo MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=liveblog" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : ''; ?>">微直播</a>
         </h2>
         <div class="wrap">
             <?php
@@ -69,7 +70,6 @@ function microblog_admin_section_header() {
     // translators: %s is replaced with the plugin version
     $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', 'microblog') . '</span>';
     if (strlen(strval($plugin_version)) > 1) {
-        // translators: %s 是版本号的占位符
         $free_version_text = sprintf(esc_html__('Free V%s', 'microblog'), $plugin_version);
         $out .= '<a href="https://github.com/webersongao/microblog" target="_blank" class="microblog-admin-bar-free">' . $free_version_text . '</a>';
     }

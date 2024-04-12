@@ -118,6 +118,11 @@ function mbfun_register_micropost_taxonomy($enable) {
     register_taxonomy_for_object_type('micropost_topic', 'micropost');
 }
 
+function mbfun_get_general_settings() {
+	$settings = get_option( 'microblog_general_data', array() );
+	return $settings;
+}
+
 function mbfun_get_live_settings() {
 	$settings = get_option( 'microblog_liveblog_data', array() );
 	return $settings;
@@ -125,11 +130,6 @@ function mbfun_get_live_settings() {
 
 function mbfun_get_gallery_settings() {
 	$settings = get_option( 'microblog_gallery_data', array() );
-	return $settings;
-}
-
-function mbfun_get_general_settings() {
-	$settings = get_option( 'microblog_general_data', array() );
 	return $settings;
 }
 

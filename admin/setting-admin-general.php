@@ -31,6 +31,7 @@ function microblog_general_settings_section() {
 }
 
 function microblog_general_settings_section_header() {
+    echo '</br>';
     // echo '<h3>' . esc_html__('General Tab', 'microblog') . '</h3>';
 }
 
@@ -92,7 +93,7 @@ function microblog_plugin_setting_admin() {
     // Shortcode settings section
     add_settings_section(
         'microblog_general_section_shortcode',
-        '</br>短代码设置',   
+        '</br>微博短代码',   
         'microblog_general_section_shortcode_callback',
         'microblog-settings'
     );
@@ -264,7 +265,7 @@ function microblog_post_title_listNumber_input() {
     ?>
     <label>
         <input type='number' name='microblog_general_data[mb_codepost_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
-        &nbsp;<?php esc_html_e('每页显示数量 ( 区间:[3, 20] )', 'microblog'); ?>
+        &nbsp;<?php esc_html('每页显示数量 ( 区间:[3, 20] )', 'microblog'); ?>
     </label>
     <?php
 }

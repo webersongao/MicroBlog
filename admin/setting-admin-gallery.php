@@ -13,7 +13,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
  * general Panel
 */
 
-// Function to display microlive settings section
+// Function to display Gallery settings section
 function microblog_gallery_settings_section() {
     ?>
     <div class="gallery_settings_header">
@@ -31,10 +31,9 @@ function microblog_gallery_settings_section() {
 }
 
 function microblog_gallery_settings_section_header() {
+    echo '</br>';
     // echo '<h3>' . esc_html__('Gallery Tab', 'microblog') . '</h3>';
 }
-
-
 
 add_action('admin_init', 'microblog_gallery_setting_admin');
 function microblog_gallery_setting_admin() {
@@ -45,21 +44,21 @@ function microblog_gallery_setting_admin() {
         'microblog_gallery_data_sanitize'
     );
 
-        // Gallery settings section
-        add_settings_section(
-            'microblog_gallery_settings_section',
-            '</br>微相册设置',   
-            'microblog_gallery_settings_section_callback',
-            'microblog-gallery-settings'
-        );
+    // Gallery settings section
+    add_settings_section(
+        'microblog_gallery_section_base',
+        '微相册设置',   
+        'microblog_gallery_section_base_callback',
+        'microblog-gallery-settings'
+    );
     
-        add_settings_field(
-            'microblog_77111_listnumber',
-            '微98数',
-            'microblog_77111_listnumber_input',
-            'microblog-gallery-settings',
-            'microblog_gallery_settings_section'
-        );
+    add_settings_field(
+        'microblog_77111_listnumber',
+        '微98数',
+        'microblog_77111_listnumber_input',
+        'microblog-gallery-settings',
+        'microblog_gallery_section_base'
+    );
 
 }
 
@@ -72,8 +71,8 @@ function microblog_gallery_data_sanitize($input) {
 }
 
 // Display shortcode settings section content
-function microblog_gallery_settings_section_callback() {
-    echo '<p>请确认已打开【标题阿嘎】功能 </p>';
+function microblog_gallery_section_base_callback() {
+    echo '<p>请确认已打开【微相册】功能 </p>';
 }
 
 function microblog_77111_listnumber_input() {
@@ -84,7 +83,7 @@ function microblog_77111_listnumber_input() {
     ?>
     <label>
         <input type='number' name='microblog_gallery_data[mb_co4st_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
-        &nbsp;<?php esc_html_e('每页直播显示数量 ( 区间:[3, 20] )', 'microblog'); ?>
+        &nbsp;<?php esc_html('每页直播显示数量 ( 区间:[3, 20] )', 'microblog'); ?>
     </label>
     <?php
 }

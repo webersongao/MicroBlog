@@ -31,6 +31,7 @@ function microblog_liveblog_settings_section() {
 }
 
 function microblog_liveblog_settings_section_header() {
+    echo '</br>';
     // echo '<h3>' . esc_html__('MicroLive Tab', 'microblog') . '</h3>';
 }
 
@@ -48,7 +49,7 @@ function microblog_liveblog_setting_admin() {
         // liveblog settings section
         add_settings_section(
             'microblog_liveblog_section_base',
-            '</br>微直播设置',   
+            '微直播设置',   
             'microblog_liveblog_section_base_callback',
             'microblog-liveblog-settings'
         );
@@ -73,7 +74,7 @@ function microblog_liveblog_data_sanitize($input) {
 
 // Display shortcode settings section content
 function microblog_liveblog_section_base_callback() {
-    echo '<p>请确认已打开【标题阿嘎】功能 </p>';
+    echo '<p>请确认已打开【微直播】功能 </p>';
 }
 
 function microblog_7777_listnumber_input() {
@@ -84,7 +85,7 @@ function microblog_7777_listnumber_input() {
     ?>
     <label>
         <input type='number' name='microblog_liveblog_data[mb_co4st_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
-        &nbsp;<?php esc_html_e('每页直播显示数量 ( 区间:[3, 20] )', 'microblog'); ?>
+        &nbsp;<?php esc_html('每页直播显示数量 ( 区间:[3, 20] )', 'microblog'); ?>
     </label>
     <?php
 }
