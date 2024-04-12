@@ -27,6 +27,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 
 @media screen and (max-width: 760px) {
     .microblog-admin-bar-free {
-        visibility: hidden !important;
+        display: none !important;
     }
 }

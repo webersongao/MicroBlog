@@ -36,7 +36,7 @@ function microblog_admin_settings() {
     ?>
     <div class="wrap">
         <h2>控制面板 | 微博MicroBlog</h2>
-        <div class="admin_settings_header">
+        <div class="admin-settings-header">
             <?php microblog_admin_section_header(); ?>
         </div>
         <!-- Add tab navigation -->
