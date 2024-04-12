@@ -30,3 +30,35 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
         display: none !important;
     }
 }
+
+
+/*  ====== liveblog metabox样式表 ===== */
+
+.mlb-input-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 12px;
+    max-width: 700px;
+    align-items: center;
+}
+
+.mlb-selectize {
+    width: 100%;
+}
+
+.mlb-input-group label {
+    width: 150px;
+    flex-shrink: 0;
+}
+
+@media screen and (max-width: 600px) {
+    .mlb-input-group {
+        display: block;
+    }
+
+    .mlb-input-group label {
+        display: block;
+        margin-bottom: 2px;
+        width: auto;
+    }
+}

@@ -11,13 +11,13 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
-define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
-define('MICROBLOG_PLUGIN_FILE', __FILE__);
 
+define('MICROBLOG_PLUGIN_FILE', __FILE__);
+define( 'MICROBLOG_DOMAIN', 'microblogs-lang' );
 define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('MICROBLOG_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
 
-define( 'MICROBLOG_DOMAIN', 'microblogs-lang' );
 
 $microblog_slug_name = 'microposts';
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));

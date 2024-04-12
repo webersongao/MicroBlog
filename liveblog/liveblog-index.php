@@ -87,12 +87,12 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 		 */
 		public function register_scripts() {
 			if ( is_admin() ) {
-				wp_register_script( 'selectize', mbfun_get_plugin_url() . 'liveblog/assets/selectize/selectize.min.js', array( 'jquery' ), '0.12.4' );
-				wp_register_script( 'mlb-admin', mbfun_get_plugin_url() . 'liveblog/assets/js/liveblog-admin.js', array( 'jquery', 'selectize' ), $this->get_plugin_version() );
+				wp_register_script( 'selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.min.js', array( 'jquery' ), '0.12.4' );
+				wp_register_script( 'mlb-admin', mbfun_get_plugin_url() . 'assets/js/liveblog-admin.js', array( 'jquery', 'selectize' ), $this->get_plugin_version() );
 			}
 
 			if ( ! is_admin() ) {
-				wp_register_script( 'micro_lb', mbfun_get_plugin_url() . 'liveblog/assets/js/liveblog.js', array( 'jquery' ), $this->get_plugin_version() );
+				wp_register_script( 'micro_lb', mbfun_get_plugin_url() . 'assets/js/liveblog.js', array( 'jquery' ), $this->get_plugin_version() );
 				wp_localize_script(
 					'micro_lb',
 					'micro_lb',
@@ -117,17 +117,15 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 
 			if ( is_admin() ) {
 
-				wp_register_style( 'selectize', mbfun_get_plugin_url() . 'liveblog/assets/selectize/selectize.default.css', null, '0.12.4' );
-				wp_register_style( 'mlb-admin', mbfun_get_plugin_url() . 'liveblog/assets/css/liveblog-admin.css', null, mbfun_get_plugin_version() );
-
-				wp_enqueue_style( 'mlb-admin' );
+				wp_register_style( 'selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.default.css', null, '0.12.4' );
+				// wp_enqueue_style( 'selectize' );
 
 			} else {
 
 				$theme = mlb_get_theme();
 
 				if ( $theme !== 'none' ) {
-					wp_register_style( 'mlb-theme-' . $theme, mbfun_get_plugin_url() . 'liveblog/assets/css/themes/' . $theme . '.css', null, mbfun_get_plugin_version() );
+					wp_register_style( 'mlb-theme-' . $theme, mbfun_get_plugin_url() . 'assets/css/themes/' . $theme . '.css', null, mbfun_get_plugin_version() );
 				}
 
 				wp_enqueue_style( 'mlb-theme-' . $theme );
@@ -145,7 +143,7 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 			if ( file_exists( $mofile_global ) ) {
 				load_textdomain( MICROBLOG_DOMAIN, $mofile_global );
 			} else {
-				load_plugin_textdomain( MICROBLOG_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+				load_plugin_textdomain( MICROBLOG_DOMAIN, false, mbfun_get_plugin_url() . '/languages/' );
 			}
 		}
 
