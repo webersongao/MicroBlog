@@ -7,17 +7,17 @@ Description: 在仪表板中添加一个小部件，用于快速发布微博类�
 require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 
 // 注册插件小部件
-function register_quick_micropost_widget() {
+function mbfun_register_quick_micropost_widget() {
     wp_add_dashboard_widget(
         'quick_micropost_widget', // Widget ID
         '快速发微博', // Widget Title
-        'display_quick_micropost_widget' // Callback function
+        'mbfun_display_quick_micropost_widget' // Callback function
     );
 }
-add_action('wp_dashboard_setup', 'register_quick_micropost_widget');
+add_action('wp_dashboard_setup', 'mbfun_register_quick_micropost_widget');
 
 // 小部件内容
-function display_quick_micropost_widget() {
+function mbfun_display_quick_micropost_widget() {
     ?>
     <form id="quick-micropost-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
         <label for="quick-micropost-title">标题：</label>
@@ -33,7 +33,7 @@ function display_quick_micropost_widget() {
 }
 
 // 处理表单提交
-function handle_quick_micropost_submission() {
+function mbfun_handle_quick_micropost_submission() {
     if (isset($_POST['micropost_content']) && isset($_POST['quick-micropost-nonce'])) {
         if (wp_verify_nonce($_POST['quick-micropost-nonce'], 'quick-micropost-action')) {
             $post_title = isset($_POST['micropost_title']) ? sanitize_text_field($_POST['micropost_title']) : '微博 ' . gmdate('Y-m-d H:i');
@@ -74,7 +74,7 @@ function handle_quick_micropost_submission() {
 }
 
 // 注册 admin-post.php 处理程序
-add_action('admin_post_quick_micropost', 'handle_quick_micropost_submission');
-add_action('admin_post_nopriv_quick_micropost', 'handle_quick_micropost_submission');
+add_action('admin_post_quick_micropost', 'mbfun_handle_quick_micropost_submission');
+add_action('admin_post_nopriv_quick_micropost', 'mbfun_handle_quick_micropost_submission');
 
 ?>

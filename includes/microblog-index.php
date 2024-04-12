@@ -3,8 +3,8 @@
 
 require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 
-add_action('init', 'create_micropost_type');
-function create_micropost_type() {
+add_action('init', 'mbfun_create_micropost_type');
+function mbfun_create_micropost_type() {
     $microtag = false;
     $options = mbfun_get_general_settings();
     $supports = array('title', 'editor', 'comments'); // 默认支持的参数
@@ -27,12 +27,12 @@ function create_micropost_type() {
         $supports = array_unique($supports);
     }
 
-    register_micropost_type($supports, $microtag);
+    mbfun_register_micropost_type($supports, $microtag);
 }
 
 // 合并mocroblog的feed输出 ，并格式化标题
-add_action('pre_get_posts', 'customize_main_query');
-function customize_main_query($query) {
+add_action('pre_get_posts', 'mbfun_customize_main_query');
+function mbfun_customize_main_query($query) {
     if (is_admin() || !$query->is_main_query() || !($query->is_feed)) {
         return;
     }
@@ -47,31 +47,31 @@ function customize_main_query($query) {
             if (!is_post_type_archive('micropost')){
                 $query->set('post_type', array('post', 'micropost'));
             }
-            add_filter('the_title', 'formart_microblog_feed_title', 10, 2);
+            add_filter('the_title', 'microblog_formart_micropost_feed_title', 10, 2);
         }
     }
 }
 
 // Add rewrite rule for microblog permalink structure
-add_action('init', 'custom_microblog_rewrite_rule');
-function custom_microblog_rewrite_rule() {
-    $slug_name = get_microblog_slug_name(); // 获取微博的 slug
+add_action('init', 'mbfun_custom_microblog_rewrite_rule');
+function mbfun_custom_microblog_rewrite_rule() {
+    $slug_name = microblog_get_microposts_slug_name(); // 获取微博的 slug
     add_rewrite_rule('^' . $slug_name . '/([0-9]+)\.html/?$', 'index.php?post_type=micropost&p=$matches[1]', 'top');
 }
 
 // Modify microblog permalink structure
-add_filter('post_type_link', 'custom_microblog_permalink', 10, 2);
-function custom_microblog_permalink($permalink, $post) {
+add_filter('post_type_link', 'mbfun_custom_microblog_permalink', 10, 2);
+function mbfun_custom_microblog_permalink($permalink, $post) {
     if ('micropost' === get_post_type($post)) {
-        $slug_name = get_microblog_slug_name();
+        $slug_name = microblog_get_microposts_slug_name();
         return home_url($slug_name . '/' . $post->ID . '.html');
     }
     return $permalink;
 }
 
 // 处理分页
-add_filter('request', 'remove_page_from_query_string');
-function remove_page_from_query_string($query_string) {
+add_filter('request', 'mbfun_remove_page_from_query_string');
+function mbfun_remove_page_from_query_string($query_string) {
     if (isset($query_string['name']) && isset($query_string['paged'])) {
         unset($query_string['name']);
         @list($delim, $page_index) = explode('/', $query_string['paged']);
@@ -81,8 +81,8 @@ function remove_page_from_query_string($query_string) {
 }
 
 // adapted from Custom Post Type Category Pagination
-add_filter('request', 'fix_category_pagination');
-function fix_category_pagination($qs) {
+add_filter('request', 'mbfun_fix_category_pagination');
+function mbfun_fix_category_pagination($qs) {
     if (isset($qs['category_name']) && isset($qs['paged'])) {
         $qs['post_type'] = get_post_types(array('public' => true, '_builtin' => false));
         array_push($qs['post_type'], 'post');

@@ -3,8 +3,8 @@
 
 require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 
-add_action('widgets_init', 'load_microblog_widget');
-function load_microblog_widget() {
+add_action('widgets_init', 'mbfun_load_microblog_widget');
+function mbfun_load_microblog_widget() {
     register_widget('Microblog_SideWidget');
 }
 
@@ -101,7 +101,7 @@ class Microblog_SideWidget extends WP_Widget {
             if (comments_open() || $show_date) {
                 $out .= "<div class='microblog-widget-bottom'>";
                 if ($show_date) {
-                    $out .= "<span class='microblog-widget-bottom-date'>" . micropost_format_time(strtotime($post->post_date)) . "</span>";
+                    $out .= "<span class='microblog-widget-bottom-date'>" . mbfun_micropost_format_time(strtotime($post->post_date)) . "</span>";
                 }
                 if (comments_open()) {
                     $out .= "<span class='microblog-widget-bottom-comment'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a>" . "</span>";
@@ -121,7 +121,7 @@ class Microblog_SideWidget extends WP_Widget {
         if ($show_rss) {
             $rssout = "";
             $rssout .= "<span class='microblog-widget-rss'>";
-            $rssout .= '<a target="_blank" href="' . esc_url(get_site_url() . '/' . get_microblog_slug_name() . '/feed') . '" class="rss"><img src="' . esc_url(site_url() . '/wp-includes/images/rss.png') . '" style="width: 18px; height: 18px;"></a>';
+            $rssout .= '<a target="_blank" href="' . esc_url(get_site_url() . '/' . microblog_get_microposts_slug_name() . '/feed') . '" class="rss"><img src="' . esc_url(site_url() . '/wp-includes/images/rss.png') . '" style="width: 18px; height: 18px;"></a>';
             $rssout .= "</span>";
             echo wp_kses_post($rssout);
         }

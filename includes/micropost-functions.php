@@ -3,9 +3,9 @@
 
 global $microblog_slug_name;
 
-function register_micropost_type($supports, $tageEnable = false) {
+function mbfun_register_micropost_type($supports, $tageEnable = false) {
 
-    $slug_name = get_microblog_slug_name();
+    $slug_name = microblog_get_microposts_slug_name();
     if (empty($supports)) { $supports = array('title', 'editor','comments');}
     $labels = array(
         'name' => __('微博'),
@@ -64,13 +64,13 @@ function register_micropost_type($supports, $tageEnable = false) {
     );
     register_post_type('micropost', $args);
     
-    register_micropost_taxonomy($tageEnable);
+    mbfun_register_micropost_taxonomy($tageEnable);
     
     flush_rewrite_rules();
 }
 
 
-function register_micropost_taxonomy($enable) {
+function mbfun_register_micropost_taxonomy($enable) {
     
     if (!$enable) {
         return;
@@ -134,14 +134,14 @@ function mbfun_get_general_settings() {
 }
 
 // 更新全局变量的示例
-function update_global_microblog_option($new_value) {
+function mbfun_update_global_microblog_option($new_value) {
     if (!is_string($new_value)) { return; }
     global $microblog_slug_name;
     $microblog_slug_name = $new_value;
 }
 
 
-function micropost_format_time($post_time) {
+function mbfun_micropost_format_time($post_time) {
     
     $options = mbfun_get_general_settings();
     $date_format = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
@@ -152,12 +152,12 @@ function micropost_format_time($post_time) {
         return date_i18n(get_option('date_format'), $post_time);
     } elseif ($date_format == 'date_human') {
         // 格式化模糊时间
-        return post_fuzzy_time($post_time);
+        return mbfun_post_fuzzy_time($post_time);
     }
     return date_i18n(get_option('date_format'), $post_time);
 }
 
-function post_fuzzy_time($post_time) {
+function mbfun_post_fuzzy_time($post_time) {
     $time_diff = current_time('timestamp') - $post_time;
     if ($time_diff < 60) {
         return '刚刚';
@@ -178,7 +178,7 @@ function micropost_excerpt_more($more) {
     return ' ...';
 }
 
-function get_microblog_slug_name() {
+function microblog_get_microposts_slug_name() {
     global $microblog_slug_name;
     if (!empty($microblog_slug_name)) {
         return $microblog_slug_name;
@@ -189,7 +189,7 @@ function get_microblog_slug_name() {
     if (empty($slug_name)) { $slug_name = 'microposts'; }
 
     // 设置全局变量
-    update_global_microblog_option($slug_name);
+    mbfun_update_global_microblog_option($slug_name);
 
     return $slug_name;
 }
@@ -202,7 +202,7 @@ function microblog_enqueue_scripts_and_styles() {
 }
 
 // 全站Feed中格式化输出 微博 标题
-function formart_microblog_feed_title($title, $post_id) {
+function microblog_formart_micropost_feed_title($title, $post_id) {
     $post_type = get_post_type($post_id);
     if ($post_type === 'micropost') {
         return '【微博】：' . $title;

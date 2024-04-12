@@ -54,7 +54,7 @@ function microblog_shortcode($atts) {
             $out .= "<span class='mb-shortcode-post-avatar'>" . $author_avatar . "</span>";
             $out .= "<span class='mb-shortcode-post-username'>" . $author_name . "</span>";
             if ($show_date) {
-                $out .= "<span class='mb-shortcode-post-date'>" . micropost_format_time(strtotime($post->post_date)) . "</span>";
+                $out .= "<span class='mb-shortcode-post-date'>" . mbfun_micropost_format_time(strtotime($post->post_date)) . "</span>";
             }
             $out .= "</div>";
 
@@ -68,7 +68,7 @@ function microblog_shortcode($atts) {
                 $out .= "<p>" . get_the_excerpt() . "</p>";
                 remove_filter('excerpt_more', 'micropost_excerpt_more');
             } else {
-                $out .= micropost_shortcode_content();
+                $out .= mbfun_get_micropost_content();
             }
             /* =======   图片九宫格  --- 开始   */
             $post_content = get_the_content();
@@ -105,7 +105,7 @@ function microblog_shortcode($atts) {
             // =======   图片九宫格  --- 结束 ----- */   
             $out .= "</div>";
             // 底部评论按钮
-            $outtopics = get_micropost_tags();
+            $outtopics = mbfun_get_micropost_tags();
             $titleShow = (strlen($post_title) && $position_option && (in_array('titlebottom', $options['mb_title_position']))) ? true : false;
             if ($titleShow || comments_open()){
                 $out .= "<div class='mb-shortcode-post-comment'>";
@@ -113,7 +113,7 @@ function microblog_shortcode($atts) {
                     $out .= "<span class='mb-shortcode-post-comment-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
                 }
                 if (!empty($outtopics)){
-                    $out .= "<span class='mb-shortcode-post-comment-topics'>" . get_micropost_tags() . "</span>";
+                    $out .= "<span class='mb-shortcode-post-comment-topics'>" . mbfun_get_micropost_tags() . "</span>";
                 }
                 if (comments_open()) {
                     $out .= "<span class='mb-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
@@ -134,7 +134,7 @@ function microblog_shortcode($atts) {
         $out .= "</div>";
         // 查看所有
         $out .= "<div class='mb-shortcode-loadmore'>";
-        $out .= "<a target='_blank' href='" . home_url(get_microblog_slug_name()) . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;查看全部...</a></div>";
+        $out .= "<a target='_blank' href='" . home_url(microblog_get_microposts_slug_name()) . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;查看全部...</a></div>";
     } else {
         $out .= "<div class='microblog-shortcode'><p>" . wp_kses($null_text, array()) . "</p></div>";
     }
@@ -145,7 +145,7 @@ function microblog_shortcode($atts) {
     return $out;
 }
 
-function get_micropost_tags() {
+function mbfun_get_micropost_tags() {
     global $post;
     $tags_string = '';
     $post_tags = has_term('', 'micropost_topic', $post) ? wp_get_post_terms($post->ID, 'micropost_topic') : array();
@@ -158,7 +158,7 @@ function get_micropost_tags() {
 }
 
 
-function micropost_shortcode_content() {
+function mbfun_get_micropost_content() {
     global $post;
     $post_content = $post->post_content;
     // 古腾堡

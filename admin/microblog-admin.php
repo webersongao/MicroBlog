@@ -33,11 +33,11 @@ function microblog_admin_settings() {
     <div class="wrap">
         <h2>控制面板 | 微博MicroBlog</h2>
         <div class="admin_settings_header">
-            <?php admin_settings_section_header(); ?>
+            <?php microblog_admin_section_header(); ?>
         </div>
         <!-- Add tab navigation -->
         <h2 class="nav-tab-wrapper">
-            <a href="?page=MicroBlog%2Fmicroblog.php&tab=general" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'general') ? 'nav-tab-active' : ''; ?>">基础</a>
+            <a href="?page=MicroBlog%2Fmicroblog.php&tab=general" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'general') ? 'nav-tab-active' : ''; ?>">基础设置</a>
             <!-- <a href="?page=MicroBlog%2Fmicroblog.php&tab=gallery" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'gallery') ? 'nav-tab-active' : ''; ?>">微相册</a> -->
             <a href="?page=MicroBlog%2Fmicroblog.php&tab=liveblog" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : ''; ?>">微直播</a>
         </h2>
@@ -58,7 +58,7 @@ function microblog_admin_settings() {
 }
 
 // Display general settings section content
-function admin_settings_section_header() {
+function microblog_admin_section_header() {
     global $plugin_version;
     $out = '';
     $out .= '<div class="microblog-admin-header" style="margin-bottom: 15px;">';

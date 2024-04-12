@@ -17,7 +17,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 function microblog_general_settings_section() {
     ?>
     <div class="general_settings_header">
-        <?php general_settings_section_header(); ?>
+        <?php microblog_general_settings_section_header(); ?>
     </div>
     <?php settings_errors('microblog_general_data'); ?>
     <form method="post" action="options.php">
@@ -30,7 +30,7 @@ function microblog_general_settings_section() {
     <?php
 }
 
-function general_settings_section_header() {
+function microblog_general_settings_section_header() {
     // echo '<h3>' . esc_html__('General Tab', 'microblog') . '</h3>';
 }
 
@@ -47,9 +47,9 @@ function microblog_plugin_setting_admin() {
     
     // General settings section
     add_settings_section(
-        'general_settings_section_base',
-        '基本设置',
-        'general_settings_section_base_callback',
+        'microblog_general_section_base',
+        '微博设置',
+        'microblog_general_section_base_callback',
         'microblog-settings'
     );
 
@@ -58,42 +58,42 @@ function microblog_plugin_setting_admin() {
         '标题',
         'microblog_post_title_show_input',
         'microblog-settings',
-        'general_settings_section_base'
+        'microblog_general_section_base'
     );
     add_settings_field(
         'microblog_post_rss_feed',
         'RSS订阅',
         'microblog_post_rss_feed_input',
         'microblog-settings',
-        'general_settings_section_base'
+        'microblog_general_section_base'
     );
     add_settings_field(
         'microblog_post_editor_func',
         '编辑器',
         'microblog_post_editor_func_callback',
         'microblog-settings',
-        'general_settings_section_base'
+        'microblog_general_section_base'
     );
     add_settings_field(
         'microblog_post_title_listdate',
         '时间格式',
         'microblog_post_title_listdate_input',
         'microblog-settings',
-        'general_settings_section_base'
+        'microblog_general_section_base'
     );
     add_settings_field(
         'microblog_post_slug_name',
         'URL slug',
         'microblog_post_slug_name_callback',
         'microblog-settings',
-        'general_settings_section_base'
+        'microblog_general_section_base'
     );
     
     // Shortcode settings section
     add_settings_section(
-        'general_settings_section_shortcode',
+        'microblog_general_section_shortcode',
         '</br>短代码设置',   
-        'general_settings_section_shortcode_callback',
+        'microblog_general_section_shortcode_callback',
         'microblog-settings'
     );
 
@@ -102,21 +102,21 @@ function microblog_plugin_setting_admin() {
         '微博数',
         'microblog_post_title_listNumber_input',
         'microblog-settings',
-        'general_settings_section_shortcode'
+        'microblog_general_section_shortcode'
     );
     add_settings_field(
         'microblog_post_title_position',
         '标题位置',
         'microblog_post_title_position_input',
         'microblog-settings',
-        'general_settings_section_shortcode'
+        'microblog_general_section_shortcode'
     );
     add_settings_field(
         'microblog_post_image_lightbox',
         '灯箱LightBox',
         'microblog_post_image_lightbox_input',
         'microblog-settings',
-        'general_settings_section_shortcode'
+        'microblog_general_section_shortcode'
     );
 }
 
@@ -127,7 +127,7 @@ function microblog_general_data_sanitize($input) {
         $slug_name = strtolower(sanitize_title($input['mb_slug_name']));
         if (preg_match('/^[a-z0-9]{1,20}$/', $slug_name)) {
             $input['mb_slug_name'] = $slug_name;
-            update_global_microblog_option($slug_name);
+            mbfun_update_global_microblog_option($slug_name);
         } else {
             // 如果 slug 名不符合要求，添加错误消息
             add_settings_error(
@@ -139,13 +139,13 @@ function microblog_general_data_sanitize($input) {
             return mbfun_get_general_settings();
         }
     }
-    update_micropost_type_supports($input); // 更新 register_post_type 的 supports 参数
+    microblog_update_micropost_type_support($input); // 更新 register_post_type 的 supports 参数
     flush_rewrite_rules(); // 刷新重写规则
     return $input;
 }
 
 // 更新自定义文章类型的支持项
-function update_micropost_type_supports($options) {
+function microblog_update_micropost_type_support($options) {
     if (empty($options)) { return; }
     $microtag = false;
     $supports = array('title', 'editor','comments'); // 默认支持的参数
@@ -165,17 +165,17 @@ function update_micropost_type_supports($options) {
             $microtag = true;
         }
     }
-    register_micropost_type($supports, $microtag); // 更新自定义文章类型的支持项
+    mbfun_register_micropost_type($supports, $microtag); // 更新自定义文章类型的支持项
 }
 
 
 // Display general settings section content
-function general_settings_section_base_callback() {
+function microblog_general_section_base_callback() {
     echo '<p>请确认已插入 [microblog] 到页面 或 已添加 [微博] 小工具</p>';
 }
 
 // Display shortcode settings section content
-function general_settings_section_shortcode_callback() {
+function microblog_general_section_shortcode_callback() {
     echo '<p>请确认已打开【标题显示】功能 </p>';
 }
 

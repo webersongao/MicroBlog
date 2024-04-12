@@ -17,7 +17,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 function microblog_liveblog_settings_section() {
     ?>
     <div class="microlive_settings_header">
-        <?php microlive_settings_section_header(); ?>
+        <?php microblog_liveblog_settings_section_header(); ?>
     </div>
     <?php settings_errors('microblog_liveblog_data'); ?>
     <form method="post" action="options.php">
@@ -30,7 +30,7 @@ function microblog_liveblog_settings_section() {
     <?php
 }
 
-function microlive_settings_section_header() {
+function microblog_liveblog_settings_section_header() {
     // echo '<h3>' . esc_html__('MicroLive Tab', 'microblog') . '</h3>';
 }
 
@@ -47,9 +47,9 @@ function microblog_liveblog_setting_admin() {
 
         // liveblog settings section
         add_settings_section(
-            'general_settings_section_666',
+            'microblog_liveblog_section_base',
             '</br>微直播设置',   
-            'general_settings_section_666_callback',
+            'microblog_liveblog_section_base_callback',
             'microblog-liveblog-settings'
         );
     
@@ -58,7 +58,7 @@ function microblog_liveblog_setting_admin() {
             '微直数',
             'microblog_7777_listnumber_input',
             'microblog-liveblog-settings',
-            'general_settings_section_666'
+            'microblog_liveblog_section_base'
         );
 
 }
@@ -72,7 +72,7 @@ function microblog_liveblog_data_sanitize($input) {
 }
 
 // Display shortcode settings section content
-function general_settings_section_666_callback() {
+function microblog_liveblog_section_base_callback() {
     echo '<p>请确认已打开【标题阿嘎】功能 </p>';
 }
 

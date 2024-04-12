@@ -17,7 +17,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 function microblog_gallery_settings_section() {
     ?>
     <div class="gallery_settings_header">
-        <?php microgallery_settings_section_header(); ?>
+        <?php microblog_gallery_settings_section_header(); ?>
     </div>
     <?php settings_errors('microblog_gallery_data'); ?>
     <form method="post" action="options.php">
@@ -30,7 +30,7 @@ function microblog_gallery_settings_section() {
     <?php
 }
 
-function microgallery_settings_section_header() {
+function microblog_gallery_settings_section_header() {
     // echo '<h3>' . esc_html__('Gallery Tab', 'microblog') . '</h3>';
 }
 
@@ -47,9 +47,9 @@ function microblog_gallery_setting_admin() {
 
         // Gallery settings section
         add_settings_section(
-            'general_settings_section_400',
+            'microblog_gallery_settings_section',
             '</br>微相册设置',   
-            'general_settings_section_400_callback',
+            'microblog_gallery_settings_section_callback',
             'microblog-gallery-settings'
         );
     
@@ -58,7 +58,7 @@ function microblog_gallery_setting_admin() {
             '微98数',
             'microblog_77111_listnumber_input',
             'microblog-gallery-settings',
-            'general_settings_section_400'
+            'microblog_gallery_settings_section'
         );
 
 }
@@ -72,7 +72,7 @@ function microblog_gallery_data_sanitize($input) {
 }
 
 // Display shortcode settings section content
-function general_settings_section_400_callback() {
+function microblog_gallery_settings_section_callback() {
     echo '<p>请确认已打开【标题阿嘎】功能 </p>';
 }
 
