@@ -8,14 +8,16 @@
  * Author URI: https://www.webersongao.com
  * Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
  */
-
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
 define('MICROBLOG_PLUGIN_FILE', __FILE__);
 
 define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('MICROBLOG_PLUGIN_PATH', plugin_dir_path(__FILE__));
 
-define( 'MICROBLOG_DOMAIN', 'micro-liveblogs' );
+define( 'MICROBLOG_DOMAIN', 'microblogs-lang' );
 
 // self::$instance->plugin_path = plugin_dir_path( __FILE__ );
 // self::$instance->plugin_url  = plugin_dir_url( __FILE__ );
@@ -62,21 +64,21 @@ function microblog_setting_action_links($links, $file) {
 // 注册激活插件时，设置默认数据
 register_activation_hook( __FILE__, 'microblog_plugin_data_activation' );
 function microblog_plugin_data_activation() {
-    $options = mbfun_get_general_settings();
+    $options = mbfun_get_micropost_settings();
     if (empty($options)) {
         $defaults = array(
             'mb_title_show' => true,
             'mb_date_format' => 'date_human',
             'mb_title_position' => array('titlebottom'),
         );
-        add_option('microblog_general_data', $defaults);
+        add_option('microblog_micropost_data', $defaults);
     }
 }
 // 注册卸载插件时运行的函数
 register_uninstall_hook( __FILE__, 'microblog_plugin_uninstall' );
 function microblog_plugin_uninstall() {
     // 删除选项
-    delete_option('microblog_general_data');
+    delete_option('microblog_micropost_data');
     delete_option('widget_microblog_widget');
     // 还可以执行其他清理操作，如删除数据库条目等
 }

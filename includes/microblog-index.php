@@ -1,12 +1,16 @@
 <?php
 // microblog-widget.php
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 
 add_action('init', 'mbfun_create_micropost_type');
 function mbfun_create_micropost_type() {
     $microtag = false;
-    $options = mbfun_get_general_settings();
+    $options = mbfun_get_micropost_settings();
     $supports = array('title', 'editor', 'comments'); // 默认支持的参数
     // 如果$options存在并且不为空，则更新supports参数
     if (!empty($options) && isset($options['mb_editor_func'])) {
@@ -41,7 +45,7 @@ function mbfun_customize_main_query($query) {
         $page_num = $feed_num ? intval($feed_num) : 10;
         $query->set('posts_per_rss', $page_num); 
     } else {
-        $options = mbfun_get_general_settings();
+        $options = mbfun_get_micropost_settings();
         $feed_miropost = isset($options['mb_rss_feed']) ? $options['mb_rss_feed'] : false;
         if ($feed_miropost){
             if (!is_post_type_archive('micropost')){

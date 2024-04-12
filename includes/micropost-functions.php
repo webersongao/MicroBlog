@@ -1,5 +1,9 @@
 <?php
-// micropost-functions.php
+// 核心公共函数库.php
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 function mbfun_register_micropost_type($supports, $tageEnable = false) {
 
@@ -116,8 +120,8 @@ function mbfun_register_micropost_taxonomy($enable) {
     register_taxonomy_for_object_type('micropost_topic', 'micropost');
 }
 
-function mbfun_get_general_settings() {
-	$settings = get_option( 'microblog_general_data', array() );
+function mbfun_get_micropost_settings() {
+	$settings = get_option( 'microblog_micropost_data', array() );
 	return $settings;
 }
 
@@ -126,13 +130,13 @@ function mbfun_get_live_settings() {
 	return $settings;
 }
 
-function mbfun_get_gallery_settings() {
-	$settings = get_option( 'microblog_gallery_data', array() );
+function mbfun_get_general_settings() {
+	$settings = get_option( 'microblog_general_data', array() );
 	return $settings;
 }
 
-function mbfun_get_general_slug_name() {
-	$options = mbfun_get_general_settings();
+function mbfun_get_micropost_slug_name() {
+	$options = mbfun_get_micropost_settings();
     $slug_name = isset($options['mb_slug_name']) ? $options['mb_slug_name'] : 'microposts'; 
 	return $slug_name;
 }
@@ -147,7 +151,7 @@ function mbfun_update_global_microblog_option($new_value) {
 
 function mbfun_micropost_format_time($post_time) {
     
-    $options = mbfun_get_general_settings();
+    $options = mbfun_get_micropost_settings();
     $date_format = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
     if ($date_format == 'date_hide'){
         // return date('m-d H:i', $post_time);
@@ -187,7 +191,7 @@ function microblog_get_microposts_slug_name() {
     if (!empty($microblog_slug_name)) {
         return $microblog_slug_name;
     }
-    $slug_name = mbfun_get_general_slug_name(); 
+    $slug_name = mbfun_get_micropost_slug_name(); 
     $slug_name = preg_replace('/[^a-zA-Z0-9]/', '', $slug_name); // 过滤非法字符
     if (empty($slug_name)) { $slug_name = 'microposts'; }
 
@@ -281,7 +285,7 @@ function mbfun_get_plugin_version() {
  * Get settings
  */
 function mlb_get_settings() {
-	$settings = get_option( 'microlive_settings_data', array() );
+	$settings = get_option( 'microblog_liveblog_data', array() );
 	return apply_filters( 'mlb_settings', $settings );
 }
 

@@ -1,5 +1,8 @@
 <?php
 // microblog-widget.php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 
@@ -71,7 +74,7 @@ class Microblog_SideWidget extends WP_Widget {
             'post_status' => 'publish',
             'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
         );
-        $options = mbfun_get_general_settings();
+        $options = mbfun_get_micropost_settings();
         $show_date = true;//(isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
         
         $query_results = new WP_Query($query);

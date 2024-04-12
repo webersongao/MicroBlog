@@ -3,6 +3,9 @@
 /*
 Description: 在仪表板中添加一个小部件，用于快速发布微博类型的文章。
 */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
 

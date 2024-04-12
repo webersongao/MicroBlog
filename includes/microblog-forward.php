@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 // 添加操作链接
 function mbfun_add_forward_link($actions, $post) {
     if ($post->post_type === 'micropost') {

@@ -1,14 +1,16 @@
 <?php
 // microblog-shortcode.php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
-
 
 add_shortcode('microblog', 'microblog_shortcode');
 
 function microblog_shortcode($atts) {
 
-    $options = mbfun_get_general_settings();
+    $options = mbfun_get_micropost_settings();
 
     extract(shortcode_atts(array(
         'null_text' => '(none)',

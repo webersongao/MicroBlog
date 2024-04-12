@@ -51,9 +51,7 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 		 */
 		public function includes() {
 			global $mlb_options;
-
-			require_once mbfun_get_plugin_path() . 'admin/live-settings-section.php';
-
+			
 			$mlb_options = mlb_get_settings();
 
 			require_once $this->get_plugin_path() . 'includes/class-liveblog.php';
@@ -155,7 +153,7 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 		public function load_textdomain() {
 			$mofile = sprintf( '%1$s-%2$s.mo', MICROBLOG_DOMAIN, get_locale() );
 
-			$mofile_global = WP_LANG_DIR . '/plugins/micro-liveblogs/' . $mofile;
+			$mofile_global = WP_LANG_DIR . '/plugins/microblogs/' . $mofile;
 
 			if ( file_exists( $mofile_global ) ) {
 				load_textdomain( MICROBLOG_DOMAIN, $mofile_global );

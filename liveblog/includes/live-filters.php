@@ -140,7 +140,7 @@ add_action( 'loop_start', 'mlb_apply_title_prefix_filter_condition', 1, 10 );
  * @return array
  */
 function mlb_set_show_liveblog_column( $columns ) {
-	$columns['mlb_liveblog'] = __( '连载原文', MICROBLOG_DOMAIN );
+	$columns['mlb_liveblog'] = __( '直播原文', MICROBLOG_DOMAIN );
 
 	return $columns;
 }
