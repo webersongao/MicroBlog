@@ -22,3 +22,11 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 #quick-micropost-content { width: 100%;  max-width: 100%;  margin-bottom: 10px; padding: 5px; }
 .button.button-primary.button-large {max-width: 200px;  border: none; }
 #quick-micropost-message { color:#2271b1; float: right;}
+
+
+
+@media screen and (max-width: 760px) {
+    .microblog-admin-bar-free {
+        visibility: hidden !important;
+    }
+}

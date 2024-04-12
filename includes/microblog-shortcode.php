@@ -116,9 +116,9 @@ function microblog_shortcode($atts) {
                     $out .= "<span class='mb-shortcode-post-comment-topics'>" . mbfun_get_micropost_tags() . "</span>";
                 }
                 if (comments_open()) {
-                    $out .= "<span class='mb-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
+                    $out .= "<span class='mb-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'assets/images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
                 } else {
-                    $out .= "<span class='mb-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
+                    $out .= "<span class='mb-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'assets/images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
                 }
                 $out .= "</div>";
             }
@@ -134,7 +134,7 @@ function microblog_shortcode($atts) {
         $out .= "</div>";
         // 查看所有
         $out .= "<div class='mb-shortcode-loadmore'>";
-        $out .= "<a target='_blank' href='" . home_url(microblog_get_microposts_slug_name()) . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;查看全部...</a></div>";
+        $out .= "<a target='_blank' href='" . home_url(microblog_get_microposts_slug_name()) . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'assets/images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;查看全部...</a></div>";
     } else {
         $out .= "<div class='microblog-shortcode'><p>" . wp_kses($null_text, array()) . "</p></div>";
     }

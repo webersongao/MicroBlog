@@ -20,8 +20,8 @@ require_once(plugin_dir_path(__FILE__) . 'setting-admin-liveblog.php');
 function microblog_admin_enqueue_scripts() {
     if (is_admin()) {
         global $plugin_version;
-        wp_enqueue_style('microblog-admin-css', plugin_dir_url(__FILE__) . '../css/admin-style.css', array(), $plugin_version);
-        wp_enqueue_script('microblog-script', plugin_dir_url(__FILE__) . '../js/admin-scripts.js', array(), $plugin_version, true);
+        wp_enqueue_style('microblog-admin-css', plugin_dir_url(__FILE__) . '../assets/css/admin-style.css', array(), $plugin_version);
+        wp_enqueue_script('microblog-script', plugin_dir_url(__FILE__) . '../assets/js/admin-scripts.js', array(), $plugin_version, true);
     }
 }
 add_action('admin_enqueue_scripts', 'microblog_admin_enqueue_scripts');
@@ -64,7 +64,7 @@ function microblog_admin_section_header() {
     $out .= '<div class="microblog-admin-header" style="margin-bottom: 15px;">';
     $out .= '<div class="microblog-admin-leftbar">';
     $out .= '<span class="microblog-admin-logo">';
-    $out .= '<img src="' . esc_url(plugin_dir_url(dirname(__FILE__))) . 'images/microblog-logo.png">';
+    $out .= '<img src="' . esc_url(plugin_dir_url(dirname(__FILE__))) . 'assets/images/microblog-logo.png">';
     $out .= '</span>';
     // translators: %s is replaced with the plugin version
     $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', 'microblog') . '</span>';

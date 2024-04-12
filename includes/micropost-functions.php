@@ -197,8 +197,8 @@ function microblog_get_microposts_slug_name() {
 // 引入js
 function microblog_enqueue_scripts_and_styles() {
     global $plugin_version;
-    wp_enqueue_style('microblog-style', plugins_url('css/microblog-style.css', dirname(__FILE__)), array(), $plugin_version, 'all', true);
-    wp_enqueue_script('microblog-script', plugins_url('js/microblog-script.js', dirname(__FILE__)), array(), $plugin_version, true);
+    wp_enqueue_style('microblog-style', plugins_url('assets/css/microblog-style.css', dirname(__FILE__)), array(), $plugin_version, 'all', true);
+    wp_enqueue_script('microblog-script', plugins_url('assets/js/microblog-script.js', dirname(__FILE__)), array(), $plugin_version, true);
 }
 
 // 全站Feed中格式化输出 微博 标题
