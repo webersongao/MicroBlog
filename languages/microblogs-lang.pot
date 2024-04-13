@@ -108,21 +108,21 @@ msgstr ""
 msgid "The callback function used for the %s setting is missing."
 msgstr ""
 
-#: includes/class-liveblog.php:59
+#: includes/live-class-liveblog.php:59
 #, php-format
 msgid ""
 "<a class=\"mlb-view-liveblog-link button\" href=\"%s\">View the liveblog</a>"
 msgstr ""
 
-#: includes/class-liveblog.php:71
+#: includes/live-class-liveblog.php:71
 msgid "The liveblog has ended."
 msgstr ""
 
-#: includes/class-liveblog.php:77
+#: includes/live-class-liveblog.php:77
 msgid "No liveblog updates yet."
 msgstr ""
 
-#: includes/class-liveblog.php:103
+#: includes/live-class-liveblog.php:103
 msgid "Load more"
 msgstr ""
 

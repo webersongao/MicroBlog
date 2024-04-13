@@ -77,8 +77,8 @@ function mlb_render_liveblog_options( $post_id ) {
 
 	do_action( 'mlb_render_before_liveblog_options', $post_id );
 	?>
-	<label for="mlb-is-liveblog">
-		<input type="checkbox" name="_micro_post_live_enable" value="1" <?php checked( $is_liveblog, '1', true ); ?> id="mlb-is-liveblog">
+	<label for="mlb-show-liveblogs">
+		<input type="checkbox" name="_micro_post_live_enable" value="1" <?php checked( $is_liveblog, '1', true ); ?> id="mlb-show-liveblogs">
 		<?php _e( 'Enable liveblog', MICROBLOG_DOMAIN ); ?>
 	</label>
 	<?php

@@ -48,7 +48,7 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 			
 			$mlb_options = mlb_get_settings();
 
-			require_once $this->get_plugin_path() . 'includes/class-liveblog.php';
+			require_once $this->get_plugin_path() . 'includes/live-class-liveblog.php';
 			require_once $this->get_plugin_path() . 'includes/live-post-types.php';
 			require_once $this->get_plugin_path() . 'includes/live-metabox.php';
 			require_once $this->get_plugin_path() . 'includes/live-functions.php';
@@ -70,29 +70,16 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 		}
 
 		/**
-		 * Get plugin version.
-		 *
-		 * @return string
-		 */
-		public function get_plugin_version() {
-			if ( function_exists( 'wp_get_environment_type' ) && wp_get_environment_type() === 'development' ) {
-				return time();
-			}
-
-			return $this->plugin_version;
-		}
-
-		/**
 		 * Enqueue and register JavaScript files here.
 		 */
 		public function register_scripts() {
 			if ( is_admin() ) {
 				wp_register_script( 'selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.min.js', array( 'jquery' ), '0.12.4' );
-				wp_register_script( 'mlb-admin', mbfun_get_plugin_url() . 'assets/js/liveblog-admin.js', array( 'jquery', 'selectize' ), $this->get_plugin_version() );
+				wp_register_script( 'mlb-admin', mbfun_get_plugin_url() . 'assets/js/liveblog-admin.js', array( 'jquery', 'selectize' ), mbfun_get_plugin_version() );
 			}
 
 			if ( ! is_admin() ) {
-				wp_register_script( 'micro_lb', mbfun_get_plugin_url() . 'assets/js/liveblog.js', array( 'jquery' ), $this->get_plugin_version() );
+				wp_register_script( 'micro_lb', mbfun_get_plugin_url() . 'assets/js/liveblog.js', array( 'jquery' ), mbfun_get_plugin_version() );
 				wp_localize_script(
 					'micro_lb',
 					'micro_lb',
@@ -160,7 +147,6 @@ if ( ! class_exists( 'Micro_Liveblog' ) ) {
 
 		public function setup_caching() {
 			$cache = mlb_get_option( 'cache_enabled', false );
-
 			if ( $cache == 'object' ) {
 				MicroLiveblogs\Caching\ObjectCaching::init();
 			} elseif ( $cache == 'transient' ) {

@@ -31,7 +31,7 @@ function mlb_setup_post_types() {
 		'capability_type' => 'post',
 		'map_meta_cap'    => true,
 		'can_export'      => true,
-		'menu_icon'       => 'dashicons-playlist-video',
+		'menu_icon'       => 'dashicons-format-aside',
 		'supports'        => array( 'title', 'author', 'editor' ),
 		'show_in_rest' 	  => use_block_editor_for_post_type('post'),    
 	);

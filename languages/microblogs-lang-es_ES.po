@@ -188,7 +188,7 @@ msgstr "Añade una marca de tiempo a la URL del liveblog."
 msgid "The callback function used for the %s setting is missing."
 msgstr "La función de rellamada usada para %s no existe."
 
-#: includes/class-liveblog.php:98
+#: includes/live-class-liveblog.php:98
 #, php-format
 msgid ""
 "<a rel=\"noamphtml\" class=\"mlb-view-liveblog-link button\" "
@@ -197,15 +197,15 @@ msgstr ""
 "<a rel=\"noamphtml\" class=\"mlb-view-liveblog-link button\" href=\"%s\">Ver "
 "el liveblog</a>"
 
-#: includes/class-liveblog.php:115
+#: includes/live-class-liveblog.php:115
 msgid "The liveblog has ended."
 msgstr "El liveblog ha finalizado."
 
-#: includes/class-liveblog.php:119
+#: includes/live-class-liveblog.php:119
 msgid "No liveblog updates yet."
 msgstr "No hay actualizaciones todavía."
 
-#: includes/class-liveblog.php:166
+#: includes/live-class-liveblog.php:166
 msgid "Load more"
 msgstr "Cargar más"
 

@@ -14,7 +14,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 
 // Function to display Gallery settings section
 function microblog_general_settings_section() {
-    ?>
+?>
     <div class="general_settings_header">
         <?php microblog_general_settings_section_header(); ?>
     </div>
@@ -29,8 +29,48 @@ function microblog_general_settings_section() {
         submit_button('保存 设置');
         ?>
     </form>
-    <?php
+    <!-- <button type="button" id="clean_microblog_data" class="button">清理 MicroBlog 数据</button>
+    <script>
+        var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+        jQuery(document).ready(function($) {
+            $('#clean_microblog_data').click(function() {
+                var data = {
+                    'action': 'clean_microblog_data'
+                };
+                $.post(ajaxurl, data, function(response) {
+                    alert('MicroBlog 数据已清理');
+                });
+            });
+        });
+    </script> -->
+<?php
 }
+
+
+// add_action('wp_ajax_clean_microblog_data', 'clean_microblog_data_callback');
+// function clean_microblog_data_callback() {
+//     if (delete_option('microblog_general_data')) {
+//         error_log('MicroBlog 数据已成功清理');
+//         add_settings_error('microblog_general_data', 'microblog_data_cleaned', __('MicroBlog 数据已成功清理'), 'success');
+//     } else {
+//         error_log('MicroBlog 数据清理失败，请重试');
+//         add_settings_error('microblog_general_data', 'microblog_data_not_cleaned', __('MicroBlog 数据清理失败，请重试'), 'error');
+//     }
+//     // Save any settings errors
+//     error_log('MicroBlog 数据清理失败，=====================');
+//     settings_errors('microblog_general_data');
+//     die(); // It's important to end AJAX functions with die()
+// }
+
+
+
+
+
+
+
+
+
+
 
 function microblog_general_settings_section_header() {
     echo '</br>';

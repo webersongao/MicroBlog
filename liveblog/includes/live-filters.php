@@ -24,7 +24,7 @@ function mlb_liveblog_query_parse_filter( $query ) {
 		return $query;
 	}
 
-	if ( isset( $_GET['is-mlb-liveblog'] ) ) {
+	if ( isset( $_GET['micro_type'] ) ) {
 		$query->query_vars['meta_key']     = '_micro_post_live_enable';
 		$query->query_vars['meta_value']   = '1';
 		$query->query_vars['meta_compare'] = '=';
@@ -50,11 +50,11 @@ function mlb_liveblogs_add_quicklinks( $quicklinks ) {
 
 	if ( $liveblog_count > 0 ) {
 
-		$current = isset( $_GET['is-mlb-liveblog'] ) ? 'current' : null;
+		$current = isset( $_GET['micro_type'] ) ? 'current' : null;
 
 		$quicklinks['mlb_liveblogs'] = sprintf(
-			'<a href="%s" class="' . $current . '">' . __( 'Liveblogs', MICROBLOG_DOMAIN ) . ' <span class="count">(%d)</span></a>',
-			admin_url( 'edit.php?post_type=' . get_query_var( 'post_type' ) ) . '&amp;is-mlb-liveblog=1',
+			'<a href="%s" class="' . $current . '">' . __( '连载原文', MICROBLOG_DOMAIN ) . ' <span class="count">(%d)</span></a>',
+			admin_url( 'edit.php?post_type=' . get_query_var( 'post_type' ) ) . '&amp;micro_type=liveblog',
 			$liveblog_count
 		);
 	}
