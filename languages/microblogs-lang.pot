@@ -182,7 +182,7 @@ msgid "编辑连载"
 msgstr ""
 
 #: includes/live-post-types.php:14
-msgid "新连载"
+msgid "New Entry"
 msgstr ""
 
 #: includes/live-post-types.php:15

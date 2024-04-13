@@ -288,7 +288,7 @@ msgid "编辑连载"
 msgstr "Editar entrada"
 
 #: includes/live-post-types.php:16
-msgid "新连载"
+msgid "New Entry"
 msgstr "Nueva entrada"
 
 #: includes/live-post-types.php:17
