@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
+require_once(plugin_dir_path(__FILE__) . 'microblog-functions.php');
 
 // 注册插件小部件
 function mbfun_register_quick_micropost_widget() {

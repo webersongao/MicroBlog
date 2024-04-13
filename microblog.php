@@ -26,18 +26,17 @@ $microblog_plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $
 global $microblog_slug_name , $microblog_plugin_version;
 
 // 核心功能函数
-require_once(plugin_dir_path(__FILE__) . 'includes/micropost-functions.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/microblog-functions.php');
 
-// 加载其他功能模块文件
+// 其他功能模块
 require_once(plugin_dir_path(__FILE__) . 'liveblog/liveblog-index.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-index.php');
 
+// microblog功能模块
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-widget.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-shortcode.php');
-// 微博转发功能，此功能需要主题支持，默认不开启
-// require_once(plugin_dir_path(__FILE__) . 'includes/microblog-forward.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/microblog-forward.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/microblog-quick-pub.php');
-
 
 
 // 注册微博设置页面

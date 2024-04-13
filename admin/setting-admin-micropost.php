@@ -62,6 +62,13 @@ function microblog_micropost_setting_admin() {
         'microblog_micropost_section_base'
     );
     add_settings_field(
+        'microblog_post_micro_foward',
+        '转发',
+        'microblog_post_micro_foward_input',
+        'microblog_micropost_section_name',
+        'microblog_micropost_section_base'
+    );
+    add_settings_field(
         'microblog_post_rss_feed',
         'RSS订阅',
         'microblog_post_rss_feed_input',
@@ -123,10 +130,12 @@ function microblog_micropost_setting_admin() {
 
 function microblog_micropost_data_sanitize($input) {
     if (isset($input['mb_slug_name']) && $input['mb_slug_name'] !== '') {
+
         $slug_name = strtolower(sanitize_title($input['mb_slug_name']));
+
         if (preg_match('/^[a-z0-9]{1,20}$/', $slug_name)) {
             $input['mb_slug_name'] = $slug_name;
-            mbfun_update_global_microblog_option($slug_name);
+            mbfun_update_global_microblog_slug_name($slug_name);
         } else {
             // 如果 slug 名不符合要求，添加错误消息
             add_settings_error(
@@ -138,7 +147,7 @@ function microblog_micropost_data_sanitize($input) {
             return mbfun_get_micropost_settings();
         }
     }
-    microblog_update_micropost_type_support($input); // 更新 register_post_type 的 supports 参数
+    microblog_update_micropost_type_support($input); // 更新 注册微博文章类型函数 的 supports 参数
     flush_rewrite_rules(); // 刷新重写规则
     return $input;
 }
@@ -185,7 +194,7 @@ function microblog_post_title_show_input() {
     ?>
     <label>
         <input type='checkbox' name='microblog_micropost_data[mb_title_show]' value='1' <?php checked($value, true); ?> />
-        是否显示标题
+        显示标题
     </label>
     <?php
 }
@@ -206,6 +215,17 @@ function microblog_post_title_listdate_input() {
     <label class="microblog-admin-option-label">
         <input type='radio' name='microblog_micropost_data[mb_date_format]' value='<?php echo esc_attr('date_human'); ?>' <?php checked($value, 'date_human'); ?> />
         1分钟前/3天前...
+    </label>
+    <?php
+}
+
+function microblog_post_micro_foward_input() {
+    $options = mbfun_get_micropost_settings();
+    $value = isset($options['mb_micro_foward']) ? $options['mb_micro_foward'] : false;
+    ?>
+    <label>
+        <input type='checkbox' name='microblog_micropost_data[mb_micro_foward]' value='1' <?php checked($value, true); ?> />
+        启用微博转发
     </label>
     <?php
 }
@@ -232,16 +252,16 @@ function microblog_post_editor_func_callback() {
         作者
     </label>
     <label class="microblog-admin-option-label">
+        <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
+        摘要
+    </label>
+    <label class="microblog-admin-option-label">
         <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
         特色图片
     </label>
     <label class="microblog-admin-option-label">
         <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_posttag' <?php if (in_array('mb_posttag', $editor_func)) echo 'checked="checked"'; ?> />
-        话题标签
-    </label>
-    <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
-        微博摘要
+        微博话题
     </label>
     <?php
 }

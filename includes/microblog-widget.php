@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
+require_once(plugin_dir_path(__FILE__) . 'microblog-functions.php');
 
 add_action('widgets_init', 'mbfun_load_microblog_widget');
 function mbfun_load_microblog_widget() {
@@ -95,9 +95,9 @@ class Microblog_SideWidget extends WP_Widget {
             }
             $out .= "<div class='microblog-widget-content'>";
             if ($use_excerpt) {
-                add_filter('excerpt_more', 'micropost_excerpt_more');
+                add_filter('excerpt_more', 'mbfun_micropost_excerpt_more');
                 $out .= "<p>" . get_the_excerpt() . "</p>";
-                remove_filter('excerpt_more', 'micropost_excerpt_more');
+                remove_filter('excerpt_more', 'mbfun_micropost_excerpt_more');
             } else {
                 $out .= trim($post->post_content);
             }
@@ -125,7 +125,7 @@ class Microblog_SideWidget extends WP_Widget {
         if ($show_rss) {
             $rssout = "";
             $rssout .= "<span class='microblog-widget-rss'>";
-            $rssout .= '<a target="_blank" href="' . esc_url(get_site_url() . '/' . microblog_get_microposts_slug_name() . '/feed') . '" class="rss"><img src="' . esc_url(site_url() . '/wp-includes/images/rss.png') . '" style="width: 18px; height: 18px;"></a>';
+            $rssout .= '<a target="_blank" href="' . esc_url(get_site_url() . '/' . mbfun_get_micropost_slug_name() . '/feed') . '" class="rss"><img src="' . esc_url(site_url() . '/wp-includes/images/rss.png') . '" style="width: 18px; height: 18px;"></a>';
             $rssout .= "</span>";
             echo wp_kses_post($rssout);
         }
@@ -135,7 +135,7 @@ class Microblog_SideWidget extends WP_Widget {
 
         // Clean up
         wp_reset_postdata();
-        microblog_enqueue_scripts_and_styles();
+        mbfun_enqueue_scripts_and_styles();
     }
 }
 

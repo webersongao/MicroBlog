@@ -33,7 +33,7 @@ class MLB_Liveblog {
 		$instance = new self();
 
 		$instance->liveblog_post_id = $id;
-		$instance->endpoint         = mlb_get_liveblog_api_endpoint( $id );
+		$instance->endpoint         = mbfun_get_live_liveblog_api_endpoint( $id );
 
 		return $instance;
 	}
@@ -102,7 +102,7 @@ class MLB_Liveblog {
 
         wp_enqueue_script( 'wp-embed' );
 
-		$classes = array( 'mlb-liveblog', 'mlb-theme-' . mlb_get_theme() );
+		$classes = array( 'mlb-liveblog', 'mlb-theme-' . mbfun_get_live_theme() );
 
 		if ( current_user_can( 'edit_post', $this->get_liveblog_id() ) ) {
 			$classes[] = 'mlb-is-editor';
@@ -110,7 +110,7 @@ class MLB_Liveblog {
 
 		$content .= do_action( 'mlb_before_liveblog', $this->get_liveblog_id(), array() );
 
-		$content .= '<div id="mlb-liveblog" class="' . implode( ' ', $classes ) . '" data-append-timestamp="' . mlb_get_option( 'append_timestamp', false ) . '" data-status="' . mlb_get_liveblog_status() . '" data-highlighted-entry="' . mlb_get_highlighted_entry_id() . '" data-show-entries="' . mlb_get_show_entries() . '" data-endpoint="' . $this->endpoint . '">';
+		$content .= '<div id="mlb-liveblog" class="' . implode( ' ', $classes ) . '" data-append-timestamp="' . mbfun_get_live_option( 'append_timestamp', false ) . '" data-status="' . mbfun_get_live_liveblog_status() . '" data-highlighted-entry="' . mbfun_get_live_highlighted_entry_id() . '" data-show-entries="' . mbfun_get_live_show_entries() . '" data-endpoint="' . $this->endpoint . '">';
 
 		$content .= '<div class="mlb-liveblog-closed-message" style="display: none;">' . __( 'The liveblog has ended.', MICROBLOG_DOMAIN ) . '</div>';
 

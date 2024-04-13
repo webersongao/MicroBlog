@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Register all the meta boxes for the Download custom post type
  */
 function mlb_add_meta_box() {
-	$post_types = mlb_get_supported_post_types();
+	$post_types = mbfun_get_live_supported_post_types();
 	foreach ( $post_types as $post_type ) {
 		add_meta_box( 'mlb_liveblog_meta_box', __( '连载Live', MICROBLOG_DOMAIN ), 'mlb_render_liveblog_meta_box', $post_type, 'normal', 'high' );
 	}
@@ -89,14 +89,14 @@ function mlb_render_liveblog_options( $post_id ) {
 		<div class="mlb-input-group">
 			<label for="mlb_status"><?php _e( 'Status', MICROBLOG_DOMAIN ); ?></label>
 			<select name="_micro_post_live_status" id="mlb_status">
-				<?php foreach ( mlb_get_liveblog_status_options() as $option_value => $option_name ) { ?>
+				<?php foreach ( mbfun_get_live_liveblog_status_options() as $option_value => $option_name ) { ?>
 					<option value="<?php echo $option_value; ?>" <?php selected( $option_value, $status, true ); ?>><?php echo $option_name; ?></option>
 				<?php } ?>
 			</select>
 		</div>
 		<div class="mlb-input-group">
 			<label for="mlb-liveblog-endpoint"><?php _e( 'API-endpoint URL', MICROBLOG_DOMAIN ); ?></label>
-			<input type="text" id="mlb-liveblog-endpoint" onclick="this.focus(); this.select()" value="<?php echo mlb_get_liveblog_api_endpoint( $post_id ); ?>" readonly="readonly" class="widefat">
+			<input type="text" id="mlb-liveblog-endpoint" onclick="this.focus(); this.select()" value="<?php echo mbfun_get_live_liveblog_api_endpoint( $post_id ); ?>" readonly="readonly" class="widefat">
 		</div>
 		<?php
 	}
@@ -114,10 +114,10 @@ function mlb_render_entry_options( $post_id ) {
 	$status   = false;
 
 	if ( ! empty( $liveblog ) ) {
-		$status = mlb_get_liveblog_status( $liveblog );
+		$status = mbfun_get_live_liveblog_status( $liveblog );
 	}
 
-	$liveblogs = mlb_get_liveblogs_by_status( 'open' );
+	$liveblogs = mbfun_get_live_liveblogs_by_status( 'open' );
 
 	do_action( 'mlb_before_entry_options', $post_id );
 
@@ -138,7 +138,7 @@ function mlb_render_entry_options( $post_id ) {
 		<?php if ( ! empty( $liveblog ) ) { ?>
 			<div class="mlb-input-group">
 				<label for="mlb-liveblog-entry-link"><?php _e( 'Direct link to entry', MICROBLOG_DOMAIN ); ?></label>
-				<input type="text" id="mlb-liveblog-entry-link" onclick="this.focus(); this.select()" value="<?php echo mlb_get_entry_url( $post_id ); ?>" readonly="readonly" class="widefat">
+				<input type="text" id="mlb-liveblog-entry-link" onclick="this.focus(); this.select()" value="<?php echo mbfun_get_live_entry_url( $post_id ); ?>" readonly="readonly" class="widefat">
 			</div>
 		<?php } ?>
 	<?php } else { ?>

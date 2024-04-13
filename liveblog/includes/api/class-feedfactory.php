@@ -11,7 +11,7 @@ class FeedFactory {
 	 * @return array
 	 */
 	public static function make( $liveblog_id ) {
-		$liveblog = mlb_get_liveblog( $liveblog_id );
+		$liveblog = mbfun_get_live_liveblog( $liveblog_id );
 
 		$entries = self::get_entries( $liveblog_id );
 

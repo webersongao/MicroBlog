@@ -120,4 +120,4 @@ URL slug 支持自定义，例如改为microblog，则微博地址为 microblog/
 ToDo：
 
 is_user_logged_in 不可用
-mlb_get_liveblogs_by_status( 'used' ); 不可用
+mbfun_get_live_liveblogs_by_status( 'used' ); 不可用

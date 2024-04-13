@@ -98,7 +98,7 @@ function microblog_liveblog_data_sanitize($input) {
  */
 function mbfun_get_registered_settings() {
 
-	$mlb_alltypes = mlb_get_all_post_types();
+	$mlb_alltypes = mbfun_get_live_all_post_types();
 	$mlb_sections = array(
 		'general' => array(
 			array(
@@ -173,7 +173,7 @@ function mbfun_get_registered_settings() {
 					''         => __( 'Human Readable', MICROBLOG_DOMAIN ),
 					'date'     => sprintf( __( 'Date: %s', MICROBLOG_DOMAIN ), get_option( 'date_format' ) ),
 					'time'     => sprintf( __( 'Time: %s', MICROBLOG_DOMAIN ), get_option( 'time_format' ) ),
-					'datetime' => sprintf( __( 'Date and time: %s', MICROBLOG_DOMAIN ), mlb_get_datetime_format() ),
+					'datetime' => sprintf( __( 'Date and time: %s', MICROBLOG_DOMAIN ), mbfun_get_live_datetime_format() ),
 				),
 			),
 			array(

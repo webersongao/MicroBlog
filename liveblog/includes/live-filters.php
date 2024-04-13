@@ -20,7 +20,7 @@ function mlb_liveblog_query_parse_filter( $query ) {
 		return $query;
 	}
 
-	if ( ! in_array( $current_page, mlb_get_supported_post_types() ) && 'edit.php' !== $pagenow ) {
+	if ( ! in_array( $current_page, mbfun_get_live_supported_post_types() ) && 'edit.php' !== $pagenow ) {
 		return $query;
 	}
 
@@ -42,11 +42,11 @@ add_filter( 'parse_query', 'mlb_liveblog_query_parse_filter' );
  */
 function mlb_liveblogs_add_quicklinks( $quicklinks ) {
 
-	if ( ! in_array( get_query_var( 'post_type' ), mlb_get_supported_post_types() ) ) {
+	if ( ! in_array( get_query_var( 'post_type' ), mbfun_get_live_supported_post_types() ) ) {
 		return $quicklinks;
 	}
 
-	$liveblog_count = mlb_get_liveblogs_count( array( 'post_type' => get_query_var( 'post_type' ) ) );
+	$liveblog_count = mbfun_get_live_liveblogs_count( array( 'post_type' => get_query_var( 'post_type' ) ) );
 
 	if ( $liveblog_count > 0 ) {
 
@@ -66,7 +66,7 @@ function mlb_liveblogs_add_quicklinks( $quicklinks ) {
  * Register quicklink filters
  */
 function mlb_liveblog_register_quicklink_filters() {
-	foreach ( mlb_get_supported_post_types() as $post_type ) {
+	foreach ( mbfun_get_live_supported_post_types() as $post_type ) {
 		add_filter( 'views_edit-' . $post_type, 'mlb_liveblogs_add_quicklinks' );
 	}
 }
@@ -82,7 +82,7 @@ add_action( 'init', 'mlb_liveblog_register_quicklink_filters' );
  * @return array
  */
 function mlb_liveblog_post_state( $post_states, $post ) {
-	if ( mlb_is_liveblog() && mlb_get_liveblog_status() == 'closed' ) {
+	if ( mlb_is_liveblog() && mbfun_get_live_liveblog_status() == 'closed' ) {
 		$post_states[] = __( 'Closed' );
 	}
 
@@ -110,7 +110,7 @@ function mlb_is_prefix_title_enabled() {
  */
 function mlb_apply_title_prefix( $title, $post_id = null ) {
 	if ( mlb_is_liveblog() && ! is_admin() && mlb_is_prefix_title_enabled() ) {
-		return mlb_get_liveblog_title_prefix() . $title;
+		return mbfun_get_live_liveblog_title_prefix() . $title;
 	}
 
 	return $title;
@@ -219,7 +219,7 @@ function mlb_add_post_dropdown_filter_to_manage_posts() {
 		return;
 	}
     // 直接渲染下拉菜单
-	$liveblogs = mlb_get_liveblogs_by_status( 'all' );
+	$liveblogs = mbfun_get_live_liveblogs_by_status( 'all' );
 
 	echo '<select name="live_id">';
 		echo sprintf( '<option value="%s" %s>%s</option>', esc_attr( 'all' ), $true, esc_html( '全部连载' ) );

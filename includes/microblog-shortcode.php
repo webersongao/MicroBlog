@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-require_once(plugin_dir_path(__FILE__) . 'micropost-functions.php');
+require_once(plugin_dir_path(__FILE__) . 'microblog-functions.php');
 
 add_shortcode('microblog', 'microblog_shortcode');
 
@@ -66,9 +66,9 @@ function microblog_shortcode($atts) {
             }
             $out .= "<div class='mb-shortcode-post-content'>";
             if ($use_excerpt) {
-                add_filter('excerpt_more', 'micropost_excerpt_more');
+                add_filter('excerpt_more', 'mbfun_micropost_excerpt_more');
                 $out .= "<p>" . get_the_excerpt() . "</p>";
-                remove_filter('excerpt_more', 'micropost_excerpt_more');
+                remove_filter('excerpt_more', 'mbfun_micropost_excerpt_more');
             } else {
                 $out .= mbfun_get_micropost_content();
             }
@@ -136,14 +136,14 @@ function microblog_shortcode($atts) {
         $out .= "</div>";
         // 查看所有
         $out .= "<div class='mb-shortcode-loadmore'>";
-        $out .= "<a target='_blank' href='" . home_url(microblog_get_microposts_slug_name()) . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'assets/images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;查看全部...</a></div>";
+        $out .= "<a target='_blank' href='" . home_url(mbfun_get_micropost_slug_name()) . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'assets/images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;查看全部...</a></div>";
     } else {
         $out .= "<div class='microblog-shortcode'><p>" . wp_kses($null_text, array()) . "</p></div>";
     }
 
     $out .= "</div>";
     wp_reset_postdata();
-    microblog_enqueue_scripts_and_styles();
+    mbfun_enqueue_scripts_and_styles();
     return $out;
 }
 

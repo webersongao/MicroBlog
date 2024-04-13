@@ -5,7 +5,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function mlb_setup_post_types() {
+add_action( 'init', 'mbfun_create_liveblog_type');
+function mbfun_create_liveblog_type() {
+
+	mbfun_update_microblog_display_module();
+	
+}
+
+
+function mbfun_register_liveblog_args() {
+
 	$labels = array(
 		'name'               => _x( '连载', 'post type general name', MICROBLOG_DOMAIN ),
 		'singular_name'      => _x( '微连载', 'post type singular name', MICROBLOG_DOMAIN ),
@@ -21,7 +30,7 @@ function mlb_setup_post_types() {
 		'parent_item_colon'  => '',
 		'menu_name'          => __( '连载', MICROBLOG_DOMAIN ),
 	);
-	$args   = array(
+	$reg_args   = array(
 		'labels'          => apply_filters( 'mlb_post_type_labels', $labels ),
 		'public'          => false,
 		'query_var'       => false,
@@ -35,6 +44,7 @@ function mlb_setup_post_types() {
 		'supports'        => array( 'title', 'author', 'editor' ),
 		'show_in_rest' 	  => use_block_editor_for_post_type('post'),    
 	);
-	register_post_type( 'microlive', $args );
+
+	return $reg_args;
+
 }
-add_action( 'init', 'mlb_setup_post_types', 1 );

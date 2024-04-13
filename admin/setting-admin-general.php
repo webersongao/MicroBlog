@@ -46,7 +46,6 @@ function microblog_general_settings_section() {
 <?php
 }
 
-
 // add_action('wp_ajax_clean_microblog_data', 'clean_microblog_data_callback');
 // function clean_microblog_data_callback() {
 //     if (delete_option('microblog_general_data')) {
@@ -61,16 +60,6 @@ function microblog_general_settings_section() {
 //     settings_errors('microblog_general_data');
 //     die(); // It's important to end AJAX functions with die()
 // }
-
-
-
-
-
-
-
-
-
-
 
 function microblog_general_settings_section_header() {
     echo '</br>';
@@ -96,45 +85,71 @@ function microblog_general_setting_admin() {
 
     add_settings_field(
         'microblog_module_display',
-        '模块',
+        '微连载',
         'microblog_module_display_input',
         'microblog_general_section_name',
         'microblog_general_section_base'
     );
 
+    add_settings_field(
+        'microblog_configtest_display',
+        '测试数据',
+        'microblog_configtest_display_input',
+        'microblog_general_section_name',
+        'microblog_general_section_base'
+    );
 }
 
 
 function microblog_general_data_sanitize($input) {
-
+    
+    // 刷新模块
+    $module_live = mbfun_get_general_option('mb_module_liveblog', false);
+    if (isset($input['mb_module_liveblog']) && ($input['mb_module_liveblog'] !== $module_live)) {
+        mbfun_update_microblog_display_module();
+    }
 
     return $input;
 }
+
 
 // Display shortcode settings section content
 function microblog_general_section_base_callback() {
     echo '<p>以下为 MicroBlog 插件的基础配置，请按需调整 </p>';
 }
 
+
 // Display settings fields input
 function microblog_module_display_input() {
     $options = mbfun_get_general_settings();
-    $editor_func = isset($options['mb_editor_func']) ? $options['mb_editor_func'] : array();
+    $value = isset($options['mb_module_liveblog']) ? $options['mb_module_liveblog'] : false;
+    ?>
+    <label>
+        <input type='checkbox' name='microblog_general_data[mb_module_liveblog]' value='1' <?php checked($value, true); ?> />
+         启用 ( 关闭后,不会删除数据,也不会导致配置项丢失 )
+    </label>
+    <?php
+}
+
+// Display settings fields input
+function microblog_configtest_display_input() {
+    $options = mbfun_get_general_settings();
+    $editor_func = isset($options['mb_test_func']) ? $options['mb_test_func'] : array();
     ?>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_general_data[mb_editor_func][]' value='mb_author' <?php if (in_array('mb_author', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='microblog_general_data[mb_test_func][]' value='mb_author' <?php if (in_array('mb_author', $editor_func)) echo 'checked="checked"'; ?> />
         傻子
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_general_data[mb_editor_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='microblog_general_data[mb_test_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
         呆子
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_general_data[mb_editor_func][]' value='mb_posttag' <?php if (in_array('mb_posttag', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='microblog_general_data[mb_test_func][]' value='mb_posttag' <?php if (in_array('mb_posttag', $editor_func)) echo 'checked="checked"'; ?> />
         聋子
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_general_data[mb_editor_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='microblog_general_data[mb_test_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
         瞎子
     </label>
     <?php

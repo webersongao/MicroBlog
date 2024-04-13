@@ -7,7 +7,7 @@
  * @param string $social_logo The Name of the brand.
  * @return string
  */
-function mlb_get_social_logo( $social_logo, $args = array() ) {
+function mbfun_get_live_social_logo( $social_logo, $args = array() ) {
 	$args = wp_parse_args(
 		$args,
 		array(

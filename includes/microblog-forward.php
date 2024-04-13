@@ -5,7 +5,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // 添加操作链接
+add_filter('post_row_actions', 'mbfun_add_forward_link', 10, 2);
 function mbfun_add_forward_link($actions, $post) {
+
+    $can_foward = mbfun_get_micropost_option('mb_micro_foward', false);
+    if (!$can_foward){
+        return $actions;
+    }
+
     if ($post->post_type === 'micropost') {
         $post_id = $post->ID;
         $actions = array_slice($actions, 0, 2, true) +
@@ -14,43 +21,20 @@ function mbfun_add_forward_link($actions, $post) {
     }
     return $actions;
 }
-add_filter('post_row_actions', 'mbfun_add_forward_link', 10, 2);
 
-function mbfun_get_recent_microposts() {
-    return get_posts(array(
-        'post_type' => 'micropost',
-        'posts_per_page' => 20,
-        'orderby' => 'date',
-        'order' => 'DESC',
-    ));
-}
-
-// 获取转发微博的 HTML (不可使用 esc_html 转译）
-function mbfun_get_forward_select_html($forward_id, $recent_posts) {
-    ob_start();
-    ?>
-    <select id="forward_id" name="forward_id">
-        <option value="">选择被转发微博</option>
-        <?php foreach ($recent_posts as $recent_post) : ?>
-            <option value="<?php echo esc_attr($recent_post->ID); ?>" <?php selected($forward_id, $recent_post->ID); ?>>
-                <?php echo esc_html($recent_post->post_title); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-    <?php
-    return ob_get_clean();
-}
 
 // 添加 meta box
-function mbfun_add_forward_meta_box() {
-    add_meta_box('forward_meta_box', '转发微博', 'mbfun_display_forward_meta_box', 'micropost', 'side', 'high');
-}
 add_action('add_meta_boxes', 'mbfun_add_forward_meta_box');
+function mbfun_add_forward_meta_box() {
+    add_meta_box('micro_forward_meta_box', '转发微博', 'mbfun_display_forward_meta_box', 'micropost', 'side', 'high');
+}
 
 // 显示 meta box
 function mbfun_display_forward_meta_box($post) {
     $post_type = $post->post_type;
-    if ($post_type !== 'micropost') {
+    $can_foward = mbfun_get_micropost_option('mb_micro_foward', false);
+
+    if (!$can_foward || $post_type !== 'micropost') {
         return;
     }
     
@@ -107,7 +91,12 @@ function mbfun_display_forward_meta_box($post) {
     }
 }
 
+add_action('save_post', 'mbfun_save_forward_id');
 function mbfun_save_forward_id($post_id) {
+    $can_foward = mbfun_get_micropost_option('mb_micro_foward', false);
+    if (!$can_foward){
+        return;
+    }
     if (!isset($_GET['post_type']) || 'micropost' !== $_GET['post_type']) {
         return;
     }
@@ -124,6 +113,22 @@ function mbfun_save_forward_id($post_id) {
         update_post_meta($post_id, '_micro_blog_forward_id', $forward_id);
     }
 }
-add_action('save_post', 'mbfun_save_forward_id');
+
+// 获取转发微博的 HTML (不可使用 esc_html 转译）
+function mbfun_get_forward_select_html($forward_id, $recent_posts) {
+    ob_start();
+    ?>
+    <select id="forward_id" name="forward_id">
+        <option value="">选择被转发微博</option>
+        <?php foreach ($recent_posts as $recent_post) : ?>
+            <option value="<?php echo esc_attr($recent_post->ID); ?>" <?php selected($forward_id, $recent_post->ID); ?>>
+                <?php echo esc_html($recent_post->post_title); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    <?php
+    return ob_get_clean();
+}
+
 
 ?>

@@ -48,7 +48,7 @@ class LiveEntry {
 
 		ob_start();
 
-		mlb_get_template_part( 'post' );
+		mbfun_get_live_template_part( 'post' );
 
 		$content .= ob_get_clean();
 
