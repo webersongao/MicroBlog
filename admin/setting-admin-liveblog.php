@@ -154,7 +154,7 @@ function mbfun_get_registered_settings() {
 				'id'            => 'post_types',
 				'name'          => __( '支持文章类型', MICROBLOG_DOMAIN ),
 				'desc'          => __( ' Select the post types that need to support liveblogs.', MICROBLOG_DOMAIN ),
-				'type'          => 'multiple_select',
+				'type'          => 'multiple_checkbox',
 				'options'       => $mlb_alltypes,
 				'default_value' => array( 'post' ),
 			),
@@ -280,26 +280,21 @@ function microblog_live_select_callback( $args ) {
  * @param  array $args
  * @return void
  */
-function microblog_live_multiple_select_callback( $args ) {
+function microblog_live_multiple_checkbox_callback( $args ) {
 	global $mlb_options;
-
 	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : $args['default_value'];
-
-	$html = '<select multiple id="microblog_liveblog_data[' . $args['id'] . ']" name="microblog_liveblog_data[' . $args['id'] . '][]" />';
-
+	$html = '';
 	if ( ! empty( $args['options'] ) ) {
 		foreach ( $args['options'] as $option_value => $option_name ) {
-
-			$selected = in_array( $option_value, is_array( $value ) ? $value : array() ) ? 'selected' : null;
-
-			$html .= '<option value="' . $option_value . '" ' . $selected . '>' . $option_name . '</option>';
+			$checked = in_array( $option_value, is_array( $value ) ? $value : array() ) ? 'checked' : '';
+			$translated_option_name = __( $option_name, MICROBLOG_DOMAIN );
+			$html .= '<label class="microblog-admin-option-label">';
+			$html .= '<input type="checkbox" id="microblog_liveblog_data[' . $args['id'] . '][' . $option_value . ']" name="microblog_liveblog_data[' . $args['id'] . '][]" value="' . $option_value . '" ' . $checked . '>';
+			$html .= $translated_option_name;
+			$html .= '</label>';
 		}
 	}
-
-	$html .= '</select>';
-
-	$html .= '<label for="microblog_liveblog_data[' . $args['id'] . ']">' . $args['desc'] . '</label>';
-
+	$html .= '<label>' . '<br><br>' . $args['desc'] . '</label>';
 	echo $html;
 }
 

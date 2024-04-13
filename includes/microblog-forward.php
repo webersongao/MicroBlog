@@ -8,11 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_filter('post_row_actions', 'mbfun_add_forward_link', 10, 2);
 function mbfun_add_forward_link($actions, $post) {
 
-    $can_foward = mbfun_get_micropost_option('mb_micro_foward', false);
+    $can_foward = mbfun_get_micropost_option('mb_foward_enable', false);
     if (!$can_foward){
         return $actions;
     }
-
     if ($post->post_type === 'micropost') {
         $post_id = $post->ID;
         $actions = array_slice($actions, 0, 2, true) +
@@ -26,17 +25,15 @@ function mbfun_add_forward_link($actions, $post) {
 // 添加 meta box
 add_action('add_meta_boxes', 'mbfun_add_forward_meta_box');
 function mbfun_add_forward_meta_box() {
+    $can_foward = mbfun_get_micropost_option('mb_foward_enable', false);
+    if (!$can_foward){
+        return ;
+    }
     add_meta_box('micro_forward_meta_box', '转发微博', 'mbfun_display_forward_meta_box', 'micropost', 'side', 'high');
 }
 
 // 显示 meta box
 function mbfun_display_forward_meta_box($post) {
-    $post_type = $post->post_type;
-    $can_foward = mbfun_get_micropost_option('mb_micro_foward', false);
-
-    if (!$can_foward || $post_type !== 'micropost') {
-        return;
-    }
     
     // 检查当前页面是否为编辑页面并且文章类型为 micropost
     if (isset($_GET['action']) && $_GET['action'] === 'edit') {
@@ -65,35 +62,32 @@ function mbfun_display_forward_meta_box($post) {
             echo mbfun_get_forward_select_html($forward_id, $recent_posts);
         }
     } else {
-        if (isset($_GET['post_type']) && $_GET['post_type'] === 'micropost') {
-            // 获取 forward_id 参数
-            $forward_id = (isset($_GET['forward_id']) && absint($_GET['forward_id'])) ?: 0;
-            $forward_post = ($forward_id !== 0) ? get_post($forward_id) : null;
-            if ($forward_post) {
-                $forward_title = '';
-                $forward_post_title = $forward_post->post_title;
-                $forward_post_content = $forward_post->post_content;
-                if (empty($forward_post_title)) {
-                    $forward_title = substr(wp_strip_all_tags($forward_post_content), 0, 100);
-                } else {
-                    $forward_title = $forward_post_title;
-                }
-                ?>
-                <label for="forward_id">转发微博：</label>
-                <br>
-                <input type="text" id="forward_title" name="forward_title" value="<?php echo esc_attr($forward_title); ?>" readonly>
-                <?php
+        $forward_id = (isset($_GET['forward_id']) && absint($_GET['forward_id'])) ?: 0;
+        $forward_post = ($forward_id !== 0) ? get_post($forward_id) : null;
+        if ($forward_post) {
+            $forward_title = '';
+            $forward_post_title = $forward_post->post_title;
+            $forward_post_content = $forward_post->post_content;
+            if (empty($forward_post_title)) {
+                $forward_title = substr(wp_strip_all_tags($forward_post_content), 0, 100);
             } else {
-                $recent_posts = mbfun_get_recent_microposts();
-                echo mbfun_get_forward_select_html($forward_id, $recent_posts);
+                $forward_title = $forward_post_title;
             }
-        } 
+            ?>
+            <label for="forward_id">转发微博：</label>
+            <br>
+            <input type="text" id="forward_title" name="forward_title" value="<?php echo esc_attr($forward_title); ?>" readonly>
+            <?php
+        } else {
+            $recent_posts = mbfun_get_recent_microposts();
+            echo mbfun_get_forward_select_html($forward_id, $recent_posts);
+        }
     }
 }
 
 add_action('save_post', 'mbfun_save_forward_id');
 function mbfun_save_forward_id($post_id) {
-    $can_foward = mbfun_get_micropost_option('mb_micro_foward', false);
+    $can_foward = mbfun_get_micropost_option('mb_foward_enable', false);
     if (!$can_foward){
         return;
     }

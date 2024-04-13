@@ -221,10 +221,10 @@ function microblog_post_title_listdate_input() {
 
 function microblog_post_micro_foward_input() {
     $options = mbfun_get_micropost_settings();
-    $value = isset($options['mb_micro_foward']) ? $options['mb_micro_foward'] : false;
+    $value = isset($options['mb_foward_enable']) ? $options['mb_foward_enable'] : false;
     ?>
     <label>
-        <input type='checkbox' name='microblog_micropost_data[mb_micro_foward]' value='1' <?php checked($value, true); ?> />
+        <input type='checkbox' name='microblog_micropost_data[mb_foward_enable]' value='1' <?php checked($value, true); ?> />
         启用微博转发
     </label>
     <?php
