@@ -10,48 +10,48 @@ function mbfun_register_micropost_type($supports, $tageEnable = false) {
     $slug_name = microblog_get_microposts_slug_name();
     if (empty($supports)) { $supports = array('title', 'editor','comments');}
     $labels = array(
-        'name' => __('微博'),
-        'menu_name' => __('微博'),
-        'singular_name' => __('微博'),
-        'add_new' => __('发微博'),
-        'add_new_item' => __('写微博'),
-        'all_items' => __('微博'),
-        'view_items' => __('微博列表'),
-        'view_item' => __('查看微博'),
-        'search_items' => __('搜索微博'),
-        'edit_item' => __('编辑该微博'),
-        'not_found' => __('未找到相关微博'),
-        'item_updated' => __('微博已更新'),
-        'item_published' => __('微博已发布'),
-        'not_found_in_trash' => __('回收站中没有微博'),
-        'item_scheduled' => __('该微博已加入发布计划'),
-        'featured_image' => __('微博头图'),
-        'filter_items_list' => __('筛选微博列表'),
-        'filter_by_date' => __('按微博日期筛选'),
-        'set_featured_image' => __('设置微博头图'),
-        'use_featured_image' => __('使用微博头图'),
-        'remove_featured_image' => __('移除微博头图'),
-        'item_reverted_to_draft' => __('该微博已恢复为草稿'),
-        'items_list' => __('微博列表'),
-        'items_list_navigation' => __('微博列表导航'),
-        'item_published_privately' => __('该微博已私密发布'),
+        'name' => __('微博' , MICROBLOG_DOMAIN),
+        'menu_name' => __('微博' , MICROBLOG_DOMAIN),
+        'singular_name' => __('微博' , MICROBLOG_DOMAIN),
+        'add_new' => __('发微博' , MICROBLOG_DOMAIN),
+        'add_new_item' => __('写微博' , MICROBLOG_DOMAIN),
+        'all_items' => __('微博' , MICROBLOG_DOMAIN),
+        'view_items' => __('微博列表' , MICROBLOG_DOMAIN),
+        'view_item' => __('查看微博' , MICROBLOG_DOMAIN),
+        'search_items' => __('搜索微博' , MICROBLOG_DOMAIN),
+        'edit_item' => __('编辑该微博' , MICROBLOG_DOMAIN),
+        'not_found' => __('未找到相关微博' , MICROBLOG_DOMAIN),
+        'item_updated' => __('微博已更新' , MICROBLOG_DOMAIN),
+        'item_published' => __('微博已发布' , MICROBLOG_DOMAIN),
+        'not_found_in_trash' => __('回收站中没有微博' , MICROBLOG_DOMAIN),
+        'item_scheduled' => __('该微博已加入发布计划' , MICROBLOG_DOMAIN),
+        'featured_image' => __('微博头图' , MICROBLOG_DOMAIN),
+        'filter_items_list' => __('筛选微博列表' , MICROBLOG_DOMAIN),
+        'filter_by_date' => __('按微博日期筛选' , MICROBLOG_DOMAIN),
+        'set_featured_image' => __('设置微博头图' , MICROBLOG_DOMAIN),
+        'use_featured_image' => __('使用微博头图' , MICROBLOG_DOMAIN),
+        'remove_featured_image' => __('移除微博头图' , MICROBLOG_DOMAIN),
+        'item_reverted_to_draft' => __('该微博已恢复为草稿' , MICROBLOG_DOMAIN),
+        'items_list' => __('微博列表' , MICROBLOG_DOMAIN),
+        'items_list_navigation' => __('微博列表导航' , MICROBLOG_DOMAIN),
+        'item_published_privately' => __('该微博已私密发布' , MICROBLOG_DOMAIN),
         
         
         // 以下为实验数据，边用边改
-        'new_item' => __('微博-new_item'),
-        'parent_item_colon' => __('微博-parent_item_colon'),
-        'archives' => __('微博-archives'),
-        'attributes' => __('微博-attributes'),
-        'insert_into_item' => __('微博-insert_into_item'),
-        'uploaded_to_this_item' => __('微博-uploaded_to_this_item'),
+        'new_item' => __('微博-new_item' , MICROBLOG_DOMAIN),
+        'parent_item_colon' => __('微博-parent_item_colon' , MICROBLOG_DOMAIN),
+        'archives' => __('微博-archives' , MICROBLOG_DOMAIN),
+        'attributes' => __('微博-attributes' , MICROBLOG_DOMAIN),
+        'insert_into_item' => __('微博-insert_into_item' , MICROBLOG_DOMAIN),
+        'uploaded_to_this_item' => __('微博-uploaded_to_this_item' , MICROBLOG_DOMAIN),
         'item_trashed' => __('微博-item_trashed'),
 
-        'item_link' => __('微博-item_link'),
-        'item_link_description' => __('微博-item_link_description'),
+        'item_link' => __('微博-item_link' , MICROBLOG_DOMAIN),
+        'item_link_description' => __('微博-item_link_description' , MICROBLOG_DOMAIN),
     );
 
     $args = array(
-        'label' => '微博',
+        'label' => __('微博' , MICROBLOG_DOMAIN),
         'labels' => $labels,
         'has_archive' => true,
         'menu_position' => 6,
@@ -61,8 +61,8 @@ function mbfun_register_micropost_type($supports, $tageEnable = false) {
         'rewrite' => array('slug' => $slug_name), // 使用动态获取的 slug
         'supports' => $supports, // 更新为动态获取的支持项
         'show_in_rest' => use_block_editor_for_post_type('post'), // 跟站点编辑器保持一致
-        'description' => __('通过 MicroBlog 你可以轻松创建一条微博，通过短代码或插件增加到某页面或边栏'),
-        // 'taxonomies' => array ('micropost_topic' ),
+        'description' => __('通过 MicroBlog 你可以轻松创建一条微博，通过短代码或插件增加到某页面或边栏' , MICROBLOG_DOMAIN),
+        // 'taxonomies' => array ('micropost_topic' ),  // 与 mbfun_register_micropost_taxonomy 功能重复，故注释
     );
     register_post_type('micropost', $args);
     
@@ -79,32 +79,32 @@ function mbfun_register_micropost_taxonomy($enable) {
     }
     // 创建一个新的分类法，用于 'micropost' 类型的文章
     $labels = array(
-            'name' => __('微博话题'),
-            'singular_name' => __('微博话题'),
-            'add_new_item' => __('添加新话题'),
-            'search_items' => __('搜索话题'),
-            'edit_item' => __('编辑话题'),
-            'view_item' => __('查看话题'),
-            'most_used' => __('常用话题'),
-            'not_found' => __('未找到该话题'),
+            'name' => __('微博话题' , MICROBLOG_DOMAIN),
+            'singular_name' => __('微博话题' , MICROBLOG_DOMAIN),
+            'add_new_item' => __('添加新话题' , MICROBLOG_DOMAIN),
+            'search_items' => __('搜索话题' , MICROBLOG_DOMAIN),
+            'edit_item' => __('编辑话题' , MICROBLOG_DOMAIN),
+            'view_item' => __('查看话题' , MICROBLOG_DOMAIN),
+            'most_used' => __('常用话题' , MICROBLOG_DOMAIN),
+            'not_found' => __('未找到该话题' , MICROBLOG_DOMAIN),
             'choose_from_most_used' => __('选择已有话题'),
             'separate_items_with_commas' => __('多个话题请用英文逗号（,）分开'),
             
             // 以下为实验数据，边用边改
-            'all_items' => __('微话-all_items'),
-            'popular_items' => __('微话-popular_items'),
-            'parent_item' => __('微话-parent_item'),
-            'update_item' => __('微话-update_item'),
-            'new_item_name' => __('微话-new_item_name'),
-            'no_terms' => __('微话-no_terms'),
-            'filter_by_item' => __('微话-filter_by_item'),
-            'back_to_items' => __('微话-back_to_items'),
-            'item_link' => __('微话-item_link'),
-            'item_link_description' => __('微话-item_link_description'),
+            'all_items' => __('微话-all_items' , MICROBLOG_DOMAIN),
+            'popular_items' => __('微话-popular_items' , MICROBLOG_DOMAIN),
+            'parent_item' => __('微话-parent_item' , MICROBLOG_DOMAIN),
+            'update_item' => __('微话-update_item' , MICROBLOG_DOMAIN),
+            'new_item_name' => __('微话-new_item_name' , MICROBLOG_DOMAIN),
+            'no_terms' => __('微话-no_terms' , MICROBLOG_DOMAIN),
+            'filter_by_item' => __('微话-filter_by_item' , MICROBLOG_DOMAIN),
+            'back_to_items' => __('微话-back_to_items' , MICROBLOG_DOMAIN),
+            'item_link' => __('微话-item_link' , MICROBLOG_DOMAIN),
+            'item_link_description' => __('微话-item_link_description' , MICROBLOG_DOMAIN),
         );
         
     $taxonomy_args = array(
-        'label' => __('微博话题'),
+        'label' => __('微博话题' , MICROBLOG_DOMAIN),
         'labels' => $labels,
         'public' => true,
         'show_in_rest' => true,
@@ -113,7 +113,7 @@ function mbfun_register_micropost_taxonomy($enable) {
         'show_admin_column' => true,
         'rest_base' => 'micropost_topics', // REST API 路由的根 URL Type
         'rewrite' => array( 'slug' => 'micropost_topics' ), // 自定义分类法的重写规则
-        'description' => __('通过 话题标签 创建微博话题，针对一个主题，连续讨论'),
+        'description' => __('通过 话题标签 创建微博话题，针对一个主题，连续讨论' , MICROBLOG_DOMAIN),
     );
     
     register_taxonomy('micropost_topic', 'micropost', $taxonomy_args);
@@ -275,8 +275,8 @@ function mbfun_get_plugin_version() {
     if ( function_exists( 'wp_get_environment_type' ) && wp_get_environment_type() === 'development' ) {
         return time();
     }
-    global $plugin_version;
-    return $plugin_version;
+    global $microblog_plugin_version;
+    return $microblog_plugin_version;
 }
 
 

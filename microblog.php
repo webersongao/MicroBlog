@@ -21,9 +21,9 @@ define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
 
 $microblog_slug_name = 'microposts';
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
-$plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.7.0';
+$microblog_plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.7.0';
 
-global $microblog_slug_name , $plugin_version;
+global $microblog_slug_name , $microblog_plugin_version;
 
 // 核心功能函数
 require_once(plugin_dir_path(__FILE__) . 'includes/micropost-functions.php');
@@ -71,13 +71,12 @@ function microblog_plugin_data_activation() {
         add_option('microblog_micropost_data', $defaults);
     }
 }
+
 // 注册卸载插件时运行的函数
 register_uninstall_hook( __FILE__, 'microblog_plugin_uninstall' );
 function microblog_plugin_uninstall() {
-    // 删除选项
-    delete_option('microblog_micropost_data');
-    delete_option('widget_microblog_widget');
-    // 还可以执行其他清理操作，如删除数据库条目等
+    // 删除配置项
+
 }
 
 ?>
