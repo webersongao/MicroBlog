@@ -8,11 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 function mlb_setup_post_types() {
 	$labels = array(
 		'name'               => _x( '连载', 'post type general name', MICROBLOG_DOMAIN ),
-		'singular_name'      => _x( 'Live Entry', 'post type singular name', MICROBLOG_DOMAIN ),
+		'singular_name'      => _x( '微连载', 'post type singular name', MICROBLOG_DOMAIN ),
 		'add_new'            => __( '写连载', MICROBLOG_DOMAIN ),
 		'add_new_item'       => __( 'Add New Entry', MICROBLOG_DOMAIN ),
-		'edit_item'          => __( 'Edit Entry', MICROBLOG_DOMAIN ),
-		'new_item'           => __( 'New Entry', MICROBLOG_DOMAIN ),
+		'edit_item'          => __( '编辑连载', MICROBLOG_DOMAIN ),
+		'new_item'           => __( '新连载', MICROBLOG_DOMAIN ),
 		'all_items'          => __( '连载', MICROBLOG_DOMAIN ),
 		'view_item'          => __( 'View Entry', MICROBLOG_DOMAIN ),
 		'search_items'       => __( 'Search Liveblog Entries', MICROBLOG_DOMAIN ),

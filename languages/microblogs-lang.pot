@@ -174,15 +174,15 @@ msgid "Add New"
 msgstr ""
 
 #: includes/live-post-types.php:12
-msgid "Add New Entry"
+msgid "Add 新连载"
 msgstr ""
 
 #: includes/live-post-types.php:13
-msgid "Edit Entry"
+msgid "编辑连载"
 msgstr ""
 
 #: includes/live-post-types.php:14
-msgid "New Entry"
+msgid "新连载"
 msgstr ""
 
 #: includes/live-post-types.php:15

@@ -224,7 +224,7 @@ function mlb_add_post_dropdown_filter_to_manage_posts() {
 	echo '<select name="live_id">';
 		echo sprintf( '<option value="%s" %s>%s</option>', esc_attr( 'all' ), $true, esc_html( '全部连载' ) );
 		foreach ( $liveblogs as $liveblog_id => $liveblog_title ) {
-			$display_title = mb_strlen( $liveblog_title ) > 6 ? mb_substr( $liveblog_title, 0, 6 ) . '...' : $liveblog_title;
+			$display_title = mb_strlen( $liveblog_title ) > 8 ? mb_substr( $liveblog_title, 0, 8 ) . '...' : $liveblog_title;
 			$selected = selected( $liveblog_id, get_query_var( 'live_id' ), false );
 			echo sprintf( '<option value="%s" %s>%s</option>', esc_attr( $liveblog_id ), $selected, esc_html( $display_title ) );
 		}
