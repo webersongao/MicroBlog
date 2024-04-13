@@ -211,7 +211,7 @@ function microblog_enqueue_scripts_and_styles() {
 function microblog_formart_micropost_feed_title($title, $post_id) {
     $post_type = get_post_type($post_id);
     if ($post_type === 'micropost') {
-        return '【微博】：' . $title;
+        return  __('【微博】：' , MICROBLOG_DOMAIN) . $title;
     }
     return $title;
 }

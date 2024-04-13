@@ -37,6 +37,11 @@ function mbfun_display_quick_micropost_widget() {
 
 // 处理表单提交
 function mbfun_handle_quick_micropost_submission() {
+
+    if ( ! current_user_can( 'edit_posts' ) ) {
+        wp_die( '您没有权限执行此操作。' );
+    }
+    
     if (isset($_POST['micropost_content']) && isset($_POST['quick-micropost-nonce'])) {
         if (wp_verify_nonce($_POST['quick-micropost-nonce'], 'quick-micropost-action')) {
             $post_title = isset($_POST['micropost_title']) ? sanitize_text_field($_POST['micropost_title']) : '微博 ' . gmdate('Y-m-d H:i');

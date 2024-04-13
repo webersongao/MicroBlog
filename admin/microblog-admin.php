@@ -40,22 +40,24 @@ function microblog_admin_settings() {
         </div>
         <!-- Add tab navigation -->
         <h2 class="nav-tab-wrapper">
-            <a href="?page=<?php echo MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=micropost" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'micropost') ? 'nav-tab-active' : ''; ?>">微博</a>
-            <a href="?page=<?php echo MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=liveblog" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : ''; ?>">微连载</a>
-            <a href="?page=<?php echo MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=general" class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'general') ? 'nav-tab-active' : ''; ?>">基础设置</a>    
+            <a href="?page=<?= MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=micropost" class="nav-tab <?= (!isset($_GET['tab']) || $_GET['tab'] === 'micropost') ? 'nav-tab-active' : ''; ?>">微博</a>
+            <a href="?page=<?= MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=liveblog" class="nav-tab <?= (isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : ''; ?>">微连载</a>
+            <a href="?page=<?= MICROBLOG_BASEFOLDER; ?>/microblog.php&tab=general" class="nav-tab <?= (isset($_GET['tab']) && $_GET['tab'] === 'general') ? 'nav-tab-active' : ''; ?>">基础设置</a>    
         </h2>
         <div class="wrap">
             <?php
             // Display the appropriate settings section based on the selected tab
-            if (isset($_GET['tab']) && $_GET['tab'] === 'general') {
-                microblog_general_settings_section();
-            } elseif (isset($_GET['tab']) && $_GET['tab'] === 'liveblog') {
-                microblog_liveblog_settings_section();
-            } elseif (isset($_GET['tab']) && $_GET['tab'] === 'micropost') {
+            if (!isset($_GET['tab'])) {
                 microblog_micropost_settings_section();
             } else {
-                microblog_micropost_settings_section();
-            }
+                if ($_GET['tab'] === 'general') {
+                    microblog_general_settings_section();
+                } elseif ($_GET['tab'] === 'liveblog') {
+                    microblog_liveblog_settings_section();
+                } elseif ($_GET['tab'] === 'micropost') {
+                    microblog_micropost_settings_section();
+                }
+            }            
             ?>
         </div>
     </div>
