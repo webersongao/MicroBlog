@@ -293,7 +293,7 @@ function mbfun_get_live_all_post_types() {
 function mbfun_get_live_supported_post_types() {
 	global $mlb_options;
 
-	$post_types = ! empty( $mlb_options['post_types'] ) ? $mlb_options['post_types'] : array( 'post' );
+	$post_types = ! empty( $mlb_options['ml_post_types'] ) ? $mlb_options['ml_post_types'] : array( 'post' );
 
 	return apply_filters( 'mlb_post_types', $post_types );
 }
@@ -306,7 +306,7 @@ function mbfun_get_live_supported_post_types() {
 function mbfun_get_live_update_interval() {
 	global $mlb_options;
 
-	$update_interval = ! empty( $mlb_options['update_interval'] ) ? $mlb_options['update_interval'] : 30;
+	$update_interval = ! empty( $mlb_options['ml_update_interval'] ) ? $mlb_options['ml_update_interval'] : 30;
 
 	return apply_filters( 'mlb_update_interval', $update_interval );
 }
@@ -319,7 +319,7 @@ function mbfun_get_live_update_interval() {
 function mlb_display_title() {
 	global $mlb_options;
 
-	$display = ! empty( $mlb_options['display_title'] ) ? true : false;
+	$display = ! empty( $mlb_options['ml_display_title'] ) ? true : false;
 
 	return apply_filters( 'mlb_display_title', $display );
 }
@@ -332,7 +332,7 @@ function mlb_display_title() {
 function mlb_display_author_name() {
 	global $mlb_options;
 
-	$display_author = ! empty( $mlb_options['display_author'] ) ? true : false;
+	$display_author = ! empty( $mlb_options['ml_display_author'] ) ? true : false;
 
 	return apply_filters( 'mlb_display_author', $display_author );
 }
@@ -345,7 +345,7 @@ function mlb_display_author_name() {
 function mlb_display_social_sharing() {
 	global $mlb_options;
 
-	$display_share = ! empty( $mlb_options['display_social_share'] ) ? true : false;
+	$display_share = ! empty( $mlb_options['ml_display_social_share'] ) ? true : false;
 
 	return apply_filters( 'mlb_display_social_sharing', $display_share );
 }
@@ -358,7 +358,7 @@ function mlb_display_social_sharing() {
 function mbfun_get_live_show_entries() {
 	global $mlb_options;
 
-	$show_entries = ! empty( $mlb_options['show_entries'] ) ? $mlb_options['show_entries'] : 10;
+	$show_entries = ! empty( $mlb_options['ml_show_entries'] ) ? $mlb_options['ml_show_entries'] : 10;
 
 	return apply_filters( 'mlb_show_entries', $show_entries );
 }
@@ -371,7 +371,7 @@ function mbfun_get_live_show_entries() {
 function mbfun_get_live_theme() {
 	global $mlb_options;
 
-	$theme = ! empty( $mlb_options['theme_style'] ) ? $mlb_options['theme_style'] : 'light';
+	$theme = ! empty( $mlb_options['ml_theme_style'] ) ? $mlb_options['ml_theme_style'] : 'light';
 
 	return apply_filters( 'mlb_theme', $theme );
 }
@@ -659,7 +659,7 @@ function mbfun_get_live_entry_display_date() {
 
 	setup_postdata( $post );
 
-	$display = mbfun_get_live_option( 'entry_date_format', 'human' );
+	$display = mbfun_get_live_option( 'ml_entry_date_format', 'human' );
 
 	if ( $display === 'human' ) {
 		?>

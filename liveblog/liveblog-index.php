@@ -78,7 +78,7 @@ if (!class_exists('Micro_Liveblog')) {
             } else {
                 wp_register_script('micro_lb', mbfun_get_plugin_url() . 'assets/js/liveblog.js', ['jquery'], mbfun_get_plugin_version());
                 wp_localize_script('micro_lb', 'micro_lb', [
-                    'datetime_format' => mbfun_get_live_option('entry_date_format', 'human'),
+                    'datetime_format' => mbfun_get_live_option('ml_entry_date_format', 'human'),
                     'locale'          => get_locale(),
                     'interval'        => mbfun_get_live_update_interval(),
                     'new_post_msg'    => __('There is %s update.', MICROBLOG_DOMAIN),
@@ -110,7 +110,7 @@ if (!class_exists('Micro_Liveblog')) {
 
         public function setup_caching()
         {
-            $cache = mbfun_get_live_option('cache_enabled', false);
+            $cache = mbfun_get_live_option('ml_cache_enabled', false);
             if ($cache == 'object') {
                 MicroLiveblogs\Caching\ObjectCaching::init();
             } elseif ($cache == 'transient') {

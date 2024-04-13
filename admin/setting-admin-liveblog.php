@@ -102,7 +102,7 @@ function mbfun_get_registered_settings() {
 	$mlb_sections = array(
 		'general' => array(
 			array(
-				'id'            => 'theme_style',
+				'id'            => 'ml_theme_style',
 				'name'          => __( '主题', MICROBLOG_DOMAIN ),
 				'desc'          => __( 'Select a theme for your liveblog.', MICROBLOG_DOMAIN ),
 				'type'          => 'select',
@@ -115,25 +115,25 @@ function mbfun_get_registered_settings() {
 				'default_value' => 'light',
 			),
 			array(
-				'id'   => 'display_title',
+				'id'   => 'ml_display_title',
 				'name' => __( '显示标题', MICROBLOG_DOMAIN ),
 				'desc' => __( ' Display the title on liveblog entries.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 			array(
-				'id'   => 'display_author',
+				'id'   => 'ml_display_author',
 				'name' => __( '显示作者', MICROBLOG_DOMAIN ),
 				'desc' => __( ' Display the author name on liveblog entries.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 			array(
-				'id'   => 'display_social_share',
+				'id'   => 'ml_display_social_share',
 				'name' => __( '社交分享', MICROBLOG_DOMAIN ),
 				'desc' => __( ' Display the social sharing options.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 			array(
-				'id'            => 'update_interval',
+				'id'            => 'ml_update_interval',
 				'name'          => __( '刷新间隔', MICROBLOG_DOMAIN ),
 				'desc'          => __( ' Per how many seconds should be checked for new liveblog updates. (10,360)', MICROBLOG_DOMAIN ),
 				'type'          => 'number',
@@ -142,7 +142,7 @@ function mbfun_get_registered_settings() {
 				'default_value' => 30,
 			),
 			array(
-				'id'            => 'show_entries',
+				'id'            => 'ml_show_entries',
 				'name'          => __( '每页连载数', MICROBLOG_DOMAIN ),
 				'desc'          => __( ' The amount of entries visible before the load more button.', MICROBLOG_DOMAIN ),
 				'type'          => 'number',
@@ -151,7 +151,7 @@ function mbfun_get_registered_settings() {
 				'default_value' => 10,
 			),
 			array(
-				'id'            => 'post_types',
+				'id'            => 'ml_post_types',
 				'name'          => __( '支持文章类型', MICROBLOG_DOMAIN ),
 				'desc'          => __( ' Select the post types that need to support liveblogs.', MICROBLOG_DOMAIN ),
 				'type'          => 'multiple_checkbox',
@@ -159,13 +159,13 @@ function mbfun_get_registered_settings() {
 				'default_value' => array( 'post' ),
 			),
 			array(
-				'id'   => 'prefix_title',
+				'id'   => 'ml_prefix_title',
 				'name' => __( '显示前缀', MICROBLOG_DOMAIN ),
 				'desc' => __( ' Automatically puts "Liveblog" in front of your liveblogs titles.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 			array(
-				'id'      => 'entry_date_format',
+				'id'      => 'ml_entry_date_format',
 				'name'    => __( '时间格式', MICROBLOG_DOMAIN ),
 				'desc'    => __( ' The format of the date displayed on liveblog entries.', MICROBLOG_DOMAIN ),
 				'type'    => 'select',
@@ -177,7 +177,7 @@ function mbfun_get_registered_settings() {
 				),
 			),
 			array(
-				'id'      => 'cache_enabled',
+				'id'      => 'ml_cache_enabled',
 				'name'    => __( '启用缓存', MICROBLOG_DOMAIN ),
 				'desc'    => __( ' Caches the liveblog feed with the selected method.', MICROBLOG_DOMAIN ),
 				'type'    => 'select',
@@ -188,7 +188,7 @@ function mbfun_get_registered_settings() {
 				),
 			),
 			array(
-				'id'   => 'append_timestamp',
+				'id'   => 'ml_append_timestamp',
 				'name' => __( 'feed时间戳', MICROBLOG_DOMAIN ),
 				'desc' => __( ' Appends a timestamp to the liveblog feed URL.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',

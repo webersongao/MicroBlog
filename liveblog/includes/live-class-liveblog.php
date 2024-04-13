@@ -110,7 +110,7 @@ class MLB_Liveblog {
 
 		$content .= do_action( 'mlb_before_liveblog', $this->get_liveblog_id(), array() );
 
-		$content .= '<div id="mlb-liveblog" class="' . implode( ' ', $classes ) . '" data-append-timestamp="' . mbfun_get_live_option( 'append_timestamp', false ) . '" data-status="' . mbfun_get_live_liveblog_status() . '" data-highlighted-entry="' . mbfun_get_live_highlighted_entry_id() . '" data-show-entries="' . mbfun_get_live_show_entries() . '" data-endpoint="' . $this->endpoint . '">';
+		$content .= '<div id="mlb-liveblog" class="' . implode( ' ', $classes ) . '" data-append-timestamp="' . mbfun_get_live_option( 'ml_append_timestamp', false ) . '" data-status="' . mbfun_get_live_liveblog_status() . '" data-highlighted-entry="' . mbfun_get_live_highlighted_entry_id() . '" data-show-entries="' . mbfun_get_live_show_entries() . '" data-endpoint="' . $this->endpoint . '">';
 
 		$content .= '<div class="mlb-liveblog-closed-message" style="display: none;">' . __( 'The liveblog has ended.', MICROBLOG_DOMAIN ) . '</div>';
 

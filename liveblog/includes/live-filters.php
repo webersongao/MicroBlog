@@ -98,7 +98,7 @@ add_filter( 'display_post_states', 'mlb_liveblog_post_state', 2, 10 );
 function mlb_is_prefix_title_enabled() {
 	global $mlb_options;
 
-	return apply_filters( 'mlb_prefix_title_enabled', ! empty( $mlb_options['prefix_title'] ) ? true : false );
+	return apply_filters( 'mlb_prefix_title_enabled', ! empty( $mlb_options['ml_prefix_title'] ) ? true : false );
 }
 
 /**
