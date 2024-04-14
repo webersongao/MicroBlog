@@ -12,9 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Register all the meta boxes for the Download custom post type
  */
 function mlb_add_meta_box() {
-	$post_types = mbfun_get_live_supported_post_types();
-	foreach ( $post_types as $post_type ) {
-		add_meta_box( 'mlb_liveblog_meta_box', __( '连载Live', MICROBLOG_DOMAIN ), 'mlb_render_liveblog_meta_box', $post_type, 'normal', 'high' );
+	$live_regist = mbfun_get_general_option('msk_liveblog_regist', false);
+	if ($live_regist){
+		$post_types = mbfun_get_live_supported_post_types();
+		foreach ( $post_types as $post_type ) {
+			add_meta_box( 'mlb_liveblog_meta_box', __( '连载Live', MICROBLOG_DOMAIN ), 'mlb_render_liveblog_meta_box', $post_type, 'normal', 'high' );
+		}
 	}
 	add_meta_box( 'mlb_entry_meta_box', __( '连载Live-原文', MICROBLOG_DOMAIN ), 'mlb_render_entry_meta_box', 'microlive', 'normal', 'high' );
 }

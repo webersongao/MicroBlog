@@ -51,8 +51,8 @@ function mbfun_update_global_microblog_slug_name($new_value) {
 
 function mbfun_update_microblog_display_module() {
 
-    $module_live = mbfun_get_general_option('mb_module_liveblog', false);
-    if ($module_live) {
+    $live_regist = mbfun_get_general_option('msk_liveblog_regist', false);
+    if ($live_regist) {
         register_post_type( 'microlive', mbfun_register_liveblog_args() );
     } else {
 	    unregister_post_type( 'microlive' );

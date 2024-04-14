@@ -147,33 +147,10 @@ function microblog_micropost_data_sanitize($input) {
             return mbfun_get_micropost_settings();
         }
     }
-    microblog_update_micropost_type_support($input); // 更新 注册微博文章类型函数 的 supports 参数
+
+    microblog_regist_micropost_with_option($input,false); // 更新 注册微博文章类型函数 的 supports 参数
     flush_rewrite_rules(); // 刷新重写规则
     return $input;
-}
-
-// 更新自定义文章类型的支持项
-function microblog_update_micropost_type_support($options) {
-    if (empty($options)) { return; }
-    $microtag = false;
-    $supports = array('title', 'editor','comments'); // 默认支持的参数
-    // 根据用户选项更新 supports 参数
-    if (isset($options['mb_editor_func'])) {
-        $editor_func = $options['mb_editor_func'];
-        if (in_array('mb_author', $editor_func)) {
-            $supports[] = 'author';
-        }
-        if (in_array('mb_thumbnail', $editor_func)) {
-            $supports[] = 'thumbnail';
-        }
-        if (in_array('mb_excerpt', $editor_func)) {
-            $supports[] = 'excerpt';
-        }
-        if (in_array('mb_posttag', $editor_func)) {
-            $microtag = true;
-        }
-    }
-    mbfun_register_micropost_type($supports, $microtag); // 更新自定义文章类型的支持项
 }
 
 
@@ -236,7 +213,7 @@ function microblog_post_rss_feed_input() {
     ?>
     <label>
         <input type='checkbox' name='microblog_micropost_data[mb_rss_feed]' value='1' <?php checked($value, true); ?> />
-        是否加入全站Feed
+        加入全站Feed流（ <a target="_blank" href="/feed" class="rss">RSS</a> ）
     </label>
     <?php
 }

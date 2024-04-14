@@ -104,8 +104,8 @@ function microblog_general_setting_admin() {
 function microblog_general_data_sanitize($input) {
     
     // 刷新模块
-    $module_live = mbfun_get_general_option('mb_module_liveblog', false);
-    if (isset($input['mb_module_liveblog']) && ($input['mb_module_liveblog'] !== $module_live)) {
+    $live_regist = mbfun_get_general_option('msk_liveblog_regist', false);
+    if (isset($input['msk_liveblog_regist']) && ($input['msk_liveblog_regist'] !== $live_regist)) {
         mbfun_update_microblog_display_module();
     }
 
@@ -115,17 +115,17 @@ function microblog_general_data_sanitize($input) {
 
 // Display shortcode settings section content
 function microblog_general_section_base_callback() {
-    echo '<p>以下为 MicroBlog 插件的基础配置，请按需调整 </p>';
+    echo '<p>以下为 MicroBlog 插件附属模块，请按需启用 </p>';
 }
 
 
 // Display settings fields input
 function microblog_module_display_input() {
     $options = mbfun_get_general_settings();
-    $value = isset($options['mb_module_liveblog']) ? $options['mb_module_liveblog'] : false;
+    $value = isset($options['msk_liveblog_regist']) ? $options['msk_liveblog_regist'] : false;
     ?>
     <label>
-        <input type='checkbox' name='microblog_general_data[mb_module_liveblog]' value='1' <?php checked($value, true); ?> />
+        <input type='checkbox' name='microblog_general_data[msk_liveblog_regist]' value='1' <?php checked($value, true); ?> />
          启用 ( 关闭后,不会删除数据,也不会导致配置项丢失 )
     </label>
     <?php
@@ -134,26 +134,26 @@ function microblog_module_display_input() {
 // Display settings fields input
 function microblog_configtest_display_input() {
     $options = mbfun_get_general_settings();
-    $editor_func = isset($options['mb_test_func']) ? $options['mb_test_func'] : array();
+    $editor_func = isset($options['msk_love_test']) ? $options['msk_love_test'] : '';
     ?>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_general_data[mb_test_func][]' value='mb_author' <?php if (in_array('mb_author', $editor_func)) echo 'checked="checked"'; ?> />
-        傻子
+        <input type='radio' name='microblog_general_data[msk_love_test]' value='mb_you_love' <?php if ($editor_func === 'mb_you_love') echo 'checked="checked"'; ?> />
+        你爱的人
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_general_data[mb_test_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
-        呆子
+        <input type='radio' name='microblog_general_data[msk_love_test]' value='mb_love_you' <?php if ($editor_func === 'mb_love_you') echo 'checked="checked"'; ?> />
+        爱你的人
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_general_data[mb_test_func][]' value='mb_posttag' <?php if (in_array('mb_posttag', $editor_func)) echo 'checked="checked"'; ?> />
-        聋子
+        <input type='radio' name='microblog_general_data[msk_love_test]' value='mb_a_monk' <?php if ($editor_func === 'mb_a_monk') echo 'checked="checked"'; ?> />
+        我出家
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_general_data[mb_test_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
-        瞎子
+    (你愿意跟谁结婚？)
     </label>
     <?php
 }
+
 
 
 

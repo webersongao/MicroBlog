@@ -10,10 +10,17 @@ require_once(plugin_dir_path(__FILE__) . 'microblog-functions.php');
 add_action('init', 'mbfun_create_micropost_type');
 
 function mbfun_create_micropost_type() {
-    $microtag = false;
     $options = mbfun_get_micropost_settings();
-    $supports = array('title', 'editor', 'comments'); // 默认支持的参数
-    // 如果$options存在并且不为空，则更新supports参数
+
+    microblog_regist_micropost_with_option($options,true);
+}
+
+
+function microblog_regist_micropost_with_option($options, $force = false) {
+    if (empty($options) && !$force) { return; }
+
+    $microtag = false;
+    $supports = array('title', 'editor','comments'); // 默认支持的参数
     if (!empty($options) && isset($options['mb_editor_func'])) {
         $editor_func = $options['mb_editor_func'];
         if (in_array('mb_author', $editor_func)) {
@@ -32,8 +39,9 @@ function mbfun_create_micropost_type() {
         $supports = array_unique($supports);
     }
 
-    mbfun_register_micropost_type($supports, $microtag);
+    mbfun_register_micropost_type($supports, $microtag); // 更新自定义文章类型的支持项
 }
+
 
 function mbfun_register_micropost_type($supports, $microtag = false) {
 
