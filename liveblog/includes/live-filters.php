@@ -176,13 +176,16 @@ add_action( 'manage_microlive_posts_custom_column', 'mlb_populate_herf_liveblog_
  * @return string
  */
 function mlb_maybe_add_liveblog( $content ) {
+	// 如果是 feed 输出，则直接返回原始内容
+	if ( is_feed() ) {
+		return $content; 
+	}
 	if ( ! mlb_is_liveblog() ) {
 		return $content;
 	}
-
 	$liveblog = MLB_Liveblog::fromId( get_the_ID() );
 	$content  = $content;
-	$content .= $liveblog->render();
+	$content .= $liveblog->mlb_content_render();
 
 	return $content;
 }

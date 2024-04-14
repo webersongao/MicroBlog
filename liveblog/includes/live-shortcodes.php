@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function mlb_liveblog_shortcode( $atts ) {
 	if ( ! empty( $atts['endpoint'] ) ) {
-		$liveblog = MLB_Liveblog::fromEndpoint( $atts['endpoint'] );
-	} elseif ( ! empty( $atts['id'] ) ) {
-		$liveblog = MLB_Liveblog::fromId( $atts['id'] );
+		$liveblog = MLB_Liveblog::mlb_fromEndpoint( $atts['endpoint'] );
+	} elseif ( ! empty( $atts['live_id'] ) ) {
+		$liveblog = MLB_Liveblog::mlb_fromId( $atts['live_id'] );
 	} else {
-		return;
+		return '<p>❌ MicroLive微连载 运行异常：live_id 或 endpoint 不可为空 </p>';
 	}
 
-	return $liveblog->render();
+	return $liveblog->mlb_content_render();
 }
 
 add_shortcode( 'micro_liveblog', 'mlb_liveblog_shortcode' );
