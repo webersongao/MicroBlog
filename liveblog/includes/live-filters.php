@@ -183,7 +183,7 @@ function mlb_maybe_add_liveblog( $content ) {
 	if ( ! mlb_is_liveblog() ) {
 		return $content;
 	}
-	$liveblog = MLB_Liveblog::fromId( get_the_ID() );
+	$liveblog = MLB_Liveblog::mlb_fromId( get_the_ID() );
 	$content  = $content;
 	$content .= $liveblog->mlb_content_render();
 

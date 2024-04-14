@@ -29,7 +29,7 @@ class MLB_Liveblog {
 	 * @param int $id
 	 * @return MLB_Liveblog
 	 */
-	public static function fromId( $id ) {
+	public static function mlb_fromId( $id ) {
 		$instance = new self();
 
 		$instance->liveblog_post_id = $id;
@@ -44,7 +44,7 @@ class MLB_Liveblog {
 	 * @param string $url
 	 * @return MLB_Liveblog
 	 */
-	public static function fromEndpoint( $url ) {
+	public static function mlb_fromEndpoint( $url ) {
 		$instance = new self();
 
 		$instance->endpoint = $url;
@@ -81,7 +81,7 @@ class MLB_Liveblog {
 	 *
 	 * @return int|null
 	 */
-	private function get_liveblog_id() {
+	private function mlb_get_liveblog_id() {
 		return mlb_is_liveblog() ? get_the_ID() : $this->liveblog_post_id;
 	}
 
@@ -90,7 +90,7 @@ class MLB_Liveblog {
 	 *
 	 * @return string
 	 */
-	public function render() {
+	public function mlb_content_render() {
         $content = '';
 
 		// AMP is not supported at this moment
@@ -104,11 +104,11 @@ class MLB_Liveblog {
 
 		$classes = array( 'mlb-liveblog', 'mlb-theme-' . mbfun_get_live_theme() );
 
-		if ( current_user_can( 'edit_post', $this->get_liveblog_id() ) ) {
+		if ( current_user_can( 'edit_post', $this->mlb_get_liveblog_id() ) ) {
 			$classes[] = 'mlb-is-editor';
 		}
 
-		$content .= do_action( 'mlb_before_liveblog', $this->get_liveblog_id(), array() );
+		$content .= do_action( 'mlb_before_liveblog', $this->mlb_get_liveblog_id(), array() );
 
 		$content .= '<div id="mlb-liveblog" class="' . implode( ' ', $classes ) . '" data-append-timestamp="' . mbfun_get_live_option( 'ml_append_timestamp', false ) . '" data-status="' . mbfun_get_live_liveblog_status() . '" data-highlighted-entry="' . mbfun_get_live_highlighted_entry_id() . '" data-show-entries="' . mbfun_get_live_show_entries() . '" data-endpoint="' . $this->endpoint . '">';
 
@@ -120,8 +120,11 @@ class MLB_Liveblog {
 
 		$content .= '<ul class="mlb-liveblog-list"></ul>';
 
-		$content .= '<div class="mlb-loader"><!-- By Gao -->
-			<svg width="45" height="45" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
+		$content .= '<div class="mlb-loader">';
+
+		$content .= '<!-- By Gao -->';
+
+		$content .= '<svg width="45" height="45" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
 				<g fill="none" fill-rule="evenodd" transform="translate(1 1)" stroke-width="2">
 					<circle cx="22" cy="22" r="6" stroke-opacity="0">
 						<animate attributeName="r"
@@ -160,14 +163,11 @@ class MLB_Liveblog {
 							 calcMode="linear"
 							 repeatCount="indefinite" />
 					</circle>
-				</g>
-			</svg></div>';
-
+				</g>';
+		$content .= '</svg></div>';
 		$content .= '<button id="mlb-load-more" style="display: none;" class="mlb-button button">' . __( 'Load more', MICROBLOG_DOMAIN ) . '</button>';
-
 		$content .= '</div>';
-
-		$content .= do_action( 'mlb_after_liveblog', $this->get_liveblog_id(), array() );
+		$content .= do_action( 'mlb_after_liveblog', $this->mlb_get_liveblog_id(), array() );
 
 		return apply_filters( 'mlb_liveblog_html', $content );
 	}
