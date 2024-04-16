@@ -76,7 +76,7 @@ function mbfun_handle_quick_micropost_submission() {
             $message = '非法请求！';
         }
         // 将消息存储为查询参数以便在页面刷新后显示
-        wp_safe_redirect(add_query_arg('micropost_message', urlencode($message), wp_get_referer()));
+        wp_safe_redirect(add_query_arg('micropost_pub_alert', urlencode($message), wp_get_referer()));
         exit();
     }
 }

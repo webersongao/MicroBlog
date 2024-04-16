@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ======= 快速发微博 状态提示
     if (window.location.pathname === '/wp-admin/index.php') {
         var urlParams = new URLSearchParams(window.location.search);
-        var message = urlParams.get('micropost_message');
+        var message = urlParams.get('micropost_pub_alert');
         if (message) {
             var messageLink = document.querySelector('#quick-micropost-message a');
             if (messageLink) {
