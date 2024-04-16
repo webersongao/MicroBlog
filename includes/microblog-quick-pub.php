@@ -47,7 +47,7 @@ function mbfun_handle_quick_micropost_submission() {
             $post_title = isset($_POST['micropost_title']) ? sanitize_text_field($_POST['micropost_title']) : '微博 ' . gmdate('Y-m-d H:i');
             $post_content = isset($_POST['micropost_content']) ? wp_kses_post($_POST['micropost_content']) : '';
             if (mb_strlen($post_content) < 10) {
-                $message = '微博内容不可少于10个字，请重新输入。';
+                $message = '❌ 微博不可少于10个字！';
             } else {
                 $paragraph_blocks = '';
                 $block_editor = use_block_editor_for_post_type('post');
@@ -67,9 +67,9 @@ function mbfun_handle_quick_micropost_submission() {
                     'post_status' => 'publish'
                 ));
                 if (!is_wp_error($post_id)) {
-                    $message = '微博发布成功~';
+                    $message = '✅ 微博发布成功~';
                 } else {
-                    $message = '发布微博时出错~';
+                    $message = '❌ 微博发布出错~';
                 }
             }
         } else {
