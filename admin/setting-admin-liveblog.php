@@ -102,6 +102,14 @@ function mbfun_get_registered_settings() {
 	$mlb_sections = array(
 		'general' => array(
 			array(
+				'id'            => 'ml_post_types',
+				'name'          => __( '支持', MICROBLOG_DOMAIN ),
+				'desc'          => __( ' 你期望支持 "微连载"功能的类型.', MICROBLOG_DOMAIN ),
+				'type'          => 'multiple_checkbox',
+				'options'       => $mlb_alltypes,
+				'default_value' => array( 'post' ),
+			),
+			array(
 				'id'            => 'ml_theme_style',
 				'name'          => __( '主题', MICROBLOG_DOMAIN ),
 				'desc'          => __( 'Select a theme for your liveblog.', MICROBLOG_DOMAIN ),
@@ -120,6 +128,12 @@ function mbfun_get_registered_settings() {
 				'desc' => __( ' Display the title on liveblog entries.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
+			// array(
+			// 	'id'   => 'ml_title_prefix',
+			// 	'name' => __( '标题前缀', MICROBLOG_DOMAIN ),
+			// 	'desc' => __( ' 为空则默认：liveblog ,长度(1,20) .', MICROBLOG_DOMAIN ),
+			// 	'type' => 'text_input',
+			// ),
 			array(
 				'id'   => 'ml_display_author',
 				'name' => __( '显示作者', MICROBLOG_DOMAIN ),
@@ -149,14 +163,6 @@ function mbfun_get_registered_settings() {
 				'min'           => 1,
 				'max'           => 50,
 				'default_value' => 10,
-			),
-			array(
-				'id'            => 'ml_post_types',
-				'name'          => __( '支持文章类型', MICROBLOG_DOMAIN ),
-				'desc'          => __( ' Select the post types that need to support liveblogs.', MICROBLOG_DOMAIN ),
-				'type'          => 'multiple_checkbox',
-				'options'       => $mlb_alltypes,
-				'default_value' => array( 'post' ),
 			),
 			array(
 				'id'   => 'ml_prefix_title',
@@ -317,6 +323,22 @@ function microblog_live_number_callback( $args ) {
 	echo $html;
 }
 
+/**
+ * Number callback
+ *
+ * @param  array $args
+ * @return void
+ */
+function microblog_live_text_input_callback( $args ) {
+
+	global $mlb_options;
+	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : $args['default_value'];
+
+    $html  = '<input type="text" id="microblog_liveblog_data[' . $args['id'] . ']" name="microblog_liveblog_data[' . $args['id'] . ']" value="' . $value . '" maxlength="20" style="width: 120px;" />';
+	$html .= '<p class="description">' . $args['desc'] . '</p>';
+
+	echo $html;
+}
 
 
 

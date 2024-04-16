@@ -108,9 +108,10 @@ function mlb_is_prefix_title_enabled() {
  * @param  int    $post_id
  * @return string
  */
-function mlb_apply_title_prefix( $title, $post_id = null ) {
+function mlb_apply_live_title_prefix( $title, $post_id = null ) {
+	$livePrefix = mbfun_get_liveblog_option('ml_title_prefix', 'Liveblog');
 	if ( mlb_is_liveblog() && ! is_admin() && mlb_is_prefix_title_enabled() ) {
-		return mbfun_get_live_liveblog_title_prefix() . $title;
+		return __( $livePrefix, MICROBLOG_DOMAIN ) . ' - ' . $title;
 	}
 
 	return $title;
@@ -126,9 +127,9 @@ function mlb_apply_title_prefix_filter_condition( $query ) {
 	global $wp_query;
 
 	if ( $query === $wp_query ) {
-		add_filter( 'the_title', 'mlb_apply_title_prefix', 10, 2 );
+		add_filter( 'the_title', 'mlb_apply_live_title_prefix', 10, 2 );
 	} else {
-		remove_filter( 'the_title', 'mlb_apply_title_prefix', 10, 2 );
+		remove_filter( 'the_title', 'mlb_apply_live_title_prefix', 10, 2 );
 	}
 }
 add_action( 'loop_start', 'mlb_apply_title_prefix_filter_condition', 1, 10 );

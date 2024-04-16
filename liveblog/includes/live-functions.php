@@ -278,7 +278,8 @@ function mbfun_get_live_liveblog_status_options() {
 function mbfun_get_live_all_post_types() {
 
 	$all_types = get_post_types( array( 'public' => true), 'names', 'and' );
-	$specific_types = array( 'post', 'page', 'micropost' );   
+	$specific_types = array( 'post', 'page' );  
+	// $specific_types = array( 'post', 'page', 'micropost' );   
 	$intersected_post_types = array_intersect( $all_types, $specific_types );
 
 	return apply_filters( 'mlb_intersected_post_types', $intersected_post_types );
@@ -374,15 +375,6 @@ function mbfun_get_live_theme() {
 	$theme = ! empty( $mlb_options['ml_theme_style'] ) ? $mlb_options['ml_theme_style'] : 'light';
 
 	return apply_filters( 'mlb_theme', $theme );
-}
-
-/**
- * Title prefix
- *
- * @return string
- */
-function mbfun_get_live_liveblog_title_prefix() {
-	return apply_filters( 'mlb_liveblog_title_prefix', __( 'Liveblog', MICROBLOG_DOMAIN ) . ' - ' );
 }
 
 /**
@@ -684,7 +676,7 @@ function mbfun_get_live_liveblogs_with_post_id($post_id) {
 	$meta_key = '_micro_live_post_id';
 	// 构建 WP_Query 参数数组
 	$args = array(
-		'post_type'	=> array('post', 'micropost'),	// 文章类型
+		'post_type'	=> array('post', 'page', 'micropost'),	// 文章类型
 		'posts_per_page' => -1,	// 获取所有符合条件的文章
 		'meta_query' => array(	// 元数据查询参数
 			array(
