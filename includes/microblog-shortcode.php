@@ -110,17 +110,17 @@ function microblog_shortcode($atts) {
             $outtopics = mbfun_get_micropost_tags();
             $titleShow = (strlen($post_title) && $position_option && (in_array('titlebottom', $options['mb_title_position']))) ? true : false;
             if ($titleShow || comments_open()){
-                $out .= "<div class='mb-shortcode-post-comment'>";
+                $out .= "<div class='mb-shortcode-post-bottom'>";
                 if ($titleShow) {
-                    $out .= "<span class='mb-shortcode-post-comment-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
+                    $out .= "<span class='mb-shortcode-post-bottom-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
                 }
                 if (!empty($outtopics)){
-                    $out .= "<span class='mb-shortcode-post-comment-topics'>" . mbfun_get_micropost_tags() . "</span>";
+                    $out .= "<span class='mb-shortcode-post-bottom-topics'>" . mbfun_get_micropost_tags() . "</span>";
                 }
                 if (comments_open()) {
-                    $out .= "<span class='mb-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'assets/images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
+                    $out .= "<span class='mb-shortcode-post-bottom-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'assets/images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
                 } else {
-                    $out .= "<span class='mb-shortcode-post-comment-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'assets/images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
+                    $out .= "<span class='mb-shortcode-post-bottom-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'assets/images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
                 }
                 $out .= "</div>";
             }
