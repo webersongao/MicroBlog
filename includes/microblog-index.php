@@ -153,7 +153,7 @@ function mbfun_register_micropost_taxonomy() {
     );
     
     register_taxonomy('micropost_topic', 'micropost', $taxonomy_args);
-    register_taxonomy_for_object_type('micropost_topic', 'micropost');
+    // register_taxonomy_for_object_type('micropost_topic', 'micropost');
 }
 
 // 合并mocroblog的feed输出 ，并格式化标题
