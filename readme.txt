@@ -2,7 +2,6 @@
 === 微博 MicroBlog===
 
 Contributors: WebersonGao
-Donate link: https://www.webersongao.com 
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
