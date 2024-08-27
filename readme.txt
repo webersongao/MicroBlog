@@ -2,7 +2,6 @@
 === 微博 MicroBlog===
 
 Contributors: WebersonGao
-Donate link: https://www.webersongao.com 
 Tags: tweet, tweets, microblog, microblog, micropost
 Requires at least: 6.0
 Tested up to: 6.4.3
@@ -112,7 +111,6 @@ URL slug 支持自定义，例如改为microblog，则微博地址为 microblog/
 
 欢迎多提意见，如果你也想参与折腾，欢迎联系~
 
-邮箱：Gao@btbk.org
 推特：https://twitter.com/WebersonGao
 更多介绍：https://www.webersongao.com/tag/microblog
 
