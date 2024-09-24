@@ -36,7 +36,7 @@ msgid "That's it."
 msgstr ""
 
 #: includes/admin/live-settings-section.php:13
-msgid "连载连载 | 配置项"
+msgid "直播直播 | 配置项"
 msgstr ""
 
 #: includes/admin/live-settings-section.php:13
@@ -44,7 +44,7 @@ msgid "Settings"
 msgstr ""
 
 #: includes/admin/live-settings-section.php:26
-msgid "连载连载 | 配置项"
+msgid "直播直播 | 配置项"
 msgstr ""
 
 #: includes/admin/live-settings-section.php:31
@@ -174,11 +174,11 @@ msgid "Add New"
 msgstr ""
 
 #: includes/live-post-types.php:12
-msgid "Add 新连载"
+msgid "Add 新直播"
 msgstr ""
 
 #: includes/live-post-types.php:13
-msgid "编辑连载"
+msgid "编辑直播"
 msgstr ""
 
 #: includes/live-post-types.php:14

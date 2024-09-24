@@ -66,7 +66,7 @@ function microblog_admin_nav_tab_callback() {
     $live_regist = mbfun_get_general_option('msk_liveblog_regist', false);
     $out = '<a href="?page=' . MICROBLOG_BASEFOLDER . '/microblog.php&tab=micropost" class="nav-tab ' . ((!isset($_GET['tab']) || $_GET['tab'] === 'micropost') ? 'nav-tab-active' : '') . '">微博</a>';
     if ($live_regist) {
-        $out .= '<a href="?page=' . MICROBLOG_BASEFOLDER . '/microblog.php&tab=liveblog" class="nav-tab ' . ((isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : '') . '">微连载</a>';
+        $out .= '<a href="?page=' . MICROBLOG_BASEFOLDER . '/microblog.php&tab=liveblog" class="nav-tab ' . ((isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : '') . '">微直播</a>';
     }
     $out .= '<a href="?page=' . MICROBLOG_BASEFOLDER . '/microblog.php&tab=general" class="nav-tab ' . ((isset($_GET['tab']) && $_GET['tab'] === 'general') ? 'nav-tab-active' : '') . '">基础设置</a>';    
     echo wp_kses_post($out);

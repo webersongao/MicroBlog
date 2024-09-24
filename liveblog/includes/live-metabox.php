@@ -16,10 +16,10 @@ function mlb_add_meta_box() {
 	if ($live_regist){
 		$post_types = mbfun_get_live_supported_post_types();
 		foreach ( $post_types as $post_type ) {
-			add_meta_box( 'mlb_liveblog_meta_box', __( '连载Live', MICROBLOG_DOMAIN ), 'mlb_render_liveblog_meta_box', $post_type, 'normal', 'high' );
+			add_meta_box( 'mlb_liveblog_meta_box', __( '直播Live', MICROBLOG_DOMAIN ), 'mlb_render_liveblog_meta_box', $post_type, 'normal', 'high' );
 		}
 	}
-	add_meta_box( 'mlb_entry_meta_box', __( '连载Live-原文', MICROBLOG_DOMAIN ), 'mlb_render_entry_meta_box', 'microlive', 'normal', 'high' );
+	add_meta_box( 'mlb_entry_meta_box', __( '直播Live-原文', MICROBLOG_DOMAIN ), 'mlb_render_entry_meta_box', 'microlive', 'normal', 'high' );
 }
 add_action( 'add_meta_boxes', 'mlb_add_meta_box' );
 
@@ -109,7 +109,7 @@ function mlb_render_liveblog_options( $post_id ) {
 	if ( ! empty( $is_liveblog ) ) {
 		?>
 		<!-- <div class="mlb-input-group">
-			// 连载博客的 调用API
+			// 直播博客的 调用API
 			<label for="mlb-liveblog-endpoint"><?php _e( 'API-endpoint URL', MICROBLOG_DOMAIN ); ?></label>
 			<input type="text" id="mlb-liveblog-endpoint" onclick="this.focus(); this.select()" value="<?php echo mbfun_get_live_liveblog_api_endpoint( $post_id ); ?>" readonly="readonly" class="widefat">
 		</div> -->

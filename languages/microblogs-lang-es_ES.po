@@ -36,7 +36,7 @@ msgid "That's it."
 msgstr "Eso es todo."
 
 #: includes/admin/live-settings-section.php:15
-msgid "连载连载 | 配置项"
+msgid "直播直播 | 配置项"
 msgstr "Ajustes de Micro Liveblog"
 
 #: includes/admin/live-settings-section.php:15
@@ -44,7 +44,7 @@ msgid "Settings"
 msgstr "Ajustes"
 
 #: includes/admin/live-settings-section.php:28
-msgid "连载连载 | 配置项"
+msgid "直播直播 | 配置项"
 msgstr "Ajustes de Micro Liveblog"
 
 #: includes/admin/live-settings-section.php:33
@@ -280,11 +280,11 @@ msgid "Add New"
 msgstr "Añadir nueva"
 
 #: includes/live-post-types.php:14
-msgid "Add 新连载"
+msgid "Add 新直播"
 msgstr "Añadir nueva entrada"
 
 #: includes/live-post-types.php:15
-msgid "编辑连载"
+msgid "编辑直播"
 msgstr "Editar entrada"
 
 #: includes/live-post-types.php:16

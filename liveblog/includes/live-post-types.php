@@ -16,19 +16,19 @@ function mbfun_create_liveblog_type() {
 function mbfun_register_liveblog_args() {
 
 	$labels = array(
-		'name'               => _x( '连载', 'post type general name', MICROBLOG_DOMAIN ),
-		'singular_name'      => _x( '微连载', 'post type singular name', MICROBLOG_DOMAIN ),
-		'add_new'            => __( '写连载', MICROBLOG_DOMAIN ),
+		'name'               => _x( '直播', 'post type general name', MICROBLOG_DOMAIN ),
+		'singular_name'      => _x( '微直播', 'post type singular name', MICROBLOG_DOMAIN ),
+		'add_new'            => __( '写直播', MICROBLOG_DOMAIN ),
 		'add_new_item'       => __( 'Add New Entry', MICROBLOG_DOMAIN ),
-		'edit_item'          => __( '编辑连载', MICROBLOG_DOMAIN ),
-		'new_item'           => __( '新连载', MICROBLOG_DOMAIN ),
-		'all_items'          => __( '连载', MICROBLOG_DOMAIN ),
+		'edit_item'          => __( '编辑直播', MICROBLOG_DOMAIN ),
+		'new_item'           => __( '新直播', MICROBLOG_DOMAIN ),
+		'all_items'          => __( '直播', MICROBLOG_DOMAIN ),
 		'view_item'          => __( 'View Entry', MICROBLOG_DOMAIN ),
 		'search_items'       => __( 'Search Liveblog Entries', MICROBLOG_DOMAIN ),
 		'not_found'          => __( 'No Liveblog Entries found', MICROBLOG_DOMAIN ),
 		'not_found_in_trash' => __( 'No Liveblog Entries found in Trash', MICROBLOG_DOMAIN ),
 		'parent_item_colon'  => '',
-		'menu_name'          => __( '连载', MICROBLOG_DOMAIN ),
+		'menu_name'          => __( '直播', MICROBLOG_DOMAIN ),
 	);
 	$reg_args   = array(
 		'labels'          => apply_filters( 'mlb_post_type_labels', $labels ),
