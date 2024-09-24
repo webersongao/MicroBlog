@@ -20,6 +20,7 @@ foreach ( $entries as $entry ) {
 $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE meta_key = '_micro_live_post_id'" );
 
 $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE meta_key = '_micro_post_live_enable'" );
+$wpdb->query( "DELETE FROM $wpdb->postmeta WHERE meta_key = '_micro_post_live_autoPolling'" );
 $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE meta_key = '_micro_post_live_status'" );
 
 delete_option( 'microblog_liveblog_data' );

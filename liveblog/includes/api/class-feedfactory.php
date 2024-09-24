@@ -34,9 +34,13 @@ class FeedFactory {
 	 * @return array
 	 */
 	public static function get_entries( $liveblog_id ) {
+
+		$order = mlb_display_revert_sort() ? 'ASC' : 'DESC';
 		$args = array(
 			'post_type'  => 'microlive',
 			'showposts'  => -1,
+			'orderby'  => 'date',
+			'order'  => $order,
 			'meta_key'   => '_micro_live_post_id',
 			'meta_value' => $liveblog_id,
 		);

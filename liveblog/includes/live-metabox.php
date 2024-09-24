@@ -31,6 +31,7 @@ add_action( 'add_meta_boxes', 'mlb_add_meta_box' );
 function mlb_liveblog_meta_box_fields() {
 	$fields = array(
 		'_micro_post_live_enable',
+		'_micro_post_live_autoPolling',
 		'_micro_post_live_status',
 	);
 
@@ -80,27 +81,38 @@ function mlb_render_liveblog_options( $post_id ) {
 
 	do_action( 'mlb_render_before_liveblog_options', $post_id );
 	?>
-	<label for="mlb-show-liveblogs">
-		<input type="checkbox" name="_micro_post_live_enable" value="1" <?php checked( $is_liveblog, '1', true ); ?> id="mlb-show-liveblogs">
-		<?php _e( 'Enable liveblog', MICROBLOG_DOMAIN ); ?>
-	</label>
+	<div class="mlb-input-group">
+		<label for="mlb-show-liveblogs">
+			<?php _e( 'Enable liveblog', MICROBLOG_DOMAIN ); ?>
+			<input type="checkbox" name="_micro_post_live_enable" value="1" <?php checked( $is_liveblog, '1', true ); ?> id="mlb-show-liveblogs">
+		</label>
 	<?php
 
 	if ( ! empty( $is_liveblog ) ) {
 		$status = get_post_meta( $post_id, '_micro_post_live_status', true );
+		$refresh = get_post_meta( $post_id, '_micro_post_live_autoPolling', true );
 		?>
-		<div class="mlb-input-group">
-			<label for="mlb_status"><?php _e( 'Status', MICROBLOG_DOMAIN ); ?></label>
-			<select name="_micro_post_live_status" id="mlb_status">
-				<?php foreach ( mbfun_get_live_liveblog_status_options() as $option_value => $option_name ) { ?>
-					<option value="<?php echo $option_value; ?>" <?php selected( $option_value, $status, true ); ?>><?php echo $option_name; ?></option>
-				<?php } ?>
-			</select>
-		</div>
-		<div class="mlb-input-group">
+			<label for="mlb-refresh">
+				<?php _e( 'Auto Refresh', MICROBLOG_DOMAIN ); ?>
+				<input type="checkbox" name="_micro_post_live_autoPolling" value="1" <?php checked( $refresh, '1', true ); ?> id="mlb-refresh">
+			</label>
+			<label for="mlb_status"><?php _e( 'Live Status', MICROBLOG_DOMAIN ); ?>
+				<select name="_micro_post_live_status" id="mlb_status">
+					<?php foreach ( mbfun_get_live_liveblog_status_options() as $option_value => $option_name ) { ?>
+						<option value="<?php echo $option_value; ?>" <?php selected( $option_value, $status, true ); ?>><?php echo $option_name; ?></option>
+					<?php } ?>
+				</select>
+			</label>
+		<?php
+	}
+	?> </div> <?php
+	if ( ! empty( $is_liveblog ) ) {
+		?>
+		<!-- <div class="mlb-input-group">
+			// 连载博客的 调用API
 			<label for="mlb-liveblog-endpoint"><?php _e( 'API-endpoint URL', MICROBLOG_DOMAIN ); ?></label>
 			<input type="text" id="mlb-liveblog-endpoint" onclick="this.focus(); this.select()" value="<?php echo mbfun_get_live_liveblog_api_endpoint( $post_id ); ?>" readonly="readonly" class="widefat">
-		</div>
+		</div> -->
 		<?php
 	}
 	do_action( 'mlb_render_after_liveblog_options', $post_id );

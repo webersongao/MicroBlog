@@ -3034,7 +3034,7 @@
         "use strict";
         var e = a(381),
             t = a.n(e);
-        t().locale(micro_lb.locale), jQuery((function (e) {
+        t().locale(micro_lb_data.locale), jQuery((function (e) {
             ({
                 liveblog: null,
                 document_title: null,
@@ -3075,10 +3075,10 @@
                                 return t.first_load ? (a + 1 > t.getLiveblog().data("showEntries") && (i.find("> li").addClass("mlb-hide mlb-liveblog-initial-post"), t.getElement("load_more_button").show()), s.id === t.getLiveblog().data("highlightedEntry") && (r = !0, i.find("> li").addClass("mlb-liveblog-highlight"), i.find("> li").removeClass("mlb-hide")), t.getElement("list").append(i.html()), void (r && e(document).scrollTop(t.getElement("list").find('> li[data-mlb-post-id="' + s.id + '"]').offset().top))) : t.first_load || 0 == d.length ? t.first_load || 0 != d.length ? void 0 : (i.find("li").addClass("mlb-new"), i.find("li").hide(), t.new_posts = t.new_posts + 1, void n.push(i.html())) : (d.find("time").replaceWith(i.find("time")), d.find(".mlb-liveblog-post-title").replaceWith(i.find(".mlb-liveblog-post-title")), void (0 == d.find(".mlb-liveblog-content iframe").length && d.find(".mlb-liveblog-content").replaceWith(i.find(".mlb-liveblog-content"))))
                             })), n.length > 0 && e.each(n.reverse(), (function (e, a) {
                                 t.getElement("list").prepend(a)
-                            })), "function" == typeof mlb_after_feed_load && mlb_after_feed_load(a), t.first_load = !1, 0 == t.getElement("list").find("> li").length && e(".mlb-no-liveblog-entries-message").show(), t.new_posts > 0) && (e(document).find("title").text("(" + t.new_posts + ") " + t.document_title), s = 1 === t.new_posts ? micro_lb.new_post_msg.replace("%s", t.new_posts) : micro_lb.new_posts_msg.replace("%s", t.new_posts), t.getElement("show_new_button").show().text(s), "function" == typeof mlb_after_update_liveblog_callback && mlb_after_update_liveblog_callback());
-                            "human" === micro_lb.datetime_format && t.updateTimestamps(), "closed" === a.status ? t.getElement("status_message").show() : setTimeout((function () {
+                            })), "function" == typeof mlb_after_feed_load && mlb_after_feed_load(a), t.first_load = !1, 0 == t.getElement("list").find("> li").length && e(".mlb-no-liveblog-entries-message").show(), t.new_posts > 0) && (e(document).find("title").text("(" + t.new_posts + ") " + t.document_title), s = 1 === t.new_posts ? micro_lb_data.new_post_msg.replace("%s", t.new_posts) : micro_lb_data.new_posts_msg.replace("%s", t.new_posts), t.getElement("show_new_button").show().text(s), "function" == typeof mlb_after_update_liveblog_callback && mlb_after_update_liveblog_callback());
+                            "human" === micro_lb_data.datetime_format && t.updateTimestamps(), "closed" === a.status ? t.getElement("status_message").show() : (micro_lb_data.autoPolling && setTimeout((function () {
                                 t.fetch()
-                            }), 1e3 * micro_lb.interval)
+                            }), 1e3 * micro_lb_data.interval))
                         }
                     })
                 },
@@ -3100,7 +3100,7 @@
                     var t = this.getLiveblog();
                     this.getElement("list").find("> li.mlb-hide.mlb-liveblog-initial-post").each((function (a, s) {
                         t.data("showEntries") > a && e(this).removeClass("mlb-hide")
-                    })), 0 == this.getElement("list").find("> li.mlb-hide.mlb-liveblog-initial-post").length && this.getElement("load_more_button").text(micro_lb.now_more_posts).delay(2e3).fadeOut(1e3), "function" == typeof mlb_after_load_more_callback && mlb_after_load_more_callback()
+                    })), 0 == this.getElement("list").find("> li.mlb-hide.mlb-liveblog-initial-post").length && this.getElement("load_more_button").text(micro_lb_data.now_more_posts).delay(2e3).fadeOut(1e3), "function" == typeof mlb_after_load_more_callback && mlb_after_load_more_callback()
                 },
                 updateTimestamps: function () {
                     e.each(this.getElement("list").find("> li"), (function (a, s) {

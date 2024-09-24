@@ -76,16 +76,17 @@ if (!class_exists('Micro_Liveblog')) {
                 wp_register_script('selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.min.js', ['jquery'], '0.12.4');
                 wp_register_script('mlb-admin', mbfun_get_plugin_url() . 'assets/js/liveblog-admin.js', ['jquery', 'selectize'], mbfun_get_plugin_version());
             } else {
-                wp_register_script('micro_lb', mbfun_get_plugin_url() . 'assets/js/liveblog.js', ['jquery'], mbfun_get_plugin_version());
-                wp_localize_script('micro_lb', 'micro_lb', [
+                wp_register_script('micro_lb_script', mbfun_get_plugin_url() . 'assets/js/liveblog.js', ['jquery'], mbfun_get_plugin_version());
+                wp_localize_script('micro_lb_script', 'micro_lb_data', [
                     'datetime_format' => mbfun_get_live_option('ml_entry_date_format', 'human'),
                     'locale'          => get_locale(),
                     'interval'        => mbfun_get_live_update_interval(),
+                    'autoPolling'        => mbfun_get_live_update_autoPolling(),
                     'new_post_msg'    => __('There is %s update.', MICROBLOG_DOMAIN),
                     'new_posts_msg'   => __('There are %s updates.', MICROBLOG_DOMAIN),
                     'now_more_posts'  => __("That's All.", MICROBLOG_DOMAIN)
                 ]);
-                wp_enqueue_script('micro_lb');
+                wp_enqueue_script('micro_lb_script');
             }
         }
 

@@ -147,6 +147,12 @@ function mbfun_get_registered_settings() {
 				'type' => 'checkbox',
 			),
 			array(
+				'id'   => 'ml_display_revort_sort',
+				'name' => __( '展示顺序', MICROBLOG_DOMAIN ),
+				'desc' => __( ' 默认「 从新到旧 」，打开后改为「 从旧到新 」', MICROBLOG_DOMAIN ),
+				'type' => 'checkbox',
+			),
+			array(
 				'id'            => 'ml_update_interval',
 				'name'          => __( '刷新间隔', MICROBLOG_DOMAIN ),
 				'desc'          => __( ' Per how many seconds should be checked for new liveblog updates. (10,360)', MICROBLOG_DOMAIN ),
@@ -160,7 +166,7 @@ function mbfun_get_registered_settings() {
 				'name'          => __( '每页连载数', MICROBLOG_DOMAIN ),
 				'desc'          => __( ' The amount of entries visible before the load more button.', MICROBLOG_DOMAIN ),
 				'type'          => 'number',
-				'min'           => 1,
+				'min'           => 3,
 				'max'           => 50,
 				'default_value' => 10,
 			),

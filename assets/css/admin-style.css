@@ -47,7 +47,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 .mlb-input-group label {
-    width: 150px;
+    width: 180px;
     flex-shrink: 0;
 }
 

@@ -313,6 +313,23 @@ function mbfun_get_live_update_interval() {
 }
 
 /**
+ * Get is Auto update
+ *
+ * @return string
+ */
+function mbfun_get_live_update_autoPolling() {
+    global $post;
+
+    if (isset($post) && isset($post->ID)) {
+        $post_id = $post->ID;
+        return get_post_meta($post_id, '_micro_post_live_autoPolling', true);
+    }
+
+    return false;
+}
+
+
+/**
  * Display title.
  *
  * @return boolean
@@ -348,7 +365,20 @@ function mlb_display_social_sharing() {
 
 	$display_share = ! empty( $mlb_options['ml_display_social_share'] ) ? true : false;
 
-	return apply_filters( 'mlb_display_social_sharing', $display_share );
+	return apply_filters( 'mlb_display_social_share', $display_share );
+}
+
+/**
+ * Display sort.
+ *
+ * @return boolean
+ */
+function mlb_display_revert_sort() {
+	global $mlb_options;
+
+	$display_share = ! empty( $mlb_options['ml_display_revort_sort'] ) ? true : false;
+
+	return apply_filters( 'mlb_display_revort_timesort', $display_share );
 }
 
 /**
