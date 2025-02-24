@@ -18,7 +18,7 @@ function mbfun_register_liveblog_args() {
 	$labels = array(
 		'name'               => _x( '直播', 'post type general name', MICROBLOG_DOMAIN ),
 		'singular_name'      => _x( '微直播', 'post type singular name', MICROBLOG_DOMAIN ),
-		'add_new'            => __( '写直播', MICROBLOG_DOMAIN ),
+		'add_new'            => __( '新直播', MICROBLOG_DOMAIN ),
 		'add_new_item'       => __( 'Add New Entry', MICROBLOG_DOMAIN ),
 		'edit_item'          => __( '编辑直播', MICROBLOG_DOMAIN ),
 		'new_item'           => __( '新直播', MICROBLOG_DOMAIN ),

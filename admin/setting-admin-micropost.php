@@ -49,7 +49,7 @@ function microblog_micropost_setting_admin() {
     // General settings section
     add_settings_section(
         'microblog_micropost_section_base',
-        '微博设置',
+        '样式设置',
         'microblog_micropost_section_base_callback',
         'microblog_micropost_section_name'
     );
@@ -100,7 +100,7 @@ function microblog_micropost_setting_admin() {
     // Shortcode settings section
     add_settings_section(
         'microblog_micropost_section_shortcode',
-        '</br>微博短代码',   
+        '</br>短代码设置',   
         'microblog_micropost_section_shortcode_callback',
         'microblog_micropost_section_name'
     );
