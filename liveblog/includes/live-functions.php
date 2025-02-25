@@ -294,7 +294,7 @@ function mbfun_get_live_all_post_types() {
 function mbfun_get_live_supported_post_types() {
 	global $mlb_options;
 
-	$post_types = ! empty( $mlb_options['ml_post_types'] ) ? $mlb_options['ml_post_types'] : array( 'post' );
+	$post_types = !empty( $mlb_options['ml_post_types'] ) ? $mlb_options['ml_post_types'] : array( 'post' );
 
 	return apply_filters( 'mlb_post_types', $post_types );
 }

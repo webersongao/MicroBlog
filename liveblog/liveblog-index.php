@@ -26,10 +26,8 @@ if (!class_exists('Micro_Liveblog')) {
                 self::$instance->includes();
 
                 add_action('plugins_loaded', [self::$instance, 'load_textdomain']);
-                add_action('wp_enqueue_scripts', [self::$instance, 'register_styles']);
-                add_action('admin_enqueue_scripts', [self::$instance, 'register_styles']);
-                add_action('wp_enqueue_scripts', [self::$instance, 'register_scripts']);
-                add_action('admin_enqueue_scripts', [self::$instance, 'register_scripts']);
+                add_action('wp_enqueue_scripts', [self::$instance, 'enqueue_assets']);
+                add_action('admin_enqueue_scripts', [self::$instance, 'enqueue_assets']);
                 add_action('init', [self::$instance, 'setup_caching']);
                 add_action('init', [self::$instance, 'setup_api']);
             }
@@ -70,37 +68,32 @@ if (!class_exists('Micro_Liveblog')) {
             }
         }
 
-        public function register_scripts()
+        public function enqueue_assets()
         {
             if (is_admin()) {
                 wp_register_script('selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.min.js', ['jquery'], '0.12.4');
                 wp_register_script('mlb-admin', mbfun_get_plugin_url() . 'assets/js/liveblog-admin.js', ['jquery', 'selectize'], mbfun_get_plugin_version());
-            } else {
-                wp_register_script('micro_lb_script', mbfun_get_plugin_url() . 'assets/js/liveblog.js', ['jquery'], mbfun_get_plugin_version());
-                wp_localize_script('micro_lb_script', 'micro_lb_data', [
-                    'datetime_format' => mbfun_get_live_option('ml_entry_date_format', 'human'),
-                    'locale'          => get_locale(),
-                    'interval'        => mbfun_get_live_update_interval(),
-                    'autoPolling'        => mbfun_get_live_update_autoPolling(),
-                    'new_post_msg'    => __('There is %s update.', MICROBLOG_DOMAIN),
-                    'new_posts_msg'   => __('There are %s updates.', MICROBLOG_DOMAIN),
-                    'now_more_posts'  => __("That's All.", MICROBLOG_DOMAIN)
-                ]);
-                wp_enqueue_script('micro_lb_script');
-            }
-        }
-
-        public function register_styles()
-        {
-            if (is_admin()) {
                 wp_register_style('selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.default.css', null, '0.12.4');
-				// wp_enqueue_style( 'selectize' );
             } else {
-                $theme = mbfun_get_live_theme();
-                if ($theme !== 'none') {
-                    wp_register_style('mlb-theme-' . $theme, mbfun_get_plugin_url() . 'assets/css/themes/' . $theme . '.css', null, mbfun_get_plugin_version());
+                if (in_array(get_post_type(), mbfun_get_live_supported_post_types())) {
+                    wp_register_script('micro_lb_script', mbfun_get_plugin_url() . 'assets/js/liveblog.js', ['jquery'], mbfun_get_plugin_version());
+                    wp_localize_script('micro_lb_script', 'micro_lb_data', [
+                        'datetime_format' => mbfun_get_live_option('ml_entry_date_format', 'human'),
+                        'locale'          => get_locale(),
+                        'interval'        => mbfun_get_live_update_interval(),
+                        'autoPolling'     => mbfun_get_live_update_autoPolling(),
+                        'new_post_msg'    => __('There is %s update.', MICROBLOG_DOMAIN),
+                        'new_posts_msg'   => __('There are %s updates.', MICROBLOG_DOMAIN),
+                        'now_more_posts'  => __("That's All.", MICROBLOG_DOMAIN)
+                    ]);
+                    wp_enqueue_script('micro_lb_script');
+
+                    $theme = mbfun_get_live_theme();
+                    if ($theme !== 'none') {
+                        wp_register_style('mlb-theme-' . $theme, mbfun_get_plugin_url() . 'assets/css/themes/' . $theme . '.css', null, mbfun_get_plugin_version());
+                        wp_enqueue_style('mlb-theme-' . $theme);
+                    }
                 }
-                wp_enqueue_style('mlb-theme-' . $theme);
             }
         }
 
