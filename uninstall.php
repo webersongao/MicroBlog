@@ -25,7 +25,7 @@ $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE meta_key = '_micro_post_live_st
 
 delete_option( 'microblog_liveblog_data' );
 
-delete_option( 'microblog_micropost_data' );
+delete_option( 'theme_microblog_data' );
 delete_option( 'widget_microblog_widget' );
 // 还可以执行其他清理操作，如删除数据库条目等
 

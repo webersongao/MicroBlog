@@ -18,7 +18,7 @@ function microblog_micropost_settings_section() {
     <div class="general_settings_header">
         <?php microblog_micropost_settings_section_header(); ?>
     </div>
-    <?php settings_errors('microblog_micropost_data'); ?>
+    <?php settings_errors('theme_microblog_data'); ?>
     <form method="post" action="options.php">
         <?php if ( isset( $_GET['settings-updated'] ) ) { ?>
             <div class="updated"><p><?php _e( 'Plugin settings have been updated.', MICROBLOG_DOMAIN ); ?></p></div>
@@ -42,8 +42,8 @@ add_action('admin_init', 'microblog_micropost_setting_admin');
 function microblog_micropost_setting_admin() {
     register_setting(
         'microblog_micropost_setting_field',
-        'microblog_micropost_data',
-        'microblog_micropost_data_sanitize'
+        'theme_microblog_data',
+        'theme_microblog_data_sanitize'
     );
     
     // General settings section
@@ -128,7 +128,7 @@ function microblog_micropost_setting_admin() {
     );
 }
 
-function microblog_micropost_data_sanitize($input) {
+function theme_microblog_data_sanitize($input) {
     if (isset($input['mb_slug_name']) && $input['mb_slug_name'] !== '') {
 
         $slug_name = strtolower(sanitize_title($input['mb_slug_name']));
@@ -139,7 +139,7 @@ function microblog_micropost_data_sanitize($input) {
         } else {
             // 如果 slug 名不符合要求，添加错误消息
             add_settings_error(
-                'microblog_micropost_data', // 设置页面的唯一标识符
+                'theme_microblog_data', // 设置页面的唯一标识符
                 'invalid-slug', // 错误代码，用于后续检索和处理错误
                 'slug不合法，仅支持小写字母和数字，长度在1到10之间。', // 错误消息
                 'error' // 消息类型（error, warning, success, info）
@@ -170,7 +170,7 @@ function microblog_post_title_show_input() {
     $value = isset($options['mb_title_show']) ? $options['mb_title_show'] : false;
     ?>
     <label>
-        <input type='checkbox' name='microblog_micropost_data[mb_title_show]' value='1' <?php checked($value, true); ?> />
+        <input type='checkbox' name='theme_microblog_data[mb_title_show]' value='1' <?php checked($value, true); ?> />
         显示标题
     </label>
     <?php
@@ -181,16 +181,16 @@ function microblog_post_title_listdate_input() {
     $value = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
     ?>
     <label class="microblog-admin-option-label">
-        <input type='radio' name='microblog_micropost_data[mb_date_format]' value='<?php echo esc_attr('date_hide'); ?>' <?php checked($value, 'date_hide'); ?> />
+        <input type='radio' name='theme_microblog_data[mb_date_format]' value='<?php echo esc_attr('date_hide'); ?>' <?php checked($value, 'date_hide'); ?> />
         不显示时间
         <!--echo date_i18n('m-d H:i', current_time('timestamp'));-->
     </label>
     <label class="microblog-admin-option-label">
-        <input type='radio' name='microblog_micropost_data[mb_date_format]' value='<?php echo esc_attr('date_date'); ?>' <?php checked($value, 'date_date'); ?> />
+        <input type='radio' name='theme_microblog_data[mb_date_format]' value='<?php echo esc_attr('date_date'); ?>' <?php checked($value, 'date_date'); ?> />
         <?php echo esc_html( date_i18n( get_option('date_format') ) ); ?>
     </label>
     <label class="microblog-admin-option-label">
-        <input type='radio' name='microblog_micropost_data[mb_date_format]' value='<?php echo esc_attr('date_human'); ?>' <?php checked($value, 'date_human'); ?> />
+        <input type='radio' name='theme_microblog_data[mb_date_format]' value='<?php echo esc_attr('date_human'); ?>' <?php checked($value, 'date_human'); ?> />
         1分钟前/3天前...
     </label>
     <?php
@@ -201,7 +201,7 @@ function microblog_post_micro_foward_input() {
     $value = isset($options['mb_foward_enable']) ? $options['mb_foward_enable'] : false;
     ?>
     <label>
-        <input type='checkbox' name='microblog_micropost_data[mb_foward_enable]' value='1' <?php checked($value, true); ?> />
+        <input type='checkbox' name='theme_microblog_data[mb_foward_enable]' value='1' <?php checked($value, true); ?> />
         启用微博转发
     </label>
     <?php
@@ -212,7 +212,7 @@ function microblog_post_rss_feed_input() {
     $value = isset($options['mb_rss_feed']) ? $options['mb_rss_feed'] : false;
     ?>
     <label>
-        <input type='checkbox' name='microblog_micropost_data[mb_rss_feed]' value='1' <?php checked($value, true); ?> />
+        <input type='checkbox' name='theme_microblog_data[mb_rss_feed]' value='1' <?php checked($value, true); ?> />
         加入全站Feed流（ <a target="_blank" href="/feed" class="rss">RSS</a> ）
     </label>
     <?php
@@ -225,19 +225,19 @@ function microblog_post_editor_func_callback() {
     $editor_func = isset($options['mb_editor_func']) ? $options['mb_editor_func'] : array();
     ?>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_author' <?php if (in_array('mb_author', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_author' <?php if (in_array('mb_author', $editor_func)) echo 'checked="checked"'; ?> />
         作者
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
         摘要
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
         特色图片
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_posttag' <?php if (in_array('mb_posttag', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_posttag' <?php if (in_array('mb_posttag', $editor_func)) echo 'checked="checked"'; ?> />
         微博话题
     </label>
     <?php
@@ -247,7 +247,7 @@ function microblog_post_slug_name_callback() {
     $options = mbfun_get_micropost_settings();
     $value = isset($options['mb_slug_name']) ? sanitize_title($options['mb_slug_name']) : ''; // 获取已保存的设置值
     ?>
-    <input type='text' name='microblog_micropost_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='20' style='width: 120px;' />
+    <input type='text' name='theme_microblog_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='20' style='width: 120px;' />
     <p class="description">仅支持字母和数字，长度(1,20) 为空则默认microposts（如microposts/feed/ 或 microposts/123.html）</p>
     <?php
 }
@@ -259,7 +259,7 @@ function microblog_post_title_listNumber_input() {
 
     ?>
     <label>
-        <input type='number' name='microblog_micropost_data[mb_codepost_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
+        <input type='number' name='theme_microblog_data[mb_codepost_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
         &nbsp;<?php esc_html('每页显示数量 ( 区间:[3, 20] )', MICROBLOG_DOMAIN ); ?>
     </label>
     <?php
@@ -270,7 +270,7 @@ function microblog_post_image_lightbox_input() {
     $value = isset($options['mb_image_lightbox']) ? $options['mb_image_lightbox'] : false;
     ?>
     <label>
-    <input type='checkbox' name='microblog_micropost_data[mb_image_lightbox]' value='1' <?php checked($value, true); ?> />
+    <input type='checkbox' name='theme_microblog_data[mb_image_lightbox]' value='1' <?php checked($value, true); ?> />
     是否开启？（请确认已安装 
     <a href="https://wordpress.org/plugins/simple-lightbox" target="_blank">Simple Lightbox插件</a> 
     或 当前主题支持 <a href="https://fooplugins.com/what-is-a-lightbox-in-wordpress" target="_blank">Lightbox效果</a> ）
@@ -283,11 +283,11 @@ function microblog_post_title_position_input() {
     $value = isset($options['mb_title_position']) ? $options['mb_title_position'] : array();
     ?>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='microblog_micropost_data[mb_title_position][]' value='<?php echo esc_attr('titletop'); ?>' <?php if (in_array('titletop', $value)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='theme_microblog_data[mb_title_position][]' value='<?php echo esc_attr('titletop'); ?>' <?php if (in_array('titletop', $value)) echo 'checked="checked"'; ?> />
         头像下方
     </label>
     <label>
-        <input type='checkbox' name='microblog_micropost_data[mb_title_position][]' value='<?php echo esc_attr('titlebottom'); ?>' <?php if (in_array('titlebottom', $value)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='theme_microblog_data[mb_title_position][]' value='<?php echo esc_attr('titlebottom'); ?>' <?php if (in_array('titlebottom', $value)) echo 'checked="checked"'; ?> />
         正文下方（评论按钮左侧）
     </label>
     <?php

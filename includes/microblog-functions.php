@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function mbfun_get_micropost_settings() {
-	$settings = get_option( 'microblog_micropost_data', array() );
+	$settings = get_option( 'theme_microblog_data', array() );
 	return $settings;
 }
 function mbfun_get_micropost_option( $key = '', $default = false ) {

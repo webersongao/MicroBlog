@@ -67,7 +67,7 @@ function microblog_plugin_data_activation() {
             'mb_date_format' => 'date_human',
             'mb_title_position' => array('titlebottom'),
         );
-        add_option('microblog_micropost_data', $defaults);
+        add_option('theme_microblog_data', $defaults);
     }
 }
 
