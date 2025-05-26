@@ -53,7 +53,7 @@ function microblog_liveblog_setting_admin() {
 
 		add_settings_section(
 			'microblog_liveblog_section_' . $section,
-			'微直播设置',
+			'微连载设置',
 			'__return_false',
 			'microblog_liveblog_section_' . $section
 		);
@@ -104,7 +104,7 @@ function mbfun_get_registered_settings() {
 			array(
 				'id'            => 'ml_post_types',
 				'name'          => __( '支持', MICROBLOG_DOMAIN ),
-				'desc'          => __( ' 你期望支持 "微直播"功能的类型.', MICROBLOG_DOMAIN ),
+				'desc'          => __( ' 你期望支持 "微连载"功能的类型.', MICROBLOG_DOMAIN ),
 				'type'          => 'multiple_checkbox',
 				'options'       => $mlb_alltypes,
 				'default_value' => array( 'post' ),
@@ -163,7 +163,7 @@ function mbfun_get_registered_settings() {
 			),
 			array(
 				'id'            => 'ml_show_entries',
-				'name'          => __( '每页直播数', MICROBLOG_DOMAIN ),
+				'name'          => __( '每页连载数', MICROBLOG_DOMAIN ),
 				'desc'          => __( ' The amount of entries visible before the load more button.', MICROBLOG_DOMAIN ),
 				'type'          => 'number',
 				'min'           => 3,

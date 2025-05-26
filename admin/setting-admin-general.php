@@ -85,7 +85,7 @@ function microblog_general_setting_admin() {
 
     add_settings_field(
         'microblog_module_display',
-        '微直播',
+        '微连载',
         'microblog_module_display_input',
         'microblog_general_section_name',
         'microblog_general_section_base'
