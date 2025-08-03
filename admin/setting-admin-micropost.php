@@ -113,9 +113,9 @@ function microblog_micropost_setting_admin() {
         'microblog_micropost_section_shortcode'
     );
     add_settings_field(
-        'microblog_post_title_position',
-        '标题位置',
-        'microblog_post_title_position_input',
+        'microblog_post_content_bottom',
+        '头像标签',
+        'microblog_post_content_bottom_input',
         'microblog_micropost_section_name',
         'microblog_micropost_section_shortcode'
     );
@@ -248,7 +248,7 @@ function microblog_post_slug_name_callback() {
     $value = isset($options['mb_slug_name']) ? sanitize_title($options['mb_slug_name']) : ''; // 获取已保存的设置值
     ?>
     <input type='text' name='theme_microblog_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='20' style='width: 120px;' />
-    <p class="description">仅支持字母和数字，长度(1,20) 为空则默认microposts（如microposts/feed/ 或 microposts/123.html）</p>
+    <p class="description">仅支持字母和数字，长度(1,20) 为空则默认microposts</p>
     <?php
 }
 
@@ -278,17 +278,17 @@ function microblog_post_image_lightbox_input() {
     <?php
 }
 
-function microblog_post_title_position_input() {
+function microblog_post_content_bottom_input() {
     $options = mbfun_get_micropost_settings();
-    $value = isset($options['mb_title_position']) ? $options['mb_title_position'] : array();
+    $value = isset($options['mb_content_bottom']) ? $options['mb_content_bottom'] : array();
     ?>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='theme_microblog_data[mb_title_position][]' value='<?php echo esc_attr('titletop'); ?>' <?php if (in_array('titletop', $value)) echo 'checked="checked"'; ?> />
-        头像下方
+        <input type='checkbox' name='theme_microblog_data[mb_content_bottom][]' value='<?php echo esc_attr('conbottomuser'); ?>' <?php if (in_array('conbottomuser', $value)) echo 'checked="checked"'; ?> />
+        显示头像
     </label>
     <label>
-        <input type='checkbox' name='theme_microblog_data[mb_title_position][]' value='<?php echo esc_attr('titlebottom'); ?>' <?php if (in_array('titlebottom', $value)) echo 'checked="checked"'; ?> />
-        正文下方（评论按钮左侧）
+        <input type='checkbox' name='theme_microblog_data[mb_content_bottom][]' value='<?php echo esc_attr('conbottomtag'); ?>' <?php if (in_array('conbottomtag', $value)) echo 'checked="checked"'; ?> />
+        显示标签
     </label>
     <?php
 }

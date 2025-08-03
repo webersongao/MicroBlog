@@ -18,7 +18,6 @@ function microblog_shortcode($atts) {
         'q' => '',
     ), $atts));
 
-    $show_date = true;// (isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
     $numvalue = (isset($options) && isset($options['mb_codepost_num'])) ? intval($options['mb_codepost_num']) : 5;
     
     $args = array(
@@ -36,7 +35,7 @@ function microblog_shortcode($atts) {
     }
 
     $title_show = (isset($options) && isset($options['mb_title_show'])) ? $options['mb_title_show'] : false;
-    $position_option = isset($options) && isset($options['mb_title_position']) && is_array($options['mb_title_position']);
+    $position_option = isset($options) && isset($options['mb_content_bottom']) && is_array($options['mb_content_bottom']);
 
     $query_results = new WP_Query($args);
     $out = "<div class='microblog-shortcode'>";
@@ -48,22 +47,25 @@ function microblog_shortcode($atts) {
         $out .= "<div class='mb-shortcode-post'>";
         while ($query_results->have_posts()) {
             $query_results->the_post();
-            $author_avatar = get_avatar(get_the_author_meta('ID'), 25);
-            $author_name = get_the_author_meta('display_name', get_the_author_meta('ID'));
+            $post_title = (get_the_title() && $title_show) ? get_the_title() : '';
+            $UserShow =  $position_option && (in_array('conbottomuser', $options['mb_content_bottom'])) ? true : false;
             // $out .= "<li>";
             $out .= "<div class='mb-shortcode-post-main micropost-main-" . get_the_ID() . "'>";
-            $out .= "<div class='mb-shortcode-post-head'>";
-            $out .= "<span class='mb-shortcode-post-avatar'>" . $author_avatar . "</span>";
-            $out .= "<span class='mb-shortcode-post-username'>" . $author_name . "</span>";
-            if ($show_date) {
-                $out .= "<span class='mb-shortcode-post-date'>" . mbfun_micropost_format_time(strtotime($post->post_date)) . "</span>";
-            }
-            $out .= "</div>";
 
-            $post_title = (get_the_title() && $title_show) ? get_the_title() : '';
-            if (strlen($post_title) && $position_option && (in_array('titletop', $options['mb_title_position']))) {
-                $out .= "<div class='mb-shortcode-post-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></div>";
+            // 1、顶部标题
+            $titleShow = strlen($post_title) ? true : false;
+            $show_date = true;// (isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
+            if ($titleShow || $show_date){
+                $out .= "<div class='mb-shortcode-post-head'>";
+                    if ($titleShow) {
+                        $out .= "<span class='mb-shortcode-post-head-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
+                    }
+                    if ($show_date) {
+                        $out .= "<span class='mb-shortcode-post-date'>" . mbfun_micropost_format_time(strtotime($post->post_date)) . "</span>";
+                    }
+                $out .= "</div>";
             }
+            // 2、微博内容
             $out .= "<div class='mb-shortcode-post-content'>";
             if ($use_excerpt) {
                 add_filter('excerpt_more', 'mbfun_micropost_excerpt_more');
@@ -72,7 +74,7 @@ function microblog_shortcode($atts) {
             } else {
                 $out .= mbfun_get_micropost_content();
             }
-            /* =======   图片九宫格  --- 开始   */
+            /* =======   2.1 微博 图片九宫格  --- 开始   */
             $post_content = get_the_content();
             $is_light_box = (isset($options) && isset($options['mb_image_lightbox']) && $options['mb_image_lightbox']) ? true : false;
             $count = 0;
@@ -106,15 +108,19 @@ function microblog_shortcode($atts) {
             }
             // =======   图片九宫格  --- 结束 ----- */   
             $out .= "</div>";
-            // 底部评论按钮
-            $outtopics = mbfun_get_micropost_tags();
-            $titleShow = (strlen($post_title) && $position_option && (in_array('titlebottom', $options['mb_title_position']))) ? true : false;
-            if ($titleShow || comments_open()){
-                $out .= "<div class='mb-shortcode-post-bottom'>";
-                if ($titleShow) {
-                    $out .= "<span class='mb-shortcode-post-bottom-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
+            // 3、底部头像 评论数
+            $out .= "<div class='mb-shortcode-post-bottom'>";
+                $out .= "<div class='mb-shortcode-post-user'>";
+                if ($UserShow) {
+                    $author_avatar = get_avatar(get_the_author_meta('ID'), 35);
+                    $author_name = get_the_author_meta('display_name', get_the_author_meta('ID'));
+                    $out .= "<span class='mb-shortcode-post-user-avatar'>" . $author_avatar . "</span>";
+                    $out .= "<span class='mb-shortcode-post-user-name'>" . $author_name . "</span>";
                 }
-                if (!empty($outtopics)){
+                $out .= "</div>";
+                $outtopics = mbfun_get_micropost_tags();
+                $tagShow =  $position_option && (in_array('conbottomtag', $options['mb_content_bottom'])) ? true : false;
+                if (!empty($outtopics) && $tagShow) {
                     $out .= "<span class='mb-shortcode-post-bottom-topics'>" . mbfun_get_micropost_tags() . "</span>";
                 }
                 if (comments_open()) {
@@ -122,8 +128,8 @@ function microblog_shortcode($atts) {
                 } else {
                     $out .= "<span class='mb-shortcode-post-bottom-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'assets/images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
                 }
-                $out .= "</div>";
-            }
+            $out .= "</div>";
+
             $out .= "</div>";
             // $out .= "</li>";
             $out .= "<hr>";

@@ -65,7 +65,7 @@ function microblog_plugin_data_activation() {
         $defaults = array(
             'mb_title_show' => true,
             'mb_date_format' => 'date_human',
-            'mb_title_position' => array('titlebottom'),
+            'mb_content_bottom' => array('conbottomuser'),
         );
         add_option('theme_microblog_data', $defaults);
     }

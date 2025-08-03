@@ -31,42 +31,36 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     margin-bottom: 1rem;
 }
 
-.mb-shortcode-post-head {
-    display: block;
-    margin-top: 10px;
+.mb-shortcode-post-bottom {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.mb-shortcode-post-bottom-link {
+    flex-shrink: 0;
 }
 
-.mb-shortcode-post-avatar {
+.mb-shortcode-post-user-avatar {
     margin-right: 10px;
 }
 
-.mb-shortcode-post-avatar img {
-    border-radius: 17.5px;
-    width: 35px;
-    height: 35px;
+.mb-shortcode-post-user-avatar img {
+    border-radius: 12.5px;
+    width: 25px;
+    height: 25px;
 }
 
-.mb-shortcode-post-username {
+.mb-shortcode-post-user-name {
     color: #666;
     font-weight: bold;
 }
 
 .mb-shortcode-post-date {
     color: #6666669c;
-    margin-right: 10px;
+    /* margin-right: 10px; */
+    flex-shrink: 0;
     float: right;
-}
-
-.mb-shortcode-post-title {
-    color: #666;
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 10px;
-    padding-left: 45px;
-}
-
-.mb-shortcode-post-title a {
-    color: #666;
 }
 
 .mb-shortcode-post-content {
@@ -74,7 +68,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     font-size: 16px;
     font-weight: 400;
     margin-top: 10px;
-    padding-left: 45px;
+    /* padding-left: 45px; */
 }
 
 .mb-shortcode-post-content p {
@@ -132,39 +126,26 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     border-radius: 5px;
 }
 
-.mb-shortcode-post-bottom {
+.mb-shortcode-post-head {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 45px;
+    /* padding-left: 45px; */
 }
 
-.mb-shortcode-post-bottom a {
+.mb-shortcode-post-head a {
     color: #666;
     font-size: 14px;
+
 }
 
-.mb-shortcode-post-bottom-title,
-.mb-shortcode-post-bottom-link {
-    flex-shrink: 0;
-}
-
-.mb-shortcode-post-bottom-title {
+.mb-shortcode-post-head-title {
+    max-width: calc(100% - 100px); /* 减去右边图标所占宽度 */
     font-weight: bold;
-    margin-right: 30px;
-}
-
-.mb-shortcode-post-bottom-topics {
-    display: flex;
-    flex-grow: 1;
     overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-.mb-shortcode-post-bottom-link {
-    margin-right: 10px;
+    text-overflow: ellipsis;
 }
 
 .mb-shortcode-pagelink {
@@ -220,6 +201,20 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 
 .microblog-widget-bottom {
     display: block;
+}
+
+.mb-shortcode-post-bottom a {
+    color: #666;
+    font-size: 14px;
+
+}
+
+.mb-shortcode-post-bottom-topics {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .microblog-widget-bottom-date {
