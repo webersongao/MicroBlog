@@ -88,13 +88,33 @@ if (!class_exists('Micro_Liveblog')) {
                     ]);
                     wp_enqueue_script('micro_lb_script');
 
-                    $theme = mbfun_get_live_theme();
-                    if ($theme !== 'none') {
-                        wp_register_style('mlb-theme-' . $theme, mbfun_get_plugin_url() . 'assets/css/themes/' . $theme . '.css', null, mbfun_get_plugin_version());
-                        wp_enqueue_style('mlb-theme-' . $theme);
-                    }
+                    $this->mlb_enqueue_theme_styles(mbfun_get_live_theme());
                 }
             }
+        }
+
+        private function mlb_enqueue_theme_styles($theme) {
+            error_log('mlb_enqueue_theme_styles called with theme: ' . $theme);
+            echo '<!-- Theme Styles Enqueue Called 003: ' . esc_html($theme) . ' -->';
+            $liveblog_css = mbfun_get_plugin_url() . 'assets/css/liveblog.css';
+            $theme_css = mbfun_get_plugin_url() . 'assets/css/themes/' . $theme . '.css';
+
+            error_log('mlb_Liveblog CSS URL: ' . $liveblog_css);
+            error_log('mlb_Theme CSS URL: ' . $theme_css);
+
+            wp_enqueue_style(
+                'mlb-theme-liveblog',
+                $liveblog_css,
+                null,
+                mbfun_get_plugin_version()
+            );
+
+            wp_enqueue_style(
+                'mlb-theme-' . $theme,
+                $theme_css,
+                ['mlb-theme-liveblog'],
+                mbfun_get_plugin_version()
+            );
         }
 
         public function setup_api()
