@@ -94,13 +94,8 @@ if (!class_exists('Micro_Liveblog')) {
         }
 
         private function mlb_enqueue_theme_styles($theme) {
-            error_log('mlb_enqueue_theme_styles called with theme: ' . $theme);
-            echo '<!-- Theme Styles Enqueue Called 003: ' . esc_html($theme) . ' -->';
             $liveblog_css = mbfun_get_plugin_url() . 'assets/css/liveblog.css';
             $theme_css = mbfun_get_plugin_url() . 'assets/css/themes/' . $theme . '.css';
-
-            error_log('mlb_Liveblog CSS URL: ' . $liveblog_css);
-            error_log('mlb_Theme CSS URL: ' . $theme_css);
 
             wp_enqueue_style(
                 'mlb-theme-liveblog',
