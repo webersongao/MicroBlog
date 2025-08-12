@@ -18,7 +18,7 @@ function mbfun_register_liveblog_args() {
 	$labels = array(
 		'name'               => _x('连载', 'post type general name', MICROBLOG_DOMAIN ),
 		'menu_name'          => __('连载', MICROBLOG_DOMAIN),
-		'singular_name'      => _x('微连载', 'post type singular name', MICROBLOG_DOMAIN ),
+		'singular_name'      => _x('连载', 'post type singular name', MICROBLOG_DOMAIN ),
 		'add_new'            => __('新连载', MICROBLOG_DOMAIN ),
 		'add_new_item'       => __('写连载', MICROBLOG_DOMAIN ),
 		'edit_item'          => __('编辑连载', MICROBLOG_DOMAIN ),

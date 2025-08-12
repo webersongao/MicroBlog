@@ -8,7 +8,7 @@ AuthorLink: https://www.webersongao.com
 Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
 */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined('ABSPATH' ) ) {
     exit;
 }  
 /*
@@ -24,10 +24,10 @@ function microblog_liveblog_settings_section() {
             <?php settings_errors('microblog_liveblog_data'); ?>
         <form method="post" action="options.php">
             <?php if ( isset( $_GET['settings-updated'] ) ) { ?>
-                <div class="updated"><p><?php _e( 'Plugin settings have been updated.', MICROBLOG_DOMAIN ); ?></p></div>
+                <div class="updated"><p><?php _e('Plugin settings have been updated.', MICROBLOG_DOMAIN ); ?></p></div>
             <?php } ?>
-            <?php settings_fields( 'microblog_liveblog_setting_field' ); ?>
-            <?php do_settings_sections( 'microblog_liveblog_section_general' ); ?>
+            <?php settings_fields('microblog_liveblog_setting_field' ); ?>
+            <?php do_settings_sections('microblog_liveblog_section_general' ); ?>
             <?php submit_button('保存 设置'); ?>
         </form>
     <?php
@@ -45,15 +45,15 @@ function microblog_liveblog_settings_section_header() {
  *
  * @return void
  */
-add_action( 'admin_init', 'microblog_liveblog_setting_admin' );
+add_action('admin_init', 'microblog_liveblog_setting_admin' );
 function microblog_liveblog_setting_admin() {
-	register_setting( 'microblog_liveblog_setting_field', 'microblog_liveblog_data', 'microblog_liveblog_data_sanitize' );
+	register_setting('microblog_liveblog_setting_field', 'microblog_liveblog_data', 'microblog_liveblog_data_sanitize' );
 
 	foreach ( mbfun_get_registered_settings() as $section => $settings ) {
 
 		add_settings_section(
 			'microblog_liveblog_section_' . $section,
-			'微连载设置',
+			'连载设置',
 			'__return_false',
 			'microblog_liveblog_section_' . $section
 		);
@@ -76,7 +76,7 @@ function microblog_liveblog_setting_admin() {
 			add_settings_field(
 				'microblog_liveblog_data[' . $args['id'] . ']',
 				$args['name'],
-				function_exists( 'microblog_live_' . $args['type'] . '_callback' ) ? 'microblog_live_' . $args['type'] . '_callback' : 'microblog_live_missing_callback',
+				function_exists('microblog_live_' . $args['type'] . '_callback' ) ? 'microblog_live_' . $args['type'] . '_callback' : 'microblog_live_missing_callback',
 				'microblog_liveblog_section_' . $section,
 				'microblog_liveblog_section_' . $section,
 				$args
@@ -103,59 +103,57 @@ function mbfun_get_registered_settings() {
 		'general' => array(
 			array(
 				'id'            => 'ml_post_types',
-				'name'          => __( '支持', MICROBLOG_DOMAIN ),
-				'desc'          => __( ' 你期望支持 "微连载"功能的类型.', MICROBLOG_DOMAIN ),
+				'name'          => __('支持', MICROBLOG_DOMAIN ),
+				'desc'          => __('期望支持【连载】的内容类型.', MICROBLOG_DOMAIN ),
 				'type'          => 'multiple_checkbox',
 				'options'       => $mlb_alltypes,
-				'default_value' => array( 'post' ),
+				'default_value' => array('post' ),
 			),
 			array(
 				'id'            => 'ml_theme_style',
-				'name'          => __( '主题', MICROBLOG_DOMAIN ),
-				'desc'          => __( 'Select a theme for your liveblog.', MICROBLOG_DOMAIN ),
+				'name'          => __('主题', MICROBLOG_DOMAIN ),
+				'desc'          => __('Select a theme for your liveblog.', MICROBLOG_DOMAIN ),
 				'type'          => 'select',
 				'options'       => array(
-					'light'     => __( 'Light', MICROBLOG_DOMAIN ),
-					'dark'      => __( 'Dark', MICROBLOG_DOMAIN ),
-					'light-alt' => __( 'Light (Less theme dependent)', MICROBLOG_DOMAIN ),
-					'none'      => __( 'None', MICROBLOG_DOMAIN ),
+					'light'     => __('Light', MICROBLOG_DOMAIN ),
+					'dark'      => __('Dark', MICROBLOG_DOMAIN ),
 				),
 				'default_value' => 'light',
 			),
 			array(
-				'id'   => 'ml_display_title',
-				'name' => __( '显示标题', MICROBLOG_DOMAIN ),
-				'desc' => __( ' Display the title on liveblog entries.', MICROBLOG_DOMAIN ),
+				'id'   => 'ml_display_autopolling',
+				'name' => __('自动刷新', MICROBLOG_DOMAIN ),
+				'desc' => __('是否启用【连载】的自动刷新功能.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 			// array(
 			// 	'id'   => 'ml_title_prefix',
-			// 	'name' => __( '标题前缀', MICROBLOG_DOMAIN ),
-			// 	'desc' => __( ' 为空则默认：liveblog ,长度(1,20) .', MICROBLOG_DOMAIN ),
+			// 	'name' => __('标题前缀', MICROBLOG_DOMAIN ),
+			// 	'desc' => __('为空则默认：liveblog ,长度(1,20) .', MICROBLOG_DOMAIN ),
 			// 	'type' => 'text_input',
 			// ),
 			array(
-				'id'   => 'ml_display_author',
-				'name' => __( '显示作者', MICROBLOG_DOMAIN ),
-				'desc' => __( ' Display the author name on liveblog entries.', MICROBLOG_DOMAIN ),
-				'type' => 'checkbox',
-			),
-			array(
-				'id'   => 'ml_display_social_share',
-				'name' => __( '社交分享', MICROBLOG_DOMAIN ),
-				'desc' => __( ' Display the social sharing options.', MICROBLOG_DOMAIN ),
-				'type' => 'checkbox',
+				'id'            => 'ml_post_layout',
+				'name'          => __('样式布局', MICROBLOG_DOMAIN ),
+				'desc'          => __('单条【连载】是否展示标题，作者以及分享按钮', MICROBLOG_DOMAIN ),
+				'type'          => 'multiple_checkbox',
+				'options'       => array(
+					'ml_layout_title' => __('标题', MICROBLOG_DOMAIN ),
+					'ml_layout_author' => __('作者', MICROBLOG_DOMAIN ),
+					'ml_layout_tshare' => __('分享按钮', MICROBLOG_DOMAIN ),
+				),
+				'default_value' => array('post' ),
 			),
 			array(
 				'id'   => 'ml_display_revort_sort',
-				'name' => __( '展示顺序', MICROBLOG_DOMAIN ),
-				'desc' => __( ' 默认「 从新到旧 」，打开后改为「 从旧到新 」', MICROBLOG_DOMAIN ),
+				'name' => __('展示顺序', MICROBLOG_DOMAIN ),
+				'desc' => __('默认「 从新到旧 」，打开后改为「 从旧到新 」', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 			array(
 				'id'            => 'ml_update_interval',
-				'name'          => __( '刷新间隔', MICROBLOG_DOMAIN ),
-				'desc'          => __( ' Per how many seconds should be checked for new liveblog updates. (10,360)', MICROBLOG_DOMAIN ),
+				'name'          => __('刷新间隔', MICROBLOG_DOMAIN ),
+				'desc'          => __('Per how many seconds should be checked for new liveblog updates. (10,360)', MICROBLOG_DOMAIN ),
 				'type'          => 'number',
 				'min'           => 10,
 				'max'           => 360,
@@ -163,8 +161,8 @@ function mbfun_get_registered_settings() {
 			),
 			array(
 				'id'            => 'ml_show_entries',
-				'name'          => __( '每页连载数', MICROBLOG_DOMAIN ),
-				'desc'          => __( ' The amount of entries visible before the load more button.', MICROBLOG_DOMAIN ),
+				'name'          => __('每页连载数', MICROBLOG_DOMAIN ),
+				'desc'          => __('The amount of entries visible before the load more button.', MICROBLOG_DOMAIN ),
 				'type'          => 'number',
 				'min'           => 3,
 				'max'           => 50,
@@ -172,43 +170,43 @@ function mbfun_get_registered_settings() {
 			),
 			array(
 				'id'   => 'ml_prefix_title',
-				'name' => __( '显示前缀', MICROBLOG_DOMAIN ),
-				'desc' => __( ' Automatically puts "Liveblog" in front of your liveblogs titles.', MICROBLOG_DOMAIN ),
+				'name' => __('显示前缀', MICROBLOG_DOMAIN ),
+				'desc' => __('Automatically puts "Liveblog" in front of your liveblogs titles.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 			array(
 				'id'      => 'ml_entry_date_format',
-				'name'    => __( '时间格式', MICROBLOG_DOMAIN ),
-				'desc'    => __( ' The format of the date displayed on liveblog entries.', MICROBLOG_DOMAIN ),
+				'name'    => __('时间格式', MICROBLOG_DOMAIN ),
+				'desc'    => __('The format of the date displayed on liveblog entries.', MICROBLOG_DOMAIN ),
 				'type'    => 'select',
 				'options' => array(
-					''         => __( 'Human Readable', MICROBLOG_DOMAIN ),
-					'date'     => sprintf( __( 'Date: %s', MICROBLOG_DOMAIN ), get_option( 'date_format' ) ),
-					'time'     => sprintf( __( 'Time: %s', MICROBLOG_DOMAIN ), get_option( 'time_format' ) ),
-					'datetime' => sprintf( __( 'Date and time: %s', MICROBLOG_DOMAIN ), mbfun_get_live_datetime_format() ),
+					''         => __('Human Readable', MICROBLOG_DOMAIN ),
+					'date'     => sprintf( __('Date: %s', MICROBLOG_DOMAIN ), get_option('date_format' ) ),
+					'time'     => sprintf( __('Time: %s', MICROBLOG_DOMAIN ), get_option('time_format' ) ),
+					'datetime' => sprintf( __('Date and time: %s', MICROBLOG_DOMAIN ), mbfun_get_live_datetime_format() ),
 				),
 			),
 			array(
 				'id'      => 'ml_cache_enabled',
-				'name'    => __( '启用缓存', MICROBLOG_DOMAIN ),
-				'desc'    => __( ' Caches the liveblog feed with the selected method.', MICROBLOG_DOMAIN ),
+				'name'    => __('启用缓存', MICROBLOG_DOMAIN ),
+				'desc'    => __('Caches the liveblog feed with the selected method.', MICROBLOG_DOMAIN ),
 				'type'    => 'select',
 				'options' => array(
-					''          => __( 'Disabled', MICROBLOG_DOMAIN ),
-					'object'    => __( 'Object', MICROBLOG_DOMAIN ),
-					'transient' => __( 'Transient', MICROBLOG_DOMAIN ),
+					''          => __('Disabled', MICROBLOG_DOMAIN ),
+					'object'    => __('Object', MICROBLOG_DOMAIN ),
+					'transient' => __('Transient', MICROBLOG_DOMAIN ),
 				),
 			),
 			array(
 				'id'   => 'ml_append_timestamp',
-				'name' => __( 'feed时间戳', MICROBLOG_DOMAIN ),
-				'desc' => __( ' Appends a timestamp to the liveblog feed URL.', MICROBLOG_DOMAIN ),
+				'name' => __('feed时间戳', MICROBLOG_DOMAIN ),
+				'desc' => __('Appends a timestamp to the liveblog feed URL.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 		),
 	);
 
-	return apply_filters( 'mlb_registered_settings', $mlb_sections );
+	return apply_filters('mlb_registered_settings', $mlb_sections );
 }
 
 /**
@@ -219,7 +217,7 @@ function mbfun_get_registered_settings() {
  */
 function microblog_live_missing_callback( $args ) {
 	printf(
-		__( 'The callback function used for the %s setting is missing.', MICROBLOG_DOMAIN ),
+		__('The callback function used for the %s setting is missing.', MICROBLOG_DOMAIN ),
 		'<strong>' . $args['id'] . '</strong>'
 	);
 }

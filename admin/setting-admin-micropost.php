@@ -288,7 +288,7 @@ function microblog_post_content_bottom_input() {
     </label>
     <label>
         <input type='checkbox' name='theme_microblog_data[mb_content_bottom][]' value='<?php echo esc_attr('conbottomtag'); ?>' <?php if (in_array('conbottomtag', $value)) echo 'checked="checked"'; ?> />
-        显示标签
+        显示话题
     </label>
     <?php
 }

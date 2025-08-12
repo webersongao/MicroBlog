@@ -1,4 +1,4 @@
-<?php if ( ! mlb_display_social_sharing() ) {
+<?php if ( ! mlb_display_liveblog_layout('ml_layout_tshare')) {
 		return;
 } ?>
 <span class="mlb-liveblog-action-share">

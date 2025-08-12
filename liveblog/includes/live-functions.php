@@ -278,8 +278,8 @@ function mbfun_get_live_liveblog_status_options() {
 function mbfun_get_live_all_post_types() {
 
 	$all_types = get_post_types( array( 'public' => true), 'names', 'and' );
-	$specific_types = array( 'post', 'page' );  
-	// $specific_types = array( 'post', 'page', 'micropost' );   
+	// $specific_types = array( 'post', 'page' );  
+	$specific_types = array( 'post', 'page', 'micropost' );   
 	$intersected_post_types = array_intersect( $all_types, $specific_types );
 
 	return apply_filters( 'mlb_intersected_post_types', $intersected_post_types );
@@ -319,8 +319,11 @@ function mbfun_get_live_update_interval() {
  */
 function mbfun_get_live_update_autoPolling() {
     global $post;
+	global $mlb_options;
 
-    if (isset($post) && isset($post->ID)) {
+	$auto = ! empty( $mlb_options['ml_display_autopolling'] ) ? true : false;
+
+    if ($auto && isset($post) && isset($post->ID)) {
         $post_id = $post->ID;
         return get_post_meta($post_id, '_micro_post_live_autoPolling', true);
     }
@@ -328,44 +331,20 @@ function mbfun_get_live_update_autoPolling() {
     return false;
 }
 
-
 /**
- * Display title.
+ * Display post layout.
  *
  * @return boolean
  */
-function mlb_display_title() {
-	global $mlb_options;
+function mlb_display_liveblog_layout($layout) {
+    global $mlb_options;
 
-	$display = ! empty( $mlb_options['ml_display_title'] ) ? true : false;
-
-	return apply_filters( 'mlb_display_title', $display );
-}
-
-/**
- * Display author name.
- *
- * @return boolean
- */
-function mlb_display_author_name() {
-	global $mlb_options;
-
-	$display_author = ! empty( $mlb_options['ml_display_author'] ) ? true : false;
-
-	return apply_filters( 'mlb_display_author', $display_author );
-}
-
-/**
- * Display social sharing.
- *
- * @return boolean
- */
-function mlb_display_social_sharing() {
-	global $mlb_options;
-
-	$display_share = ! empty( $mlb_options['ml_display_social_share'] ) ? true : false;
-
-	return apply_filters( 'mlb_display_social_share', $display_share );
+    if (!empty($mlb_options['ml_post_layout']) && is_array($mlb_options['ml_post_layout'])) {
+        $livelayout = in_array($layout, $mlb_options['ml_post_layout']);
+    } else {
+        $livelayout = false;
+    }
+    return apply_filters('mlb_display_live_layout', $livelayout, $layout);
 }
 
 /**
@@ -617,7 +596,7 @@ function mlb_add_meta_data() {
                 'articleBody'      => trim( preg_replace( '/\s+/', ' ', strip_tags( $entry['content'] ) ) ),
             );
 
-			if ( mlb_display_author_name() ) {
+			if ( mlb_display_liveblog_layout('ml_layout_author') ) {
                 $_entry['author'] = $organization;
             }
 
