@@ -1,6 +1,6 @@
 <?php
 // microblog-shortcode.php
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
@@ -8,7 +8,8 @@ require_once(plugin_dir_path(__FILE__) . 'microblog-functions.php');
 
 add_shortcode('microblog', 'microblog_shortcode');
 
-function microblog_shortcode($atts) {
+function microblog_shortcode($atts)
+{
 
     $options = mbfun_get_micropost_settings();
 
@@ -19,13 +20,13 @@ function microblog_shortcode($atts) {
     ), $atts));
 
     $numvalue = (isset($options) && isset($options['mb_codepost_num'])) ? intval($options['mb_codepost_num']) : 5;
-    
+
     $args = array(
         'post_type' => 'micropost',
         'orderby' => 'date',
         'order' => 'DESC',
         'posts_per_page' => $numvalue,
-        'post_status' => 'publish',
+        'post_status' => array('publish', 'private'),
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
     );
 
@@ -41,7 +42,7 @@ function microblog_shortcode($atts) {
     $out = "<div class='microblog-shortcode'>";
     $out .= "<hr>";
     if ($query_results->have_posts()) {
-            global $post;
+        global $post;
         $out .= "<div class='mb-shortcode-content'>";
         // $out .= "<ul>";
         $out .= "<div class='mb-shortcode-post'>";
@@ -54,15 +55,15 @@ function microblog_shortcode($atts) {
 
             // 1、顶部标题
             $titleShow = strlen($post_title) ? true : false;
-            $show_date = true;// (isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
-            if ($titleShow || $show_date){
+            $show_date = true; // (isset($options) && isset($options['mb_date_show']) && $options['mb_date_show']) ? true : false;
+            if ($titleShow || $show_date) {
                 $out .= "<div class='mb-shortcode-post-head'>";
-                    if ($titleShow) {
-                        $out .= "<span class='mb-shortcode-post-head-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
-                    }
-                    if ($show_date) {
-                        $out .= "<span class='mb-shortcode-post-date'>" . mbfun_micropost_format_time(strtotime($post->post_date)) . "</span>";
-                    }
+                if ($titleShow) {
+                    $out .= "<span class='mb-shortcode-post-head-title'><a target='_blank' href='" . get_permalink() . "'>" . $post_title . "</a></span>";
+                }
+                if ($show_date) {
+                    $out .= "<span class='mb-shortcode-post-date'>" . mbfun_micropost_format_time(strtotime($post->post_date)) . "</span>";
+                }
                 $out .= "</div>";
             }
             // 2、微博内容
@@ -95,14 +96,14 @@ function microblog_shortcode($atts) {
                     $out .= "<div class='mb-shortcode-post-content-image-single'>";
                 } elseif ($count == 2) {
                     // 两张 宽度 300 ，居中显示
-                    $out .= "<div class='mb-shortcode-post-content-image-double'>"; 
+                    $out .= "<div class='mb-shortcode-post-content-image-double'>";
                 } else {
                     // 其他情况下的操作 九宫格
                     $out .= "<div class='mb-shortcode-post-content-image-grid'>";
                 }
-            
+
                 foreach ($matches[0] as $img_html) {
-                    $out .= "<div class='mb-shortcode-post-content-image-item'>$img_html</div>"; 
+                    $out .= "<div class='mb-shortcode-post-content-image-item'>$img_html</div>";
                 }
                 $out .= "</div>";
             }
@@ -110,24 +111,24 @@ function microblog_shortcode($atts) {
             $out .= "</div>";
             // 3、底部头像 评论数
             $out .= "<div class='mb-shortcode-post-bottom'>";
-                $out .= "<div class='mb-shortcode-post-user'>";
-                if ($UserShow) {
-                    $author_avatar = get_avatar(get_the_author_meta('ID'), 35);
-                    $author_name = get_the_author_meta('display_name', get_the_author_meta('ID'));
-                    $out .= "<span class='mb-shortcode-post-user-avatar'>" . $author_avatar . "</span>";
-                    $out .= "<span class='mb-shortcode-post-user-name'>" . $author_name . "</span>";
-                }
-                $out .= "</div>";
-                $outtopics = mbfun_get_micropost_tags();
-                $tagShow =  $position_option && (in_array('conbottomtag', $options['mb_content_bottom'])) ? true : false;
-                if (!empty($outtopics) && $tagShow) {
-                    $out .= "<span class='mb-shortcode-post-bottom-topics'>" . mbfun_get_micropost_tags() . "</span>";
-                }
-                if (comments_open()) {
-                    $out .= "<span class='mb-shortcode-post-bottom-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) .'assets/images/post-comment-icon.png'. "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";   
-                } else {
-                    $out .= "<span class='mb-shortcode-post-bottom-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'assets/images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
-                }
+            $out .= "<div class='mb-shortcode-post-user'>";
+            if ($UserShow) {
+                $author_avatar = get_avatar(get_the_author_meta('ID'), 35);
+                $author_name = get_the_author_meta('display_name', get_the_author_meta('ID'));
+                $out .= "<span class='mb-shortcode-post-user-avatar'>" . $author_avatar . "</span>";
+                $out .= "<span class='mb-shortcode-post-user-name'>" . $author_name . "</span>";
+            }
+            $out .= "</div>";
+            $outtopics = mbfun_get_micropost_tags();
+            $tagShow =  $position_option && (in_array('conbottomtag', $options['mb_content_bottom'])) ? true : false;
+            if (!empty($outtopics) && $tagShow) {
+                $out .= "<span class='mb-shortcode-post-bottom-topics'>" . mbfun_get_micropost_tags() . "</span>";
+            }
+            if (comments_open()) {
+                $out .= "<span class='mb-shortcode-post-bottom-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'assets/images/post-comment-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;" . get_comments_number() . "</a></span>";
+            } else {
+                $out .= "<span class='mb-shortcode-post-bottom-link'><a target='_blank' href='" . get_permalink() . "'><img src='" . plugin_dir_url(dirname(__FILE__)) . 'assets/images/post-more-icon.png' . "' style='width: 16px; height: 16px;'>&nbsp;</a></span>";
+            }
             $out .= "</div>";
 
             $out .= "</div>";
@@ -153,7 +154,8 @@ function microblog_shortcode($atts) {
     return $out;
 }
 
-function mbfun_get_micropost_tags() {
+function mbfun_get_micropost_tags()
+{
     global $post;
     $tags_string = '';
     $post_tags = has_term('', 'micropost_topic', $post) ? wp_get_post_terms($post->ID, 'micropost_topic') : array();
@@ -166,7 +168,8 @@ function mbfun_get_micropost_tags() {
 }
 
 
-function mbfun_get_micropost_content() {
+function mbfun_get_micropost_content()
+{
     global $post;
     $post_content = $post->post_content;
     // 古腾堡
@@ -175,13 +178,6 @@ function mbfun_get_micropost_content() {
     $post_content = preg_replace('/\[caption[^\]]*\]|\[\/caption\]|<a\s[^>]*><img[^>]+><\/a>/', '', $post_content);
     // 移除&nbsp;并修剪内容
     $post_content = trim(str_replace('&nbsp;', '', $post_content));
-    
+
     return $post_content;
 }
-
-
-
-
-
-
-?>

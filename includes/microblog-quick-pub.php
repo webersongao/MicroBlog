@@ -3,14 +3,15 @@
 /*
 Description: 在仪表板中添加一个小部件，用于快速发布微博类型的文章。
 */
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
 require_once(plugin_dir_path(__FILE__) . 'microblog-functions.php');
 
 // 注册插件小部件
-function mbfun_register_quick_micropost_widget() {
+function mbfun_register_quick_micropost_widget()
+{
     wp_add_dashboard_widget(
         'quick_micropost_widget', // Widget ID
         '快速发微博', // Widget Title
@@ -20,8 +21,9 @@ function mbfun_register_quick_micropost_widget() {
 add_action('wp_dashboard_setup', 'mbfun_register_quick_micropost_widget');
 
 // 小部件内容
-function mbfun_display_quick_micropost_widget() {
-    ?>
+function mbfun_display_quick_micropost_widget()
+{
+?>
     <form id="quick-micropost-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
         <label for="quick-micropost-title">标题：</label>
         <input type="text" id="quick-micropost-title" name="micropost_title" placeholder=" 标题">
@@ -32,16 +34,17 @@ function mbfun_display_quick_micropost_widget() {
         <?php wp_nonce_field('quick-micropost-action', 'quick-micropost-nonce'); ?>
         <span id="quick-micropost-message" class="quick-micropost-message"><a href="<?php echo esc_url(admin_url('edit.php?post_type=micropost')); ?>"></a></span>
     </form>
-    <?php
+<?php
 }
 
 // 处理表单提交
-function mbfun_handle_quick_micropost_submission() {
+function mbfun_handle_quick_micropost_submission()
+{
 
-    if ( ! current_user_can( 'edit_posts' ) ) {
-        wp_die( '您没有权限执行此操作。' );
+    if (! current_user_can('edit_posts')) {
+        wp_die('您没有权限执行此操作。');
     }
-    
+
     if (isset($_POST['micropost_content']) && isset($_POST['quick-micropost-nonce'])) {
         if (wp_verify_nonce($_POST['quick-micropost-nonce'], 'quick-micropost-action')) {
             $post_title = isset($_POST['micropost_title']) ? sanitize_text_field($_POST['micropost_title']) : '微博 ' . gmdate('Y-m-d H:i');
@@ -54,7 +57,7 @@ function mbfun_handle_quick_micropost_submission() {
                 if ($block_editor) {
                     $paragraphs = explode("\n", $post_content);
                     foreach ($paragraphs as $paragraph) {
-                        $paragraph_blocks .= '<!-- wp:paragraph -->' . "\n" . "<p>" . trim($paragraph) . "</p>" . "\n". '<!-- /wp:paragraph -->' . "\n\n";
+                        $paragraph_blocks .= '<!-- wp:paragraph -->' . "\n" . "<p>" . trim($paragraph) . "</p>" . "\n" . '<!-- /wp:paragraph -->' . "\n\n";
                     }
                     $paragraph_blocks = rtrim($paragraph_blocks);
                 } else {

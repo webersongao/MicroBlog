@@ -1,7 +1,7 @@
 <?php
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit;
 }
 
@@ -13,22 +13,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param  string $view
  * @return string
  */
-function mbfun_get_live_template_part( $slug, $name = null, $load = true ) {
+function mbfun_get_live_template_part($slug, $name = null, $load = true)
+{
 	// Execute code for this part
-	do_action( 'get_template_part_' . $slug, $slug, $name );
+	do_action('get_template_part_' . $slug, $slug, $name);
 
 	// Setup possible parts
 	$templates = array();
-	if ( isset( $name ) ) {
+	if (isset($name)) {
 		$templates[] = $slug . '-' . $name . '.php';
 	}
 	$templates[] = $slug . '.php';
 
 	// Allow template parts to be filtered
-	$templates = apply_filters( 'mbfun_get_live_template_part', $templates, $slug, $name );
+	$templates = apply_filters('mbfun_get_live_template_part', $templates, $slug, $name);
 
 	// Return the part that is found
-	return mlb_locate_template( $templates, $load, false );
+	return mlb_locate_template($templates, $load, false);
 }
 
 /**
@@ -38,41 +39,41 @@ function mbfun_get_live_template_part( $slug, $name = null, $load = true ) {
  * @param  boolean      $load
  * @param  boolean      $require_once
  */
-function mlb_locate_template( $template_names, $load = false, $require_once = true ) {
+function mlb_locate_template($template_names, $load = false, $require_once = true)
+{
 	// No file found yet
 	$located = false;
 
 	// Try to find a template file
-	foreach ( (array) $template_names as $template_name ) {
+	foreach ((array) $template_names as $template_name) {
 
 		// Continue if template is empty
-		if ( empty( $template_name ) ) {
+		if (empty($template_name)) {
 			continue;
 		}
-		
+
 		// Trim off any slashes from the template name
-		$template_name = ltrim( $template_name, '/' );
+		$template_name = ltrim($template_name, '/');
 
 		// Check child theme first
-		if ( file_exists( trailingslashit( get_stylesheet_directory() ) . 'micro_live_theme/' . $template_name ) ) {
-			$located = trailingslashit( get_stylesheet_directory() ) . 'micro_live_theme/' . $template_name;
+		if (file_exists(trailingslashit(get_stylesheet_directory()) . 'micro_live_theme/' . $template_name)) {
+			$located = trailingslashit(get_stylesheet_directory()) . 'micro_live_theme/' . $template_name;
 			break;
 
 			// Check parent theme next
-		} elseif ( file_exists( trailingslashit( get_template_directory() ) . 'micro_live_theme/' . $template_name ) ) {
-			$located = trailingslashit( get_template_directory() ) . 'micro_live_theme/' . $template_name;
+		} elseif (file_exists(trailingslashit(get_template_directory()) . 'micro_live_theme/' . $template_name)) {
+			$located = trailingslashit(get_template_directory()) . 'micro_live_theme/' . $template_name;
 			break;
 
 			// Check theme compatibility last
-		} elseif ( file_exists( trailingslashit( mbfun_get_live_templates_dir() ) . $template_name ) ) {
-			$located = trailingslashit( mbfun_get_live_templates_dir() ) . $template_name;
+		} elseif (file_exists(trailingslashit(mbfun_get_live_templates_dir()) . $template_name)) {
+			$located = trailingslashit(mbfun_get_live_templates_dir()) . $template_name;
 			break;
 		}
-
 	}
 
-	if ( ( true == $load ) && ! empty( $located ) ) {
-		load_template( $located, $require_once );
+	if ((true == $load) && ! empty($located)) {
+		load_template($located, $require_once);
 	} else {
 		return $located;
 	}
@@ -83,7 +84,8 @@ function mlb_locate_template( $template_names, $load = false, $require_once = tr
  * 对应文件夹名称，慎改
  * @return string
  */
-function mbfun_get_live_templates_dir() {
+function mbfun_get_live_templates_dir()
+{
 	return mbfun_get_plugin_path() . 'templates';
 }
 
@@ -93,7 +95,8 @@ function mbfun_get_live_templates_dir() {
  * @param string $status
  * @return array
  */
-function mbfun_get_live_liveblogs_by_status( $status ) {
+function mbfun_get_live_liveblogs_by_status($status)
+{
 	$meta_query = array(
 		array(
 			'key'     => '_micro_post_live_enable',
@@ -101,13 +104,13 @@ function mbfun_get_live_liveblogs_by_status( $status ) {
 		),
 	);
 
-	if ( $status === 'closed' ) {
+	if ($status === 'closed') {
 		$meta_query[] = array(
 			'key'     => '_micro_post_live_status',
 			'compare' => '=',
 			'value'   => 'closed',
 		);
-	} elseif ( $status === 'open' ) {
+	} elseif ($status === 'open') {
 		$meta_query[] = array(
 			'relation' => 'OR',
 			array(
@@ -120,39 +123,39 @@ function mbfun_get_live_liveblogs_by_status( $status ) {
 				'value'   => 'open',
 			),
 		);
-	} elseif ( $status === 'used' ) {
-        $meta_query[] = array(
-            'key'     => '_micro_live_post_id',
-            'compare' => 'EXISTS',
-        );
-    }
+	} elseif ($status === 'used') {
+		$meta_query[] = array(
+			'key'     => '_micro_live_post_id',
+			'compare' => 'EXISTS',
+		);
+	}
 
 	$args = array(
 		'post_type'   => mbfun_get_live_supported_post_types(),
-		'post_status' => 'publish',
+		'post_status' => array('publish', 'private'),
 		'showposts'   => -1,
 		'meta_query'  => $meta_query,
 	);
 
-	if ( $status === 'all' ) {
-		$args = apply_filters( 'mbfun_get_live_liveblogs_args', $args );
+	if ($status === 'all') {
+		$args = apply_filters('mbfun_get_live_liveblogs_args', $args);
 	} else {
-		$args = apply_filters( "mbfun_get_live_{$status}_liveblogs_args", $args );
+		$args = apply_filters("mbfun_get_live_{$status}_liveblogs_args", $args);
 	}
 
-	$liveblogs = get_posts( $args );
+	$liveblogs = get_posts($args);
 
 	$result = array();
 
-	foreach ( $liveblogs as $liveblog ) {
-		$result[ $liveblog->ID ] = $liveblog->post_title;
+	foreach ($liveblogs as $liveblog) {
+		$result[$liveblog->ID] = $liveblog->post_title;
 	}
 
-	if ( $status === 'all' ) {
-		return apply_filters( 'mbfun_get_live_all_liveblogs', $result );
+	if ($status === 'all') {
+		return apply_filters('mbfun_get_live_all_liveblogs', $result);
 	}
 
-	return apply_filters( "mbfun_get_live_{$status}_liveblogs", $result );
+	return apply_filters("mbfun_get_live_{$status}_liveblogs", $result);
 }
 
 /**
@@ -162,8 +165,9 @@ function mbfun_get_live_liveblogs_by_status( $status ) {
  *
  * @return array
  */
-function mbfun_get_live_all_liveblogs() {
-	return mbfun_get_live_liveblogs_by_status( 'all' );
+function mbfun_get_live_all_liveblogs()
+{
+	return mbfun_get_live_liveblogs_by_status('all');
 }
 
 /**
@@ -171,11 +175,12 @@ function mbfun_get_live_all_liveblogs() {
  *
  * @return int
  */
-function mbfun_get_live_liveblogs_count( $args = array() ) {
+function mbfun_get_live_liveblogs_count($args = array())
+{
 	$default_args = apply_filters(
 		'mbfun_get_live_liveblogs_count_args',
 		array(
-			'post_status' => array( 'publish', 'draft', 'future', 'trash' ),
+			'post_status' => array('publish', 'private', 'draft', 'future', 'trash'),
 			'all_posts'   => 1,
 			'post_type'   => mbfun_get_live_supported_post_types(),
 			'meta_query'  => array(
@@ -187,9 +192,9 @@ function mbfun_get_live_liveblogs_count( $args = array() ) {
 		)
 	);
 
-	$args = wp_parse_args( $args, $default_args );
+	$args = wp_parse_args($args, $default_args);
 
-	$result = new WP_Query( $args );
+	$result = new WP_Query($args);
 
 	return $result->found_posts;
 }
@@ -201,18 +206,19 @@ function mbfun_get_live_liveblogs_count( $args = array() ) {
  *
  * @return boolean
  */
-function mlb_is_liveblog() {
+function mlb_is_liveblog()
+{
 	global $post;
 
 	$is_liveblog = false;
 
-	if ( ! empty( $post->ID ) ) {
-		if ( get_post_meta( $post->ID, '_micro_post_live_enable', true ) ) {
+	if (! empty($post->ID)) {
+		if (get_post_meta($post->ID, '_micro_post_live_enable', true)) {
 			$is_liveblog = true;
 		}
 	}
 
-	return apply_filters( 'mlb_is_liveblog', $is_liveblog );
+	return apply_filters('mlb_is_liveblog', $is_liveblog);
 }
 
 /**
@@ -221,13 +227,14 @@ function mlb_is_liveblog() {
  * @param  int $post_id
  * @return string
  */
-function mbfun_get_live_liveblog_status( $post_id = null ) {
-	if ( ! $post_id ) {
+function mbfun_get_live_liveblog_status($post_id = null)
+{
+	if (! $post_id) {
 		global $post;
 		$post_id = $post->ID;
 	}
 
-	return get_post_meta( $post_id, '_micro_post_live_status', true );
+	return get_post_meta($post_id, '_micro_post_live_status', true);
 }
 
 /**
@@ -236,12 +243,13 @@ function mbfun_get_live_liveblog_status( $post_id = null ) {
  * @param int|null $post_id
  * @return mixed
  */
-function mbfun_get_live_liveblog( $post_id = null ) {
-	if ( ! $post_id ) {
+function mbfun_get_live_liveblog($post_id = null)
+{
+	if (! $post_id) {
 		global $post;
 		return $post;
 	}
-	return get_post( $post_id );
+	return get_post($post_id);
 }
 
 /**
@@ -250,8 +258,9 @@ function mbfun_get_live_liveblog( $post_id = null ) {
  * @param int $id
  * @return string
  */
-function mbfun_get_live_liveblog_api_endpoint( $id ) {
-	return apply_filters( 'mlb_liveblog_api_endpoint', get_rest_url( null, "microlives/v1/liveblog/{$id}" ), $id );
+function mbfun_get_live_liveblog_api_endpoint($id)
+{
+	return apply_filters('mlb_liveblog_api_endpoint', get_rest_url(null, "microlives/v1/liveblog/{$id}"), $id);
 }
 
 /**
@@ -259,12 +268,13 @@ function mbfun_get_live_liveblog_api_endpoint( $id ) {
  *
  * @return array
  */
-function mbfun_get_live_liveblog_status_options() {
+function mbfun_get_live_liveblog_status_options()
+{
 	return apply_filters(
 		'mlb_liveblog_status_options',
 		array(
-			'open'   => __( 'Open', MICROBLOG_DOMAIN ),
-			'closed' => __( 'Closed', MICROBLOG_DOMAIN ),
+			'open'   => __('Open', MICROBLOG_DOMAIN),
+			'closed' => __('Closed', MICROBLOG_DOMAIN),
 		)
 	);
 }
@@ -275,14 +285,15 @@ function mbfun_get_live_liveblog_status_options() {
  *
  * @return array
  */
-function mbfun_get_live_all_post_types() {
+function mbfun_get_live_all_post_types()
+{
 
-	$all_types = get_post_types( array( 'public' => true), 'names', 'and' );
+	$all_types = get_post_types(array('public' => true), 'names', 'and');
 	// $specific_types = array( 'post', 'page' );  
-	$specific_types = array( 'post', 'page', 'micropost' );   
-	$intersected_post_types = array_intersect( $all_types, $specific_types );
+	$specific_types = array('post', 'page', 'micropost');
+	$intersected_post_types = array_intersect($all_types, $specific_types);
 
-	return apply_filters( 'mlb_intersected_post_types', $intersected_post_types );
+	return apply_filters('mlb_intersected_post_types', $intersected_post_types);
 }
 
 
@@ -291,12 +302,13 @@ function mbfun_get_live_all_post_types() {
  *
  * @return array
  */
-function mbfun_get_live_supported_post_types() {
+function mbfun_get_live_supported_post_types()
+{
 	global $mlb_options;
 
-	$post_types = !empty( $mlb_options['ml_post_types'] ) ? $mlb_options['ml_post_types'] : array( 'post' );
+	$post_types = !empty($mlb_options['ml_post_types']) ? $mlb_options['ml_post_types'] : array('post');
 
-	return apply_filters( 'mlb_post_types', $post_types );
+	return apply_filters('mlb_post_types', $post_types);
 }
 
 /**
@@ -304,12 +316,13 @@ function mbfun_get_live_supported_post_types() {
  *
  * @return string
  */
-function mbfun_get_live_update_interval() {
+function mbfun_get_live_update_interval()
+{
 	global $mlb_options;
 
-	$update_interval = ! empty( $mlb_options['ml_update_interval'] ) ? $mlb_options['ml_update_interval'] : 30;
+	$update_interval = ! empty($mlb_options['ml_update_interval']) ? $mlb_options['ml_update_interval'] : 30;
 
-	return apply_filters( 'mlb_update_interval', $update_interval );
+	return apply_filters('mlb_update_interval', $update_interval);
 }
 
 /**
@@ -317,18 +330,19 @@ function mbfun_get_live_update_interval() {
  *
  * @return string
  */
-function mbfun_get_live_update_autoPolling() {
-    global $post;
+function mbfun_get_live_update_autoPolling()
+{
+	global $post;
 	global $mlb_options;
 
-	$auto = ! empty( $mlb_options['ml_display_autopolling'] ) ? true : false;
+	$auto = ! empty($mlb_options['ml_display_autopolling']) ? true : false;
 
-    if ($auto && isset($post) && isset($post->ID)) {
-        $post_id = $post->ID;
-        return get_post_meta($post_id, '_micro_post_live_autoPolling', true);
-    }
+	if ($auto && isset($post) && isset($post->ID)) {
+		$post_id = $post->ID;
+		return get_post_meta($post_id, '_micro_post_live_autoPolling', true);
+	}
 
-    return false;
+	return false;
 }
 
 /**
@@ -336,15 +350,16 @@ function mbfun_get_live_update_autoPolling() {
  *
  * @return boolean
  */
-function mlb_display_liveblog_layout($layout) {
-    global $mlb_options;
+function mlb_display_liveblog_layout($layout)
+{
+	global $mlb_options;
 
-    if (!empty($mlb_options['ml_post_layout']) && is_array($mlb_options['ml_post_layout'])) {
-        $livelayout = in_array($layout, $mlb_options['ml_post_layout']);
-    } else {
-        $livelayout = false;
-    }
-    return apply_filters('mlb_display_live_layout', $livelayout, $layout);
+	if (!empty($mlb_options['ml_post_layout']) && is_array($mlb_options['ml_post_layout'])) {
+		$livelayout = in_array($layout, $mlb_options['ml_post_layout']);
+	} else {
+		$livelayout = false;
+	}
+	return apply_filters('mlb_display_live_layout', $livelayout, $layout);
 }
 
 /**
@@ -352,12 +367,13 @@ function mlb_display_liveblog_layout($layout) {
  *
  * @return boolean
  */
-function mlb_display_revert_sort() {
+function mlb_display_revert_sort()
+{
 	global $mlb_options;
 
-	$display_share = ! empty( $mlb_options['ml_display_revort_sort'] ) ? true : false;
+	$display_share = ! empty($mlb_options['ml_display_revort_sort']) ? true : false;
 
-	return apply_filters( 'mlb_display_revort_timesort', $display_share );
+	return apply_filters('mlb_display_revort_timesort', $display_share);
 }
 
 /**
@@ -365,12 +381,13 @@ function mlb_display_revert_sort() {
  *
  * @return string
  */
-function mbfun_get_live_show_entries() {
+function mbfun_get_live_show_entries()
+{
 	global $mlb_options;
 
-	$show_entries = ! empty( $mlb_options['ml_show_entries'] ) ? $mlb_options['ml_show_entries'] : 10;
+	$show_entries = ! empty($mlb_options['ml_show_entries']) ? $mlb_options['ml_show_entries'] : 10;
 
-	return apply_filters( 'mlb_show_entries', $show_entries );
+	return apply_filters('mlb_show_entries', $show_entries);
 }
 
 /**
@@ -378,12 +395,13 @@ function mbfun_get_live_show_entries() {
  *
  * @return string
  */
-function mbfun_get_live_theme() {
+function mbfun_get_live_theme()
+{
 	global $mlb_options;
 
-	$theme = ! empty( $mlb_options['ml_theme_style'] ) ? $mlb_options['ml_theme_style'] : 'light';
+	$theme = ! empty($mlb_options['ml_theme_style']) ? $mlb_options['ml_theme_style'] : 'light';
 
-	return apply_filters( 'mlb_theme', $theme );
+	return apply_filters('mlb_theme', $theme);
 }
 
 /**
@@ -391,12 +409,13 @@ function mbfun_get_live_theme() {
  *
  * @return string
  */
-function mbfun_get_live_entry_content() {
+function mbfun_get_live_entry_content()
+{
 	global $post, $wp_embed;
 
-	$content = apply_filters( 'mlb_entry_content', $post->post_content );
+	$content = apply_filters('mlb_entry_content', $post->post_content);
 
-	return apply_filters( 'the_content', $content );
+	return apply_filters('the_content', $content);
 }
 
 /**
@@ -404,7 +423,8 @@ function mbfun_get_live_entry_content() {
  *
  * @return void
  */
-function mlb_entry_content() {
+function mlb_entry_content()
+{
 	echo mbfun_get_live_entry_content();
 }
 
@@ -413,10 +433,11 @@ function mlb_entry_content() {
  *
  * @return string
  */
-function mbfun_get_live_entry_title() {
+function mbfun_get_live_entry_title()
+{
 	global $post;
 
-	return apply_filters( 'mlb_entry_title', $post->post_title );
+	return apply_filters('mlb_entry_title', $post->post_title);
 }
 
 /**
@@ -424,11 +445,12 @@ function mbfun_get_live_entry_title() {
  *
  * @return void
  */
-function mbfun_get_live_author_avatar($size = 30) {
-    global $post;
-    $author_id = $post->post_author;
-    $avatar_url = get_avatar_url( $author_id, array('size' => $size) ); // 获取头像的 URL
-    return $avatar_url;
+function mbfun_get_live_author_avatar($size = 30)
+{
+	global $post;
+	$author_id = $post->post_author;
+	$avatar_url = get_avatar_url($author_id, array('size' => $size)); // 获取头像的 URL
+	return $avatar_url;
 }
 
 
@@ -437,7 +459,8 @@ function mbfun_get_live_author_avatar($size = 30) {
  *
  * @return void
  */
-function mlb_entry_title() {
+function mlb_entry_title()
+{
 	echo mbfun_get_live_entry_title();
 }
 
@@ -446,8 +469,9 @@ function mlb_entry_title() {
  *
  * @return void
  */
-function mlb_entry_author_avatar($size = 30) {
-    echo mbfun_get_live_author_avatar($size);
+function mlb_entry_author_avatar($size = 30)
+{
+	echo mbfun_get_live_author_avatar($size);
 }
 
 
@@ -456,8 +480,9 @@ function mlb_entry_author_avatar($size = 30) {
  *
  * @return mixed
  */
-function mbfun_get_live_highlighted_entry_id() {
-    $entry_id = apply_filters( 'mlb_highlighted_live_id', filter_input( INPUT_GET, 'entry', FILTER_SANITIZE_NUMBER_INT ) );
+function mbfun_get_live_highlighted_entry_id()
+{
+	$entry_id = apply_filters('mlb_highlighted_live_id', filter_input(INPUT_GET, 'entry', FILTER_SANITIZE_NUMBER_INT));
 
 	return $entry_id;
 }
@@ -468,18 +493,19 @@ function mbfun_get_live_highlighted_entry_id() {
  * @param WP_Post|int|null $post
  * @return string
  */
-function mbfun_get_live_entry_url( $post = null ) {
-    if ( is_null( $post ) ) {
-	    global $post;
-    } elseif( is_numeric( $post ) ) {
-        $post = get_post( $post );
-    }
+function mbfun_get_live_entry_url($post = null)
+{
+	if (is_null($post)) {
+		global $post;
+	} elseif (is_numeric($post)) {
+		$post = get_post($post);
+	}
 
-	$liveblog_id = get_post_meta( $post->ID, '_micro_live_post_id', true );
+	$liveblog_id = get_post_meta($post->ID, '_micro_live_post_id', true);
 
-	$url = add_query_arg( 'entry', $post->ID, get_permalink( $liveblog_id ) );
+	$url = add_query_arg('entry', $post->ID, get_permalink($liveblog_id));
 
-    return apply_filters( 'mlb_entry_url', $url, $liveblog_id, $post );
+	return apply_filters('mlb_entry_url', $url, $liveblog_id, $post);
 }
 
 /**
@@ -488,13 +514,14 @@ function mbfun_get_live_entry_url( $post = null ) {
  * @param int $post_id
  * @return string
  */
-function mbfun_get_live_edit_entry_url( $post_id ) {
+function mbfun_get_live_edit_entry_url($post_id)
+{
 	return add_query_arg(
 		array(
 			'post'   => $post_id,
 			'action' => 'edit',
 		),
-		admin_url( 'post.php' )
+		admin_url('post.php')
 	);
 }
 
@@ -504,14 +531,15 @@ function mbfun_get_live_edit_entry_url( $post_id ) {
  * @param int $post_id
  * @return void
  */
-function mlb_edit_entry_link() {
+function mlb_edit_entry_link()
+{
 	global $post;
 
-	if ( empty( $post->ID ) ) {
+	if (empty($post->ID)) {
 		return;
 	}
 
-	echo '<a href="' . mbfun_get_live_edit_entry_url( $post->ID ) . '" rel="nofollow">' . __( 'Edit This' ) . '</a>';
+	echo '<a href="' . mbfun_get_live_edit_entry_url($post->ID) . '" rel="nofollow">' . __('Edit This') . '</a>';
 }
 
 /**
@@ -519,14 +547,15 @@ function mlb_edit_entry_link() {
  *
  * @return bool
  */
-function mlb_page_contains_liveblog() {
-	if ( ! is_singular() ) {
+function mlb_page_contains_liveblog()
+{
+	if (! is_singular()) {
 		return false;
 	}
 
 	global $post;
 
-	if ( strpos( apply_filters( 'the_content', $post->post_content ), 'mlb-liveblog' ) === false ) {
+	if (strpos(apply_filters('the_content', $post->post_content), 'mlb-liveblog') === false) {
 		return false;
 	}
 
@@ -539,34 +568,36 @@ function mlb_page_contains_liveblog() {
  * @param array $classes
  * @return array
  */
-function mlb_add_theme_body_class( $classes ) {
-	if ( mlb_is_liveblog() ) {
+function mlb_add_theme_body_class($classes)
+{
+	if (mlb_is_liveblog()) {
 		$classes[] = 'mlb-theme-' . mbfun_get_live_theme();
 	}
 
 	return $classes;
 }
-add_filter( 'body_class', 'mlb_add_theme_body_class' );
+add_filter('body_class', 'mlb_add_theme_body_class');
 
 /**
  * Add meta data.
  *
  * @return void
  */
-function mlb_add_meta_data() {
+function mlb_add_meta_data()
+{
 	global $post;
 
-	if ( ! mlb_is_liveblog() ) {
+	if (! mlb_is_liveblog()) {
 		return;
 	}
 
 	$liveblog_url = get_permalink();
 
-	$items = mbfun_get_live_liveblog_feed( mbfun_get_live_liveblog_api_endpoint( $post->ID ) );
+	$items = mbfun_get_live_liveblog_feed(mbfun_get_live_liveblog_api_endpoint($post->ID));
 
 	$organization = array(
 		'@type' => 'Organization',
-		'name'  => get_bloginfo( 'name' ),
+		'name'  => get_bloginfo('name'),
 	);
 
 	$metadata = array(
@@ -574,46 +605,48 @@ function mlb_add_meta_data() {
 		'@context'          => 'https://schema.org',
 		'@id'               => $liveblog_url,
 		'headline'          => get_the_title(),
-		'description'       => trim( preg_replace( '/\s+/', ' ', strip_tags( get_the_content() ) ) ),
-		'coverageStartTime' => get_the_date( 'c', $post ),
-		'coverageEndTime'   => wp_date( 'c', strtotime( $items['last_update'] . ' + 1 hour' ) ),
+		'description'       => trim(preg_replace('/\s+/', ' ', strip_tags(get_the_content()))),
+		'coverageStartTime' => get_the_date('c', $post),
+		'coverageEndTime'   => wp_date('c', strtotime($items['last_update'] . ' + 1 hour')),
 		'dateModified'      => $items['last_update'],
 		'url'               => $liveblog_url,
 		'publisher'         => $organization
 	);
 
-    if ( ! empty( $items['updates'] ) ) {
-        foreach ( $items['updates'] as $entry ) {
-            $entry_url = add_query_arg( 'entry', $entry['id'], $liveblog_url );
+	if (! empty($items['updates'])) {
+		foreach ($items['updates'] as $entry) {
+			$entry_url = add_query_arg('entry', $entry['id'], $liveblog_url);
 
-            $_entry = array(
-                '@type'            => 'BlogPosting',
-                'headline'         => $entry['title'],
-                'url'              => $entry_url,
-                'mainEntityOfPage' => $entry_url,
-                'datePublished'    => $entry['datetime'],
-                'dateModified'     => $entry['modified'],
-                'articleBody'      => trim( preg_replace( '/\s+/', ' ', strip_tags( $entry['content'] ) ) ),
-            );
+			$_entry = array(
+				'@type'            => 'BlogPosting',
+				'headline'         => $entry['title'],
+				'url'              => $entry_url,
+				'mainEntityOfPage' => $entry_url,
+				'datePublished'    => $entry['datetime'],
+				'dateModified'     => $entry['modified'],
+				'articleBody'      => trim(preg_replace('/\s+/', ' ', strip_tags($entry['content']))),
+			);
 
-			if ( mlb_display_liveblog_layout('ml_layout_author') ) {
-                $_entry['author'] = $organization;
-            }
+			if (mlb_display_liveblog_layout('ml_layout_author')) {
+				$_entry['author'] = $organization;
+			}
 
-            $entries[] = $_entry;
-        }
-    }
+			$entries[] = $_entry;
+		}
+	}
 
 	wp_reset_postdata();
 
 	$metadata['liveBlogUpdate'] = $entries ?? array();
 
-	$metadata = apply_filters( 'mlb_liveblog_metadata', $metadata, $post );
-	?>
-	<script type="application/ld+json"><?php echo wp_json_encode( $metadata ); ?></script>
+	$metadata = apply_filters('mlb_liveblog_metadata', $metadata, $post);
+?>
+	<script type="application/ld+json">
+		<?php echo wp_json_encode($metadata); ?>
+	</script>
 	<?php
 }
-add_action( 'wp_head', 'mlb_add_meta_data' );
+add_action('wp_head', 'mlb_add_meta_data');
 
 /**
  * Get liveblog feed based on the endpoint url.
@@ -621,7 +654,8 @@ add_action( 'wp_head', 'mlb_add_meta_data' );
  * @param string $endpoint
  * @return array
  */
-function mbfun_get_live_liveblog_feed( $endpoint ) {
+function mbfun_get_live_liveblog_feed($endpoint)
+{
 	$result = json_decode(
 		file_get_contents(
 			$endpoint,
@@ -646,8 +680,9 @@ function mbfun_get_live_liveblog_feed( $endpoint ) {
  *
  * @return void
  */
-function mbfun_get_live_datetime_format() {
-	return get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+function mbfun_get_live_datetime_format()
+{
+	return get_option('date_format') . ' ' . get_option('time_format');
 }
 
 /**
@@ -655,32 +690,34 @@ function mbfun_get_live_datetime_format() {
  *
  * @return void
  */
-function mbfun_get_live_entry_display_date() {
+function mbfun_get_live_entry_display_date()
+{
 	global $post;
 
-	setup_postdata( $post );
+	setup_postdata($post);
 
-	$display = mbfun_get_live_option( 'ml_entry_date_format', 'human' );
+	$display = mbfun_get_live_option('ml_entry_date_format', 'human');
 
-	if ( $display === 'human' ) {
-		?>
-			<time class="mlb-js-update-time" datetime="<?php echo get_the_time( 'Y-m-d H:i' ); ?>"><?php printf( _x( '%s ago', '%s = human-readable time difference', MICROBLOG_DOMAIN ), human_time_diff( get_the_time( 'U' ), current_time( 'timestamp' ) ) ); ?></time>
-		<?php
+	if ($display === 'human') {
+	?>
+		<time class="mlb-js-update-time" datetime="<?php echo get_the_time('Y-m-d H:i'); ?>"><?php printf(_x('%s ago', '%s = human-readable time difference', MICROBLOG_DOMAIN), human_time_diff(get_the_time('U'), current_time('timestamp'))); ?></time>
+	<?php
 	} else {
-		if ( $display === 'time' ) {
-			$format = get_option( 'time_format' );
-		} elseif ( $display === 'date' ) {
-			$format = get_option( 'date_format' );
+		if ($display === 'time') {
+			$format = get_option('time_format');
+		} elseif ($display === 'date') {
+			$format = get_option('date_format');
 		} else {
 			$format = mbfun_get_live_datetime_format();
 		}
-		?>
-			<time datetime="<?php echo get_the_time( 'Y-m-d H:i' ); ?>"><?php echo get_the_time( $format ); ?></time>
-		<?php
+	?>
+		<time datetime="<?php echo get_the_time('Y-m-d H:i'); ?>"><?php echo get_the_time($format); ?></time>
+<?php
 	}
 }
 
-function mbfun_get_live_liveblogs_with_post_id($post_id) {
+function mbfun_get_live_liveblogs_with_post_id($post_id)
+{
 
 	$meta_key = '_micro_live_post_id';
 	// 构建 WP_Query 参数数组
@@ -695,7 +732,7 @@ function mbfun_get_live_liveblogs_with_post_id($post_id) {
 		)
 	);
 	// 实例化 WP_Query 对象
-	$query = new WP_Query( $args );
+	$query = new WP_Query($args);
 
 	// 获取查询结果中的所有文章
 	$posts = $query->posts;
@@ -703,4 +740,3 @@ function mbfun_get_live_liveblogs_with_post_id($post_id) {
 	// 返回文章数组
 	return $posts;
 }
-
