@@ -78,7 +78,7 @@ class Microblog_SideWidget extends WP_Widget
             'orderby' => 'date',
             'order' => 'DESC',
             'posts_per_page' => $numberposts,
-            'post_status' => array('publish', 'private'),
+            'post_status' => mbfun_get_micropost_types(),
             'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
         );
         $options = mbfun_get_micropost_settings();

@@ -5,6 +5,15 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+function mbfun_get_micropost_types()
+{
+    $stati = array('publish');
+    if (current_user_can('read_private_posts')) {
+        $stati[] = 'private';
+    }
+    return $stati;
+}
+
 function mbfun_get_micropost_settings()
 {
     $settings = get_option('theme_microblog_data', array());
@@ -145,7 +154,7 @@ function mbfun_get_recent_microposts($paged = 1, $atts = array())
         'orderby'        => 'date',
         'order'          => 'DESC',
         'posts_per_page' => 10,
-        'post_status'    => array('publish', 'private'),
+        'post_status'    => mbfun_get_micropost_types(),
         'paged'          => $paged,
     );
     $args = wp_parse_args($atts, $defaults);
@@ -171,7 +180,7 @@ function mbfun_get_recent_excerpt_microblogs($atts = array())
         'orderby' => 'date',
         'order' => 'DESC',
         'posts_per_page' => 10,
-        'post_status' => array('publish', 'private'),
+        'post_status' => mbfun_get_micropost_types(),
         'paged' => 1,
     );
     $args = wp_parse_args($atts, $defaults);

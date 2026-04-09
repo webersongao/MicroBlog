@@ -22,7 +22,7 @@ if (!class_exists('Micro_Liveblog')) {
 
                 global $mlb_options;
                 $mlb_options = mbfun_get_liveblog_settings();
-                
+
                 self::$instance->includes();
 
                 add_action('plugins_loaded', [self::$instance, 'load_textdomain']);
@@ -93,7 +93,8 @@ if (!class_exists('Micro_Liveblog')) {
             }
         }
 
-        private function mlb_enqueue_theme_styles($theme) {
+        private function mlb_enqueue_theme_styles($theme)
+        {
             $liveblog_css = mbfun_get_plugin_url() . 'assets/css/liveblog.css';
             $theme_css = mbfun_get_plugin_url() . 'assets/css/themes/' . $theme . '.css';
 

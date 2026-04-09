@@ -26,7 +26,7 @@ function microblog_shortcode($atts)
         'orderby' => 'date',
         'order' => 'DESC',
         'posts_per_page' => $numvalue,
-        'post_status' => array('publish', 'private'),
+        'post_status' => mbfun_get_micropost_types(),
         'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
     );
 
