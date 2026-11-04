@@ -7,14 +7,84 @@ AuthorLink: https://www.webersongao.com
 Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
 */
 
-.microblog-admin-header{width:100%;height:58px;line-height:58px;background-color:#06c;position:relative;margin-top:15px}
-/*.microblog-admin-header-inner{display:flex;align-items:center}*/
-.microblog-admin-leftbar{color:#fff}
-.microblog-admin-logo{display:inline-block;position:absolute;top:50%;transform:translateY(-50%);left:10px}
-.microblog-admin-logo img{height:35px;position:absolute;top:50%;transform:translateY(-50%)}
-.microblog-admin-bar-span{display:inline-block;height:30px;line-height:30px;border-left:1px solid #fff;padding-left:10px;font-size:20px;margin-left:55px}
-.microblog-admin-bar-free{color:#fff;background-color:#52b754;font-size:12px;padding:2px 5px;border-radius:3px;margin-left:10px;vertical-align:top;text-decoration: none;}
-.microblog-admin-option-label { margin-right: 15px; }
+/* =====================================================================
+   设置页：只做少量对齐，结构与配色沿用 WordPress 后台原生样式
+   ===================================================================== */
+
+.microblog-settings-wrap .wp-heading-inline {
+    margin-right: 8px;
+}
+
+.microblog-version {
+    display: inline-block;
+    margin-left: 2px;
+    padding: 1px 8px;
+    border-radius: 10px;
+    background: #f0f0f1;
+    color: #646970;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 0.2px;
+    vertical-align: middle;
+}
+
+.microblog-desc {
+    margin: 4px 0 0;
+    color: #646970;
+    font-size: 13px;
+}
+
+.microblog-settings-wrap .nav-tab-wrapper {
+    margin-bottom: 8px;
+}
+
+/* 原生 form-table：标签列收窄一点，说明文字不铺满整行 */
+.microblog-settings-wrap .form-table th {
+    width: 160px;
+    padding-left: 0;
+    font-weight: 600;
+}
+
+.microblog-settings-wrap .form-table td {
+    padding-left: 0;
+}
+
+.microblog-settings-wrap .form-table td .description {
+    max-width: 620px;
+}
+
+/* 分区标题与上一分区留出呼吸 */
+.microblog-settings-wrap form > h2 {
+    margin: 24px 0 0;
+    font-size: 1.1em;
+}
+
+.microblog-settings-wrap form > h2:first-of-type {
+    margin-top: 8px;
+}
+
+/* 选项之间的横向间距，避免 checkbox 挤成一坨 */
+.microblog-admin-option-label,
+.microblog-settings-wrap .form-table td label {
+    margin-right: 16px;
+}
+
+.microblog-settings-wrap .form-table td label:last-child {
+    margin-right: 0;
+}
+
+.microblog-settings-wrap input[type="text"],
+.microblog-settings-wrap input[type="number"] {
+    width: 120px;
+}
+
+.microblog-settings-wrap p.submit {
+    margin-bottom: 0;
+}
+
+
+/* ---- 快速发微博（仪表盘） ---- */
 
 #quick-micropost-form { margin-top: 20px;}
 #quick-micropost-form label { display: block;  margin-bottom: 5px; }
@@ -22,14 +92,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 #quick-micropost-content { width: 100%;  max-width: 100%;  margin-bottom: 10px; padding: 5px; }
 .button.button-primary.button-large {max-width: 200px;  border: none; }
 #quick-micropost-message { color:#2271b1; float: right;}
-
-
-
-@media screen and (max-width: 760px) {
-    .microblog-admin-bar-free {
-        display: none !important;
-    }
-}
 
 
 /*  ====== liveblog metabox样式表 ===== */

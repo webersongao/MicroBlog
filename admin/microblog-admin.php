@@ -1,98 +1,53 @@
 <?php
+/**
+ * 后台入口：注册菜单、加载设置页。
+ *
+ * @package MicroBlog
+ */
 
-/*
-PluName: 微博 MicroBlog
-PluLink: https://www.webersongao.com/tag/microblog
-Desc: 将您的WordPress网站用作微博；在小部件中显示微博或使用短代码显示微博。
-Author: WebersonGao
-AuthorLink: https://www.webersongao.com
-Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
-*/
-
-/*
- * Admin Panel
-*/
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
-require_once(plugin_dir_path(__FILE__) . 'setting-admin-micropost.php');
-require_once(plugin_dir_path(__FILE__) . 'setting-admin-general.php');
-require_once(plugin_dir_path(__FILE__) . 'setting-admin-liveblog.php');
+require_once __DIR__ . '/class-mb-admin-page.php';
+require_once __DIR__ . '/setting-admin-micropost.php';
+require_once __DIR__ . '/setting-admin-general.php';
 
-// Enqueue admin scripts and styles
-function microblog_admin_enqueue_scripts() {
-    if (is_admin()) {
-        wp_enqueue_style('microblog-admin-css', plugin_dir_url(__FILE__) . '../assets/css/admin-style.css', array(), mbfun_get_plugin_version());
-        wp_enqueue_script('microblog-script', plugin_dir_url(__FILE__) . '../assets/js/admin-scripts.js', array(), mbfun_get_plugin_version(), true);
+// 连载设置依赖连载模块的函数，模块启用时才加载。
+if (mbfun_get_general_option('msk_liveblog_regist', false)) {
+    require_once __DIR__ . '/setting-admin-liveblog.php';
+}
+
+/**
+ * 只在本插件页面加载后台资源。
+ *
+ * @param string $hook 当前页面 hook。
+ * @return void
+ */
+function microblog_admin_enqueue_scripts($hook)
+{
+    // 注意：管理页 hook 不带 .php 后缀（tools_page_MicroBlog/microblog）。
+    $expected = 'tools_page_' . preg_replace('/\.php$/', '', MICROBLOG_PLUGIN_BASENAME);
+
+    if ($expected !== $hook) {
+        return;
     }
+
+    wp_enqueue_style('microblog-admin-css', mbfun_asset_url('css/admin-style.css'), array(), mbfun_get_plugin_version());
+    wp_enqueue_script('microblog-admin-script', mbfun_asset_url('js/admin-scripts.js'), array(), mbfun_get_plugin_version(), true);
 }
 add_action('admin_enqueue_scripts', 'microblog_admin_enqueue_scripts');
 
-// Create admin settings page
-function microblog_admin_settings() {
-    if (!current_user_can('manage_options')) { return; }
-    ?>
-    <div class="wrap">
-        <h2>控制面板 | 微博MicroBlog</h2>
-        <div class="admin-settings-header">
-            <?php microblog_admin_section_header(); ?>
-        </div>
-        <!-- Add tab navigation -->
-        <h2 class="nav-tab-wrapper">
-            <?php microblog_admin_nav_tab_callback(); ?>
-        </h2>
-        <div class="wrap">
-            <?php
-            // Display the appropriate settings section based on the selected tab
-            if (!isset($_GET['tab'])) {
-                microblog_micropost_settings_section();
-            } else {
-                if ($_GET['tab'] === 'general') {
-                    microblog_general_settings_section();
-                } elseif ($_GET['tab'] === 'liveblog') {
-                    microblog_liveblog_settings_section();
-                } elseif ($_GET['tab'] === 'micropost') {
-                    microblog_micropost_settings_section();
-                }
-            }            
-            ?>
-        </div>
-    </div>
-    <?php
-}
-
-function microblog_admin_nav_tab_callback() {
-    $live_regist = mbfun_get_general_option('msk_liveblog_regist', false);
-    $out = '<a href="?page=' . MICROBLOG_BASEFOLDER . '/microblog.php&tab=micropost" class="nav-tab ' . ((!isset($_GET['tab']) || $_GET['tab'] === 'micropost') ? 'nav-tab-active' : '') . '">微博</a>';
-    if ($live_regist) {
-        $out .= '<a href="?page=' . MICROBLOG_BASEFOLDER . '/microblog.php&tab=liveblog" class="nav-tab ' . ((isset($_GET['tab']) && $_GET['tab'] === 'liveblog') ? 'nav-tab-active' : '') . '">连载</a>';
+/**
+ * 设置页内容（菜单在 microblog.php 注册）。
+ *
+ * @return void
+ */
+function microblog_admin_settings()
+{
+    if (!current_user_can('manage_options')) {
+        return;
     }
-    $out .= '<a href="?page=' . MICROBLOG_BASEFOLDER . '/microblog.php&tab=general" class="nav-tab ' . ((isset($_GET['tab']) && $_GET['tab'] === 'general') ? 'nav-tab-active' : '') . '">基础设置</a>';    
-    echo wp_kses_post($out);
+
+    MB_Admin_Page::render();
 }
-
-
-
-// Display Common settings section content
-function microblog_admin_section_header() {
-    $plu_version = mbfun_get_plugin_version();
-    $out = '';
-    $out .= '<div class="microblog-admin-header" style="margin-bottom: 15px;">';
-    $out .= '<div class="microblog-admin-leftbar">';
-    $out .= '<span class="microblog-admin-logo">';
-    $out .= '<img src="' . esc_url(plugin_dir_url(dirname(__FILE__))) . 'assets/images/microblog-logo.png">';
-    $out .= '</span>';
-    // translators: %s is replaced with the plugin version
-    $out .= '<span class="microblog-admin-bar-span">' . esc_html__('MicroBlog - 基于WP的 微博 / 说说 No1', MICROBLOG_DOMAIN ) . '</span>';
-    if (strlen(strval($plu_version)) > 1) {
-        $free_version_text = sprintf(esc_html__('Free V%s', MICROBLOG_DOMAIN ), $plu_version);
-        $out .= '<a href="https://github.com/webersongao/microblog" target="_blank" class="microblog-admin-bar-free">' . $free_version_text . '</a>';
-    }
-    $out .= '</div>';
-    $out .= '</div>';
-    echo wp_kses_post($out);
-}
-
-
-?>

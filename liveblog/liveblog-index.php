@@ -20,9 +20,6 @@ if (!class_exists('Micro_Liveblog')) {
             if (!isset(self::$instance) && !(self::$instance instanceof Micro_Liveblog)) {
                 self::$instance = new Micro_Liveblog();
 
-                global $mlb_options;
-                $mlb_options = mbfun_get_liveblog_settings();
-
                 self::$instance->includes();
 
                 add_action('plugins_loaded', [self::$instance, 'load_textdomain']);

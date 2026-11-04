@@ -304,7 +304,7 @@ function mbfun_get_live_all_post_types()
  */
 function mbfun_get_live_supported_post_types()
 {
-	global $mlb_options;
+	$mlb_options = mbfun_get_liveblog_settings();
 
 	$post_types = !empty($mlb_options['ml_post_types']) ? $mlb_options['ml_post_types'] : array('post');
 
@@ -318,7 +318,7 @@ function mbfun_get_live_supported_post_types()
  */
 function mbfun_get_live_update_interval()
 {
-	global $mlb_options;
+	$mlb_options = mbfun_get_liveblog_settings();
 
 	$update_interval = ! empty($mlb_options['ml_update_interval']) ? $mlb_options['ml_update_interval'] : 30;
 
@@ -333,7 +333,7 @@ function mbfun_get_live_update_interval()
 function mbfun_get_live_update_autoPolling()
 {
 	global $post;
-	global $mlb_options;
+	$mlb_options = mbfun_get_liveblog_settings();
 
 	$auto = ! empty($mlb_options['ml_display_autopolling']) ? true : false;
 
@@ -352,7 +352,7 @@ function mbfun_get_live_update_autoPolling()
  */
 function mlb_display_liveblog_layout($layout)
 {
-	global $mlb_options;
+	$mlb_options = mbfun_get_liveblog_settings();
 
 	if (!empty($mlb_options['ml_post_layout']) && is_array($mlb_options['ml_post_layout'])) {
 		$livelayout = in_array($layout, $mlb_options['ml_post_layout']);
@@ -369,7 +369,7 @@ function mlb_display_liveblog_layout($layout)
  */
 function mlb_display_revert_sort()
 {
-	global $mlb_options;
+	$mlb_options = mbfun_get_liveblog_settings();
 
 	$display_share = ! empty($mlb_options['ml_display_revort_sort']) ? true : false;
 
@@ -383,7 +383,7 @@ function mlb_display_revert_sort()
  */
 function mbfun_get_live_show_entries()
 {
-	global $mlb_options;
+	$mlb_options = mbfun_get_liveblog_settings();
 
 	$show_entries = ! empty($mlb_options['ml_show_entries']) ? $mlb_options['ml_show_entries'] : 10;
 
@@ -397,7 +397,7 @@ function mbfun_get_live_show_entries()
  */
 function mbfun_get_live_theme()
 {
-	global $mlb_options;
+	$mlb_options = mbfun_get_liveblog_settings();
 
 	$theme = ! empty($mlb_options['ml_theme_style']) ? $mlb_options['ml_theme_style'] : 'light';
 

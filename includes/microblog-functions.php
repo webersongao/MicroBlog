@@ -1,218 +1,372 @@
 <?php
-// 核心公共函数库.php
+/**
+ * 公共函数层：文章类型、时间格式、查询、资源注册。
+ *
+ * 本文件只放「多个模块都要用」的东西；配置读写见 microblog-settings.php，
+ * HTML 片段见 microblog-render.php。旧的 mbfun_get_*_option 系列保留为
+ * 薄封装，避免第三方或主题调用时中断。
+ *
+ * @package MicroBlog
+ */
 
-if (! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
-function mbfun_get_micropost_types()
-{
-    $stati = array('publish');
-    if (current_user_can('read_private_posts')) {
-        $stati[] = 'private';
-    }
-    return $stati;
-}
+/** ------------------------------------------------------------------
+ * 配置（兼容层）
+ * ----------------------------------------------------------------- */
 
+/**
+ * 微博配置。
+ *
+ * @return array
+ */
 function mbfun_get_micropost_settings()
 {
-    $settings = get_option('theme_microblog_data', array());
-    return $settings;
+    return mbfun_get_settings('micropost');
 }
+
+/**
+ * 微博单项配置。
+ *
+ * @param string $key     键名。
+ * @param mixed  $default 缺省值。
+ * @return mixed
+ */
 function mbfun_get_micropost_option($key = '', $default = false)
 {
-    $options = mbfun_get_micropost_settings();
-    $value = (isset($options[$key]) && !empty($options[$key])) ? $options[$key] : $default;
-    return $value;
+    return mbfun_setting($key, $default, 'micropost');
 }
 
+/**
+ * 连载配置。
+ *
+ * @return array
+ */
 function mbfun_get_liveblog_settings()
 {
-    $settings = get_option('microblog_liveblog_data', array());
-    return $settings;
+    return mbfun_get_settings('liveblog');
 }
+
+/**
+ * 连载单项配置。
+ *
+ * @param string $key     键名。
+ * @param mixed  $default 缺省值。
+ * @return mixed
+ */
 function mbfun_get_liveblog_option($key = '', $default = false)
 {
-    $options = mbfun_get_liveblog_settings();
-    $value = (isset($options[$key]) && !empty($options[$key])) ? $options[$key] : $default;
-    return $value;
+    return mbfun_setting($key, $default, 'liveblog');
 }
 
+/**
+ * 基础配置。
+ *
+ * @return array
+ */
 function mbfun_get_general_settings()
 {
-    $settings = get_option('microblog_general_data', array());
-    return $settings;
+    return mbfun_get_settings('general');
 }
+
+/**
+ * 基础单项配置。
+ *
+ * @param string $key     键名。
+ * @param mixed  $default 缺省值。
+ * @return mixed
+ */
 function mbfun_get_general_option($key = '', $default = false)
 {
-    $options = mbfun_get_general_settings();
-    $value = (isset($options[$key]) && !empty($options[$key])) ? $options[$key] : $default;
-    return $value;
+    return mbfun_setting($key, $default, 'general');
 }
 
+/**
+ * 连载选项（带过滤器，保持向后兼容）。
+ *
+ * @return array
+ */
+function mbfun_get_live_options()
+{
+    return mbfun_get_settings('liveblog');
+}
 
+/**
+ * 连载单项选项（带过滤器）。
+ *
+ * @param string $key     键名。
+ * @param mixed  $default 缺省值。
+ * @return mixed
+ */
+function mbfun_get_live_option($key = '', $default = false)
+{
+    $value = mbfun_setting($key, $default, 'liveblog');
+
+    $value = apply_filters('mbfun_get_live_option', $value, $key, $default);
+
+    return apply_filters('mbfun_get_live_option_' . $key, $value, $key, $default);
+}
+
+/** ------------------------------------------------------------------
+ * 文章类型与 slug
+ * ----------------------------------------------------------------- */
+
+/**
+ * 查询时可用的微博状态。
+ *
+ * @return array
+ */
+function mbfun_get_micropost_types()
+{
+    $status = array('publish');
+
+    if (current_user_can('read_private_posts')) {
+        $status[] = 'private';
+    }
+
+    return $status;
+}
+
+/**
+ * 微博 URL slug（同一请求内只解析一次）。
+ *
+ * @param bool $refresh 强制重算。
+ * @return string
+ */
+function mbfun_get_micropost_slug($refresh = false)
+{
+    static $slug = null;
+
+    if (null !== $slug && !$refresh) {
+        return $slug;
+    }
+
+    $raw  = (string) mbfun_setting('mb_slug_name', '');
+    $slug = preg_replace('/[^a-z0-9]/', '', strtolower((string) sanitize_title($raw)));
+
+    if ('' === $slug) {
+        $slug = 'microposts';
+    }
+
+    return $slug;
+}
+
+/**
+ * 微博 slug（旧名，保留兼容）。
+ *
+ * @return string
+ */
 function mbfun_get_micropost_slug_name()
 {
-    $options = mbfun_get_micropost_settings();
-    $slug_name = ! empty($options['mb_slug_name']) ? $options['mb_slug_name'] : 'microposts';
-    return $slug_name;
+    return mbfun_get_micropost_slug();
 }
 
-// 更新全局变量的示例
+/**
+ * 微博 slug（旧名，保留兼容）。
+ *
+ * @return string
+ */
+function mbfun_get_lasted_micropost_slug_name()
+{
+    return mbfun_get_micropost_slug();
+}
+
+/**
+ * 旧接口：曾用于写全局变量，现在只是让 slug 缓存失效。
+ *
+ * @deprecated 直接调用 mbfun_get_micropost_slug(true)。
+ * @param string $new_value 新 slug。
+ * @return void
+ */
 function mbfun_update_global_microblog_slug_name($new_value)
 {
-    if (!is_string($new_value)) {
-        return;
-    }
-    global $microblog_slug_name;
-    $microblog_slug_name = $new_value;
+    mbfun_get_micropost_slug(true);
 }
 
+/**
+ * 按「基础设置」里的开关注册/注销连载文章类型。
+ *
+ * @return void
+ */
 function mbfun_update_microblog_display_module()
 {
+    if (!function_exists('mbfun_register_liveblog_args')) {
+        return;
+    }
 
-    $live_regist = mbfun_get_general_option('msk_liveblog_regist', false);
-    if ($live_regist) {
+    if (mbfun_get_general_option('msk_liveblog_regist', false)) {
         register_post_type('microlive', mbfun_register_liveblog_args());
-    } else {
+    } elseif (post_type_exists('microlive')) {
         unregister_post_type('microlive');
     }
 }
 
+/** ------------------------------------------------------------------
+ * 时间格式
+ * ----------------------------------------------------------------- */
+
+/**
+ * 按设置格式化微博时间。
+ *
+ * @param int $post_time 时间戳。
+ * @return string
+ */
 function mbfun_micropost_format_time($post_time)
 {
+    $format = (string) mbfun_setting('mb_date_format', '');
 
-    $options = mbfun_get_micropost_settings();
-    $date_format = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
-    if ($date_format == 'date_hide') {
-        // return date('m-d H:i', $post_time);
+    if ('date_hide' === $format) {
         return '';
-    } elseif ($date_format == 'date_date') {
-        return date_i18n(get_option('date_format'), $post_time);
-    } elseif ($date_format == 'date_human') {
-        // 格式化模糊时间
+    }
+
+    if ('date_human' === $format) {
         return mbfun_post_fuzzy_time($post_time);
     }
+
     return date_i18n(get_option('date_format'), $post_time);
 }
 
+/**
+ * 模糊时间。
+ *
+ * @param int $post_time 时间戳。
+ * @return string
+ */
 function mbfun_post_fuzzy_time($post_time)
 {
-    $time_diff = current_time('timestamp') - $post_time;
-    if ($time_diff < 60) {
+    $diff = current_time('timestamp') - (int) $post_time;
+
+    if ($diff < 60) {
         return '刚刚';
-    } elseif ($time_diff < 3600) {
-        $minutes = round($time_diff / 60);
-        return $minutes . '分钟前';
-    } elseif ($time_diff < 86400) {
-        $hours = round($time_diff / 3600);
-        return $hours . '小时前';
-    } elseif ($time_diff < 31536000) { // 365 * 24 * 3600
-        return gmdate('m/d H:i', $post_time);
-    } else {
-        return date_i18n(get_option('date_format'), $post_time);
     }
+
+    if ($diff < 3600) {
+        return round($diff / 60) . '分钟前';
+    }
+
+    if ($diff < 86400) {
+        return round($diff / 3600) . '小时前';
+    }
+
+    if ($diff < YEAR_IN_SECONDS) {
+        return gmdate('m/d H:i', $post_time);
+    }
+
+    return date_i18n(get_option('date_format'), $post_time);
 }
 
-function mbfun_micropost_excerpt_more($more)
+/**
+ * 摘要后缀。
+ *
+ * @return string
+ */
+function mbfun_micropost_excerpt_more()
 {
     return ' ...';
 }
 
-// 获取最新的全局变量值，刷新规则和文章注册slug
-function mbfun_get_lasted_micropost_slug_name()
-{
-    global $microblog_slug_name;
-    if (!empty($microblog_slug_name)) {
-        return $microblog_slug_name;
-    }
-    $slug_name = mbfun_get_micropost_slug_name();
-    $slug_name = preg_replace('/[^a-zA-Z0-9]/', '', $slug_name); // 过滤非法字符
-    if (empty($slug_name)) {
-        $slug_name = 'microposts';
-    }
+/** ------------------------------------------------------------------
+ * 查询
+ * ----------------------------------------------------------------- */
 
-    // 设置全局变量
-    mbfun_update_global_microblog_slug_name($slug_name);
-
-    return $slug_name;
-}
-
-// 引入js
-function mbfun_enqueue_scripts_and_styles()
-{
-    wp_enqueue_style('microblog-style', plugins_url('assets/css/microblog-style.css', dirname(__FILE__)), array(), mbfun_get_plugin_version(), 'all', true);
-    wp_enqueue_script('microblog-script', plugins_url('assets/js/microblog-script.js', dirname(__FILE__)), array(), mbfun_get_plugin_version(), true);
-}
-
-
+/**
+ * 最近微博（WP_Post 数组）。
+ *
+ * @param int   $paged 页码。
+ * @param array $atts  查询参数。
+ * @return array
+ */
 function mbfun_get_recent_microposts($paged = 1, $atts = array())
 {
-    // 设置默认参数
-    $defaults = array(
+    $args = wp_parse_args($atts, array(
         'post_type'      => 'micropost',
         'orderby'        => 'date',
         'order'          => 'DESC',
         'posts_per_page' => 10,
         'post_status'    => mbfun_get_micropost_types(),
-        'paged'          => $paged,
-    );
-    $args = wp_parse_args($atts, $defaults);
-    if (isset($atts['q'])) {
-        $q = sanitize_text_field($atts['q']);
-        $args['s'] = $q;
-    }
-    $mbpost_query = new WP_Query($args);
+        'paged'          => (int) $paged,
+    ));
 
-    // 直接返回 WP_Query 结果的数组
-    return $mbpost_query->posts;
+    if (!empty($atts['q'])) {
+        $args['s'] = sanitize_text_field($atts['q']);
+    }
+
+    $query = new WP_Query($args);
+
+    return $query->posts;
 }
 
-
-# 首页查询微博数量 （最新10条，KonyGao主题使用）
-# =======================================================
-
+/**
+ * 最近微博摘要（主题首页调用，返回结构不可改动）。
+ *
+ * @param array $atts 查询参数。
+ * @return array
+ */
 function mbfun_get_recent_excerpt_microblogs($atts = array())
 {
-    // 设置默认参数
-    $defaults = array(
-        'post_type' => 'micropost',
-        'orderby' => 'date',
-        'order' => 'DESC',
+    $args = wp_parse_args($atts, array(
+        'post_type'      => 'micropost',
+        'orderby'        => 'date',
+        'order'          => 'DESC',
         'posts_per_page' => 10,
-        'post_status' => mbfun_get_micropost_types(),
-        'paged' => 1,
-    );
-    $args = wp_parse_args($atts, $defaults);
-    if (isset($atts['q'])) {
-        $q = sanitize_text_field($atts['q']);
-        $args['s'] = $q;
+        'post_status'    => mbfun_get_micropost_types(),
+        'paged'          => 1,
+    ));
+
+    if (!empty($atts['q'])) {
+        $args['s'] = sanitize_text_field($atts['q']);
     }
-    $mbpost_query = new WP_Query($args);
-    $mbposts = array();
-    while ($mbpost_query->have_posts()) {
-        $mbpost_query->the_post();
-        $microblog = array(
-            'title' => get_the_title(),
-            'content' => get_the_content(),
-            'permalink' => get_permalink(),
-            'publish_time' => get_the_date('Y年n月j日'),
-            // 可以根据需要添加其他字段
+
+    $query  = new WP_Query($args);
+    $result = array();
+
+    foreach ($query->posts as $item) {
+        $result[] = array(
+            'title'        => get_the_title($item),
+            'content'      => get_the_content(null, false, $item),
+            'permalink'    => get_permalink($item),
+            'publish_time' => get_the_date('Y年n月j日', $item),
         );
-        $mbposts[] = $microblog;
     }
+
     wp_reset_postdata();
-    return $mbposts;
+
+    return $result;
 }
 
+/** ------------------------------------------------------------------
+ * 资源与版本
+ * ----------------------------------------------------------------- */
 
+/**
+ * 前端样式与脚本（重复调用只入队一次）。
+ *
+ * @return void
+ */
+function mbfun_enqueue_scripts_and_styles()
+{
+    $version = mbfun_get_plugin_version();
+
+    wp_enqueue_style('microblog-style', mbfun_asset_url('css/microblog-style.css'), array(), $version);
+    wp_enqueue_script('microblog-script', mbfun_asset_url('js/microblog-script.js'), array(), $version, true);
+}
+
+/**
+ * 插件 URL（带结尾斜杠）。
+ *
+ * @return string
+ */
 function mbfun_get_plugin_url()
 {
     return MICROBLOG_PLUGIN_URL;
 }
 
 /**
- * Get plugin path
+ * 插件目录路径（带结尾斜杠）。
+ *
+ * @return string
  */
 function mbfun_get_plugin_path()
 {
@@ -220,50 +374,56 @@ function mbfun_get_plugin_path()
 }
 
 /**
- * Get plugin version.
+ * 资源版本号；开发环境用文件修改时间，避免改完看不到效果。
  *
  * @return string
  */
 function mbfun_get_plugin_version()
 {
-    if (function_exists('wp_get_environment_type') && wp_get_environment_type() === 'development') {
-        return time();
+    if (function_exists('wp_get_environment_type') && 'development' === wp_get_environment_type()) {
+        return (string) time();
     }
-    global $microblog_plugin_version;
-    return $microblog_plugin_version;
-}
 
-
-
-
-
-
-
-
-
-/**
- * Get global options
- *
- * @return array
- */
-function mbfun_get_live_options()
-{
-    global $mlb_options;
-
-    return ! empty($mlb_options) ? $mlb_options : array();
+    return MICROBLOG_VERSION;
 }
 
 /**
- * Get an option
+ * 旧接口：话题 HTML。
  *
- * Looks to see if the specified setting exists, returns default if not
- *
- * @return mixed
+ * @deprecated 用 mbfun_get_topics_html()。
+ * @param int $post_id 文章 ID。
+ * @return string
  */
-function mbfun_get_live_option($key = '', $default = false)
+function mbfun_get_micropost_tags($post_id = 0)
 {
-    $live_options = mbfun_get_live_options();
-    $value = ! empty($live_options[$key]) ? $live_options[$key] : $default;
-    $value = apply_filters('mbfun_get_live_option', $value, $key, $default);
-    return apply_filters('mbfun_get_live_option_' . $key, $value, $key, $default);
+    return mbfun_get_topics_html($post_id);
+}
+
+/** ------------------------------------------------------------------
+ * 重写规则
+ * ----------------------------------------------------------------- */
+
+/**
+ * 重写规则签名变化时才刷新，避免每次请求写库。
+ *
+ * @return bool 是否执行了刷新。
+ */
+function mbfun_maybe_flush_rewrite_rules()
+{
+    $supports  = (array) mbfun_setting('mb_editor_func', array());
+    $signature = md5(implode('|', array(
+        mbfun_get_micropost_slug(),
+        implode(',', $supports),
+        MICROBLOG_VERSION,
+        (string) get_option('permalink_structure'),
+    )));
+
+    if (get_option('microblog_rewrite_signature') === $signature) {
+        return false;
+    }
+
+    flush_rewrite_rules(false);
+    update_option('microblog_rewrite_signature', $signature);
+
+    return true;
 }

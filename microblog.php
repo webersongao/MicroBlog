@@ -2,80 +2,109 @@
 /*
  * Plugin Name: 微博 MicroBlog
  * Plugin URI: https://www.webersongao.com/tag/microblog
- * Description: Use your WordPress site as a microblog; display the micrposts in a widget or using a shortcode.
- * Version: 1.7.0
+ * Description: 把 WordPress 当微博用：发布短内容，用短代码或小工具展示。
+ * Version: 1.8.0
  * Author: WebersonGao
  * Author URI: https://www.webersongao.com
+ * Requires at least: 6.0
+ * Requires PHP: 7.4
  * Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
  */
-if ( ! defined( 'ABSPATH' ) ) {
+
+if (!defined('ABSPATH')) {
     exit;
 }
 
 define('MICROBLOG_PLUGIN_FILE', __FILE__);
-define( 'MICROBLOG_DOMAIN', 'microblogs-lang' );
-define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('MICROBLOG_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('MICROBLOG_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
+define('MICROBLOG_DOMAIN', 'microblogs-lang');
+define('MICROBLOG_VERSION', '1.8.0');
 
+/*
+ * 加载顺序：设置层 → 渲染片段 → 公共函数 → 各功能模块。
+ * 每个模块只注册自己的钩子，不再互相 require。
+ */
+$microblog_includes = array(
+    'includes/microblog-settings.php',
+    'includes/microblog-render.php',
+    'includes/microblog-functions.php',
+    'includes/microblog-index.php',
+    'includes/microblog-widget.php',
+    'includes/microblog-shortcode.php',
+    'includes/microblog-forward.php',
+    'includes/microblog-quick-pub.php',
+);
 
-$microblog_slug_name = 'microposts';
-$plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
-$microblog_plugin_version = ($plugin_data && isset($plugin_data['Version'])) ? $plugin_data['Version'] : '1.7.0';
-
-global $microblog_slug_name , $microblog_plugin_version;
-
-// 核心功能函数
-require_once(plugin_dir_path(__FILE__) . 'includes/microblog-functions.php');
-
-// 其他功能模块
-require_once(plugin_dir_path(__FILE__) . 'liveblog/liveblog-index.php');
-require_once(plugin_dir_path(__FILE__) . 'includes/microblog-index.php');
-
-// microblog功能模块
-require_once(plugin_dir_path(__FILE__) . 'includes/microblog-widget.php');
-require_once(plugin_dir_path(__FILE__) . 'includes/microblog-shortcode.php');
-require_once(plugin_dir_path(__FILE__) . 'includes/microblog-forward.php');
-require_once(plugin_dir_path(__FILE__) . 'includes/microblog-quick-pub.php');
-
-
-// 注册微博设置页面
-add_action('admin_menu', 'microblog_setting_page');
-function microblog_setting_page() {
-    if (!function_exists('microblog_admin_settings')) {
-        require_once 'admin/microblog-admin.php';
-    }
-    add_management_page('微博 MicroBlog - 控制面板', '微博设置', 'manage_options', __FILE__, 'microblog_admin_settings');
+foreach ($microblog_includes as $microblog_file) {
+    require_once MICROBLOG_PLUGIN_PATH . $microblog_file;
 }
 
-//添加插件设置链接
-add_filter('plugin_action_links', 'microblog_setting_action_links', 10, 2);
-function microblog_setting_action_links($links, $file) {
-    if ($file == plugin_basename(__FILE__)) {
-        $links[] = '<a href="tools.php?page=' . MICROBLOG_BASEFOLDER . '/microblog.php">设置</a>';
+unset($microblog_includes, $microblog_file);
+
+// 连载是可选模块：未启用时不加载它的 12 个文件与前端脚本。
+if (mbfun_get_general_option('msk_liveblog_regist', false)) {
+    require_once MICROBLOG_PLUGIN_PATH . 'liveblog/liveblog-index.php';
+}
+
+// 后台设置页（仅在后台加载）。
+if (is_admin()) {
+    require_once MICROBLOG_PLUGIN_PATH . 'admin/microblog-admin.php';
+}
+
+add_action('admin_menu', 'microblog_setting_page');
+
+/**
+ * 注册「工具 → 微博设置」。
+ *
+ * @return void
+ */
+function microblog_setting_page()
+{
+    add_management_page(
+        '微博 MicroBlog - 控制面板',
+        '微博设置',
+        'manage_options',
+        MICROBLOG_PLUGIN_BASENAME,
+        'microblog_admin_settings'
+    );
+}
+
+/**
+ * 插件列表页加「设置」。
+ *
+ * @param array  $links 操作链接。
+ * @param string $file  插件文件。
+ * @return array
+ */
+function microblog_setting_action_links($links, $file)
+{
+    if (MICROBLOG_PLUGIN_BASENAME === $file) {
+        $links[] = '<a href="' . esc_url(admin_url('tools.php?page=' . MICROBLOG_PLUGIN_BASENAME)) . '">设置</a>';
     }
+
     return $links;
 }
+add_filter('plugin_action_links', 'microblog_setting_action_links', 10, 2);
 
-// 注册激活插件时，设置默认数据
-register_activation_hook( __FILE__, 'microblog_plugin_data_activation' );
-function microblog_plugin_data_activation() {
-    $options = mbfun_get_micropost_settings();
-    if (empty($options)) {
-        $defaults = array(
-            'mb_title_show' => true,
-            'mb_date_format' => 'date_human',
+/**
+ * 激活时写入默认配置。
+ *
+ * @return void
+ */
+function microblog_plugin_data_activation()
+{
+    if (false === get_option('theme_microblog_data')) {
+        add_option('theme_microblog_data', array(
+            'mb_title_show'     => true,
+            'mb_date_format'    => 'date_human',
             'mb_content_bottom' => array('conbottomuser'),
-        );
-        add_option('theme_microblog_data', $defaults);
+        ));
     }
+
+    mbfun_flush_settings_cache();
+    mbfun_maybe_flush_rewrite_rules();
 }
-
-// 注册卸载插件时运行的函数
-register_uninstall_hook( __FILE__, 'microblog_plugin_uninstall' );
-function microblog_plugin_uninstall() {
-    // 删除配置项
-
-}
-
-?>
+register_activation_hook(__FILE__, 'microblog_plugin_data_activation');

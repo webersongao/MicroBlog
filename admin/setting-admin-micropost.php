@@ -12,30 +12,9 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
  * Admin Panel
 */
 
-// Function to display general settings section
-function microblog_micropost_settings_section() {
-    ?>
-    <div class="general_settings_header">
-        <?php microblog_micropost_settings_section_header(); ?>
-    </div>
-    <?php settings_errors('theme_microblog_data'); ?>
-    <form method="post" action="options.php">
-        <?php if ( isset( $_GET['settings-updated'] ) ) { ?>
-            <div class="updated"><p><?php _e( 'Plugin settings have been updated.', MICROBLOG_DOMAIN ); ?></p></div>
-        <?php } ?>
-        <?php
-        settings_fields('microblog_micropost_setting_field');
-        do_settings_sections('microblog_micropost_section_name');
-        submit_button('保存 设置');
-        ?>
-    </form>
-    <?php
-}
-
-function microblog_micropost_settings_section_header() {
-    echo '</br>';
-    // echo '<h3>' . esc_html__('General Tab', MICROBLOG_DOMAIN ) . '</h3>';
-}
+/*
+ * 微博设置：字段注册与回调。页面骨架见 class-mb-admin-page.php。
+ */
 
 // Register plugin settings
 add_action('admin_init', 'microblog_micropost_setting_admin');
@@ -100,7 +79,7 @@ function microblog_micropost_setting_admin() {
     // Shortcode settings section
     add_settings_section(
         'microblog_micropost_section_shortcode',
-        '</br>短代码设置',   
+        '短代码与小工具',
         'microblog_micropost_section_shortcode_callback',
         'microblog_micropost_section_name'
     );
@@ -129,27 +108,34 @@ function microblog_micropost_setting_admin() {
 }
 
 function theme_microblog_data_sanitize($input) {
-    if (isset($input['mb_slug_name']) && $input['mb_slug_name'] !== '') {
+    if (!is_array($input)) {
+        return mbfun_get_micropost_settings();
+    }
 
+    if (isset($input['mb_slug_name']) && '' !== $input['mb_slug_name']) {
         $slug_name = strtolower(sanitize_title($input['mb_slug_name']));
 
         if (preg_match('/^[a-z0-9]{1,20}$/', $slug_name)) {
             $input['mb_slug_name'] = $slug_name;
-            mbfun_update_global_microblog_slug_name($slug_name);
         } else {
-            // 如果 slug 名不符合要求，添加错误消息
             add_settings_error(
-                'theme_microblog_data', // 设置页面的唯一标识符
-                'invalid-slug', // 错误代码，用于后续检索和处理错误
-                'slug不合法，仅支持小写字母和数字，长度在1到10之间。', // 错误消息
-                'error' // 消息类型（error, warning, success, info）
+                'theme_microblog_data',
+                'invalid-slug',
+                'slug 不合法，仅支持小写字母和数字，长度 1-20。',
+                'error'
             );
-            return mbfun_get_micropost_settings();
+
+            unset($input['mb_slug_name']);
+
+            // 非法值不落库，保留原设置。
+            $old = mbfun_get_micropost_settings();
+
+            if (isset($old['mb_slug_name'])) {
+                $input['mb_slug_name'] = $old['mb_slug_name'];
+            }
         }
     }
 
-    microblog_regist_micropost_with_option($input,false); // 更新 注册微博文章类型函数 的 supports 参数
-    flush_rewrite_rules(); // 刷新重写规则
     return $input;
 }
 
@@ -260,7 +246,7 @@ function microblog_post_title_listNumber_input() {
     ?>
     <label>
         <input type='number' name='theme_microblog_data[mb_codepost_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
-        &nbsp;<?php esc_html('每页显示数量 ( 区间:[3, 20] )', MICROBLOG_DOMAIN ); ?>
+        &nbsp;<?php echo esc_html__('每页显示数量 ( 区间:[3, 20] )', MICROBLOG_DOMAIN ); ?>
     </label>
     <?php
 }

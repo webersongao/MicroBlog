@@ -13,7 +13,7 @@ if (! defined('ABSPATH')) {
  */
 function mlb_liveblog_query_parse_filter($query)
 {
-	global $pagenow, $mlb_options;
+	global $pagenow;
 
 	$current_page = isset($_GET['post_type']) ? $_GET['post_type'] : '';
 
@@ -101,7 +101,7 @@ add_filter('display_post_states', 'mlb_liveblog_post_state', 2, 10);
  */
 function mlb_is_prefix_title_enabled()
 {
-	global $mlb_options;
+	$mlb_options = mbfun_get_liveblog_settings();
 
 	return apply_filters('mlb_prefix_title_enabled', ! empty($mlb_options['ml_prefix_title']) ? true : false);
 }
