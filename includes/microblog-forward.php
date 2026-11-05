@@ -37,7 +37,7 @@ function mbfun_add_forward_link($actions, $post)
         'forward_id' => $post->ID,
     ), admin_url('post-new.php'));
 
-    $link = '<a href="' . esc_url($url) . '">' . esc_html__('转发此微博', MICROBLOG_DOMAIN) . '</a>';
+    $link = '<a href="' . esc_url($url) . '">' . esc_html__('Repost this microblog', MICROBLOG_DOMAIN) . '</a>';
 
     // 插在「编辑」之后。
     $result = array();
@@ -69,7 +69,7 @@ function mbfun_add_forward_meta_box()
         return;
     }
 
-    add_meta_box('micro_forward_meta_box', '转发微博', 'mbfun_display_forward_meta_box', 'micropost', 'side', 'high');
+    add_meta_box('micro_forward_meta_box', __('Repost', MICROBLOG_DOMAIN), 'mbfun_display_forward_meta_box', 'micropost', 'side', 'high');
 }
 add_action('add_meta_boxes', 'mbfun_add_forward_meta_box');
 
@@ -112,10 +112,10 @@ function mbfun_display_forward_meta_box($post)
     wp_nonce_field('mb_forward_save', 'mb_forward_nonce');
 
     if ($target && 'micropost' === $target->post_type) {
-        echo '<p><strong>转发自：</strong></p>';
+        echo '<p><strong>' . esc_html__('Repost of:', MICROBLOG_DOMAIN) . '</strong></p>';
         echo '<input type="text" class="widefat" readonly value="' . esc_attr(mbfun_get_forward_title($target)) . '">';
         echo '<input type="hidden" name="forward_id" value="' . (int) $forward_id . '">';
-        echo '<p class="description">保存后会记录转发关系；如需改成别的微博，请重新从列表页点击「转发此微博」。</p>';
+        echo '<p class="description">' . esc_html__('The repost link is saved with this post. To repost a different microblog, use "Repost this microblog" from the list screen again.', MICROBLOG_DOMAIN) . '</p>';
 
         return;
     }
@@ -132,7 +132,8 @@ function mbfun_display_forward_meta_box($post)
  */
 function mbfun_get_forward_select_html($current, $posts)
 {
-    $html = '<select id="forward_id" name="forward_id"><option value="">选择被转发微博</option>';
+    $html = '<select id="forward_id" name="forward_id"><option value="">'
+        . esc_html__('Select a microblog to repost', MICROBLOG_DOMAIN) . '</option>';
 
     foreach ((array) $posts as $item) {
         $label = '' !== trim((string) $item->post_title)

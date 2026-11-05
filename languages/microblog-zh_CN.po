@@ -1,0 +1,778 @@
+# Simplified Chinese translation for MicroBlog.
+# Copyright (C) 2026 WebersonGao
+# This file is distributed under the same license as the MicroBlog package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MicroBlog 1.9.0\n"
+"Report-Msgid-Bugs-To: https://www.webersongao.com/tag/microblog\n"
+"POT-Creation-Date: 2026-11-05 08:33+0800\n"
+"PO-Revision-Date: 2026-11-05 08:40+0800\n"
+"Last-Translator: WebersonGao <https://www.webersongao.com>\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Domain: microblog\n"
+
+#: admin/class-mb-admin-page.php:31 includes/microblog-index.php:49
+#: includes/microblog-index.php:75 includes/microblog-index.php:76
+#: includes/microblog-index.php:77 includes/microblog-index.php:81
+#: includes/microblog-widget.php:47
+msgid "Microblog"
+msgstr "微博"
+
+#: admin/class-mb-admin-page.php:37 admin/setting-admin-general.php:27
+msgid "General"
+msgstr "基础设置"
+
+#: admin/class-mb-admin-page.php:46 admin/setting-admin-general.php:34
+#: liveblog/includes/live-metabox.php:21
+#: liveblog/includes/live-post-types.php:20
+#: liveblog/includes/live-post-types.php:27
+msgid "Liveblog"
+msgstr "连载"
+
+#: admin/class-mb-admin-page.php:125
+msgid "MicroBlog"
+msgstr "微博 MicroBlog"
+
+#: admin/class-mb-admin-page.php:132
+msgid "Short-form posts for WordPress, shown with a shortcode or a widget."
+msgstr "基于 WordPress 的微博 / 说说：发布短内容，用短代码或小工具展示。"
+
+#: admin/class-mb-admin-page.php:154
+msgid "Save Changes"
+msgstr "保存设置"
+
+#: admin/setting-admin-general.php:76
+msgid "Optional MicroBlog modules. Enable the ones you need."
+msgstr "以下为 MicroBlog 的附属模块，按需启用。"
+
+#: admin/setting-admin-general.php:90
+msgid "Enable (turning it off keeps your data and settings)"
+msgstr "启用（关闭后不会删除数据，也不会导致配置项丢失）"
+
+#: admin/setting-admin-liveblog.php:31
+msgid "Liveblog Settings"
+msgstr "连载设置"
+
+#: admin/setting-admin-liveblog.php:69
+msgid "Enable a rolling liveblog view for posts — great for live coverage and events."
+msgstr "为文章开启滚动更新的「连载」视图，适合实时记录与发布会直播。"
+
+#: admin/setting-admin-liveblog.php:90
+msgid "Supported"
+msgstr "支持"
+
+#: admin/setting-admin-liveblog.php:91
+msgid "Select the post types that can be used as liveblogs."
+msgstr "勾选需要开启【连载】的内容类型。"
+
+#: admin/setting-admin-liveblog.php:98
+msgid "Theme"
+msgstr "主题"
+
+#: admin/setting-admin-liveblog.php:99
+msgid "Color theme of the liveblog block."
+msgstr "连载区块的配色主题。"
+
+#: admin/setting-admin-liveblog.php:102
+msgid "Light"
+msgstr "浅色"
+
+#: admin/setting-admin-liveblog.php:103
+msgid "Dark"
+msgstr "深色"
+
+#: admin/setting-admin-liveblog.php:109 liveblog/includes/live-metabox.php:100
+msgid "Auto Refresh"
+msgstr "自动刷新"
+
+#: admin/setting-admin-liveblog.php:110
+msgid "Automatically check for and load new liveblog entries."
+msgstr "自动检查并加载新的连载条目。"
+
+#: admin/setting-admin-liveblog.php:121
+msgid "Layout"
+msgstr "样式布局"
+
+#: admin/setting-admin-liveblog.php:122
+msgid "Information shown for each liveblog entry."
+msgstr "单条【连载】中需要展示的信息。"
+
+#: admin/setting-admin-liveblog.php:125 admin/setting-admin-micropost.php:38
+msgid "Title"
+msgstr "标题"
+
+#: admin/setting-admin-liveblog.php:126 admin/setting-admin-micropost.php:221
+msgid "Author"
+msgstr "作者"
+
+#: admin/setting-admin-liveblog.php:127
+msgid "Share buttons"
+msgstr "分享按钮"
+
+#: admin/setting-admin-liveblog.php:133
+msgid "Display Order"
+msgstr "展示顺序"
+
+#: admin/setting-admin-liveblog.php:134
+msgid "Newest first by default; enable to show oldest first."
+msgstr "默认从新到旧；开启后改为从旧到新。"
+
+#: admin/setting-admin-liveblog.php:139
+msgid "Refresh Interval"
+msgstr "刷新间隔"
+
+#: admin/setting-admin-liveblog.php:140
+msgid "Seconds between checks for new entries when auto refresh is on (10-360)."
+msgstr "自动刷新时检查新条目的间隔秒数，区间 10-360。"
+
+#: admin/setting-admin-liveblog.php:148
+msgid "Entries per Page"
+msgstr "每页连载数"
+
+#: admin/setting-admin-liveblog.php:149
+msgid "Number of entries shown before \"Load more\" (3-50)."
+msgstr "点击「加载更多」前显示的条目数量，区间 3-50。"
+
+#: admin/setting-admin-liveblog.php:157
+msgid "Show Prefix"
+msgstr "显示前缀"
+
+#: admin/setting-admin-liveblog.php:158
+msgid "Automatically prefix the liveblog title with \"Liveblog\"."
+msgstr "自动在连载标题前加上「Liveblog」。"
+
+#: admin/setting-admin-liveblog.php:163 admin/setting-admin-micropost.php:66
+msgid "Time Format"
+msgstr "时间格式"
+
+#: admin/setting-admin-liveblog.php:164
+msgid "How entry dates are displayed."
+msgstr "连载条目中日期的显示格式。"
+
+#: admin/setting-admin-liveblog.php:167
+msgid "Relative time (e.g. 3 minutes ago)"
+msgstr "相对时间（如 3 分钟前）"
+
+#: admin/setting-admin-liveblog.php:168
+msgid "Date: %s"
+msgstr "日期：%s"
+
+#: admin/setting-admin-liveblog.php:169
+msgid "Time: %s"
+msgstr "时间：%s"
+
+#: admin/setting-admin-liveblog.php:170
+msgid "Date and time: %s"
+msgstr "日期与时间：%s"
+
+#: admin/setting-admin-liveblog.php:175
+msgid "Enable Cache"
+msgstr "启用缓存"
+
+#: admin/setting-admin-liveblog.php:176
+msgid "Cache liveblog content with an object cache or transients."
+msgstr "为连载内容启用缓存，可选对象缓存或 Transient。"
+
+#: admin/setting-admin-liveblog.php:179
+msgid "Disabled"
+msgstr "不启用"
+
+#: admin/setting-admin-liveblog.php:180
+msgid "Object"
+msgstr "Object"
+
+#: admin/setting-admin-liveblog.php:181
+msgid "Transient"
+msgstr "Transient"
+
+#: admin/setting-admin-liveblog.php:186
+msgid "Feed Timestamp"
+msgstr "feed时间戳"
+
+#: admin/setting-admin-liveblog.php:187
+msgid "Append a timestamp to the liveblog feed URL to avoid stale caches."
+msgstr "在连载 Feed 地址后附加时间戳，避免读到旧缓存。"
+
+#: admin/setting-admin-liveblog.php:204
+msgid "The callback function used for the %s setting is missing."
+msgstr "用于 %s 设置的回调函数缺失。"
+
+#: admin/setting-admin-micropost.php:31
+msgid "Style Settings"
+msgstr "样式设置"
+
+#: admin/setting-admin-micropost.php:45 includes/microblog-forward.php:72
+msgid "Repost"
+msgstr "转发"
+
+#: admin/setting-admin-micropost.php:52
+msgid "RSS Feed"
+msgstr "RSS订阅"
+
+#: admin/setting-admin-micropost.php:59
+msgid "Editor"
+msgstr "编辑器"
+
+#: admin/setting-admin-micropost.php:73
+msgid "URL slug"
+msgstr "URL slug"
+
+#: admin/setting-admin-micropost.php:82
+msgid "Shortcode & Widget"
+msgstr "短代码与小工具"
+
+#: admin/setting-admin-micropost.php:89
+msgid "Number of Microblogs"
+msgstr "微博数"
+
+#: admin/setting-admin-micropost.php:96
+msgid "Bottom Bar"
+msgstr "头像标签"
+
+#: admin/setting-admin-micropost.php:103
+msgid "Lightbox"
+msgstr "灯箱LightBox"
+
+#: admin/setting-admin-micropost.php:124
+msgid "Invalid slug. Use lowercase letters and numbers only, 1-20 characters."
+msgstr "slug 不合法，仅支持小写字母和数字，长度 1-20。"
+
+#: admin/setting-admin-micropost.php:145
+msgid "Make sure you have added the [microblog] shortcode to a page or the Microblog widget to a sidebar."
+msgstr "请确认已插入 [microblog] 到页面 或 已添加 [微博] 小工具"
+
+#: admin/setting-admin-micropost.php:150
+msgid "Make sure \"Show title\" is enabled."
+msgstr "请确认已打开【标题显示】功能"
+
+#: admin/setting-admin-micropost.php:160
+msgid "Show title"
+msgstr "显示标题"
+
+#: admin/setting-admin-micropost.php:171
+msgid "Hide time"
+msgstr "不显示时间"
+
+#: admin/setting-admin-micropost.php:180
+msgid "1 minute ago / 3 days ago..."
+msgstr "1分钟前/3天前..."
+
+#: admin/setting-admin-micropost.php:191
+msgid "Enable reposting"
+msgstr "启用微博转发"
+
+#: admin/setting-admin-micropost.php:205
+msgid "Include in the main site feed ( %s )"
+msgstr "加入全站Feed流（ %s ）"
+
+#: admin/setting-admin-micropost.php:225
+msgid "Excerpt"
+msgstr "摘要"
+
+#: admin/setting-admin-micropost.php:229
+msgid "Featured image"
+msgstr "特色图片"
+
+#: admin/setting-admin-micropost.php:233
+msgid "Microblog topics"
+msgstr "微博话题"
+
+#: admin/setting-admin-micropost.php:243
+msgid "Letters and numbers only, 1-20 characters. Leave empty to use \"microposts\"."
+msgstr "仅支持字母和数字，长度(1,20) 为空则默认microposts"
+
+#: admin/setting-admin-micropost.php:255
+msgid "Number per page (range: 3-20)"
+msgstr "每页显示数量 ( 区间:[3, 20] )"
+
+#: admin/setting-admin-micropost.php:269
+msgid "Enable? (make sure the %1$s plugin is installed, or your theme supports %2$s)"
+msgstr "是否开启？（请确认已安装 %1$s 或 当前主题支持 %2$s ）"
+
+#: admin/setting-admin-micropost.php:270
+msgid "Simple Lightbox"
+msgstr "Simple Lightbox插件"
+
+#: admin/setting-admin-micropost.php:271
+msgid "Lightbox effects"
+msgstr "Lightbox效果"
+
+#: admin/setting-admin-micropost.php:284
+msgid "Show avatar"
+msgstr "显示头像"
+
+#: admin/setting-admin-micropost.php:288
+msgid "Show topics"
+msgstr "显示话题"
+
+#: includes/microblog-forward.php:40
+msgid "Repost this microblog"
+msgstr "转发此微博"
+
+#: includes/microblog-forward.php:115
+msgid "Repost of:"
+msgstr "转发自："
+
+#: includes/microblog-forward.php:118
+msgid "The repost link is saved with this post. To repost a different microblog, use \"Repost this microblog\" from the list screen again."
+msgstr "保存后会记录转发关系；如需改成别的微博，请重新从列表页点击「转发此微博」。"
+
+#: includes/microblog-forward.php:136
+msgid "Select a microblog to repost"
+msgstr "选择被转发微博"
+
+#: includes/microblog-functions.php:242
+msgid "just now"
+msgstr "刚刚"
+
+#: includes/microblog-functions.php:246
+msgid "%d minutes ago"
+msgstr "%d分钟前"
+
+#: includes/microblog-functions.php:250
+msgid "%d hours ago"
+msgstr "%d小时前"
+
+#: includes/microblog-index.php:59
+msgid "Publish a short microblog with MicroBlog, then show it with a shortcode or a widget."
+msgstr "通过 MicroBlog 可以快速发布一条微博，再用短代码或小工具展示。"
+
+#: includes/microblog-index.php:78 includes/microblog-index.php:80
+msgid "New Microblog"
+msgstr "新微博"
+
+#: includes/microblog-index.php:79
+msgid "Write Microblog"
+msgstr "写微博"
+
+#: includes/microblog-index.php:82 includes/microblog-index.php:99
+msgid "Microblog List"
+msgstr "微博列表"
+
+#: includes/microblog-index.php:83
+msgid "View Microblog"
+msgstr "查看微博"
+
+#: includes/microblog-index.php:84
+msgid "Search Microblogs"
+msgstr "搜索微博"
+
+#: includes/microblog-index.php:85
+msgid "Edit Microblog"
+msgstr "编辑该微博"
+
+#: includes/microblog-index.php:86
+msgid "No microblogs found."
+msgstr "未找到相关微博"
+
+#: includes/microblog-index.php:87
+msgid "No microblogs found in Trash."
+msgstr "回收站中没有微博"
+
+#: includes/microblog-index.php:88
+msgid "Microblog updated."
+msgstr "微博已更新"
+
+#: includes/microblog-index.php:89
+msgid "Microblog published."
+msgstr "微博已发布"
+
+#: includes/microblog-index.php:90
+msgid "Microblog published privately."
+msgstr "该微博已私密发布"
+
+#: includes/microblog-index.php:91
+msgid "Microblog reverted to draft."
+msgstr "该微博已恢复为草稿"
+
+#: includes/microblog-index.php:92
+msgid "Microblog scheduled."
+msgstr "该微博已加入发布计划"
+
+#: includes/microblog-index.php:93
+msgid "Microblog featured image"
+msgstr "微博头图"
+
+#: includes/microblog-index.php:94 liveblog/includes/live-post-types.php:38
+msgid "Set featured image"
+msgstr "设置特色图片"
+
+#: includes/microblog-index.php:95 liveblog/includes/live-post-types.php:39
+msgid "Use featured image"
+msgstr "使用特色图片"
+
+#: includes/microblog-index.php:96 liveblog/includes/live-post-types.php:40
+msgid "Remove featured image"
+msgstr "移除特色图片"
+
+#: includes/microblog-index.php:97
+msgid "Filter microblog list"
+msgstr "筛选微博列表"
+
+#: includes/microblog-index.php:98
+msgid "Filter by microblog date"
+msgstr "按微博日期筛选"
+
+#: includes/microblog-index.php:100
+msgid "Microblog list navigation"
+msgstr "微博列表导航"
+
+#: includes/microblog-index.php:112 includes/microblog-index.php:114
+msgid "Microblog Topics"
+msgstr "微博话题"
+
+#: includes/microblog-index.php:115
+msgid "Microblog Topic"
+msgstr "微博话题"
+
+#: includes/microblog-index.php:116
+msgid "All Topics"
+msgstr "全部话题"
+
+#: includes/microblog-index.php:117
+msgid "Add New Topic"
+msgstr "添加新话题"
+
+#: includes/microblog-index.php:118
+msgid "Search Topics"
+msgstr "搜索话题"
+
+#: includes/microblog-index.php:119
+msgid "Popular Topics"
+msgstr "常用话题"
+
+#: includes/microblog-index.php:120
+msgid "Edit Topic"
+msgstr "编辑话题"
+
+#: includes/microblog-index.php:121
+msgid "View Topic"
+msgstr "查看话题"
+
+#: includes/microblog-index.php:122
+msgid "Update Topic"
+msgstr "更新话题"
+
+#: includes/microblog-index.php:123
+msgid "Topic not found."
+msgstr "未找到该话题"
+
+#: includes/microblog-index.php:124
+msgid "No topics."
+msgstr "暂无话题"
+
+#: includes/microblog-index.php:125
+msgid "Choose from the most used topics"
+msgstr "选择已有话题"
+
+#: includes/microblog-index.php:126
+msgid "Separate topics with commas"
+msgstr "多个话题请用英文逗号（,）分开"
+
+#: includes/microblog-index.php:127
+msgid "Go to Topics"
+msgstr "返回话题列表"
+
+#: includes/microblog-index.php:136
+msgid "Group microblogs on the same subject with topic tags."
+msgstr "用话题标签把同一主题的微博串起来。"
+
+#: includes/microblog-index.php:181
+msgid "[Microblog] "
+msgstr "【微博】："
+
+#: includes/microblog-quick-pub.php:23
+msgid "Quick Microblog"
+msgstr "快速发微博"
+
+#: includes/microblog-quick-pub.php:43 includes/microblog-widget.php:62
+msgid "Title:"
+msgstr "标题："
+
+#: includes/microblog-quick-pub.php:44
+msgid "Optional"
+msgstr "可留空"
+
+#: includes/microblog-quick-pub.php:45
+msgid "Content:"
+msgstr "内容："
+
+#: includes/microblog-quick-pub.php:46
+msgid "Enter your microblog content"
+msgstr "请输入微博内容"
+
+#: includes/microblog-quick-pub.php:47
+msgid "Publish Microblog"
+msgstr "发布微博"
+
+#: includes/microblog-quick-pub.php:60
+msgid "You are not allowed to perform this action."
+msgstr "您没有权限执行此操作。"
+
+#: includes/microblog-quick-pub.php:71
+msgid "❌ The microblog must be at least %d characters long!"
+msgstr "❌ 微博不可少于%d个字！"
+
+#: includes/microblog-quick-pub.php:79
+msgid "Microblog %s"
+msgstr "微博 %s"
+
+#: includes/microblog-quick-pub.php:108
+msgid "❌ Failed to publish the microblog: "
+msgstr "❌ 微博发布出错："
+
+#: includes/microblog-quick-pub.php:111
+msgid "✅ Microblog published."
+msgstr "✅ 微博发布成功~"
+
+#: includes/microblog-shortcode.php:128
+msgid "View all..."
+msgstr "查看全部..."
+
+#: includes/microblog-widget.php:48
+msgid "Displays the latest microblogs."
+msgstr "显示最新微博列表。"
+
+#: includes/microblog-widget.php:63
+msgid "Number of items:"
+msgstr "展示数量:"
+
+#: includes/microblog-widget.php:64
+msgid "Show excerpt?"
+msgstr "是否显示摘要 ?"
+
+#: includes/microblog-widget.php:65
+msgid "Show RSS link?"
+msgstr "是否展示RSS链接?"
+
+#: liveblog/includes/live-class-liveblog.php:77
+msgid "<a rel=\"noamphtml\" class=\"mlb-view-liveblog-link button\" href=\"%s\">View the liveblog</a>"
+msgstr "<a rel=\"noamphtml\" class=\"mlb-view-liveblog-link button\" href=\"%s\">查看连载</a>"
+
+#: liveblog/includes/live-class-liveblog.php:96
+msgid "The liveblog has ended."
+msgstr "连载已结束。"
+
+#: liveblog/includes/live-class-liveblog.php:100
+msgid "No liveblog updates yet."
+msgstr "暂无连载更新。"
+
+#: liveblog/includes/live-class-liveblog.php:147
+msgid "Load more"
+msgstr "加载更多"
+
+#: liveblog/includes/live-filters.php:61
+msgid "Liveblog source"
+msgstr "连载原文"
+
+#: liveblog/includes/live-filters.php:94
+#: liveblog/includes/live-functions.php:277
+msgid "Closed"
+msgstr "已关闭"
+
+#: liveblog/includes/live-filters.php:156
+msgid "Source Liveblog"
+msgstr "连载原文"
+
+#: liveblog/includes/live-filters.php:246
+msgid "All liveblogs"
+msgstr "全部连载"
+
+#: liveblog/includes/live-functions.php:276
+msgid "Open"
+msgstr "开放"
+
+#: liveblog/includes/live-functions.php:542
+msgid "Edit This"
+msgstr "编辑此条"
+
+#: liveblog/includes/live-functions.php:739
+msgctxt "%s = human-readable time difference"
+msgid "%s ago"
+msgstr "%s 前"
+
+#: liveblog/includes/live-metabox.php:24
+msgid "Liveblog Entry - Source"
+msgstr "连载Live-原文"
+
+#: liveblog/includes/live-metabox.php:95 liveblog/includes/live-metabox.php:358
+msgid "Enable liveblog"
+msgstr "启用连载"
+
+#: liveblog/includes/live-metabox.php:103
+msgid "Live Status"
+msgstr "连载状态"
+
+#: liveblog/includes/live-metabox.php:138
+msgid "This item is attached to a <a href=\"%s\">closed</a> liveblog, Display this when it is open. "
+msgstr "此条目关联的<a href=\"%s\">连载已关闭</a>，开放后会正常显示。"
+
+#: liveblog/includes/live-metabox.php:141
+msgid "Select liveblog"
+msgstr "选择连载"
+
+#: liveblog/includes/live-metabox.php:143
+msgid "— Select an entry liveblog —"
+msgstr "— 选择所属连载 —"
+
+#: liveblog/includes/live-metabox.php:152
+msgid "Direct link to entry"
+msgstr "条目直链"
+
+#: liveblog/includes/live-metabox.php:157
+msgid "There is no liveblog created yet."
+msgstr "还没有创建连载。"
+
+#: liveblog/includes/live-metabox.php:159
+msgid "Alternatively, you can enable the <a href=\"%s\">disabled</a> liveblog status "
+msgstr "也可以<a href=\"%s\">启用</a>该连载的关闭状态。"
+
+#: liveblog/includes/live-metabox.php:278
+msgid "Liveblog entry saved without a parent liveblog: pick one in the \"Liveblog Entry - Source\" box and update again, or the entry will not be displayed."
+msgstr "连载条目未选择所属连载：请在「连载Live-原文」中选择一个并重新更新，否则该条目不会显示。"
+
+#: liveblog/includes/live-metabox.php:285
+msgid "The selected liveblog no longer exists. The link has been cleared; please pick a liveblog again."
+msgstr "所选连载已不存在，链接已清除，请重新选择连载。"
+
+#: liveblog/includes/live-metabox.php:357
+msgid "Disable liveblog"
+msgstr "关闭连载"
+
+#: liveblog/includes/live-metabox.php:394
+msgid "You are not allowed to do that."
+msgstr "您没有权限执行此操作。"
+
+#: liveblog/includes/live-metabox.php:402
+msgid "Invalid post."
+msgstr "无效的文章。"
+
+#: liveblog/includes/live-post-types.php:19
+msgctxt "post type general name"
+msgid "Liveblog"
+msgstr "连载"
+
+#: liveblog/includes/live-post-types.php:21
+msgctxt "post type singular name"
+msgid "Liveblog"
+msgstr "连载"
+
+#: liveblog/includes/live-post-types.php:22
+#: liveblog/includes/live-post-types.php:25
+msgid "New Liveblog"
+msgstr "新连载"
+
+#: liveblog/includes/live-post-types.php:23
+msgid "Write Liveblog"
+msgstr "写连载"
+
+#: liveblog/includes/live-post-types.php:24
+msgid "Edit Liveblog"
+msgstr "编辑连载"
+
+#: liveblog/includes/live-post-types.php:26
+#: liveblog/includes/live-post-types.php:42
+msgid "Liveblog List"
+msgstr "连载列表"
+
+#: liveblog/includes/live-post-types.php:28
+msgid "View Link"
+msgstr "查看链接"
+
+#: liveblog/includes/live-post-types.php:29
+msgid "Search Liveblogs"
+msgstr "搜索连载"
+
+#: liveblog/includes/live-post-types.php:30
+msgid "No liveblogs found."
+msgstr "未找到相关连载"
+
+#: liveblog/includes/live-post-types.php:31
+msgid "No liveblogs found in Trash."
+msgstr "回收站中没有连载"
+
+#: liveblog/includes/live-post-types.php:32
+msgid "Liveblog updated."
+msgstr "连载已更新"
+
+#: liveblog/includes/live-post-types.php:33
+msgid "Liveblog published."
+msgstr "连载已发布"
+
+#: liveblog/includes/live-post-types.php:34
+msgid "Liveblog scheduled."
+msgstr "该连载已加入发布计划"
+
+#: liveblog/includes/live-post-types.php:35
+msgid "Liveblog featured image"
+msgstr "连载头图"
+
+#: liveblog/includes/live-post-types.php:36
+msgid "Filter liveblog list"
+msgstr "筛选连载列表"
+
+#: liveblog/includes/live-post-types.php:37
+msgid "Filter by liveblog date"
+msgstr "按连载日期筛选"
+
+#: liveblog/includes/live-post-types.php:41
+msgid "Liveblog reverted to draft."
+msgstr "该连载已恢复为草稿"
+
+#: liveblog/includes/live-post-types.php:43
+msgid "Liveblog list navigation"
+msgstr "连载列表导航"
+
+#: liveblog/includes/live-post-types.php:44
+msgid "Liveblog published privately."
+msgstr "该连载已私密发布"
+
+#: liveblog/includes/live-shortcodes.php:20
+msgid "MicroLive liveblog error: live_id or endpoint cannot be empty."
+msgstr "MicroLive连载 运行异常：live_id 或 endpoint 不可为空"
+
+#: liveblog/liveblog-index.php:89
+msgid "Please select a liveblog before saving."
+msgstr "保存前请选择一个连载。"
+
+#: liveblog/liveblog-index.php:101
+msgid "There is %s update."
+msgstr "有 %s 条更新。"
+
+#: liveblog/liveblog-index.php:102
+msgid "There are %s updates."
+msgstr "有 %s 条更新。"
+
+#: liveblog/liveblog-index.php:103
+msgid "That's All."
+msgstr "已经到底了。"
+
+#: microblog.php:83
+msgid "MicroBlog - Control Panel"
+msgstr "微博 MicroBlog - 控制面板"
+
+#: microblog.php:84
+msgid "MicroBlog Settings"
+msgstr "微博设置"
+
+#: microblog.php:102
+msgid "Settings"
+msgstr "设置"
+
+#: templates/sharing.php:5
+msgid "Share via Facebook"
+msgstr "分享到 Facebook"
+
+#: templates/sharing.php:9
+msgid "Share via X/Twitter"
+msgstr "分享到 X/Twitter"
+
+#: templates/sharing.php:13
+msgid "Share via Weibo"
+msgstr "分享到微博"

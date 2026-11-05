@@ -1,4 +1,7 @@
 <?php
+if (! defined('ABSPATH')) {
+	exit;
+}
 /*
 PluName: 微博 MicroBlog
 PluLink: https://www.webersongao.com/tag/microblog
@@ -28,79 +31,79 @@ function microblog_micropost_setting_admin() {
     // General settings section
     add_settings_section(
         'microblog_micropost_section_base',
-        '样式设置',
+        __('Style Settings', MICROBLOG_DOMAIN),
         'microblog_micropost_section_base_callback',
         'microblog_micropost_section_name'
     );
 
     add_settings_field(
         'microblog_post_title_show',
-        '标题',
+        __('Title', MICROBLOG_DOMAIN),
         'microblog_post_title_show_input',
         'microblog_micropost_section_name',
         'microblog_micropost_section_base'
     );
     add_settings_field(
         'microblog_post_micro_foward',
-        '转发',
+        __('Repost', MICROBLOG_DOMAIN),
         'microblog_post_micro_foward_input',
         'microblog_micropost_section_name',
         'microblog_micropost_section_base'
     );
     add_settings_field(
         'microblog_post_rss_feed',
-        'RSS订阅',
+        __('RSS Feed', MICROBLOG_DOMAIN),
         'microblog_post_rss_feed_input',
         'microblog_micropost_section_name',
         'microblog_micropost_section_base'
     );
     add_settings_field(
         'microblog_post_editor_func',
-        '编辑器',
+        __('Editor', MICROBLOG_DOMAIN),
         'microblog_post_editor_func_callback',
         'microblog_micropost_section_name',
         'microblog_micropost_section_base'
     );
     add_settings_field(
         'microblog_post_title_listdate',
-        '时间格式',
+        __('Time Format', MICROBLOG_DOMAIN),
         'microblog_post_title_listdate_input',
         'microblog_micropost_section_name',
         'microblog_micropost_section_base'
     );
     add_settings_field(
         'microblog_post_slug_name',
-        'URL slug',
+        __('URL slug', MICROBLOG_DOMAIN),
         'microblog_post_slug_name_callback',
         'microblog_micropost_section_name',
         'microblog_micropost_section_base'
     );
-    
+
     // Shortcode settings section
     add_settings_section(
         'microblog_micropost_section_shortcode',
-        '短代码与小工具',
+        __('Shortcode & Widget', MICROBLOG_DOMAIN),
         'microblog_micropost_section_shortcode_callback',
         'microblog_micropost_section_name'
     );
 
     add_settings_field(
         'microblog_post_title_listnumber',
-        '微博数',
+        __('Number of Microblogs', MICROBLOG_DOMAIN),
         'microblog_post_title_listNumber_input',
         'microblog_micropost_section_name',
         'microblog_micropost_section_shortcode'
     );
     add_settings_field(
         'microblog_post_content_bottom',
-        '头像标签',
+        __('Bottom Bar', MICROBLOG_DOMAIN),
         'microblog_post_content_bottom_input',
         'microblog_micropost_section_name',
         'microblog_micropost_section_shortcode'
     );
     add_settings_field(
         'microblog_post_image_lightbox',
-        '灯箱LightBox',
+        __('Lightbox', MICROBLOG_DOMAIN),
         'microblog_post_image_lightbox_input',
         'microblog_micropost_section_name',
         'microblog_micropost_section_shortcode'
@@ -121,7 +124,7 @@ function theme_microblog_data_sanitize($input) {
             add_settings_error(
                 'theme_microblog_data',
                 'invalid-slug',
-                'slug 不合法，仅支持小写字母和数字，长度 1-20。',
+                __('Invalid slug. Use lowercase letters and numbers only, 1-20 characters.', MICROBLOG_DOMAIN),
                 'error'
             );
 
@@ -142,12 +145,12 @@ function theme_microblog_data_sanitize($input) {
 
 // Display general settings section content
 function microblog_micropost_section_base_callback() {
-    echo '<p>请确认已插入 [microblog] 到页面 或 已添加 [微博] 小工具</p>';
+    echo '<p>' . esc_html__('Make sure you have added the [microblog] shortcode to a page or the Microblog widget to a sidebar.', MICROBLOG_DOMAIN) . '</p>';
 }
 
 // Display shortcode settings section content
 function microblog_micropost_section_shortcode_callback() {
-    echo '<p>请确认已打开【标题显示】功能 </p>';
+    echo '<p>' . esc_html__('Make sure "Show title" is enabled.', MICROBLOG_DOMAIN) . '</p>';
 }
 
 // Display settings fields input
@@ -157,7 +160,7 @@ function microblog_post_title_show_input() {
     ?>
     <label>
         <input type='checkbox' name='theme_microblog_data[mb_title_show]' value='1' <?php checked($value, true); ?> />
-        显示标题
+        <?php esc_html_e('Show title', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
 }
@@ -168,7 +171,7 @@ function microblog_post_title_listdate_input() {
     ?>
     <label class="microblog-admin-option-label">
         <input type='radio' name='theme_microblog_data[mb_date_format]' value='<?php echo esc_attr('date_hide'); ?>' <?php checked($value, 'date_hide'); ?> />
-        不显示时间
+        <?php esc_html_e('Hide time', MICROBLOG_DOMAIN); ?>
         <!--echo date_i18n('m-d H:i', current_time('timestamp'));-->
     </label>
     <label class="microblog-admin-option-label">
@@ -177,7 +180,7 @@ function microblog_post_title_listdate_input() {
     </label>
     <label class="microblog-admin-option-label">
         <input type='radio' name='theme_microblog_data[mb_date_format]' value='<?php echo esc_attr('date_human'); ?>' <?php checked($value, 'date_human'); ?> />
-        1分钟前/3天前...
+        <?php esc_html_e('1 minute ago / 3 days ago...', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
 }
@@ -188,7 +191,7 @@ function microblog_post_micro_foward_input() {
     ?>
     <label>
         <input type='checkbox' name='theme_microblog_data[mb_foward_enable]' value='1' <?php checked($value, true); ?> />
-        启用微博转发
+        <?php esc_html_e('Enable reposting', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
 }
@@ -199,7 +202,13 @@ function microblog_post_rss_feed_input() {
     ?>
     <label>
         <input type='checkbox' name='theme_microblog_data[mb_rss_feed]' value='1' <?php checked($value, true); ?> />
-        加入全站Feed流（ <a target="_blank" href="/feed" class="rss">RSS</a> ）
+        <?php
+        printf(
+            /* translators: %s: RSS link. */
+            esc_html__('Include in the main site feed ( %s )', MICROBLOG_DOMAIN),
+            '<a target="_blank" href="' . esc_url(home_url('/feed')) . '" class="rss">RSS</a>'
+        );
+        ?>
     </label>
     <?php
 }
@@ -212,19 +221,19 @@ function microblog_post_editor_func_callback() {
     ?>
     <label class="microblog-admin-option-label">
         <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_author' <?php if (in_array('mb_author', $editor_func)) echo 'checked="checked"'; ?> />
-        作者
+        <?php esc_html_e('Author', MICROBLOG_DOMAIN); ?>
     </label>
     <label class="microblog-admin-option-label">
         <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
-        摘要
+        <?php esc_html_e('Excerpt', MICROBLOG_DOMAIN); ?>
     </label>
     <label class="microblog-admin-option-label">
         <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
-        特色图片
+        <?php esc_html_e('Featured image', MICROBLOG_DOMAIN); ?>
     </label>
     <label class="microblog-admin-option-label">
         <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_posttag' <?php if (in_array('mb_posttag', $editor_func)) echo 'checked="checked"'; ?> />
-        微博话题
+        <?php esc_html_e('Microblog topics', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
 }
@@ -234,7 +243,7 @@ function microblog_post_slug_name_callback() {
     $value = isset($options['mb_slug_name']) ? sanitize_title($options['mb_slug_name']) : ''; // 获取已保存的设置值
     ?>
     <input type='text' name='theme_microblog_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='20' style='width: 120px;' />
-    <p class="description">仅支持字母和数字，长度(1,20) 为空则默认microposts</p>
+    <p class="description"><?php esc_html_e('Letters and numbers only, 1-20 characters. Leave empty to use "microposts".', MICROBLOG_DOMAIN); ?></p>
     <?php
 }
 
@@ -246,7 +255,7 @@ function microblog_post_title_listNumber_input() {
     ?>
     <label>
         <input type='number' name='theme_microblog_data[mb_codepost_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
-        &nbsp;<?php echo esc_html__('每页显示数量 ( 区间:[3, 20] )', MICROBLOG_DOMAIN ); ?>
+        &nbsp;<?php echo esc_html__('Number per page (range: 3-20)', MICROBLOG_DOMAIN ); ?>
     </label>
     <?php
 }
@@ -257,9 +266,14 @@ function microblog_post_image_lightbox_input() {
     ?>
     <label>
     <input type='checkbox' name='theme_microblog_data[mb_image_lightbox]' value='1' <?php checked($value, true); ?> />
-    是否开启？（请确认已安装 
-    <a href="https://wordpress.org/plugins/simple-lightbox" target="_blank">Simple Lightbox插件</a> 
-    或 当前主题支持 <a href="https://fooplugins.com/what-is-a-lightbox-in-wordpress" target="_blank">Lightbox效果</a> ）
+    <?php
+    printf(
+        /* translators: 1: link to the Simple Lightbox plugin, 2: link to a Lightbox explanation. */
+        esc_html__('Enable? (make sure the %1$s plugin is installed, or your theme supports %2$s)', MICROBLOG_DOMAIN),
+        '<a href="https://wordpress.org/plugins/simple-lightbox" target="_blank">' . esc_html__('Simple Lightbox', MICROBLOG_DOMAIN) . '</a>',
+        '<a href="https://fooplugins.com/what-is-a-lightbox-in-wordpress" target="_blank">' . esc_html__('Lightbox effects', MICROBLOG_DOMAIN) . '</a>'
+    );
+    ?>
     </label>
     <?php
 }
@@ -270,11 +284,11 @@ function microblog_post_content_bottom_input() {
     ?>
     <label class="microblog-admin-option-label">
         <input type='checkbox' name='theme_microblog_data[mb_content_bottom][]' value='<?php echo esc_attr('conbottomuser'); ?>' <?php if (in_array('conbottomuser', $value)) echo 'checked="checked"'; ?> />
-        显示头像
+        <?php esc_html_e('Show avatar', MICROBLOG_DOMAIN); ?>
     </label>
     <label>
         <input type='checkbox' name='theme_microblog_data[mb_content_bottom][]' value='<?php echo esc_attr('conbottomtag'); ?>' <?php if (in_array('conbottomtag', $value)) echo 'checked="checked"'; ?> />
-        显示话题
+        <?php esc_html_e('Show topics', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
 }

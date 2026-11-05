@@ -28,7 +28,7 @@ function microblog_liveblog_setting_admin() {
 
 		add_settings_section(
 			'microblog_liveblog_section_' . $section,
-			'连载设置',
+			__('Liveblog Settings', MICROBLOG_DOMAIN),
 			'microblog_liveblog_section_desc',
 			'microblog_liveblog_section_' . $section
 		);
@@ -66,7 +66,7 @@ function microblog_liveblog_setting_admin() {
  * @return void
  */
 function microblog_liveblog_section_desc() {
-	echo '<p>为文章开启滚动更新的「连载」视图，适合实时记录与发布会直播。</p>';
+	echo '<p>' . esc_html__('Enable a rolling liveblog view for posts — great for live coverage and events.', MICROBLOG_DOMAIN) . '</p>';
 }
 
 function microblog_liveblog_data_sanitize($input) {
@@ -87,27 +87,27 @@ function mbfun_get_registered_settings() {
 		'general' => array(
 			array(
 				'id'            => 'ml_post_types',
-				'name'          => __('支持', MICROBLOG_DOMAIN ),
-				'desc'          => __('勾选需要开启【连载】的内容类型。', MICROBLOG_DOMAIN ),
+				'name'          => __('Supported', MICROBLOG_DOMAIN ),
+				'desc'          => __('Select the post types that can be used as liveblogs.', MICROBLOG_DOMAIN ),
 				'type'          => 'multiple_checkbox',
 				'options'       => $mlb_alltypes,
 				'default_value' => array('post' ),
 			),
 			array(
 				'id'            => 'ml_theme_style',
-				'name'          => __('主题', MICROBLOG_DOMAIN ),
-				'desc'          => __('连载区块的配色主题。', MICROBLOG_DOMAIN ),
+				'name'          => __('Theme', MICROBLOG_DOMAIN ),
+				'desc'          => __('Color theme of the liveblog block.', MICROBLOG_DOMAIN ),
 				'type'          => 'select',
 				'options'       => array(
-					'light'     => __('浅色', MICROBLOG_DOMAIN ),
-					'dark'      => __('深色', MICROBLOG_DOMAIN ),
+					'light'     => __('Light', MICROBLOG_DOMAIN ),
+					'dark'      => __('Dark', MICROBLOG_DOMAIN ),
 				),
 				'default_value' => 'light',
 			),
 			array(
 				'id'   => 'ml_display_autopolling',
-				'name' => __('自动刷新', MICROBLOG_DOMAIN ),
-				'desc' => __('自动检查并加载新的连载条目。', MICROBLOG_DOMAIN ),
+				'name' => __('Auto Refresh', MICROBLOG_DOMAIN ),
+				'desc' => __('Automatically check for and load new liveblog entries.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 			// array(
@@ -118,26 +118,26 @@ function mbfun_get_registered_settings() {
 			// ),
 			array(
 				'id'            => 'ml_post_layout',
-				'name'          => __('样式布局', MICROBLOG_DOMAIN ),
-				'desc'          => __('单条【连载】中需要展示的信息。', MICROBLOG_DOMAIN ),
+				'name'          => __('Layout', MICROBLOG_DOMAIN ),
+				'desc'          => __('Information shown for each liveblog entry.', MICROBLOG_DOMAIN ),
 				'type'          => 'multiple_checkbox',
 				'options'       => array(
-					'ml_layout_title' => __('标题', MICROBLOG_DOMAIN ),
-					'ml_layout_author' => __('作者', MICROBLOG_DOMAIN ),
-					'ml_layout_tshare' => __('分享按钮', MICROBLOG_DOMAIN ),
+					'ml_layout_title' => __('Title', MICROBLOG_DOMAIN ),
+					'ml_layout_author' => __('Author', MICROBLOG_DOMAIN ),
+					'ml_layout_tshare' => __('Share buttons', MICROBLOG_DOMAIN ),
 				),
 				'default_value' => array('post' ),
 			),
 			array(
 				'id'   => 'ml_display_revort_sort',
-				'name' => __('展示顺序', MICROBLOG_DOMAIN ),
-				'desc' => __('默认从新到旧；开启后改为从旧到新。', MICROBLOG_DOMAIN ),
+				'name' => __('Display Order', MICROBLOG_DOMAIN ),
+				'desc' => __('Newest first by default; enable to show oldest first.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 			array(
 				'id'            => 'ml_update_interval',
-				'name'          => __('刷新间隔', MICROBLOG_DOMAIN ),
-				'desc'          => __('自动刷新时检查新条目的间隔秒数，区间 10-360。', MICROBLOG_DOMAIN ),
+				'name'          => __('Refresh Interval', MICROBLOG_DOMAIN ),
+				'desc'          => __('Seconds between checks for new entries when auto refresh is on (10-360).', MICROBLOG_DOMAIN ),
 				'type'          => 'number',
 				'min'           => 10,
 				'max'           => 360,
@@ -145,8 +145,8 @@ function mbfun_get_registered_settings() {
 			),
 			array(
 				'id'            => 'ml_show_entries',
-				'name'          => __('每页连载数', MICROBLOG_DOMAIN ),
-				'desc'          => __('点击「加载更多」前显示的条目数量，区间 3-50。', MICROBLOG_DOMAIN ),
+				'name'          => __('Entries per Page', MICROBLOG_DOMAIN ),
+				'desc'          => __('Number of entries shown before "Load more" (3-50).', MICROBLOG_DOMAIN ),
 				'type'          => 'number',
 				'min'           => 3,
 				'max'           => 50,
@@ -154,37 +154,37 @@ function mbfun_get_registered_settings() {
 			),
 			array(
 				'id'   => 'ml_prefix_title',
-				'name' => __('显示前缀', MICROBLOG_DOMAIN ),
-				'desc' => __('自动在连载标题前加上「Liveblog」。', MICROBLOG_DOMAIN ),
+				'name' => __('Show Prefix', MICROBLOG_DOMAIN ),
+				'desc' => __('Automatically prefix the liveblog title with "Liveblog".', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 			array(
 				'id'      => 'ml_entry_date_format',
-				'name'    => __('时间格式', MICROBLOG_DOMAIN ),
-				'desc'    => __('连载条目中日期的显示格式。', MICROBLOG_DOMAIN ),
+				'name'    => __('Time Format', MICROBLOG_DOMAIN ),
+				'desc'    => __('How entry dates are displayed.', MICROBLOG_DOMAIN ),
 				'type'    => 'select',
 				'options' => array(
-					''         => __('相对时间（如 3 分钟前）', MICROBLOG_DOMAIN ),
-					'date'     => sprintf( __('日期：%s', MICROBLOG_DOMAIN ), get_option('date_format' ) ),
-					'time'     => sprintf( __('时间：%s', MICROBLOG_DOMAIN ), get_option('time_format' ) ),
-					'datetime' => sprintf( __('日期与时间：%s', MICROBLOG_DOMAIN ), mbfun_get_live_datetime_format() ),
+					''         => __('Relative time (e.g. 3 minutes ago)', MICROBLOG_DOMAIN ),
+					'date'     => sprintf( __('Date: %s', MICROBLOG_DOMAIN ), get_option('date_format' ) ),
+					'time'     => sprintf( __('Time: %s', MICROBLOG_DOMAIN ), get_option('time_format' ) ),
+					'datetime' => sprintf( __('Date and time: %s', MICROBLOG_DOMAIN ), mbfun_get_live_datetime_format() ),
 				),
 			),
 			array(
 				'id'      => 'ml_cache_enabled',
-				'name'    => __('启用缓存', MICROBLOG_DOMAIN ),
-				'desc'    => __('为连载内容启用缓存，可选对象缓存或 Transient。', MICROBLOG_DOMAIN ),
+				'name'    => __('Enable Cache', MICROBLOG_DOMAIN ),
+				'desc'    => __('Cache liveblog content with an object cache or transients.', MICROBLOG_DOMAIN ),
 				'type'    => 'select',
 				'options' => array(
-					''          => __('不启用', MICROBLOG_DOMAIN ),
+					''          => __('Disabled', MICROBLOG_DOMAIN ),
 					'object'    => __('Object', MICROBLOG_DOMAIN ),
 					'transient' => __('Transient', MICROBLOG_DOMAIN ),
 				),
 			),
 			array(
 				'id'   => 'ml_append_timestamp',
-				'name' => __('feed时间戳', MICROBLOG_DOMAIN ),
-				'desc' => __('在连载 Feed 地址后附加时间戳，避免读到旧缓存。', MICROBLOG_DOMAIN ),
+				'name' => __('Feed Timestamp', MICROBLOG_DOMAIN ),
+				'desc' => __('Append a timestamp to the liveblog feed URL to avoid stale caches.', MICROBLOG_DOMAIN ),
 				'type' => 'checkbox',
 			),
 		),
@@ -201,8 +201,8 @@ function mbfun_get_registered_settings() {
  */
 function microblog_live_missing_callback( $args ) {
 	printf(
-		__('The callback function used for the %s setting is missing.', MICROBLOG_DOMAIN ),
-		'<strong>' . $args['id'] . '</strong>'
+		esc_html__('The callback function used for the %s setting is missing.', MICROBLOG_DOMAIN ),
+		'<strong>' . esc_html( $args['id'] ) . '</strong>'
 	);
 }
 
@@ -217,8 +217,8 @@ function microblog_live_checkbox_callback( $args ) {
 
 	$checked = checked( isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : '', '1', false );
 
-	$html  = '<input type="checkbox" ' . $checked . ' id="microblog_liveblog_data[' . $args['id'] . ']" name="microblog_liveblog_data[' . $args['id'] . ']" value="1" />';
-	$html .= '<label for="microblog_liveblog_data[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+	$html  = '<input type="checkbox" ' . $checked . ' id="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" name="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" value="1" />';
+	$html .= '<label for="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']">' . wp_kses_post( $args['desc'] ) . '</label>';
 
 	echo $html;
 }
@@ -234,8 +234,8 @@ function microblog_live_text_callback( $args ) {
 
 	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : '';
 
-	$html  = '<input type="text" id="microblog_liveblog_data[' . $args['id'] . ']" name="microblog_liveblog_data[' . $args['id'] . ']" value="' . $value . '" />';
-	$html .= '<label for="microblog_liveblog_data[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+	$html  = '<input type="text" id="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" name="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" value="' . esc_attr( $value ) . '" />';
+	$html .= '<label for="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']">' . wp_kses_post( $args['desc'] ) . '</label>';
 
 	echo $html;
 }
@@ -251,19 +251,19 @@ function microblog_live_select_callback( $args ) {
 
 	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : ( $args['default_value'] ?? null );
 
-	$html = '<select id="microblog_liveblog_data[' . $args['id'] . ']" name="microblog_liveblog_data[' . $args['id'] . ']" />';
+	$html = '<select id="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" name="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" />';
 
 	if ( ! empty( $args['options'] ) ) {
 		foreach ( $args['options'] as $option_value => $option_name ) {
 			$selected = selected( $value, $option_value, false );
 
-			$html .= '<option value="' . $option_value . '" ' . $selected . '>' . $option_name . '</option>';
+			$html .= '<option value="' . esc_attr( $option_value ) . '" ' . $selected . '>' . esc_html( $option_name ) . '</option>';
 		}
 	}
 
 	$html .= '</select>';
 
-	$html .= '<label for="microblog_liveblog_data[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+	$html .= '<label for="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']">' . wp_kses_post( $args['desc'] ) . '</label>';
 
 	echo $html;
 }
@@ -281,14 +281,13 @@ function microblog_live_multiple_checkbox_callback( $args ) {
 	if ( ! empty( $args['options'] ) ) {
 		foreach ( $args['options'] as $option_value => $option_name ) {
 			$checked = in_array( $option_value, is_array( $value ) ? $value : array() ) ? 'checked' : '';
-			$translated_option_name = __( $option_name, MICROBLOG_DOMAIN );
 			$html .= '<label class="microblog-admin-option-label">';
-			$html .= '<input type="checkbox" id="microblog_liveblog_data[' . $args['id'] . '][' . $option_value . ']" name="microblog_liveblog_data[' . $args['id'] . '][]" value="' . $option_value . '" ' . $checked . '>';
-			$html .= $translated_option_name;
+			$html .= '<input type="checkbox" id="microblog_liveblog_data[' . esc_attr( $args['id'] ) . '][' . esc_attr( $option_value ) . ']" name="microblog_liveblog_data[' . esc_attr( $args['id'] ) . '][]" value="' . esc_attr( $option_value ) . '" ' . $checked . '>';
+			$html .= esc_html( $option_name );
 			$html .= '</label>';
 		}
 	}
-	$html .= '<label>' . '<br><br>' . $args['desc'] . '</label>';
+	$html .= '<label>' . '<br><br>' . wp_kses_post( $args['desc'] ) . '</label>';
 	echo $html;
 }
 
@@ -302,11 +301,11 @@ function microblog_live_number_callback( $args ) {
 	$mlb_options = mbfun_get_liveblog_settings();
 
 	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : $args['default_value'];
-	$min   = ! empty( $args['min'] ) ? 'min="' . $args['min'] . '"' : null;
-	$max   = ! empty( $args['max'] ) ? 'max="' . $args['max'] . '"' : null;
+	$min   = ! empty( $args['min'] ) ? 'min="' . (int) $args['min'] . '"' : null;
+	$max   = ! empty( $args['max'] ) ? 'max="' . (int) $args['max'] . '"' : null;
 
-	$html  = '<input type="number" ' . $min . ' ' . $max . ' id="microblog_liveblog_data[' . $args['id'] . ']" name="microblog_liveblog_data[' . $args['id'] . ']" value="' . $value . '" />';
-	$html .= '<label for="microblog_liveblog_data[' . $args['id'] . ']">' . $args['desc'] . '</label>';
+	$html  = '<input type="number" ' . $min . ' ' . $max . ' id="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" name="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" value="' . esc_attr( $value ) . '" />';
+	$html .= '<label for="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']">' . wp_kses_post( $args['desc'] ) . '</label>';
 
 	echo $html;
 }
@@ -322,8 +321,8 @@ function microblog_live_text_input_callback( $args ) {
 	$mlb_options = mbfun_get_liveblog_settings();
 	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : $args['default_value'];
 
-    $html  = '<input type="text" id="microblog_liveblog_data[' . $args['id'] . ']" name="microblog_liveblog_data[' . $args['id'] . ']" value="' . $value . '" maxlength="20" style="width: 120px;" />';
-	$html .= '<p class="description">' . $args['desc'] . '</p>';
+    $html  = '<input type="text" id="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" name="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" value="' . esc_attr( $value ) . '" maxlength="20" style="width: 120px;" />';
+	$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 
 	echo $html;
 }

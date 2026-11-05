@@ -1,123 +1,122 @@
-
-=== 微博 MicroBlog===
-
-Contributors: WebersonGao
-Tags: tweet, tweets, microblog, microblog, micropost
+=== MicroBlog ===
+Contributors: webersongao
+Tags: microblog, weibo, short content, liveblog
 Requires at least: 6.0
-Tested up to: 6.4.3
-Stable tag: 1.7.0
+Tested up to: 7.1
+Requires PHP: 7.4
+Stable tag: 1.9.0
 License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-== 核心 ==
+Use WordPress as a microblog: publish short posts and show them with a shortcode or a widget.
 
-将 微博 添加到您的网站；在小部件中显示微博或使用短代码显示微博。
+== Description ==
 
-== 描述 ==
+MicroBlog turns your WordPress site into a microblog (similar to Weibo or Twitter). Short posts are stored in their own "Microblog" post type, so they never mix with your regular articles, and you can display them anywhere with a shortcode or a sidebar widget.
 
-这个简单的插件使您可以轻松发布短消息，如微博、说说。 这些消息不会出现在您的帖子流中； 相反，您可以在侧边栏的小部件中显示它们。 您还可以在任何帖子或页面中使用`[microblog]`短代码来显示它们。
+**Features**
 
-使用时，请在您的仪表板中查找新的`微博`管理面板。 点击`发微博`，然后以您通常撰写文章的方式撰写微博。 如果您给微博添加标题，它将以粗体显示，或者你可以直接隐藏微博。
+* A dedicated Microblog post type with its own admin menu, list table and REST API endpoint.
+* `[microblog]` shortcode to show the latest microblogs on any post or page, with pagination.
+* A "Microblog" sidebar widget with optional excerpt and RSS link.
+* A "Quick Microblog" dashboard widget for posting without leaving the dashboard.
+* Optional topics (hashtag-style taxonomy) to group microblogs by subject.
+* Optional reposting: link a new microblog to the one it reposts.
+* Custom URL slug (default `microposts`), e.g. `/microposts/123.html`, with its own feed.
+* Fuzzy ("3 minutes ago") or fixed date formats, optional titles, avatars and topics in the footer.
+* Optional Liveblog module: attach a rolling, auto-refreshing update stream to any post.
+* Fully translatable; English is the source language.
 
-然后，要么将小部件添加到侧边栏，要么将`[microblog]`短代码添加到您的网站中，就这样！
+**Shortcode attributes**
 
-`[microblog]`短代码支持几个选项：
+* `null_text` – text shown when no microblog is found. Default `(none)`.
+* `use_excerpt` – use the excerpt instead of the full content.
+* `q` – extra query arguments, e.g. `[microblog q="author_name=jack&order=ASC"]`.
 
-* **null_text**：如果未返回结果，则显示此文本。 默认为`(none)`。
+**Liveblog module**
 
-* **use_excerpt**：如果定义，则使用帖子摘录而不是整个内容。 我们建议撰写简短的微博，但如果您更喜欢撰写较长的微博，则可以使用此选项将其截断。 不幸的是，Wordpress摘录不允许链接或其他html，请使用插件[高级摘录](http://wordpress.org/extend/plugins/advanced-excerpt/)来解决此问题！
+When enabled under Tools → MicroBlog Settings → General, any supported post type can be turned into a liveblog. Entries are separate posts attached to the liveblog, rendered in a rolling list that can poll for new updates. Themes can override the templates from a `micro_live_theme/` folder.
 
-* **q**：要添加到查询中的任意＆分隔参数。 有关可用语法，请参阅[WP_Query](http://codex.wordpress.org/Class_Reference/WP_Query/#Parameters)页面。 例如，要仅按升序显示来自作者`jack`的帖子，您将写入`[microblog q="author_name=jack&order=ASC"]`。
+== Installation ==
 
-也许您可以在面板上调整`num`和`show_date`，
+1. Upload the `MicroBlog` folder to `/wp-content/plugins/`, or install the plugin through Plugins → Add New.
+2. Activate the plugin through the Plugins screen.
+3. Go to Tools → MicroBlog Settings to configure the post type, date format and display options.
+4. Add the `[microblog]` shortcode to a page, or add the "Microblog" widget to a sidebar.
 
-* **num**：要显示的微博数量。 默认为`5`。 最小3到最大20：[3,20]
+If microblog permalinks return 404, open Settings → Permalinks and save once to refresh the rewrite rules.
 
-* **show_date**：如果选中，则创建日期将显示在微博之前。
+== Frequently Asked Questions ==
 
-然后输出可以使用CSS进一步格式化。
+= Where do microblogs appear? =
 
-== 安装 ==
+Microblogs are a separate post type and are not mixed into your normal post stream. Use the `[microblog]` shortcode, the Microblog widget, or the microblog archive at your configured slug (default `/microposts`).
 
-1、手动解压并上传： 尝试手动解压插件 zip 包，并将解压后的插件文件夹通过 FTP 或文件管理器上传到 WordPress 的 wp-content/plugins 目录中。
-2、特别说明：如果发现后台上传插件的 zip 包的方式安装，提示；“不支持的归档格式”，请自行压缩或FTP上传
+= Can I change the URL of microblogs? =
 
+Yes. On Tools → MicroBlog Settings → Microblog, set "URL slug" to a lowercase alphanumeric value (1–20 characters). Leave it empty to keep `microposts`.
 
-== 其他说明 ==
+= Does it work with the block editor? =
 
-如果您无法查看您的微博，请尝试访问您的固定链接首选项或者修改微博slug，然后点击`保存更改`。
+Yes. The microblog post type follows your site's editor setting, and the quick publish form wraps plain text into paragraph blocks when the block editor is active.
 
-简单说就是：
+= Is the Liveblog module required? =
 
-1、上传文件包-安装激活
-2、新建页面，复制粘贴 [microblog] 到你期待展示的“页面”中，保存发布就可以了
-3、如果想使用小工具，自己后台添加，前台查看即可
-4、如果想修改默认配置，请通过 ’工具‘-> ’微博设置‘， 进入 微博控制面板
+No. It is optional and disabled by default. Turning it off does not delete any content or settings.
 
-还不满意？还有bug？不要犹豫，底部找我邮箱 联系我。
+== Screenshots ==
 
+1. The Microblog settings screen.
+2. The Microblog widget on the front end.
 
-== 后续开发计划 ==
+== Changelog ==
 
-1、优化 图片九宫格 及 视频播放
-1、实现弹窗、点击展开 评论输入框，以及评论外露
-2、支持在编辑器内嵌入 微博话题 及 @功能，被@的人会受到邮件通知
-3、远期规划：
-     1、微博广场 （将当前使用该插件用户的微博集中展示）
-     2、更漂亮，更美观的短代码UI，甚至开发微博专属主题
+= 1.9.0 =
+* Added full internationalization: English source strings, `microblog` text domain and a `languages/` folder.
+* Improved the Liveblog meta box experience and admin notices.
+* Escaped settings output and hardened admin screens.
+* Quick publish minimum length is now filterable with `microblog_quickpub_min_length`.
+* Refreshed the readme and cleaned up bundled files.
 
-暂时想到这些，更多功能，等你来提~
+= 1.8.0 =
+* Fixed the Liveblog meta box behaviour and admin scripts.
 
+= 1.7.0 =
+* Added microblog topics.
+* Added REST API support.
+* Added microblog reposting (partially enabled).
+* Replaced the JavaScript text replacement with native strings.
 
-== 更新日志 ==
+= 1.6.1 =
+* Added time format options and an option to include microblogs in the main site feed.
+* Default settings are written on activation and removed on uninstall.
 
-1.7.0
-新增：1、微博话题 
-     2、支持 REST API
-     3、微博转发（暂未全部开放）
-优化：调整后台js替换文案逻辑，改为原生字符串文案~
+= 1.6 =
+* Added quick publishing from the dashboard.
+* Renamed the admin labels from "post" wording to "microblog" wording.
 
-1.6.1
-新增：时间格式 及 是否开启全站Feed订阅
-优化：插件激活写入默认配置，插件卸载清理所有配置项，不留垃圾，不拉屎~
+= 1.5 =
+* Refactored the code structure and improved query performance.
 
-1.6
-新增：新增仪表盘快捷发布
-优化：按钮 写文章，改为 发微博等文案
+= 1.4 =
+* Fixed spacing when the widget footer bar is hidden.
+* Fixed the comment button still showing when comments are closed.
 
-1.5
-优化：优化代码结构，提升查询性能 减少URl刷新
+= 1.3 =
+* Custom URL slug support (e.g. `/microblog/123.html` and `/microblog/feed`).
 
-1.4
-优化：小工具底部工具条不展示时，调整异常的间距
-修复bug：当微博关闭评论后，评论按钮依然显示的bug
+= 1.2 =
+* The editor follows the site configuration (block or classic).
+* Configurable editor features: author, featured image, excerpt.
+* Fixed uninitialized settings on activation.
 
-1.3 
-新增：
-URL slug 支持自定义，例如改为microblog，则微博地址为 microblog/post_id.html ，Rss地址为microblog/feed， slug默认为microposts 
+= 1.1 =
+* Added the nine-grid image layout and a Lightbox switch.
 
-1.2 
-新增：
-.1编辑器跟随站点配置（古腾堡或经典编辑器）
-.2编辑器特性选项支持自定义（作者，特色图片 微博摘要）
-优化：
-.1插件激活时，未初始化配置项的bug
+= 1.0 =
+* Initial release.
 
-1.1 
-新增支持微博图片九宫格，支持lightbox开关
+== Upgrade Notice ==
 
-1.0 
-初次发布（编辑/发布，短代码插入，小工具插入，控制面板等基本功能）
-
-
-欢迎多提意见，如果你也想参与折腾，欢迎联系~
-
-推特：https://twitter.com/WebersonGao
-更多介绍：https://www.webersongao.com/tag/microblog
-
-
-
-
-ToDo：
-
-is_user_logged_in 不可用
-mbfun_get_live_liveblogs_by_status( 'used' ); 不可用
+= 1.9.0 =
+Text domain changed to `microblog`, with a new translation template and Chinese translation.

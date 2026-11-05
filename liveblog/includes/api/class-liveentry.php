@@ -2,6 +2,10 @@
 
 namespace MicroLiveblogs\API;
 
+if (! defined('ABSPATH')) {
+	exit;
+}
+
 class LiveEntry {
 	public $id;
 	public $title;

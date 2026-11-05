@@ -539,7 +539,7 @@ function mlb_edit_entry_link()
 		return;
 	}
 
-	echo '<a href="' . mbfun_get_live_edit_entry_url($post->ID) . '" rel="nofollow">' . __('Edit This') . '</a>';
+	echo '<a href="' . esc_url(mbfun_get_live_edit_entry_url($post->ID)) . '" rel="nofollow">' . esc_html__('Edit This', MICROBLOG_DOMAIN) . '</a>';
 }
 
 /**
@@ -593,7 +593,12 @@ function mlb_add_meta_data()
 
 	$liveblog_url = get_permalink();
 
-	$items = mbfun_get_live_liveblog_feed(mbfun_get_live_liveblog_api_endpoint($post->ID));
+	$items = mbfun_get_live_feed_local($post->ID);
+
+	// Feed 构建失败时不输出半截结构化数据。
+	if (empty($items) || ! is_array($items)) {
+		return;
+	}
 
 	$organization = array(
 		'@type' => 'Organization',
@@ -607,11 +612,13 @@ function mlb_add_meta_data()
 		'headline'          => get_the_title(),
 		'description'       => trim(preg_replace('/\s+/', ' ', strip_tags(get_the_content()))),
 		'coverageStartTime' => get_the_date('c', $post),
-		'coverageEndTime'   => wp_date('c', strtotime($items['last_update'] . ' + 1 hour')),
-		'dateModified'      => $items['last_update'],
+		'coverageEndTime'   => wp_date('c', strtotime(($items['last_update'] ?? '') . ' + 1 hour')),
+		'dateModified'      => $items['last_update'] ?? '',
 		'url'               => $liveblog_url,
 		'publisher'         => $organization
 	);
+
+	$entries = array();
 
 	if (! empty($items['updates'])) {
 		foreach ($items['updates'] as $entry) {
@@ -635,9 +642,7 @@ function mlb_add_meta_data()
 		}
 	}
 
-	wp_reset_postdata();
-
-	$metadata['liveBlogUpdate'] = $entries ?? array();
+	$metadata['liveBlogUpdate'] = $entries;
 
 	$metadata = apply_filters('mlb_liveblog_metadata', $metadata, $post);
 ?>
@@ -649,31 +654,62 @@ function mlb_add_meta_data()
 add_action('wp_head', 'mlb_add_meta_data');
 
 /**
- * Get liveblog feed based on the endpoint url.
+ * 本地构建 liveblog feed（不回源 HTTP 请求自己）。
  *
- * @param string $endpoint
- * @return array
+ * 旧实现用 file_get_contents 请求自身 REST 端点并禁用 SSL 校验：
+ * 每次 wp_head 都产生一次自 HTTP 请求（单进程 FPM 有死锁风险），且无法复用
+ * REST 端点的缓存过滤器。这里直接调用本地构建逻辑，并按 liveblog ID 缓存。
+ *
+ * @param int $liveblog_id
+ * @return array|null
  */
-function mbfun_get_live_liveblog_feed($endpoint)
+function mbfun_get_live_feed_local($liveblog_id)
 {
-	$result = json_decode(
-		file_get_contents(
-			$endpoint,
-			false,
-			stream_context_create(
-				array(
-					'ssl' => array(
-						'verify_peer'      => false,
-						'verify_peer_name' => false,
-					),
-				)
-			)
-		),
-		true
-	);
+	$liveblog_id = absint($liveblog_id);
 
-	return $result;
+	if (! $liveblog_id) {
+		return null;
+	}
+
+	$cache_key = 'mlb_feed_' . $liveblog_id;
+
+	$feed = get_transient($cache_key);
+
+	if (is_array($feed)) {
+		return $feed;
+	}
+
+	// 优先走缓存过滤器（与 REST 端点共享缓存层）。
+	$feed = apply_filters('mlb_feed_from_cache', false, $liveblog_id);
+
+	if (! is_array($feed) || ! $feed) {
+		$liveblog = get_post($liveblog_id);
+
+		if (! $liveblog) {
+			return null;
+		}
+
+		$feed = \MicroLiveblogs\API\FeedFactory::make($liveblog_id);
+
+		do_action('mlb_cache_feed', $liveblog_id, $feed);
+	}
+
+	set_transient($cache_key, $feed, 5 * MINUTE_IN_SECONDS);
+
+	return is_array($feed) ? $feed : null;
 }
+
+/**
+ * 清除本地 feed 缓存。
+ *
+ * @param int $liveblog_id
+ * @return void
+ */
+function mbfu_purge_live_feed_local($liveblog_id)
+{
+	delete_transient('mlb_feed_' . absint($liveblog_id));
+}
+add_action('mlb_purge_feed_cache', 'mbfu_purge_live_feed_local');
 
 /**
  * Return the site datetime format.

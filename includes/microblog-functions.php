@@ -239,15 +239,15 @@ function mbfun_post_fuzzy_time($post_time)
     $diff = current_time('timestamp') - (int) $post_time;
 
     if ($diff < 60) {
-        return '刚刚';
+        return __('just now', MICROBLOG_DOMAIN);
     }
 
     if ($diff < 3600) {
-        return round($diff / 60) . '分钟前';
+        return sprintf(__('%d minutes ago', MICROBLOG_DOMAIN), (int) round($diff / 60));
     }
 
     if ($diff < 86400) {
-        return round($diff / 3600) . '小时前';
+        return sprintf(__('%d hours ago', MICROBLOG_DOMAIN), (int) round($diff / 3600));
     }
 
     if ($diff < YEAR_IN_SECONDS) {

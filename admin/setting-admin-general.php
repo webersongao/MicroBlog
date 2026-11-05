@@ -24,14 +24,14 @@ function microblog_general_setting_admin()
 
     add_settings_section(
         'microblog_general_section_base',
-        '基础设置',
+        __('General', MICROBLOG_DOMAIN),
         'microblog_general_section_base_callback',
         'microblog_general_section_name'
     );
 
     add_settings_field(
         'microblog_module_display',
-        '连载',
+        __('Liveblog', MICROBLOG_DOMAIN),
         'microblog_module_display_input',
         'microblog_general_section_name',
         'microblog_general_section_base'
@@ -73,7 +73,7 @@ add_action('update_option_microblog_general_data', function () {
  */
 function microblog_general_section_base_callback()
 {
-    echo '<p>以下为 MicroBlog 的附属模块，按需启用。</p>';
+    echo '<p>' . esc_html__('Optional MicroBlog modules. Enable the ones you need.', MICROBLOG_DOMAIN) . '</p>';
 }
 
 /**
@@ -87,7 +87,7 @@ function microblog_module_display_input()
     ?>
     <label>
         <input type='checkbox' name='microblog_general_data[msk_liveblog_regist]' value='1' <?php checked((bool) $value, true); ?> />
-        启用（关闭后不会删除数据，也不会导致配置项丢失）
+        <?php esc_html_e('Enable (turning it off keeps your data and settings)', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
 }

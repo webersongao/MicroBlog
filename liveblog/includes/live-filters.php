@@ -54,11 +54,13 @@ function mlb_liveblogs_add_quicklinks($quicklinks)
 
 		$current = isset($_GET['micro_type']) ? 'current' : null;
 
-		$quicklinks['mlb_liveblogs'] = sprintf(
-			'<a href="%s" class="' . $current . '">' . __('连载原文', MICROBLOG_DOMAIN) . ' <span class="count">(%d)</span></a>',
-			admin_url('edit.php?post_type=' . get_query_var('post_type')) . '&amp;micro_type=liveblog',
-			$liveblog_count
-		);
+	$quicklinks['mlb_liveblogs'] = sprintf(
+		'<a href="%1$s" class="%2$s">%3$s <span class="count">(%4$d)</span></a>',
+		esc_url(admin_url('edit.php?post_type=' . get_query_var('post_type') . '&micro_type=liveblog')),
+		esc_attr($current),
+		esc_html(__('Liveblog source', MICROBLOG_DOMAIN)),
+		(int) $liveblog_count
+	);
 	}
 
 	return $quicklinks;
@@ -86,8 +88,10 @@ add_action('init', 'mlb_liveblog_register_quicklink_filters');
  */
 function mlb_liveblog_post_state($post_states, $post)
 {
-	if (mlb_is_liveblog() && mbfun_get_live_liveblog_status() == 'closed') {
-		$post_states[] = __('Closed');
+	if ($post instanceof WP_Post
+		&& get_post_meta($post->ID, '_micro_post_live_enable', true)
+		&& 'closed' === mbfun_get_live_liveblog_status($post->ID)) {
+		$post_states[] = __('Closed', MICROBLOG_DOMAIN);
 	}
 
 	return $post_states;
@@ -149,7 +153,7 @@ add_action('loop_start', 'mlb_apply_title_prefix_filter_condition', 1, 10);
  */
 function mlb_set_show_liveblog_column($columns)
 {
-	$columns['mlb_liveblog'] = __('连载原文', MICROBLOG_DOMAIN);
+	$columns['mlb_liveblog'] = __('Source Liveblog', MICROBLOG_DOMAIN);
 
 	return $columns;
 }
@@ -172,7 +176,7 @@ function mlb_populate_herf_liveblog_column($column, $post_id)
 	if (! empty($liveblog_id)) {
 		$url   = get_edit_post_link($liveblog_id);
 		$title = get_the_title($liveblog_id);
-		echo '<a href="' . $url . '">' . $title . '</a>';
+		echo '<a href="' . esc_url($url) . '">' . esc_html($title) . '</a>';
 	} else {
 		echo '-';
 	}
@@ -230,20 +234,23 @@ function mlb_add_query_var_for_post_filter($query_vars)
 function mlb_add_post_dropdown_filter_to_manage_posts()
 {
 	$current_screen = get_current_screen();
-	$current_screen = get_current_screen();
-	if ('edit' !== $current_screen->base || 'microlive' !== $current_screen->post_type) {
+
+	if (! $current_screen || 'edit' !== $current_screen->base || 'microlive' !== $current_screen->post_type) {
 		return;
 	}
+
 	// 直接渲染下拉菜单
 	$liveblogs = mbfun_get_live_liveblogs_by_status('all');
 
 	echo '<select name="live_id">';
-	echo sprintf('<option value="%s" %s>%s</option>', esc_attr('all'), $true, esc_html('全部连载'));
+	echo '<option value="all">' . esc_html__('All liveblogs', MICROBLOG_DOMAIN) . '</option>';
+
 	foreach ($liveblogs as $liveblog_id => $liveblog_title) {
 		$display_title = mb_strlen($liveblog_title) > 8 ? mb_substr($liveblog_title, 0, 8) . '...' : $liveblog_title;
 		$selected = selected($liveblog_id, get_query_var('live_id'), false);
-		echo sprintf('<option value="%s" %s>%s</option>', esc_attr($liveblog_id), $selected, esc_html($display_title));
+		echo '<option value="' . esc_attr($liveblog_id) . '" ' . $selected . '>' . esc_html($display_title) . '</option>';
 	}
+
 	echo '</select>';
 }
 

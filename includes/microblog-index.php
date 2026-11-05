@@ -46,7 +46,7 @@ function mbfun_register_micropost_type($supports = array(), $microtag = false)
     }
 
     register_post_type('micropost', array(
-        'label'       => __('微博', MICROBLOG_DOMAIN),
+        'label'       => __('Microblog', MICROBLOG_DOMAIN),
         'labels'      => mbfun_get_micropost_labels(),
         'has_archive' => true,
         'public'      => true,
@@ -56,7 +56,7 @@ function mbfun_register_micropost_type($supports = array(), $microtag = false)
         'rewrite'     => array('slug' => mbfun_get_micropost_slug()),
         'supports'    => $supports,
         'show_in_rest' => use_block_editor_for_post_type('post'),
-        'description' => __('通过 MicroBlog 可以快速发布一条微博，再用短代码或小工具展示。', MICROBLOG_DOMAIN),
+        'description' => __('Publish a short microblog with MicroBlog, then show it with a shortcode or a widget.', MICROBLOG_DOMAIN),
     ));
 
     if ($microtag) {
@@ -72,32 +72,32 @@ function mbfun_register_micropost_type($supports = array(), $microtag = false)
 function mbfun_get_micropost_labels()
 {
     return array(
-        'name'                     => __('微博', MICROBLOG_DOMAIN),
-        'menu_name'                => __('微博', MICROBLOG_DOMAIN),
-        'singular_name'            => __('微博', MICROBLOG_DOMAIN),
-        'add_new'                  => __('发微博', MICROBLOG_DOMAIN),
-        'add_new_item'             => __('写微博', MICROBLOG_DOMAIN),
-        'new_item'                 => __('新微博', MICROBLOG_DOMAIN),
-        'all_items'                => __('微博', MICROBLOG_DOMAIN),
-        'view_items'               => __('微博列表', MICROBLOG_DOMAIN),
-        'view_item'                => __('查看微博', MICROBLOG_DOMAIN),
-        'search_items'             => __('搜索微博', MICROBLOG_DOMAIN),
-        'edit_item'                => __('编辑该微博', MICROBLOG_DOMAIN),
-        'not_found'                => __('未找到相关微博', MICROBLOG_DOMAIN),
-        'not_found_in_trash'       => __('回收站中没有微博', MICROBLOG_DOMAIN),
-        'item_updated'             => __('微博已更新', MICROBLOG_DOMAIN),
-        'item_published'           => __('微博已发布', MICROBLOG_DOMAIN),
-        'item_published_privately' => __('该微博已私密发布', MICROBLOG_DOMAIN),
-        'item_reverted_to_draft'   => __('该微博已恢复为草稿', MICROBLOG_DOMAIN),
-        'item_scheduled'           => __('该微博已加入发布计划', MICROBLOG_DOMAIN),
-        'featured_image'           => __('微博头图', MICROBLOG_DOMAIN),
-        'set_featured_image'       => __('设置微博头图', MICROBLOG_DOMAIN),
-        'use_featured_image'       => __('使用微博头图', MICROBLOG_DOMAIN),
-        'remove_featured_image'    => __('移除微博头图', MICROBLOG_DOMAIN),
-        'filter_items_list'        => __('筛选微博列表', MICROBLOG_DOMAIN),
-        'filter_by_date'           => __('按微博日期筛选', MICROBLOG_DOMAIN),
-        'items_list'               => __('微博列表', MICROBLOG_DOMAIN),
-        'items_list_navigation'    => __('微博列表导航', MICROBLOG_DOMAIN),
+        'name'                     => __('Microblog', MICROBLOG_DOMAIN),
+        'menu_name'                => __('Microblog', MICROBLOG_DOMAIN),
+        'singular_name'            => __('Microblog', MICROBLOG_DOMAIN),
+        'add_new'                  => __('New Microblog', MICROBLOG_DOMAIN),
+        'add_new_item'             => __('Write Microblog', MICROBLOG_DOMAIN),
+        'new_item'                 => __('New Microblog', MICROBLOG_DOMAIN),
+        'all_items'                => __('Microblog', MICROBLOG_DOMAIN),
+        'view_items'               => __('Microblog List', MICROBLOG_DOMAIN),
+        'view_item'                => __('View Microblog', MICROBLOG_DOMAIN),
+        'search_items'             => __('Search Microblogs', MICROBLOG_DOMAIN),
+        'edit_item'                => __('Edit Microblog', MICROBLOG_DOMAIN),
+        'not_found'                => __('No microblogs found.', MICROBLOG_DOMAIN),
+        'not_found_in_trash'       => __('No microblogs found in Trash.', MICROBLOG_DOMAIN),
+        'item_updated'             => __('Microblog updated.', MICROBLOG_DOMAIN),
+        'item_published'           => __('Microblog published.', MICROBLOG_DOMAIN),
+        'item_published_privately' => __('Microblog published privately.', MICROBLOG_DOMAIN),
+        'item_reverted_to_draft'   => __('Microblog reverted to draft.', MICROBLOG_DOMAIN),
+        'item_scheduled'           => __('Microblog scheduled.', MICROBLOG_DOMAIN),
+        'featured_image'           => __('Microblog featured image', MICROBLOG_DOMAIN),
+        'set_featured_image'       => __('Set featured image', MICROBLOG_DOMAIN),
+        'use_featured_image'       => __('Use featured image', MICROBLOG_DOMAIN),
+        'remove_featured_image'    => __('Remove featured image', MICROBLOG_DOMAIN),
+        'filter_items_list'        => __('Filter microblog list', MICROBLOG_DOMAIN),
+        'filter_by_date'           => __('Filter by microblog date', MICROBLOG_DOMAIN),
+        'items_list'               => __('Microblog List', MICROBLOG_DOMAIN),
+        'items_list_navigation'    => __('Microblog list navigation', MICROBLOG_DOMAIN),
     );
 }
 
@@ -109,22 +109,22 @@ function mbfun_get_micropost_labels()
 function mbfun_register_micropost_taxonomy()
 {
     register_taxonomy('micropost_topic', 'micropost', array(
-        'label'        => __('微博话题', MICROBLOG_DOMAIN),
+        'label'        => __('Microblog Topics', MICROBLOG_DOMAIN),
         'labels'       => array(
-            'name'                       => __('微博话题', MICROBLOG_DOMAIN),
-            'singular_name'              => __('微博话题', MICROBLOG_DOMAIN),
-            'all_items'                  => __('全部话题', MICROBLOG_DOMAIN),
-            'add_new_item'               => __('添加新话题', MICROBLOG_DOMAIN),
-            'search_items'               => __('搜索话题', MICROBLOG_DOMAIN),
-            'popular_items'              => __('常用话题', MICROBLOG_DOMAIN),
-            'edit_item'                  => __('编辑话题', MICROBLOG_DOMAIN),
-            'view_item'                  => __('查看话题', MICROBLOG_DOMAIN),
-            'update_item'                => __('更新话题', MICROBLOG_DOMAIN),
-            'not_found'                  => __('未找到该话题', MICROBLOG_DOMAIN),
-            'no_terms'                   => __('暂无话题', MICROBLOG_DOMAIN),
-            'choose_from_most_used'      => __('选择已有话题', MICROBLOG_DOMAIN),
-            'separate_items_with_commas' => __('多个话题请用英文逗号（,）分开', MICROBLOG_DOMAIN),
-            'back_to_items'              => __('返回话题列表', MICROBLOG_DOMAIN),
+            'name'                       => __('Microblog Topics', MICROBLOG_DOMAIN),
+            'singular_name'              => __('Microblog Topic', MICROBLOG_DOMAIN),
+            'all_items'                  => __('All Topics', MICROBLOG_DOMAIN),
+            'add_new_item'               => __('Add New Topic', MICROBLOG_DOMAIN),
+            'search_items'               => __('Search Topics', MICROBLOG_DOMAIN),
+            'popular_items'              => __('Popular Topics', MICROBLOG_DOMAIN),
+            'edit_item'                  => __('Edit Topic', MICROBLOG_DOMAIN),
+            'view_item'                  => __('View Topic', MICROBLOG_DOMAIN),
+            'update_item'                => __('Update Topic', MICROBLOG_DOMAIN),
+            'not_found'                  => __('Topic not found.', MICROBLOG_DOMAIN),
+            'no_terms'                   => __('No topics.', MICROBLOG_DOMAIN),
+            'choose_from_most_used'      => __('Choose from the most used topics', MICROBLOG_DOMAIN),
+            'separate_items_with_commas' => __('Separate topics with commas', MICROBLOG_DOMAIN),
+            'back_to_items'              => __('Go to Topics', MICROBLOG_DOMAIN),
         ),
         'public'       => true,
         'show_in_rest' => true,
@@ -133,7 +133,7 @@ function mbfun_register_micropost_taxonomy()
         'show_admin_column' => true,
         'rest_base'    => 'micropost_topics',
         'rewrite'      => array('slug' => 'micropost_topics'),
-        'description'  => __('用话题标签把同一主题的微博串起来。', MICROBLOG_DOMAIN),
+        'description'  => __('Group microblogs on the same subject with topic tags.', MICROBLOG_DOMAIN),
     ));
 }
 
@@ -178,7 +178,7 @@ add_action('pre_get_posts', 'mbfun_customize_main_query');
 function microblog_formart_micropost_feed_title($title, $post_id)
 {
     if ('micropost' === get_post_type($post_id)) {
-        return __('【微博】：', MICROBLOG_DOMAIN) . $title;
+        return __('[Microblog] ', MICROBLOG_DOMAIN) . $title;
     }
 
     return $title;

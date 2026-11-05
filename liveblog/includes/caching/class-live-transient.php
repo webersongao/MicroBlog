@@ -2,6 +2,10 @@
 
 namespace MicroLiveblogs\Caching;
 
+if (! defined('ABSPATH')) {
+	exit;
+}
+
 class TransientCaching {
 	public static function init() {
 		return new self();

@@ -2,6 +2,10 @@
 
 namespace MicroLiveblogs\Caching;
 
+if (! defined('ABSPATH')) {
+	exit;
+}
+
 class ObjectCaching {
 	public static function init() {
 		return new self();

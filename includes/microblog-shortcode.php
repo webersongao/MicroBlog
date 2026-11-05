@@ -124,7 +124,8 @@ function microblog_shortcode($atts)
 
     $out .= "<div class='mb-shortcode-loadmore'>";
     $out .= "<a target='_blank' href='" . esc_url(home_url(mbfun_get_micropost_slug())) . "'>";
-    $out .= "<img src='" . esc_url(mbfun_icon_url('post-more-icon.png')) . "' style='width: 16px; height: 16px;'>&nbsp;查看全部...</a></div>";
+    $out .= "<img src='" . esc_url(mbfun_icon_url('post-more-icon.png')) . "' style='width: 16px; height: 16px;'>&nbsp;"
+        . esc_html__('View all...', MICROBLOG_DOMAIN) . "</a></div>";
     $out .= '</div></div>';
 
     wp_reset_postdata();

@@ -44,8 +44,8 @@ class Microblog_SideWidget extends WP_Widget
     {
         parent::__construct(
             'microblog_widget',
-            '微博',
-            array('description' => '显示最新微博列表。')
+            __('Microblog', MICROBLOG_DOMAIN),
+            array('description' => __('Displays the latest microblogs.', MICROBLOG_DOMAIN))
         );
     }
 
@@ -59,10 +59,10 @@ class Microblog_SideWidget extends WP_Widget
     {
         $instance = wp_parse_args((array) $instance, $this->defaults());
         $fields   = array(
-            'title'       => array('label' => '标题:', 'type' => 'text'),
-            'numberposts' => array('label' => '展示数量:', 'type' => 'text'),
-            'use_excerpt' => array('label' => '是否显示摘要 ?', 'type' => 'checkbox'),
-            'rss'         => array('label' => '是否展示RSS链接?', 'type' => 'checkbox'),
+            'title'       => array('label' => __('Title:', MICROBLOG_DOMAIN), 'type' => 'text'),
+            'numberposts' => array('label' => __('Number of items:', MICROBLOG_DOMAIN), 'type' => 'text'),
+            'use_excerpt' => array('label' => __('Show excerpt?', MICROBLOG_DOMAIN), 'type' => 'checkbox'),
+            'rss'         => array('label' => __('Show RSS link?', MICROBLOG_DOMAIN), 'type' => 'checkbox'),
         );
 
         foreach ($fields as $key => $field) {

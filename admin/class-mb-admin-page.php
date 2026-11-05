@@ -28,13 +28,13 @@ class MB_Admin_Page
     {
         $tabs = array(
             'micropost' => array(
-                'label'        => '微博',
+                'label'        => __('Microblog', MICROBLOG_DOMAIN),
                 'option_group' => 'microblog_micropost_setting_field',
                 'option_name'  => 'theme_microblog_data',
                 'sections'     => array('microblog_micropost_section_name'),
             ),
             'general'   => array(
-                'label'        => '基础设置',
+                'label'        => __('General', MICROBLOG_DOMAIN),
                 'option_group' => 'microblog_genaral_plugin_settings',
                 'option_name'  => 'microblog_general_data',
                 'sections'     => array('microblog_general_section_name'),
@@ -43,7 +43,7 @@ class MB_Admin_Page
 
         if (mbfun_get_general_option('msk_liveblog_regist', false)) {
             $tabs['liveblog'] = array(
-                'label'        => '连载',
+                'label'        => __('Liveblog', MICROBLOG_DOMAIN),
                 'option_group' => 'microblog_liveblog_setting_field',
                 'option_name'  => 'microblog_liveblog_data',
                 'sections'     => array('microblog_liveblog_section_general'),
@@ -122,13 +122,15 @@ class MB_Admin_Page
     {
         $version = mbfun_get_plugin_version();
 
-        echo '<h1 class="wp-heading-inline">微博 MicroBlog</h1>';
+        echo '<h1 class="wp-heading-inline">' . esc_html__('MicroBlog', MICROBLOG_DOMAIN) . '</h1>';
 
         if (strlen((string) $version) > 1) {
             echo '<span class="microblog-version">V' . esc_html($version) . '</span>';
         }
 
-        echo '<p class="microblog-desc">基于 WordPress 的微博 / 说说：发布短内容，用短代码或小工具展示。</p>';
+        echo '<p class="microblog-desc">'
+            . esc_html__('Short-form posts for WordPress, shown with a shortcode or a widget.', MICROBLOG_DOMAIN)
+            . '</p>';
     }
 
     /**
@@ -149,7 +151,7 @@ class MB_Admin_Page
             do_settings_sections($section);
         }
 
-        submit_button('保存设置');
+        submit_button(esc_html__('Save Changes', MICROBLOG_DOMAIN));
         echo '</form>';
     }
 }

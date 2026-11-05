@@ -22,7 +22,7 @@ if (!class_exists('Micro_Liveblog')) {
 
                 self::$instance->includes();
 
-                add_action('plugins_loaded', [self::$instance, 'load_textdomain']);
+                add_action('init', [self::$instance, 'load_textdomain'], 1);
                 add_action('wp_enqueue_scripts', [self::$instance, 'enqueue_assets']);
                 add_action('admin_enqueue_scripts', [self::$instance, 'enqueue_assets']);
                 add_action('init', [self::$instance, 'setup_caching']);
@@ -61,7 +61,7 @@ if (!class_exists('Micro_Liveblog')) {
             if (file_exists($mofile_global)) {
                 load_textdomain(MICROBLOG_DOMAIN, $mofile_global);
             } else {
-                load_plugin_textdomain(MICROBLOG_DOMAIN, false, mbfun_get_plugin_url() . '/languages/');
+                load_plugin_textdomain(MICROBLOG_DOMAIN, false, dirname(MICROBLOG_PLUGIN_BASENAME) . '/languages/');
             }
         }
 
@@ -71,6 +71,25 @@ if (!class_exists('Micro_Liveblog')) {
                 wp_register_script('selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.min.js', ['jquery'], '0.12.4');
                 wp_register_script('mlb-admin', mbfun_get_plugin_url() . 'assets/js/liveblog-admin.js', ['jquery', 'selectize'], mbfun_get_plugin_version());
                 wp_register_style('selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.default.css', null, '0.12.4');
+
+                // 只在出现连载 metabox 的编辑页入队（此前仅注册未入队，selectize 从未生效）。
+                $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+
+                if ($screen && $screen->base === 'post') {
+                    $post_types = array_merge(
+                        ['microlive'],
+                        (array) mbfun_get_live_supported_post_types()
+                    );
+
+                    if (in_array($screen->post_type, array_values(array_unique($post_types)), true)) {
+                        wp_enqueue_script('mlb-admin');
+                        wp_enqueue_style('selectize');
+
+                        wp_localize_script('mlb-admin', 'mlbAdminL10n', [
+                            'selectLiveblog' => __('Please select a liveblog before saving.', MICROBLOG_DOMAIN),
+                        ]);
+                    }
+                }
             } else {
                 if (in_array(get_post_type(), mbfun_get_live_supported_post_types())) {
                     wp_register_script('micro_lb_script', mbfun_get_plugin_url() . 'assets/js/liveblog.js', ['jquery'], mbfun_get_plugin_version());

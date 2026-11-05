@@ -17,7 +17,7 @@ function mlb_liveblog_shortcode( $atts ) {
 	} elseif ( ! empty( $atts['live_id'] ) ) {
 		$liveblog = MLB_Liveblog::mlb_fromId( $atts['live_id'] );
 	} else {
-		return '<p> MicroLive连载 运行异常：live_id 或 endpoint 不可为空 </p>';
+		return '<p>' . esc_html__('MicroLive liveblog error: live_id or endpoint cannot be empty.', MICROBLOG_DOMAIN) . '</p>';
 	}
 
 	return $liveblog->mlb_content_render();

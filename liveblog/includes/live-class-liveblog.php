@@ -14,14 +14,11 @@ class MLB_Liveblog {
 	public $endpoint = null;
 
 	/**
-	 * @deprecated 2.0.0
+	 * The liveblog post ID.
+	 *
+	 * @var int|null
 	 */
 	private $liveblog_post_id = null;
-
-	/**
-	 * @deprecated 2.0.0
-	 */
-	private $showposts;
 
 	/**
 	 * Create instance from liveblog id.
@@ -59,24 +56,6 @@ class MLB_Liveblog {
 	}
 
 	/**
-	 * @deprecated 2.0.0
-	 */
-	public function init() {
-	}
-
-	/**
-	 * @deprecated 2.0.0
-	 */
-	public function theme_body_class( $classes ) {
-	}
-
-	/**
-	 * @deprecated 2.0.0
-	 */
-	public function liveblog( $content ) {
-	}
-
-	/**
 	 * Get the liveblog id if available.
 	 *
 	 * @return int|null
@@ -108,21 +87,21 @@ class MLB_Liveblog {
 			$classes[] = 'mlb-is-editor';
 		}
 
-		$content .= do_action( 'mlb_before_liveblog', $this->mlb_get_liveblog_id(), array() );
+		$liveblog_id = $this->mlb_get_liveblog_id();
 
-		$content .= '<div id="mlb-liveblog" class="' . implode( ' ', $classes ) . '" data-append-timestamp="' . mbfun_get_live_option( 'ml_append_timestamp', false ) . '" data-status="' . mbfun_get_live_liveblog_status() . '" data-highlighted-entry="' . mbfun_get_live_highlighted_entry_id() . '" data-show-entries="' . mbfun_get_live_show_entries() . '" data-endpoint="' . $this->endpoint . '">';
+		do_action( 'mlb_before_liveblog', $liveblog_id, array() );
 
-		$content .= '<div class="mlb-liveblog-closed-message" style="display: none;">' . __( 'The liveblog has ended.', MICROBLOG_DOMAIN ) . '</div>';
+		$content .= '<div id="mlb-liveblog" class="' . esc_attr( implode( ' ', $classes ) ) . '" data-append-timestamp="' . esc_attr( mbfun_get_live_option( 'ml_append_timestamp', false ) ) . '" data-status="' . esc_attr( mbfun_get_live_liveblog_status( $liveblog_id ) ) . '" data-highlighted-entry="' . esc_attr( mbfun_get_live_highlighted_entry_id() ) . '" data-show-entries="' . esc_attr( mbfun_get_live_show_entries() ) . '" data-endpoint="' . esc_url( $this->endpoint ) . '">';
+
+		$content .= '<div class="mlb-liveblog-closed-message" style="display: none;">' . esc_html__( 'The liveblog has ended.', MICROBLOG_DOMAIN ) . '</div>';
 
 		$content .= '<button id="mlb-show-new-posts" class="mlb-button button" style="display: none;"></button>';
 
-		$content .= '<div class="mlb-no-liveblog-entries-message" style="display: none;">' . __( 'No liveblog updates yet.', MICROBLOG_DOMAIN ) . '</div>';
+		$content .= '<div class="mlb-no-liveblog-entries-message" style="display: none;">' . esc_html__( 'No liveblog updates yet.', MICROBLOG_DOMAIN ) . '</div>';
 
 		$content .= '<ul class="mlb-liveblog-list"></ul>';
 
 		$content .= '<div class="mlb-loader">';
-
-		$content .= '<!-- By Gao -->';
 
 		$content .= '<svg width="45" height="45" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
 				<g fill="none" fill-rule="evenodd" transform="translate(1 1)" stroke-width="2">
@@ -165,22 +144,11 @@ class MLB_Liveblog {
 					</circle>
 				</g>';
 		$content .= '</svg></div>';
-		$content .= '<button id="mlb-load-more" style="display: none;" class="mlb-button button">' . __( 'Load more', MICROBLOG_DOMAIN ) . '</button>';
+		$content .= '<button id="mlb-load-more" style="display: none;" class="mlb-button button">' . esc_html__( 'Load more', MICROBLOG_DOMAIN ) . '</button>';
 		$content .= '</div>';
-		$content .= do_action( 'mlb_after_liveblog', $this->mlb_get_liveblog_id(), array() );
+
+		do_action( 'mlb_after_liveblog', $liveblog_id, array() );
 
 		return apply_filters( 'mlb_liveblog_html', $content );
-	}
-
-	/**
-	 * @deprecated 2.0.0
-	 */
-	public function get_posts( $custom_args = array() ) {
-	}
-
-	/**
-	 * @deprecated 2.0.0
-	 */
-	public function post( $post, $args = array() ) {
 	}
 }

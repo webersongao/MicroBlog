@@ -1,13 +1,18 @@
 <?php
 /*
- * Plugin Name: 微博 MicroBlog
+ * Plugin Name: MicroBlog
  * Plugin URI: https://www.webersongao.com/tag/microblog
- * Description: 把 WordPress 当微博用：发布短内容，用短代码或小工具展示。
- * Version: 1.8.0
+ * Description: Use WordPress as a microblog: publish short posts and show them with a shortcode or a widget. (微博 / 说说)
+ * Version: 1.9.0
  * Author: WebersonGao
  * Author URI: https://www.webersongao.com
  * Requires at least: 6.0
  * Requires PHP: 7.4
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: microblog
+ * Domain Path: /languages
+ * Tags: microblog, weibo, short content, liveblog
  * Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
  */
 
@@ -20,8 +25,8 @@ define('MICROBLOG_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('MICROBLOG_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
-define('MICROBLOG_DOMAIN', 'microblogs-lang');
-define('MICROBLOG_VERSION', '1.8.0');
+define('MICROBLOG_DOMAIN', 'microblog');
+define('MICROBLOG_VERSION', '1.9.0');
 
 /*
  * 加载顺序：设置层 → 渲染片段 → 公共函数 → 各功能模块。
@@ -57,6 +62,17 @@ if (is_admin()) {
 add_action('admin_menu', 'microblog_setting_page');
 
 /**
+ * 加载翻译文件（languages/microblog-{locale}.mo）。
+ *
+ * @return void
+ */
+function microblog_load_textdomain()
+{
+    load_plugin_textdomain(MICROBLOG_DOMAIN, false, dirname(MICROBLOG_PLUGIN_BASENAME) . '/languages/');
+}
+add_action('init', 'microblog_load_textdomain', 1);
+
+/**
  * 注册「工具 → 微博设置」。
  *
  * @return void
@@ -64,8 +80,8 @@ add_action('admin_menu', 'microblog_setting_page');
 function microblog_setting_page()
 {
     add_management_page(
-        '微博 MicroBlog - 控制面板',
-        '微博设置',
+        __('MicroBlog - Control Panel', MICROBLOG_DOMAIN),
+        __('MicroBlog Settings', MICROBLOG_DOMAIN),
         'manage_options',
         MICROBLOG_PLUGIN_BASENAME,
         'microblog_admin_settings'
@@ -82,7 +98,8 @@ function microblog_setting_page()
 function microblog_setting_action_links($links, $file)
 {
     if (MICROBLOG_PLUGIN_BASENAME === $file) {
-        $links[] = '<a href="' . esc_url(admin_url('tools.php?page=' . MICROBLOG_PLUGIN_BASENAME)) . '">设置</a>';
+        $links[] = '<a href="' . esc_url(admin_url('tools.php?page=' . MICROBLOG_PLUGIN_BASENAME)) . '">'
+            . esc_html__('Settings', MICROBLOG_DOMAIN) . '</a>';
     }
 
     return $links;

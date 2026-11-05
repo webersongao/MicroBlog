@@ -2,6 +2,10 @@
 
 namespace MicroLiveblogs\API;
 
+if (! defined('ABSPATH')) {
+	exit;
+}
+
 class LiveFeed {
 	/**
 	 * Setup.
