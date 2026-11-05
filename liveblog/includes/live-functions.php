@@ -570,7 +570,8 @@ function mlb_page_contains_liveblog()
  */
 function mlb_add_theme_body_class($classes)
 {
-	if (mlb_is_liveblog()) {
+	// 只在单篇页生效：首页/归档的全局 $post 恰好可能是开启了连载的文章。
+	if (is_singular() && mlb_is_liveblog()) {
 		$classes[] = 'mlb-theme-' . mbfun_get_live_theme();
 	}
 
@@ -587,7 +588,9 @@ function mlb_add_meta_data()
 {
 	global $post;
 
-	if (! mlb_is_liveblog()) {
+	// 结构化数据只输出在单篇页：首页/归档的全局 $post 可能是开启了连载的文章，
+	// 仅凭 mlb_is_liveblog() 判断会在首页误输出 LiveBlogPosting。
+	if (! is_singular() || ! mlb_is_liveblog()) {
 		return;
 	}
 
@@ -622,6 +625,9 @@ function mlb_add_meta_data()
 
 	if (! empty($items['updates'])) {
 		foreach ($items['updates'] as $entry) {
+			// FeedFactory 可能返回 LiveEntry 对象，统一转数组后再按键取值。
+			$entry = (array) $entry;
+
 			$entry_url = add_query_arg('entry', $entry['id'], $liveblog_url);
 
 			$_entry = array(

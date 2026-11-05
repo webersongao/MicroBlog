@@ -276,6 +276,29 @@ function microblog_post_image_lightbox_input() {
     ?>
     </label>
     <?php
+    // Simple Lightbox 未安装且当前用户可安装插件时，提供一键安装/启用入口。
+    if (!defined('SLB_VERSION') && !class_exists('SLB_Lightbox') && current_user_can('install_plugins')) {
+        $slb_installed = file_exists(WP_PLUGIN_DIR . '/simple-lightbox/simple-lightbox.php');
+
+        if ($slb_installed && current_user_can('activate_plugins')) {
+            $slb_url = wp_nonce_url(admin_url('plugins.php?action=activate&plugin=simple-lightbox%2Fsimple-lightbox.php'), 'activate-plugin_simple-lightbox/simple-lightbox.php');
+            $slb_label = __('Activate Simple Lightbox', MICROBLOG_DOMAIN);
+        } elseif (!$slb_installed) {
+            $slb_url = wp_nonce_url(admin_url('update.php?action=install-plugin&plugin=simple-lightbox'), 'install-plugin_simple-lightbox');
+            $slb_label = __('Install Simple Lightbox', MICROBLOG_DOMAIN);
+        } else {
+            $slb_url = '';
+            $slb_label = '';
+        }
+
+        if ($slb_url) {
+            printf(
+                ' <a class="button button-small" href="%s" style="margin-left:8px;">%s</a>',
+                esc_url($slb_url),
+                esc_html($slb_label)
+            );
+        }
+    }
 }
 
 function microblog_post_content_bottom_input() {

@@ -86,6 +86,8 @@ function microblog_module_display_input()
     $value = mbfun_get_general_option('msk_liveblog_regist', false);
     ?>
     <label>
+        <!-- 隐藏域保证取消勾选时 $_POST 里仍有该键，否则整个数组缺失导致保存无效 -->
+        <input type='hidden' name='microblog_general_data[msk_liveblog_regist]' value='0' />
         <input type='checkbox' name='microblog_general_data[msk_liveblog_regist]' value='1' <?php checked((bool) $value, true); ?> />
         <?php esc_html_e('Enable (turning it off keeps your data and settings)', MICROBLOG_DOMAIN); ?>
     </label>

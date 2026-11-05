@@ -94,33 +94,104 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 #quick-micropost-message { color:#2271b1; float: right;}
 
 
-/*  ====== liveblog metabox样式表 ===== */
+/*  ====== liveblog metabox ====== */
 
-.mlb-input-group {
-    display: flex;
-    gap: 20px;
-    margin-top: 12px;
-    max-width: 700px;
-    align-items: center;
+/* 表单区限宽：控件不再被拉到横贯整个 metabox 的一条线上。 */
+.mlb-fields {
+    max-width: 560px;
+}
+
+/* 标签在上、控件在下（长选项与只读链接更适合这种排版）。 */
+.mlb-field {
+    display: grid;
+    gap: 6px;
+    margin: 0 0 16px;
+}
+
+.mlb-field > label {
+    color: #1d2327;
+    font-weight: 600;
+}
+
+.mlb-field > select,
+.mlb-field > input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
 }
 
 .mlb-selectize {
     width: 100%;
 }
 
-.mlb-input-group label {
-    width: 180px;
-    flex-shrink: 0;
+/* 复选框：方框在前、文案在后，符合系统表单习惯。 */
+.mlb-checkbox {
+    margin: 0;
+}
+
+.mlb-checkbox > label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    color: #1d2327;
+}
+
+.mlb-checkbox input[type="checkbox"] {
+    margin: 0;
+}
+
+/* 从属于上级开关的选项：浅灰面板 + 标签左列，用层级说明从属关系。 */
+.mlb-options {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    align-items: center;
+    gap: 12px 16px;
+    margin: 12px 0 0;
+    padding: 14px 16px;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    background: #f6f7f7;
+}
+
+/* [hidden] 必须显式关掉 display，否则会被上面的 grid 覆盖。 */
+.mlb-options[hidden] {
+    display: none;
+}
+
+.mlb-options > label {
+    margin: 0;
+    color: #1d2327;
+}
+
+.mlb-options select {
+    width: auto;
+    min-width: 180px;
+    max-width: 100%;
+    margin: 0;
+    justify-self: start;
+}
+
+.mlb-options-wide {
+    grid-column: 1 / -1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    justify-self: start;
+}
+
+.mlb-options-wide input[type="checkbox"] {
+    margin: 0;
 }
 
 @media screen and (max-width: 600px) {
-    .mlb-input-group {
-        display: block;
+    .mlb-options {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 12px;
     }
 
-    .mlb-input-group label {
-        display: block;
-        margin-bottom: 2px;
-        width: auto;
+    .mlb-options select {
+        width: 100%;
     }
 }

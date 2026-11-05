@@ -400,6 +400,32 @@ function mbfun_get_micropost_tags($post_id = 0)
 }
 
 /** ------------------------------------------------------------------
+ * 占位标题
+ * ----------------------------------------------------------------- */
+
+/**
+ * 微博发布时若无标题，自动补「Microblog: 2026-10-12」占位标题（随站点语言翻译）。
+ *
+ * @param array $data    过滤后的文章数据。
+ * @param array $postarr 原始数据。
+ * @return array
+ */
+function mbfun_micropost_placeholder_title($data, $postarr)
+{
+    if ('micropost' !== $data['post_type'] || '' !== trim((string) $data['post_title'])) {
+        return $data;
+    }
+
+    // 以文章自身发布日期为准（兼容草稿补发/定时发布），本地时区。
+    $date = $data['post_date'] ? mysql2date('Y-m-d', $data['post_date'], false) : current_time('Y-m-d');
+
+    $data['post_title'] = sprintf(__('Microblog: %s', MICROBLOG_DOMAIN), $date);
+
+    return $data;
+}
+add_filter('wp_insert_post_data', 'mbfun_micropost_placeholder_title', 10, 2);
+
+/** ------------------------------------------------------------------
  * 重写规则
  * ----------------------------------------------------------------- */
 
@@ -416,6 +442,8 @@ function mbfun_maybe_flush_rewrite_rules()
         implode(',', $supports),
         MICROBLOG_VERSION,
         (string) get_option('permalink_structure'),
+        // 连载启停会增删 microlive 文章类型的重写规则，必须参与签名。
+        mbfun_get_general_option('msk_liveblog_regist', false) ? 'liveblog-on' : 'liveblog-off',
     )));
 
     if (get_option('microblog_rewrite_signature') === $signature) {

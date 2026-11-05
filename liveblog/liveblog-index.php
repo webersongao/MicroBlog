@@ -39,6 +39,7 @@ if (!class_exists('Micro_Liveblog')) {
                 'live-post-types.php',
                 'live-metabox.php',
                 'live-functions.php',
+                'live-parent-picker.php',
                 'live-shortcodes.php',
                 'live-filters.php',
                 'live-social-logos.php',

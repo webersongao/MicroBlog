@@ -90,24 +90,25 @@ function mlb_render_liveblog_options($post_id)
 
 	do_action('mlb_render_before_liveblog_options', $post_id);
 ?>
-	<div class="mlb-input-group">
-		<label for="mlb-show-liveblogs">
-			<?php esc_html_e('Enable liveblog', MICROBLOG_DOMAIN); ?>
-			<input type="checkbox" name="_micro_post_live_enable" value="1" <?php checked($is_liveblog, '1', true); ?> id="mlb-show-liveblogs">
-		</label>
-		<span class="mlb-liveblog-extra" id="mlb-liveblog-extra"<?php echo empty($is_liveblog) ? ' hidden' : ''; ?>>
-			<label for="mlb-refresh">
-				<?php esc_html_e('Auto Refresh', MICROBLOG_DOMAIN); ?>
+	<div class="mlb-fields">
+		<p class="mlb-checkbox">
+			<label for="mlb-show-liveblogs">
+				<input type="checkbox" name="_micro_post_live_enable" value="1" <?php checked($is_liveblog, '1', true); ?> id="mlb-show-liveblogs">
+				<?php esc_html_e('Enable liveblog', MICROBLOG_DOMAIN); ?>
+			</label>
+		</p>
+		<div class="mlb-options" id="mlb-liveblog-extra"<?php echo empty($is_liveblog) ? ' hidden' : ''; ?>>
+			<label for="mlb_status"><?php esc_html_e('Live Status', MICROBLOG_DOMAIN); ?></label>
+			<select name="_micro_post_live_status" id="mlb_status">
+				<?php foreach (mbfun_get_live_liveblog_status_options() as $option_value => $option_name) { ?>
+					<option value="<?php echo esc_attr($option_value); ?>" <?php selected($option_value, $status, true); ?>><?php echo esc_html($option_name); ?></option>
+				<?php } ?>
+			</select>
+			<label for="mlb-refresh" class="mlb-options-wide">
 				<input type="checkbox" name="_micro_post_live_autoPolling" value="1" <?php checked($refresh, '1', true); ?> id="mlb-refresh">
+				<?php esc_html_e('Auto Refresh', MICROBLOG_DOMAIN); ?>
 			</label>
-			<label for="mlb_status"><?php esc_html_e('Live Status', MICROBLOG_DOMAIN); ?>
-				<select name="_micro_post_live_status" id="mlb_status">
-					<?php foreach (mbfun_get_live_liveblog_status_options() as $option_value => $option_name) { ?>
-						<option value="<?php echo esc_attr($option_value); ?>" <?php selected($option_value, $status, true); ?>><?php echo esc_html($option_name); ?></option>
-					<?php } ?>
-				</select>
-			</label>
-		</span>
+		</div>
 	</div>
 	<?php
 	do_action('mlb_render_after_liveblog_options', $post_id);
@@ -124,6 +125,15 @@ add_action('mlb_liveblog_meta_box_fields', 'mlb_render_liveblog_options', 1);
 			$liveblog = get_post_meta($post_id, '_micro_live_post_id', true);
 			$status   = false;
 
+			// 新建条目：从选择页带 ?mlb_parent=ID 进入时预选原文（仅读取，不落库）。
+			if (empty($liveblog) && isset($_GET['mlb_parent'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- 仅读取用于预填。
+				$prefill = absint($_GET['mlb_parent']);
+
+				if (mlb_is_valid_entry_parent($prefill)) {
+					$liveblog = $prefill;
+				}
+			}
+
 			if (! empty($liveblog)) {
 				$status = mbfun_get_live_liveblog_status($liveblog);
 			}
@@ -134,25 +144,39 @@ add_action('mlb_liveblog_meta_box_fields', 'mlb_render_liveblog_options', 1);
 
 	?>
 
+	<?php if (get_post_meta($post_id, '_micro_live_needs_parent', true)) { ?>
+		<div class="notice notice-error inline">
+			<p><strong><?php esc_html_e('The last publish attempt was blocked.', MICROBLOG_DOMAIN); ?></strong>
+				<?php esc_html_e('A liveblog entry must be linked to a parent liveblog before it can be published. Pick a liveblog below, then publish again.', MICROBLOG_DOMAIN); ?></p>
+		</div>
+	<?php } ?>
+
 	<?php if ($status === 'closed') { ?>
 		<p><?php printf(wp_kses_post(__('This item is attached to a <a href="%s">closed</a> liveblog, Display this when it is open. ', MICROBLOG_DOMAIN)), esc_url(get_edit_post_link($liveblog))); ?></p>
 	<?php } elseif ($liveblogs) { ?>
-		<div class="mlb-input-group">
-			<label for="mlb-liveblog"><?php esc_html_e('Select liveblog', MICROBLOG_DOMAIN); ?></label>
-			<select name="_micro_live_post_id" id="mlb-liveblog" class="mlb-selectize" data-required="1">
-				<option value=""><?php esc_html_e('— Select an entry liveblog —', MICROBLOG_DOMAIN); ?></option>
-				<?php foreach ($liveblogs as $liveblog_id => $liveblog_title) { ?>
-					<option value="<?php echo esc_attr($liveblog_id); ?>" <?php selected($liveblog, $liveblog_id, true); ?>><?php echo esc_html($liveblog_title); ?></option>
-				<?php } ?>
-			</select>
-		</div>
+		<div class="mlb-fields">
+			<p class="mlb-field">
+				<label for="mlb-liveblog"><?php esc_html_e('Select liveblog', MICROBLOG_DOMAIN); ?></label>
+				<select name="_micro_live_post_id" id="mlb-liveblog" class="mlb-selectize" data-required="1">
+					<option value=""><?php esc_html_e('— Select an entry liveblog —', MICROBLOG_DOMAIN); ?></option>
+					<?php foreach ($liveblogs as $liveblog_id => $liveblog_title) { ?>
+						<option value="<?php echo esc_attr($liveblog_id); ?>" <?php selected($liveblog, $liveblog_id, true); ?>><?php echo esc_html($liveblog_title); ?></option>
+					<?php } ?>
+				</select>
+			</p>
 
-		<?php if (! empty($liveblog)) { ?>
-			<div class="mlb-input-group">
-				<label for="mlb-liveblog-entry-link"><?php esc_html_e('Direct link to entry', MICROBLOG_DOMAIN); ?></label>
-				<input type="text" id="mlb-liveblog-entry-link" onclick="this.focus(); this.select()" value="<?php echo esc_url(mbfun_get_live_entry_url($post_id)); ?>" readonly="readonly" class="widefat">
-			</div>
-		<?php } ?>
+			<?php
+			// 直销链接只在条目已落库后显示：新建（含从选择页预填进来的 auto-draft）还没有固定 URL，
+			// 早显示出来的是一个会变的临时 ID，等于死链。
+			$entry_link_ready = ! empty($liveblog) && ! in_array(get_post_status($post_id), array('auto-draft', 'new'), true);
+			?>
+			<?php if ($entry_link_ready) { ?>
+				<p class="mlb-field">
+					<label for="mlb-liveblog-entry-link"><?php esc_html_e('Direct link to entry', MICROBLOG_DOMAIN); ?></label>
+					<input type="text" id="mlb-liveblog-entry-link" onclick="this.focus(); this.select()" value="<?php echo esc_url(mbfun_get_live_entry_url($post_id)); ?>" readonly="readonly" class="widefat">
+				</p>
+			<?php } ?>
+		</div>
 	<?php } else { ?>
 		<p><?php esc_html_e('There is no liveblog created yet.', MICROBLOG_DOMAIN); ?></p>
 		<?php if (! empty($liveblog)) { ?>
@@ -234,12 +258,11 @@ add_action('mlb_liveblog_meta_box_fields', 'mlb_render_liveblog_options', 1);
 		 * @param  int    $post_id
 		 * @param  object $post
 		 */
-		function mlb_entry_meta_box_save($post_id, $post)
-		{
-
-			if (! isset($_POST['mlb_entry_meta_box_nonce']) || ! wp_verify_nonce($_POST['mlb_entry_meta_box_nonce'], basename(__FILE__))) {
-				return;
-			}
+	function mlb_entry_meta_box_save($post_id, $post)
+	{
+		if (! isset($_POST['mlb_entry_meta_box_nonce']) || ! wp_verify_nonce($_POST['mlb_entry_meta_box_nonce'], basename(__FILE__))) {
+			return;
+		}
 
 			if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || (defined('DOING_AJAX') && DOING_AJAX) || isset($_REQUEST['bulk_edit'])) {
 				return;
@@ -276,14 +299,21 @@ add_action('mlb_liveblog_meta_box_fields', 'mlb_render_liveblog_options', 1);
 			mlb_queue_entry_error_notice(
 				__('Liveblog entry saved without a parent liveblog: pick one in the "Liveblog Entry - Source" box and update again, or the entry will not be displayed.', MICROBLOG_DOMAIN)
 			);
-		} elseif (! get_post($liveblog) || 'microlive' !== get_post_type($liveblog)) {
-			// 指向不存在的连载（可能已被删除）。
+		} elseif (! get_post($liveblog)
+			|| ! in_array(get_post_type($liveblog), (array) mbfun_get_live_supported_post_types(), true)
+			|| ! get_post_meta($liveblog, '_micro_post_live_enable', true)) {
+			// 指向不存在或未启用连载的文章（可能已被删除）。
+			// 注意：父级连载可以是任何已开启连载的支持类型文章（普通文章亦可），
+			// 不能限定 microlive 类型，否则下拉框给出的合法选项会被这里清除。
 			delete_post_meta($post_id, '_micro_live_post_id');
 
 			mlb_queue_entry_error_notice(
 				__('The selected liveblog no longer exists. The link has been cleared; please pick a liveblog again.', MICROBLOG_DOMAIN)
 			);
 		} else {
+			// 已关联原文：清掉历史拦截标记。
+			delete_post_meta($post_id, '_micro_live_needs_parent');
+
 			do_action('mlb_purge_feed_cache', $liveblog);
 		}
 	}
@@ -335,6 +365,91 @@ add_action('mlb_liveblog_meta_box_fields', 'mlb_render_liveblog_options', 1);
 		}
 
 		add_action('trashed_post', 'mlb_entry_trash', 10);
+
+	/**
+	 * 连载条目不能脱离原文存在：发布（含绕过前端的请求）时若未关联原文，回退为草稿。
+	 *
+	 * @param int    $post_id 文章 ID。
+	 * @param WP_Post $post    文章对象。
+	 * @return void
+	 */
+	function mlb_enforce_entry_parent($post_id, $post)
+	{
+		static $busy = false;
+
+		if ($busy || wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) {
+			return;
+		}
+
+		if ('microlive' !== get_post_type($post_id) || 'publish' !== get_post_status($post_id)) {
+			return;
+		}
+
+		// 仅拦截编辑器表单提交：REST / 程序化创建的条目允许先建后关联。
+		if (! isset($_POST['mlb_entry_meta_box_nonce'])) {
+			return;
+		}
+
+		if (! empty(get_post_meta($post_id, '_micro_live_post_id', true))) {
+			return;
+		}
+
+		// 正在发布但未选原文：拦回草稿并提示（ metabox 的常规保存已在保存时给出提示）。
+		$busy = true;
+
+		wp_update_post(array(
+			'ID'          => $post_id,
+			'post_status' => 'draft',
+		));
+
+		// 古腾堡下本次拦截发生在 metabox 同步请求里（响应被编辑器丢弃），
+		// 当次提示用户看不到：把原因写进 post meta，下次打开编辑页时醒目展示。
+		update_post_meta($post_id, '_micro_live_needs_parent', '1');
+
+		$busy = false;
+
+		if (is_admin()) {
+			mlb_queue_entry_error_notice(
+				__('A liveblog entry must be linked to a parent liveblog before publishing. The post was saved as a draft; pick a liveblog in the "Select liveblog" box and publish again.', MICROBLOG_DOMAIN)
+			);
+		}
+	}
+	// 注意：save_post_microlive 早于 save_post 触发，必须挂在 save_post 上、
+	// 且优先级高于 metabox 保存（10），否则 meta 尚未写入就会被误判为无原文。
+	add_action('save_post', 'mlb_enforce_entry_parent', 20, 2);
+
+	/**
+	 * 编辑页展示「发布被拦截」的持久提示：古腾堡下拦截请求的响应会被丢弃，
+	 * 当次提示不可见，故通过 post meta 在下次打开编辑页时补告。
+	 *
+	 * @return void
+	 */
+	function mlb_render_needs_parent_notice()
+	{
+		if (! function_exists('get_current_screen')) {
+			return;
+		}
+
+		$screen = get_current_screen();
+
+		if (! $screen || 'post' !== $screen->base || 'microlive' !== $screen->post_type) {
+			return;
+		}
+
+		$post_id = isset($_GET['post']) ? absint($_GET['post']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- 仅读取用于展示。
+
+		if (! $post_id || ! get_post_meta($post_id, '_micro_live_needs_parent', true)) {
+			return;
+		}
+
+		printf(
+			'<div class="notice notice-error"><p><strong>%s</strong> %s</p></div>',
+			esc_html(__('The last publish attempt was blocked.', MICROBLOG_DOMAIN)),
+			esc_html(__('A liveblog entry must be linked to a parent liveblog before it can be published. Pick a liveblog in the "Liveblog Entry - Source" box below, then publish again.', MICROBLOG_DOMAIN))
+		);
+	}
+	add_action('admin_notices', 'mlb_render_needs_parent_notice');
+
 
 	/**
 	 * 列表页行操作：一键开启/关闭连载（免进编辑页）。

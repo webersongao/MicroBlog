@@ -2,27 +2,90 @@
  * Liveblog admin: metabox interactions.
  *
  * 1. 「Enable liveblog」勾选后立即显示 Auto Refresh / Live Status，无需保存刷新。
- * 2. 保存连载条目前校验是否已选择原始连载文章。
+ * 2. 连载条目（microlive）未选择原始连载时，禁止发布：
+ *    - 古腾堡：lockPostSaving 原生锁定发布按钮（含预发布面板，无法绕过）；
+ *    - 经典编辑器：拦截表单提交并弹窗提示。
  */
 jQuery(function ($) {
+	var $select = $('#mlb-liveblog');
+
 	// 勾选「Enable liveblog」即时切换附加选项的显示。
 	$(document).on('change', '#mlb-show-liveblogs', function () {
 		$('#mlb-liveblog-extra').prop('hidden', !this.checked);
 	});
 
-	// 连载条目：未选择原始文章时阻止提交（经典编辑器表单）。
+	function parentSelected() {
+		return !$select.length || !$select.data('required') || !!$select.val();
+	}
+
+	// 经典编辑器：表单提交前拦截。
 	$('form#post').on('submit', function (e) {
-		var $select = $('#mlb-liveblog');
-
-		if (!$select.length || !$select.data('required')) {
-			return;
-		}
-
-		if (!$select.val()) {
+		if (!parentSelected()) {
 			e.preventDefault();
 
 			window.alert(window.mlbAdminL10n ? window.mlbAdminL10n.selectLiveblog : 'Please select a liveblog before saving.');
 			$select.focus();
 		}
 	});
+
+	// 古腾堡：用官方 lockPostSaving 原生锁定（按钮 disabled，预发布面板同样被拦）。
+	function applyGutenbergState() {
+		if (!$select.length || typeof $select.prop !== 'function') {
+			return;
+		}
+
+		if (!window.wp || !window.wp.data) {
+			return;
+		}
+
+		var lockName = 'mlb-entry-parent';
+		var editorDispatch, editorSelect;
+
+		try {
+			editorDispatch = window.wp.data.dispatch('core/editor');
+			editorSelect = window.wp.data.select('core/editor');
+		} catch (err) {
+			return;
+		}
+
+		if (!editorDispatch || typeof editorDispatch.lockPostSaving !== 'function') {
+			return;
+		}
+
+		if (parentSelected()) {
+			if (editorSelect && typeof editorSelect.isPostSavingLocked === 'function'
+				&& editorSelect.isPostSavingLocked()) {
+				editorDispatch.unlockPostSaving(lockName);
+			}
+		} else {
+			editorDispatch.lockPostSaving(lockName);
+		}
+	}
+
+	// 原文切换时立即刷新锁定状态；页面加载后按初始状态应用。
+	if ($select.length) {
+		$select.on('change', applyGutenbergState);
+
+		// 古腾堡脚本与数据 store 就绪有先后，轮询到可用为止。
+		var tries = 0;
+
+		(function waitStore() {
+			applyGutenbergState();
+
+			var locked = false;
+
+			try {
+				locked = window.wp && window.wp.data
+					&& window.wp.data.select('core/editor')
+					&& typeof window.wp.data.select('core/editor').isPostSavingLocked === 'function'
+					&& window.wp.data.select('core/editor').isPostSavingLocked();
+			} catch (err) {
+				locked = false;
+			}
+
+			if (!locked && tries++ < 40) {
+				setTimeout(waitStore, 250);
+			}
+		})();
+	}
 });

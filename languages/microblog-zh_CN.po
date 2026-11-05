@@ -574,7 +574,7 @@ msgstr "连载原文"
 #: liveblog/includes/live-filters.php:94
 #: liveblog/includes/live-functions.php:277
 msgid "Closed"
-msgstr "已关闭"
+msgstr "已完结"
 
 #: liveblog/includes/live-filters.php:156
 msgid "Source Liveblog"
@@ -599,7 +599,7 @@ msgstr "%s 前"
 
 #: liveblog/includes/live-metabox.php:24
 msgid "Liveblog Entry - Source"
-msgstr "连载Live-原文"
+msgstr "连载 · 所属原文"
 
 #: liveblog/includes/live-metabox.php:95 liveblog/includes/live-metabox.php:358
 msgid "Enable liveblog"
@@ -776,3 +776,74 @@ msgstr "分享到 X/Twitter"
 #: templates/sharing.php:13
 msgid "Share via Weibo"
 msgstr "分享到微博"
+
+#: includes/microblog-functions.php
+msgid "Microblog: %s"
+msgstr "微博：%s"
+
+msgid "Install Simple Lightbox"
+msgstr "安装 Simple Lightbox"
+
+msgid "Activate Simple Lightbox"
+msgstr "启用 Simple Lightbox"
+
+#: liveblog/includes/live-metabox.php
+msgid "The last publish attempt was blocked."
+msgstr "上一次发布尝试已被阻止。"
+
+#: liveblog/includes/live-metabox.php
+msgid "A liveblog entry must be linked to a parent liveblog before it can be published. Pick a liveblog in the \"Liveblog Entry - Source\" box below, then publish again."
+msgstr "连载条目必须关联一个连载原文才能发布。请在下方「连载Live-原文」选择框中选定连载，然后再次发布。"
+
+#: liveblog/includes/live-metabox.php
+msgid "A liveblog entry must be linked to a parent liveblog before it can be published. Pick a liveblog below, then publish again."
+msgstr "连载条目必须关联一个连载原文才能发布。请在下方选择连载后重新发布。"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "Select a liveblog source"
+msgstr "选择连载原文"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "A liveblog entry must be attached to a liveblog source (publish or private). Pick one below to start writing."
+msgstr "连载条目必须挂在一篇连载原文（已发布或私密）下。选择一篇即可开始撰写。"
+
+
+#: liveblog/includes/live-parent-picker.php
+msgid "Type"
+msgstr "类型"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "Status"
+msgstr "状态"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "Date"
+msgstr "日期"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "Write entry"
+msgstr "写连载"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "No liveblog sources found."
+msgstr "没有找到连载原文？"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "Open the article you want to follow and check \"Enable liveblog\" in its Liveblog box."
+msgstr "先到对应文章的编辑页，在「Liveblog」框里勾选 Enable liveblog。"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "The source pool is limited to the post types chosen under \"Supported\" in the %s."
+msgstr "候选池仅限于%s里「支持（Supported）」勾选的内容类型。"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "MicroBlog settings"
+msgstr "微博设置"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "Pick none for now — save as draft"
+msgstr "暂不选择，先存草稿"
+
+#: liveblog/includes/live-parent-picker.php
+msgid "The entry stays a draft and cannot be published until a liveblog source is linked."
+msgstr "条目会保存为草稿；在关联连载原文之前无法发布。"

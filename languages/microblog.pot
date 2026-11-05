@@ -813,3 +813,74 @@ msgstr ""
 #: templates/sharing.php:13
 msgid "Share via Weibo"
 msgstr ""
+
+#: includes/microblog-functions.php
+msgid "Microblog: %s"
+msgstr ""
+
+msgid "Install Simple Lightbox"
+msgstr ""
+
+msgid "Activate Simple Lightbox"
+msgstr ""
+
+#: liveblog/includes/live-metabox.php
+msgid "The last publish attempt was blocked."
+msgstr ""
+
+#: liveblog/includes/live-metabox.php
+msgid "A liveblog entry must be linked to a parent liveblog before it can be published. Pick a liveblog in the \"Liveblog Entry - Source\" box below, then publish again."
+msgstr ""
+
+#: liveblog/includes/live-metabox.php
+msgid "A liveblog entry must be linked to a parent liveblog before it can be published. Pick a liveblog below, then publish again."
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php
+msgid "Select a liveblog source"
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "A liveblog entry must be attached to a liveblog source (publish or private). Pick one below to start writing."
+msgstr ""
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "Type"
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "Status"
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "Date"
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "Write entry"
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "No liveblog sources found."
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "Open the article you want to follow and check \"Enable liveblog\" in its Liveblog box."
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "The source pool is limited to the post types chosen under \"Supported\" in the %s."
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "MicroBlog settings"
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "Pick none for now — save as draft"
+msgstr ""
+msgstr ""
+#: liveblog/includes/live-parent-picker.php
+msgid "The entry stays a draft and cannot be published until a liveblog source is linked."
+msgstr ""
