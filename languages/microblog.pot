@@ -29,15 +29,15 @@ msgstr ""
 msgid "Liveblog"
 msgstr ""
 
-#: admin/class-mb-admin-page.php:125
+#: admin/class-mb-admin-page.php:127
 msgid "MicroBlog"
 msgstr ""
 
-#: admin/class-mb-admin-page.php:132
+#: admin/class-mb-admin-page.php:134
 msgid "Short-form posts for WordPress, shown with a shortcode or a widget."
 msgstr ""
 
-#: admin/class-mb-admin-page.php:154
+#: admin/class-mb-admin-page.php:156
 msgid "Save Changes"
 msgstr ""
 
@@ -480,7 +480,7 @@ msgstr ""
 msgid "Load more"
 msgstr ""
 
-#: liveblog/includes/live-filters.php:74 liveblog/includes/live-metabox.php:328
+#: liveblog/includes/live-filters.php:74 liveblog/includes/live-metabox.php:330
 msgid "Liveblog display"
 msgstr ""
 
@@ -525,16 +525,16 @@ msgid "Edit This"
 msgstr ""
 
 #, php-format
-#: liveblog/includes/live-functions.php:860
+#: liveblog/includes/live-functions.php:861
 msgctxt "%s = human-readable time difference"
 msgid "%s ago"
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:25 liveblog/includes/live-metabox.php:156 liveblog/includes/live-metabox.php:315
+#: liveblog/includes/live-metabox.php:25 liveblog/includes/live-metabox.php:158 liveblog/includes/live-metabox.php:317
 msgid "Liveblog Entry - Source"
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:80 liveblog/includes/live-metabox.php:314
+#: liveblog/includes/live-metabox.php:80 liveblog/includes/live-metabox.php:316
 msgid "The last publish attempt was blocked."
 msgstr ""
 
@@ -544,7 +544,7 @@ msgid ""
 "published. Pick a liveblog below, then publish again."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:88 liveblog/includes/live-metabox.php:280
+#: liveblog/includes/live-metabox.php:88 liveblog/includes/live-metabox.php:282
 msgid "Select liveblog"
 msgstr ""
 
@@ -560,49 +560,49 @@ msgstr ""
 msgid "No liveblog sources found."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:156
+#: liveblog/includes/live-metabox.php:158
 msgid ""
 "Liveblog entry saved without a parent liveblog: pick one in the \"Liveblog "
 "Entry - Source\" box and update again, or the entry will not be displayed."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:166
+#: liveblog/includes/live-metabox.php:168
 msgid ""
 "The selected liveblog no longer exists. The link has been cleared; please "
 "pick a liveblog again."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:280
+#: liveblog/includes/live-metabox.php:282
 msgid ""
 "A liveblog entry must be linked to a parent liveblog before publishing. The "
 "post was saved as a draft; pick a liveblog in the \"Select liveblog\" box "
 "and publish again."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:315
+#: liveblog/includes/live-metabox.php:317
 msgid ""
 "A liveblog entry must be linked to a parent liveblog before it can be "
 "published. Pick a liveblog in the \"Liveblog Entry - Source\" box below, "
 "then publish again."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:393
+#: liveblog/includes/live-metabox.php:395
 msgid "Set liveblog display state"
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:456 liveblog/includes/live-parent-picker.php:123
+#: liveblog/includes/live-metabox.php:458 liveblog/includes/live-parent-picker.php:123
 msgid "You are not allowed to do that."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:464
+#: liveblog/includes/live-metabox.php:466
 msgid "Invalid post."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:468
+#: liveblog/includes/live-metabox.php:470
 msgid "Invalid liveblog state."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:472
+#: liveblog/includes/live-metabox.php:474
 msgid "This post has no liveblog entries."
 msgstr ""
 
@@ -822,4 +822,32 @@ msgstr ""
 
 #: liveblog/includes/live-parent-picker.php:271
 msgid "Try another post type, or clear the keyword."
+msgstr ""
+
+#: admin/class-mb-admin-page.php:172 admin/class-mb-admin-page.php:197
+msgid "Database upgrade"
+msgstr ""
+
+#: admin/class-mb-admin-page.php:174
+msgid "Manually migrate legacy option names and setting keys from older versions to the current naming scheme. Safe to run anytime."
+msgstr ""
+
+#: admin/class-mb-admin-page.php:177
+msgid "Run upgrade"
+msgstr ""
+
+#: admin/class-mb-admin-page.php:201
+msgid "Migrated the legacy option \"theme_microblog_data\" to \"microblog_micropost_data\"."
+msgstr ""
+
+#: admin/class-mb-admin-page.php:205
+msgid "Renamed the legacy setting key \"msk_liveblog_regist\" to \"mb_liveblog_regist\"."
+msgstr ""
+
+#: admin/class-mb-admin-page.php:209
+msgid "Database is up to date. Nothing to migrate."
+msgstr ""
+
+#: admin/class-mb-admin-page.php:225
+msgid "You do not have permission to do this."
 msgstr ""

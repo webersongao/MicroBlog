@@ -227,7 +227,7 @@ function mbfun_update_microblog_display_module()
         return;
     }
 
-    if (mbfun_get_general_option('msk_liveblog_regist', false)) {
+    if (mbfun_get_general_option('mb_liveblog_regist', false)) {
         register_post_type('microlive', mbfun_register_liveblog_args());
     } elseif (post_type_exists('microlive')) {
         unregister_post_type('microlive');
@@ -462,7 +462,7 @@ function mbfun_maybe_flush_rewrite_rules()
         MICROBLOG_VERSION,
         (string) get_option('permalink_structure'),
         // 连载启停会增删 microlive 文章类型的重写规则，必须参与签名。
-        mbfun_get_general_option('msk_liveblog_regist', false) ? 'liveblog-on' : 'liveblog-off',
+        mbfun_get_general_option('mb_liveblog_regist', false) ? 'liveblog-on' : 'liveblog-off',
     )));
 
     if (get_option('microblog_rewrite_signature') === $signature) {

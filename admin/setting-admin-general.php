@@ -58,7 +58,7 @@ function microblog_general_data_sanitize($input)
         return mbfun_get_general_settings();
     }
 
-    $input['msk_liveblog_regist'] = empty($input['msk_liveblog_regist']) ? 0 : 1;
+    $input['mb_liveblog_regist'] = empty($input['mb_liveblog_regist']) ? 0 : 1;
 
     if (!isset($input['mb_color_mode']) || !in_array($input['mb_color_mode'], array('light', 'dark', 'auto'), true)) {
         $input['mb_color_mode'] = 'auto';
@@ -71,7 +71,7 @@ function microblog_general_data_sanitize($input)
 add_action('update_option_microblog_general_data', function () {
     mbfun_flush_settings_cache('general');
 
-    if (mbfun_get_general_option('msk_liveblog_regist', false) && !post_type_exists('microlive')) {
+    if (mbfun_get_general_option('mb_liveblog_regist', false) && !post_type_exists('microlive')) {
         mbfun_update_microblog_display_module();
     }
 
@@ -95,12 +95,12 @@ function microblog_general_section_base_callback()
  */
 function microblog_module_display_input()
 {
-    $value = mbfun_get_general_option('msk_liveblog_regist', false);
+    $value = mbfun_get_general_option('mb_liveblog_regist', false);
     ?>
     <label>
         <!-- 隐藏域保证取消勾选时 $_POST 里仍有该键，否则整个数组缺失导致保存无效 -->
-        <input type='hidden' name='microblog_general_data[msk_liveblog_regist]' value='0' />
-        <input type='checkbox' name='microblog_general_data[msk_liveblog_regist]' value='1' <?php checked((bool) $value, true); ?> />
+        <input type='hidden' name='microblog_general_data[mb_liveblog_regist]' value='0' />
+        <input type='checkbox' name='microblog_general_data[mb_liveblog_regist]' value='1' <?php checked((bool) $value, true); ?> />
         <?php esc_html_e('Enable (turning it off keeps your data and settings)', MICROBLOG_DOMAIN); ?>
     </label>
     <?php

@@ -12,7 +12,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 }
 
 $microblog_options = array(
-    'theme_microblog_data',
+    'microblog_micropost_data',
     'microblog_general_data',
     'microblog_liveblog_data',
     'microblog_rewrite_signature',

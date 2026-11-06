@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
 function mbfun_setting_groups()
 {
     return array(
-        'micropost' => 'theme_microblog_data',
+        'micropost' => 'microblog_micropost_data',
         'general'   => 'microblog_general_data',
         'liveblog'  => 'microblog_liveblog_data',
     );

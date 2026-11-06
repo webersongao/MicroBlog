@@ -29,15 +29,15 @@ msgstr "基础设置"
 msgid "Liveblog"
 msgstr "连载"
 
-#: admin/class-mb-admin-page.php:125
+#: admin/class-mb-admin-page.php:127
 msgid "MicroBlog"
 msgstr "微博 MicroBlog"
 
-#: admin/class-mb-admin-page.php:132
+#: admin/class-mb-admin-page.php:134
 msgid "Short-form posts for WordPress, shown with a shortcode or a widget."
 msgstr "基于 WordPress 的微博 / 说说：发布短内容，用短代码或小工具展示。"
 
-#: admin/class-mb-admin-page.php:154
+#: admin/class-mb-admin-page.php:156
 msgid "Save Changes"
 msgstr "保存设置"
 
@@ -482,7 +482,7 @@ msgstr "显示新动态"
 msgid "Load more"
 msgstr "加载更多"
 
-#: liveblog/includes/live-filters.php:74 liveblog/includes/live-metabox.php:328
+#: liveblog/includes/live-filters.php:74 liveblog/includes/live-metabox.php:330
 msgid "Liveblog display"
 msgstr "连载显示"
 
@@ -527,16 +527,16 @@ msgid "Edit This"
 msgstr "编辑"
 
 #, php-format
-#: liveblog/includes/live-functions.php:860
+#: liveblog/includes/live-functions.php:861
 msgctxt "%s = human-readable time difference"
 msgid "%s ago"
 msgstr "%s前"
 
-#: liveblog/includes/live-metabox.php:25 liveblog/includes/live-metabox.php:156 liveblog/includes/live-metabox.php:315
+#: liveblog/includes/live-metabox.php:25 liveblog/includes/live-metabox.php:158 liveblog/includes/live-metabox.php:317
 msgid "Liveblog Entry - Source"
 msgstr "连载 · 所属原文"
 
-#: liveblog/includes/live-metabox.php:80 liveblog/includes/live-metabox.php:314
+#: liveblog/includes/live-metabox.php:80 liveblog/includes/live-metabox.php:316
 msgid "The last publish attempt was blocked."
 msgstr "上一次发布尝试已被阻止。"
 
@@ -546,7 +546,7 @@ msgid ""
 "published. Pick a liveblog below, then publish again."
 msgstr "连载条目必须关联一个连载原文才能发布。请在下方选择连载后重新发布。"
 
-#: liveblog/includes/live-metabox.php:88 liveblog/includes/live-metabox.php:280
+#: liveblog/includes/live-metabox.php:88 liveblog/includes/live-metabox.php:282
 msgid "Select liveblog"
 msgstr "选择连载"
 
@@ -562,7 +562,7 @@ msgstr "条目直链"
 msgid "No liveblog sources found."
 msgstr "没有找到连载原文？"
 
-#: liveblog/includes/live-metabox.php:156
+#: liveblog/includes/live-metabox.php:158
 msgid ""
 "Liveblog entry saved without a parent liveblog: pick one in the \"Liveblog "
 "Entry - Source\" box and update again, or the entry will not be displayed."
@@ -570,13 +570,13 @@ msgstr ""
 "连载条目未选择所属连载：请在「连载Live-原文」中选择一个并重新更新，否则该条目"
 "不会显示。"
 
-#: liveblog/includes/live-metabox.php:166
+#: liveblog/includes/live-metabox.php:168
 msgid ""
 "The selected liveblog no longer exists. The link has been cleared; please "
 "pick a liveblog again."
 msgstr "所选连载已不存在，链接已清除，请重新选择连载。"
 
-#: liveblog/includes/live-metabox.php:280
+#: liveblog/includes/live-metabox.php:282
 msgid ""
 "A liveblog entry must be linked to a parent liveblog before publishing. The "
 "post was saved as a draft; pick a liveblog in the \"Select liveblog\" box "
@@ -585,7 +585,7 @@ msgstr ""
 "连载条目发布前必须关联连载原文。本次已存为草稿，请在「选择原文」框中选择后重"
 "新发布。"
 
-#: liveblog/includes/live-metabox.php:315
+#: liveblog/includes/live-metabox.php:317
 msgid ""
 "A liveblog entry must be linked to a parent liveblog before it can be "
 "published. Pick a liveblog in the \"Liveblog Entry - Source\" box below, "
@@ -594,23 +594,23 @@ msgstr ""
 "连载条目必须关联一个连载原文才能发布。请在下方「连载Live-原文」选择框中选定连"
 "载，然后再次发布。"
 
-#: liveblog/includes/live-metabox.php:393
+#: liveblog/includes/live-metabox.php:395
 msgid "Set liveblog display state"
 msgstr "设置连载显示状态"
 
-#: liveblog/includes/live-metabox.php:456 liveblog/includes/live-parent-picker.php:123
+#: liveblog/includes/live-metabox.php:458 liveblog/includes/live-parent-picker.php:123
 msgid "You are not allowed to do that."
 msgstr "您没有权限执行此操作。"
 
-#: liveblog/includes/live-metabox.php:464
+#: liveblog/includes/live-metabox.php:466
 msgid "Invalid post."
 msgstr "无效的文章。"
 
-#: liveblog/includes/live-metabox.php:468
+#: liveblog/includes/live-metabox.php:470
 msgid "Invalid liveblog state."
 msgstr "无效的连载状态。"
 
-#: liveblog/includes/live-metabox.php:472
+#: liveblog/includes/live-metabox.php:474
 msgid "This post has no liveblog entries."
 msgstr "这篇文章还没有连载条目。"
 
@@ -831,3 +831,31 @@ msgstr "没有匹配的文章。"
 #: liveblog/includes/live-parent-picker.php:271
 msgid "Try another post type, or clear the keyword."
 msgstr "换个文章类型，或清空关键字再试。"
+
+#: admin/class-mb-admin-page.php:172 admin/class-mb-admin-page.php:197
+msgid "Database upgrade"
+msgstr "数据库升级"
+
+#: admin/class-mb-admin-page.php:174
+msgid "Manually migrate legacy option names and setting keys from older versions to the current naming scheme. Safe to run anytime."
+msgstr "手动把旧版本的 option 名与设置键迁移到当前命名规范，可随时重复执行。"
+
+#: admin/class-mb-admin-page.php:177
+msgid "Run upgrade"
+msgstr "执行升级"
+
+#: admin/class-mb-admin-page.php:201
+msgid "Migrated the legacy option \"theme_microblog_data\" to \"microblog_micropost_data\"."
+msgstr "已把旧 option「theme_microblog_data」迁移为「microblog_micropost_data」。"
+
+#: admin/class-mb-admin-page.php:205
+msgid "Renamed the legacy setting key \"msk_liveblog_regist\" to \"mb_liveblog_regist\"."
+msgstr "已把旧设置键「msk_liveblog_regist」改名为「mb_liveblog_regist」。"
+
+#: admin/class-mb-admin-page.php:209
+msgid "Database is up to date. Nothing to migrate."
+msgstr "数据库已是最新，没有需要迁移的键。"
+
+#: admin/class-mb-admin-page.php:225
+msgid "You do not have permission to do this."
+msgstr "你没有执行此操作的权限。"

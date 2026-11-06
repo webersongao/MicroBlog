@@ -793,7 +793,8 @@ function mbfun_get_live_feed_local($liveblog_id)
 		return null;
 	}
 
-	$cache_key = 'mlb_feed_' . $liveblog_id;
+	// 前缀统一为 microblog_（原名 mlb_feed_，2026-11-06 改名，旧键是缓存可自然过期）。
+	$cache_key = 'microblog_liveblog_feed_' . $liveblog_id;
 
 	$feed = get_transient($cache_key);
 
@@ -826,7 +827,7 @@ function mbfun_get_live_feed_local($liveblog_id)
  */
 function mbfun_purge_live_feed_cache($liveblog_id)
 {
-	delete_transient('mlb_feed_' . absint($liveblog_id));
+	delete_transient('microblog_liveblog_feed_' . absint($liveblog_id));
 }
 add_action('mlb_purge_feed_cache', 'mbfun_purge_live_feed_cache');
 

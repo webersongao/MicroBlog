@@ -24,8 +24,8 @@ add_action('admin_init', 'microblog_micropost_setting_admin');
 function microblog_micropost_setting_admin() {
     register_setting(
         'microblog_micropost_setting_field',
-        'theme_microblog_data',
-        'theme_microblog_data_sanitize'
+        'microblog_micropost_data',
+        'microblog_micropost_data_sanitize'
     );
     
     // General settings section
@@ -103,7 +103,7 @@ function microblog_micropost_setting_admin() {
     );
 }
 
-function theme_microblog_data_sanitize($input) {
+function microblog_micropost_data_sanitize($input) {
     if (!is_array($input)) {
         return mbfun_get_micropost_settings();
     }
@@ -115,7 +115,7 @@ function theme_microblog_data_sanitize($input) {
             $input['mb_slug_name'] = $slug_name;
         } else {
             add_settings_error(
-                'theme_microblog_data',
+                'microblog_micropost_data',
                 'invalid-slug',
                 __('Invalid slug. Use lowercase letters and numbers only, 1-20 characters.', MICROBLOG_DOMAIN),
                 'error'
@@ -152,7 +152,7 @@ function microblog_post_title_show_input() {
     $value = isset($options['mb_title_show']) ? $options['mb_title_show'] : false;
     ?>
     <label>
-        <input type='checkbox' name='theme_microblog_data[mb_title_show]' value='1' <?php checked($value, true); ?> />
+        <input type='checkbox' name='microblog_micropost_data[mb_title_show]' value='1' <?php checked($value, true); ?> />
         <?php esc_html_e('Show title', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
@@ -163,16 +163,16 @@ function microblog_post_title_listdate_input() {
     $value = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
     ?>
     <label class="microblog-admin-option-label">
-        <input type='radio' name='theme_microblog_data[mb_date_format]' value='<?php echo esc_attr('date_hide'); ?>' <?php checked($value, 'date_hide'); ?> />
+        <input type='radio' name='microblog_micropost_data[mb_date_format]' value='<?php echo esc_attr('date_hide'); ?>' <?php checked($value, 'date_hide'); ?> />
         <?php esc_html_e('Hide time', MICROBLOG_DOMAIN); ?>
         <!--echo date_i18n('m-d H:i', current_time('timestamp'));-->
     </label>
     <label class="microblog-admin-option-label">
-        <input type='radio' name='theme_microblog_data[mb_date_format]' value='<?php echo esc_attr('date_date'); ?>' <?php checked($value, 'date_date'); ?> />
+        <input type='radio' name='microblog_micropost_data[mb_date_format]' value='<?php echo esc_attr('date_date'); ?>' <?php checked($value, 'date_date'); ?> />
         <?php echo esc_html( date_i18n( get_option('date_format') ) ); ?>
     </label>
     <label class="microblog-admin-option-label">
-        <input type='radio' name='theme_microblog_data[mb_date_format]' value='<?php echo esc_attr('date_human'); ?>' <?php checked($value, 'date_human'); ?> />
+        <input type='radio' name='microblog_micropost_data[mb_date_format]' value='<?php echo esc_attr('date_human'); ?>' <?php checked($value, 'date_human'); ?> />
         <?php esc_html_e('1 minute ago / 3 days ago...', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
@@ -183,7 +183,7 @@ function microblog_post_rss_feed_input() {
     $value = isset($options['mb_rss_feed']) ? $options['mb_rss_feed'] : false;
     ?>
     <label>
-        <input type='checkbox' name='theme_microblog_data[mb_rss_feed]' value='1' <?php checked($value, true); ?> />
+        <input type='checkbox' name='microblog_micropost_data[mb_rss_feed]' value='1' <?php checked($value, true); ?> />
         <?php
         printf(
             /* translators: %s: RSS link. */
@@ -202,15 +202,15 @@ function microblog_post_editor_func_callback() {
     $editor_func = isset($options['mb_editor_func']) ? $options['mb_editor_func'] : array();
     ?>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_author' <?php if (in_array('mb_author', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_author' <?php if (in_array('mb_author', $editor_func)) echo 'checked="checked"'; ?> />
         <?php esc_html_e('Author', MICROBLOG_DOMAIN); ?>
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_excerpt' <?php if (in_array('mb_excerpt', $editor_func)) echo 'checked="checked"'; ?> />
         <?php esc_html_e('Excerpt', MICROBLOG_DOMAIN); ?>
     </label>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='microblog_micropost_data[mb_editor_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
         <?php esc_html_e('Featured image', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
@@ -220,7 +220,7 @@ function microblog_post_slug_name_callback() {
     $options = mbfun_get_micropost_settings();
     $value = isset($options['mb_slug_name']) ? sanitize_title($options['mb_slug_name']) : ''; // 获取已保存的设置值
     ?>
-    <input type='text' name='theme_microblog_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='20' style='width: 120px;' />
+    <input type='text' name='microblog_micropost_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='20' style='width: 120px;' />
     <p class="description"><?php esc_html_e('Letters and numbers only, 1-20 characters. Leave empty to use "microposts".', MICROBLOG_DOMAIN); ?></p>
     <?php
 }
@@ -232,7 +232,7 @@ function microblog_post_title_listNumber_input() {
 
     ?>
     <label>
-        <input type='number' name='theme_microblog_data[mb_codepost_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
+        <input type='number' name='microblog_micropost_data[mb_codepost_num]' value='<?php echo esc_attr($value); ?>' min='3' max='20' />
         &nbsp;<?php echo esc_html__('Number per page (range: 3-20)', MICROBLOG_DOMAIN ); ?>
     </label>
     <?php
@@ -243,7 +243,7 @@ function microblog_post_image_lightbox_input() {
     $value = isset($options['mb_image_lightbox']) ? $options['mb_image_lightbox'] : false;
     ?>
     <label>
-    <input type='checkbox' name='theme_microblog_data[mb_image_lightbox]' value='1' <?php checked($value, true); ?> />
+    <input type='checkbox' name='microblog_micropost_data[mb_image_lightbox]' value='1' <?php checked($value, true); ?> />
     <?php
     printf(
         /* translators: 1: link to the Simple Lightbox plugin, 2: link to a Lightbox explanation. */
@@ -284,7 +284,7 @@ function microblog_post_content_bottom_input() {
     $value = isset($options['mb_content_bottom']) ? $options['mb_content_bottom'] : array();
     ?>
     <label class="microblog-admin-option-label">
-        <input type='checkbox' name='theme_microblog_data[mb_content_bottom][]' value='<?php echo esc_attr('conbottomuser'); ?>' <?php if (in_array('conbottomuser', $value)) echo 'checked="checked"'; ?> />
+        <input type='checkbox' name='microblog_micropost_data[mb_content_bottom][]' value='<?php echo esc_attr('conbottomuser'); ?>' <?php if (in_array('conbottomuser', $value)) echo 'checked="checked"'; ?> />
         <?php esc_html_e('Show avatar', MICROBLOG_DOMAIN); ?>
     </label>
     <?php

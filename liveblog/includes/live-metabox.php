@@ -131,7 +131,9 @@ function mlb_entry_meta_box_save($post_id, $post)
 		return;
 	}
 
-	if ('revision' === $post->post_type || ! current_user_can('edit_posts') || 'microlive' !== $post->post_type) {
+	// 必须按具体文章判权：edit_posts 只保证"能编辑某些文章"，
+	// 拿着别人条目的 post_id 提交也能通过；edit_post 才校验这一篇。
+	if ('revision' === $post->post_type || ! current_user_can('edit_post', $post_id) || 'microlive' !== $post->post_type) {
 		return;
 	}
 

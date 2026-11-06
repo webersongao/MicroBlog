@@ -14,7 +14,7 @@ require_once __DIR__ . '/setting-admin-micropost.php';
 require_once __DIR__ . '/setting-admin-general.php';
 
 // 连载设置依赖连载模块的函数，模块启用时才加载。
-if (mbfun_get_general_option('msk_liveblog_regist', false)) {
+if (mbfun_get_general_option('mb_liveblog_regist', false)) {
     require_once __DIR__ . '/setting-admin-liveblog.php';
 }
 
