@@ -84,6 +84,37 @@ function mbfun_get_general_option($key = '', $default = false)
 }
 
 /**
+ * 前台颜色模式：light / dark / auto。
+ *
+ * 插件所有前台输出（短代码、小工具、连载区块）共用这一个设置，
+ * 避免同一页面上出现两套配色。
+ *
+ * @return string
+ */
+function mbfun_get_color_mode()
+{
+    $mode = mbfun_get_general_option('mb_color_mode', 'auto');
+
+    if (!in_array($mode, array('light', 'dark', 'auto'), true)) {
+        $mode = 'auto';
+    }
+
+    return apply_filters('mbfun_color_mode', $mode);
+}
+
+/**
+ * 容器上的颜色模式属性。
+ *
+ * 只输出属性片段，调用处负责放进标签里。
+ *
+ * @return string
+ */
+function mbfun_color_mode_attr()
+{
+    return ' data-mlb-color-mode="' . esc_attr(mbfun_get_color_mode()) . '"';
+}
+
+/**
  * 连载选项（带过滤器，保持向后兼容）。
  *
  * @return array
@@ -385,18 +416,6 @@ function mbfun_get_plugin_version()
     }
 
     return MICROBLOG_VERSION;
-}
-
-/**
- * 旧接口：话题 HTML。
- *
- * @deprecated 用 mbfun_get_topics_html()。
- * @param int $post_id 文章 ID。
- * @return string
- */
-function mbfun_get_micropost_tags($post_id = 0)
-{
-    return mbfun_get_topics_html($post_id);
 }
 
 /** ------------------------------------------------------------------

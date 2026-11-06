@@ -90,119 +90,292 @@ function mbfun_get_live_templates_dir()
 }
 
 /**
- * Get liveblogs by status.
+ * 连载原文候选池：支持类型下所有已发布/私密文章。
  *
- * @param string $status
- * @return array
+ * 原文资格只由「文章类型 + 发布状态」决定，不再逐篇勾选启用。
+ * $only_with_entries 供后台筛选下拉使用，只返回已被条目引用的文章。
+ *
+ * @param bool $only_with_entries 是否只保留已关联条目的原文。
+ * @return array 文章 ID => 标题。
  */
-function mbfun_get_live_liveblogs_by_status($status)
+function mbfun_get_live_liveblog_sources($only_with_entries = false)
 {
-	$meta_query = array(
-		array(
-			'key'     => '_micro_post_live_enable',
-			'compare' => 'EXISTS',
-		),
-	);
-
-	if ($status === 'closed') {
-		$meta_query[] = array(
-			'key'     => '_micro_post_live_status',
-			'compare' => '=',
-			'value'   => 'closed',
-		);
-	} elseif ($status === 'open') {
-		$meta_query[] = array(
-			'relation' => 'OR',
-			array(
-				'key'     => '_micro_post_live_status',
-				'compare' => 'NOT EXISTS',
-			),
-			array(
-				'key'     => '_micro_post_live_status',
-				'compare' => 'IS',
-				'value'   => 'open',
-			),
-		);
-	} elseif ($status === 'used') {
-		$meta_query[] = array(
-			'key'     => '_micro_live_post_id',
-			'compare' => 'EXISTS',
-		);
-	}
-
 	$args = array(
-		'post_type'   => mbfun_get_live_supported_post_types(),
-		'post_status' => array('publish', 'private'),
-		'showposts'   => -1,
-		'meta_query'  => $meta_query,
+		'post_type'      => mbfun_get_live_supported_post_types(),
+		'post_status'    => array('publish', 'private'),
+		'posts_per_page' => -1,
+		'orderby'        => 'date',
+		'order'          => 'DESC',
+		'no_found_rows'  => true,
 	);
 
-	if ($status === 'all') {
-		$args = apply_filters('mbfun_get_live_liveblogs_args', $args);
-	} else {
-		$args = apply_filters("mbfun_get_live_{$status}_liveblogs_args", $args);
+	if ($only_with_entries) {
+		$entries = get_posts(array(
+			'post_type'      => 'microlive',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			'meta_key'       => '_micro_live_post_id',
+		));
+
+		if (! $entries) {
+			return array();
+		}
+
+		// 一次预取 meta，避免循环里逐条查询。
+		update_meta_cache('post', $entries);
+
+		$parents = array();
+
+		foreach ($entries as $entry_id) {
+			$parent_id = (int) get_post_meta($entry_id, '_micro_live_post_id', true);
+
+			if ($parent_id) {
+				$parents[$parent_id] = $parent_id;
+			}
+		}
+
+		if (! $parents) {
+			return array();
+		}
+
+		$args['post__in'] = array_values($parents);
 	}
 
-	$liveblogs = get_posts($args);
+	$args  = apply_filters('mlb_liveblog_sources_args', $args, $only_with_entries);
+	$posts = get_posts($args);
 
 	$result = array();
 
-	foreach ($liveblogs as $liveblog) {
-		$result[$liveblog->ID] = $liveblog->post_title;
+	foreach ($posts as $source) {
+		$result[$source->ID] = $source->post_title;
 	}
 
-	if ($status === 'all') {
-		return apply_filters('mbfun_get_live_all_liveblogs', $result);
-	}
-
-	return apply_filters("mbfun_get_live_{$status}_liveblogs", $result);
+	return apply_filters('mlb_liveblog_sources', $result, $only_with_entries);
 }
 
 /**
- * Get liveblogs
+ * 连载状态数据层
+ * ---------------------------------------------------------------------
+ * 文章列表页呈现四种状态：
+ *   none    未开启           —— 没有任何连载条目把它作为原文（派生，不可修改）
+ *   off     开启中·不展示    —— 有条目引用，但前台不显示连载区块
+ *   default 开启中·默认展示  —— 有条目引用，前台静态展示，不轮询
+ *                              （即「已完结」，前台不做单独标记）
+ *   auto    开启中·自动刷新  —— 有条目引用，前台展示并轮询新条目
  *
- * Get all published liveblogs
+ * 落库只用一个 meta：_micro_post_live_enable，取值 'default' / 'auto'，
+ * 不存值即 off。旧版二态开关的 '1' 等价 'default'，无需迁移数据。
+ * 「开启中」由条目引用关系派生，不落库，避免两处状态不同步。
+ */
+
+/**
+ * 读取前台显示模式。
+ *
+ * @param int $post_id 原文 ID。
+ * @return string off|default|auto
+ */
+function mlb_get_display_mode($post_id)
+{
+	$value = get_post_meta($post_id, '_micro_post_live_enable', true);
+
+	if ('auto' === $value) {
+		return 'auto';
+	}
+
+	// '1' 是旧版二态开关的显示值，按「默认展示」平滑升级。
+	if ('default' === $value || '1' === $value) {
+		return 'default';
+	}
+
+	return 'off';
+}
+
+/**
+ * 一次性取出所有「已被连载条目引用」的原文 ID。
+ *
+ * 列表页与前台循环都会反复问「这篇有没有条目」，逐篇查会产生 N+1；
+ * 这里同请求内只做一次条目查询 + 一次 meta 预取，之后纯内存判断。
+ * 含草稿/待审/私密条目；回收站条目不算（WP 'any' 语义）。
+ *
+ * @return array 以原文 ID 为键的 map。
+ */
+function mlb_get_liveblog_source_ids()
+{
+	static $map = null;
+
+	if (null !== $map) {
+		return $map;
+	}
+
+	$entries = get_posts(array(
+		'post_type'        => 'microlive',
+		'post_status'      => 'any',
+		'posts_per_page'   => -1,
+		'fields'           => 'ids',
+		'no_found_rows'    => true,
+		'meta_key'         => '_micro_live_post_id',
+		'suppress_filters' => true,
+	));
+
+	$map = array();
+
+	if ($entries) {
+		update_meta_cache('post', $entries);
+
+		foreach ($entries as $entry_id) {
+			$parent_id = (int) get_post_meta($entry_id, '_micro_live_post_id', true);
+
+			if ($parent_id) {
+				$map[$parent_id] = true;
+			}
+		}
+	}
+
+	return $map;
+}
+
+/**
+ * 这篇文章是否已被连载条目作为原文引用。
+ *
+ * @param int $post_id 文章 ID。
+ * @return bool
+ */
+function mlb_has_liveblog_entries($post_id)
+{
+	$map = mlb_get_liveblog_source_ids();
+
+	return ! empty($map[(int) $post_id]);
+}
+
+/**
+ * 列表页四态的状态键。
+ *
+ * @param int $post_id 文章 ID。
+ * @return string none|off|default|auto
+ */
+function mlb_get_liveblog_state($post_id)
+{
+	if (! mlb_has_liveblog_entries($post_id)) {
+		return 'none';
+	}
+
+	return mlb_get_display_mode($post_id);
+}
+
+/**
+ * 四态的完整文案。
  *
  * @return array
  */
-function mbfun_get_live_all_liveblogs()
+function mlb_get_liveblog_state_labels()
 {
-	return mbfun_get_live_liveblogs_by_status('all');
+	return array(
+		'none'    => __('Not enabled', MICROBLOG_DOMAIN),
+		'off'     => __('Active · Hidden', MICROBLOG_DOMAIN),
+		'default' => __('Active · Default display', MICROBLOG_DOMAIN),
+		'auto'    => __('Active · Auto refresh', MICROBLOG_DOMAIN),
+	);
 }
 
 /**
- * Get liveblogs count
+ * 可切换三态的短标签（列内链接用）。
+ *
+ * @return array
+ */
+function mlb_get_display_mode_labels()
+{
+	return array(
+		'off'     => __('Hidden', MICROBLOG_DOMAIN),
+		'default' => __('Default display', MICROBLOG_DOMAIN),
+		'auto'    => __('Auto refresh', MICROBLOG_DOMAIN),
+	);
+}
+
+/**
+ * 已在前台展示连载区块的原文 ID 列表。
+ *
+ * 快速筛选的数字与筛选结果共用这里，保证两者一致。
+ *
+ * @param string|null $post_type 只保留该文章类型。
+ * @return array
+ */
+function mlb_get_displaying_source_ids($post_type = null)
+{
+	$sources = mbfun_get_live_liveblog_sources(true);
+
+	if (! $sources) {
+		return array();
+	}
+
+	// 一次预取所有原文的 meta，避免逐条 get_post_meta 查询。
+	update_meta_cache('post', array_keys($sources));
+
+	$ids = array();
+
+	foreach (array_keys($sources) as $source_id) {
+		if ('off' === mlb_get_display_mode($source_id)) {
+			continue;
+		}
+
+		if ($post_type && get_post_type($source_id) !== $post_type) {
+			continue;
+		}
+
+		$ids[] = (int) $source_id;
+	}
+
+	return $ids;
+}
+
+/**
+ * 前台显示连载区块的文章数（列表页快速筛选用）。
+ *
+ * @param array $args 可带 post_type。
+ * @return int
+ */
+function mbfun_get_live_display_count($args = array())
+{
+	$post_type = ! empty($args['post_type']) ? $args['post_type'] : null;
+
+	$count = count(mlb_get_displaying_source_ids($post_type));
+
+	return (int) apply_filters('mlb_display_count', $count, $args);
+}
+
+/**
+ * 自动刷新轮询间隔（秒），全局统一，范围 10–300。
  *
  * @return int
  */
-function mbfun_get_live_liveblogs_count($args = array())
+function mbfun_get_live_update_interval()
 {
-	$default_args = apply_filters(
-		'mbfun_get_live_liveblogs_count_args',
-		array(
-			'post_status' => array('publish', 'private', 'draft', 'future', 'trash'),
-			'all_posts'   => 1,
-			'post_type'   => mbfun_get_live_supported_post_types(),
-			'meta_query'  => array(
-				array(
-					'key'     => '_micro_post_live_enable',
-					'compare' => 'EXISTS',
-				),
-			),
-		)
-	);
+	$seconds = (int) mbfun_get_live_option('ml_auto_refresh_interval', 30);
 
-	$args = wp_parse_args($args, $default_args);
+	if ($seconds < 10 || $seconds > 300) {
+		$seconds = 30;
+	}
 
-	$result = new WP_Query($args);
-
-	return $result->found_posts;
+	return (int) apply_filters('mlb_update_interval', $seconds);
 }
 
 /**
- * Is liveblog
+ * 这篇文章是否启用了前台自动刷新。
  *
- * Checks if post is liveblog.
+ * @param int $post_id 文章 ID。
+ * @return bool
+ */
+function mlb_has_auto_refresh($post_id)
+{
+	return mlb_has_liveblog_entries($post_id) && 'auto' === mlb_get_display_mode($post_id);
+}
+
+/**
+ * 前台是否在这篇文章下方显示连载区块。
+ *
+ * 同时要求「有条目引用」与「显示模式非 off」：没有条目的文章不再挂空区块。
+ * 一篇文章能否作为连载原文不受影响：原文资格只看类型与发布状态。
  *
  * @return boolean
  */
@@ -212,29 +385,13 @@ function mlb_is_liveblog()
 
 	$is_liveblog = false;
 
-	if (! empty($post->ID)) {
-		if (get_post_meta($post->ID, '_micro_post_live_enable', true)) {
-			$is_liveblog = true;
-		}
+	if (! empty($post->ID)
+		&& mlb_has_liveblog_entries($post->ID)
+		&& 'off' !== mlb_get_display_mode($post->ID)) {
+		$is_liveblog = true;
 	}
 
 	return apply_filters('mlb_is_liveblog', $is_liveblog);
-}
-
-/**
- * Get liveblog status
- *
- * @param  int $post_id
- * @return string
- */
-function mbfun_get_live_liveblog_status($post_id = null)
-{
-	if (! $post_id) {
-		global $post;
-		$post_id = $post->ID;
-	}
-
-	return get_post_meta($post_id, '_micro_post_live_status', true);
 }
 
 /**
@@ -261,22 +418,6 @@ function mbfun_get_live_liveblog($post_id = null)
 function mbfun_get_live_liveblog_api_endpoint($id)
 {
 	return apply_filters('mlb_liveblog_api_endpoint', get_rest_url(null, "microlives/v1/liveblog/{$id}"), $id);
-}
-
-/**
- * Liveblog status options
- *
- * @return array
- */
-function mbfun_get_live_liveblog_status_options()
-{
-	return apply_filters(
-		'mlb_liveblog_status_options',
-		array(
-			'open'   => __('Open', MICROBLOG_DOMAIN),
-			'closed' => __('Closed', MICROBLOG_DOMAIN),
-		)
-	);
 }
 
 // get_post_types
@@ -309,40 +450,6 @@ function mbfun_get_live_supported_post_types()
 	$post_types = !empty($mlb_options['ml_post_types']) ? $mlb_options['ml_post_types'] : array('post');
 
 	return apply_filters('mlb_post_types', $post_types);
-}
-
-/**
- * Get update interval
- *
- * @return string
- */
-function mbfun_get_live_update_interval()
-{
-	$mlb_options = mbfun_get_liveblog_settings();
-
-	$update_interval = ! empty($mlb_options['ml_update_interval']) ? $mlb_options['ml_update_interval'] : 30;
-
-	return apply_filters('mlb_update_interval', $update_interval);
-}
-
-/**
- * Get is Auto update
- *
- * @return string
- */
-function mbfun_get_live_update_autoPolling()
-{
-	global $post;
-	$mlb_options = mbfun_get_liveblog_settings();
-
-	$auto = ! empty($mlb_options['ml_display_autopolling']) ? true : false;
-
-	if ($auto && isset($post) && isset($post->ID)) {
-		$post_id = $post->ID;
-		return get_post_meta($post_id, '_micro_post_live_autoPolling', true);
-	}
-
-	return false;
 }
 
 /**
@@ -395,13 +502,18 @@ function mbfun_get_live_show_entries()
  *
  * @return string
  */
+/**
+ * 连载区块的配色（历史函数名保留）。
+ *
+ * 配色自 1.9.1 起由插件级「颜色模式」统一管理，返回 light / dark / auto，
+ * 仅用于输出 mlb-theme-* 类名供第三方 CSS 定位；实际颜色走 --mlb-* 令牌，
+ * 见 assets/css/liveblog.css。
+ *
+ * @return string
+ */
 function mbfun_get_live_theme()
 {
-	$mlb_options = mbfun_get_liveblog_settings();
-
-	$theme = ! empty($mlb_options['ml_theme_style']) ? $mlb_options['ml_theme_style'] : 'light';
-
-	return apply_filters('mlb_theme', $theme);
+    return apply_filters('mlb_theme', mbfun_get_color_mode());
 }
 
 /**
@@ -660,11 +772,15 @@ function mlb_add_meta_data()
 add_action('wp_head', 'mlb_add_meta_data');
 
 /**
- * 本地构建 liveblog feed（不回源 HTTP 请求自己）。
+ * 构建 liveblog feed（不回源 HTTP 请求自己）。
  *
  * 旧实现用 file_get_contents 请求自身 REST 端点并禁用 SSL 校验：
- * 每次 wp_head 都产生一次自 HTTP 请求（单进程 FPM 有死锁风险），且无法复用
- * REST 端点的缓存过滤器。这里直接调用本地构建逻辑，并按 liveblog ID 缓存。
+ * 每次 wp_head 都产生一次自 HTTP 请求（单进程 FPM 有死锁风险）。
+ *
+ * 全站只有这一层缓存：按 liveblog ID 存 5 分钟 transient，
+ * 前台轮询（默认 30 秒一次）与页头结构化数据共用同一份。
+ * 条目增删改会触发 mlb_purge_feed_cache 立即失效，5 分钟只是兜底上限——
+ * 万一漏了某条失效路径，最多脏 5 分钟，不会像固定 TTL 那样一直错下去。
  *
  * @param int $liveblog_id
  * @return array|null
@@ -685,37 +801,34 @@ function mbfun_get_live_feed_local($liveblog_id)
 		return $feed;
 	}
 
-	// 优先走缓存过滤器（与 REST 端点共享缓存层）。
-	$feed = apply_filters('mlb_feed_from_cache', false, $liveblog_id);
+	$liveblog = get_post($liveblog_id);
 
-	if (! is_array($feed) || ! $feed) {
-		$liveblog = get_post($liveblog_id);
+	if (! $liveblog) {
+		return null;
+	}
 
-		if (! $liveblog) {
-			return null;
-		}
+	$feed = \MicroLiveblogs\API\FeedFactory::make($liveblog_id);
 
-		$feed = \MicroLiveblogs\API\FeedFactory::make($liveblog_id);
-
-		do_action('mlb_cache_feed', $liveblog_id, $feed);
+	if (! is_array($feed)) {
+		return null;
 	}
 
 	set_transient($cache_key, $feed, 5 * MINUTE_IN_SECONDS);
 
-	return is_array($feed) ? $feed : null;
+	return $feed;
 }
 
 /**
- * 清除本地 feed 缓存。
+ * 清除 feed 缓存：条目变更、切换连载状态时触发。
  *
  * @param int $liveblog_id
  * @return void
  */
-function mbfu_purge_live_feed_local($liveblog_id)
+function mbfun_purge_live_feed_cache($liveblog_id)
 {
 	delete_transient('mlb_feed_' . absint($liveblog_id));
 }
-add_action('mlb_purge_feed_cache', 'mbfu_purge_live_feed_local');
+add_action('mlb_purge_feed_cache', 'mbfun_purge_live_feed_cache');
 
 /**
  * Return the site datetime format.
@@ -740,7 +853,9 @@ function mbfun_get_live_entry_display_date()
 
 	$display = mbfun_get_live_option('ml_entry_date_format', 'human');
 
-	if ($display === 'human') {
+	// 白名单判断，不用「不等于 human 就当日历」那种写法：
+	// 旧版本把「相对时间」存成空串，那种写法会让它落到「日期与时间」分支。
+	if (! in_array($display, array('date', 'time', 'datetime'), true)) {
 	?>
 		<time class="mlb-js-update-time" datetime="<?php echo get_the_time('Y-m-d H:i'); ?>"><?php printf(_x('%s ago', '%s = human-readable time difference', MICROBLOG_DOMAIN), human_time_diff(get_the_time('U'), current_time('timestamp'))); ?></time>
 	<?php

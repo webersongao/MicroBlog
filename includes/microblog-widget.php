@@ -148,7 +148,7 @@ class Microblog_SideWidget extends WP_Widget
 
         echo $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-        echo "<ul class='microblog-widget'>";
+        echo "<ul class='microblog-widget'" . mbfun_color_mode_attr() . '>';
 
         while ($query->have_posts()) {
             $query->the_post();

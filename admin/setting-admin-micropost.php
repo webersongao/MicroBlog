@@ -44,13 +44,6 @@ function microblog_micropost_setting_admin() {
         'microblog_micropost_section_base'
     );
     add_settings_field(
-        'microblog_post_micro_foward',
-        __('Repost', MICROBLOG_DOMAIN),
-        'microblog_post_micro_foward_input',
-        'microblog_micropost_section_name',
-        'microblog_micropost_section_base'
-    );
-    add_settings_field(
         'microblog_post_rss_feed',
         __('RSS Feed', MICROBLOG_DOMAIN),
         'microblog_post_rss_feed_input',
@@ -185,17 +178,6 @@ function microblog_post_title_listdate_input() {
     <?php
 }
 
-function microblog_post_micro_foward_input() {
-    $options = mbfun_get_micropost_settings();
-    $value = isset($options['mb_foward_enable']) ? $options['mb_foward_enable'] : false;
-    ?>
-    <label>
-        <input type='checkbox' name='theme_microblog_data[mb_foward_enable]' value='1' <?php checked($value, true); ?> />
-        <?php esc_html_e('Enable reposting', MICROBLOG_DOMAIN); ?>
-    </label>
-    <?php
-}
-
 function microblog_post_rss_feed_input() {
     $options = mbfun_get_micropost_settings();
     $value = isset($options['mb_rss_feed']) ? $options['mb_rss_feed'] : false;
@@ -230,10 +212,6 @@ function microblog_post_editor_func_callback() {
     <label class="microblog-admin-option-label">
         <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_thumbnail' <?php if (in_array('mb_thumbnail', $editor_func)) echo 'checked="checked"'; ?> />
         <?php esc_html_e('Featured image', MICROBLOG_DOMAIN); ?>
-    </label>
-    <label class="microblog-admin-option-label">
-        <input type='checkbox' name='theme_microblog_data[mb_editor_func][]' value='mb_posttag' <?php if (in_array('mb_posttag', $editor_func)) echo 'checked="checked"'; ?> />
-        <?php esc_html_e('Microblog topics', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
 }
@@ -308,10 +286,6 @@ function microblog_post_content_bottom_input() {
     <label class="microblog-admin-option-label">
         <input type='checkbox' name='theme_microblog_data[mb_content_bottom][]' value='<?php echo esc_attr('conbottomuser'); ?>' <?php if (in_array('conbottomuser', $value)) echo 'checked="checked"'; ?> />
         <?php esc_html_e('Show avatar', MICROBLOG_DOMAIN); ?>
-    </label>
-    <label>
-        <input type='checkbox' name='theme_microblog_data[mb_content_bottom][]' value='<?php echo esc_attr('conbottomtag'); ?>' <?php if (in_array('conbottomtag', $value)) echo 'checked="checked"'; ?> />
-        <?php esc_html_e('Show topics', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
 }

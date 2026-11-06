@@ -1,7 +1,93 @@
+/*
+ * MicroBlog 连载区块样式。
+ *
+ * 分两层：
+ *   1. 结构层（间距、时间线圆点、按钮位置）—— 与配色无关；
+ *   2. 颜色层 —— 全部走 --mlb-* 令牌，令牌由 data-mlb-color-mode 决定。
+ *
+ * 颜色模式：
+ *   light / dark  插件设置里明确指定，覆盖宿主主题；
+ *   auto          宿主主题有 data-color-mode 时跟随主题，
+ *                 没有时跟随设备（prefers-color-scheme），纯 CSS 完成。
+ *
+ * 为什么 auto 要分三步：主题的 auto 也走媒体查询，服务端不知道访客偏好，
+ * 所以插件必须复用同一套「属性 + 媒体查询」判断，否则会出现深色页面里
+ * 嵌一块浅色区块。
+ */
+
+/* ---------- 令牌：浅色 ---------- */
+.mlb-liveblog {
+	--mlb-line: #bbb;
+	--mlb-dot-bg: #eee;
+	--mlb-dot-border: #ddd;
+	--mlb-muted: #767676;
+	--mlb-button-border: #e6e6e6;
+	--mlb-button-text: #767676;
+	--mlb-share: rgba(0, 0, 0, .5);
+	--mlb-share-hover: rgba(0, 0, 0, .95);
+	--mlb-highlight: #fefcbf;
+	--mlb-edit-bg: #efedf1;
+	--mlb-edit-border: #bbb;
+	--mlb-edit-text: #595959;
+}
+
+/* ---------- 令牌：深色（插件设置里明确选深色） ---------- */
+.mlb-liveblog[data-mlb-color-mode="dark"] {
+	--mlb-line: #3f3f3f;
+	--mlb-dot-bg: #232323;
+	--mlb-dot-border: #4a4a4a;
+	--mlb-muted: #8e8e8e;
+	--mlb-button-border: #2e2e2e;
+	--mlb-button-text: #8e8e8e;
+	--mlb-share: rgba(255, 255, 255, .55);
+	--mlb-share-hover: rgba(255, 255, 255, .95);
+	--mlb-highlight: rgba(255, 214, 102, .16);
+	--mlb-edit-bg: #232323;
+	--mlb-edit-border: #4a4a4a;
+	--mlb-edit-text: #9a9a9a;
+}
+
+/* ---------- 令牌：auto 且宿主主题已解析为深色 ---------- */
+[data-color-mode="dark"] .mlb-liveblog[data-mlb-color-mode="auto"] {
+	--mlb-line: #3f3f3f;
+	--mlb-dot-bg: #232323;
+	--mlb-dot-border: #4a4a4a;
+	--mlb-muted: #8e8e8e;
+	--mlb-button-border: #2e2e2e;
+	--mlb-button-text: #8e8e8e;
+	--mlb-share: rgba(255, 255, 255, .55);
+	--mlb-share-hover: rgba(255, 255, 255, .95);
+	--mlb-highlight: rgba(255, 214, 102, .16);
+	--mlb-edit-bg: #232323;
+	--mlb-edit-border: #4a4a4a;
+	--mlb-edit-text: #9a9a9a;
+}
+
+/* ---------- 令牌：auto + 设备深色（宿主无颜色模式时同样生效） ---------- */
+@media (prefers-color-scheme: dark) {
+	[data-color-mode="auto"] .mlb-liveblog[data-mlb-color-mode="auto"],
+	html:not([data-color-mode]) .mlb-liveblog[data-mlb-color-mode="auto"] {
+		--mlb-line: #3f3f3f;
+		--mlb-dot-bg: #232323;
+		--mlb-dot-border: #4a4a4a;
+		--mlb-muted: #8e8e8e;
+		--mlb-button-border: #2e2e2e;
+		--mlb-button-text: #8e8e8e;
+		--mlb-share: rgba(255, 255, 255, .55);
+		--mlb-share-hover: rgba(255, 255, 255, .95);
+		--mlb-highlight: rgba(255, 214, 102, .16);
+		--mlb-edit-bg: #232323;
+		--mlb-edit-border: #4a4a4a;
+		--mlb-edit-text: #9a9a9a;
+	}
+}
+
+/* ---------- 结构 ---------- */
 ul.mlb-liveblog-list {
 	list-style: none;
 	margin: 0;
 	padding: 0 0 0 30px;
+	border-left: 1px dotted var(--mlb-line);
 }
 
 .mlb-liveblog .mlb-liveblog-post {
@@ -24,19 +110,116 @@ ul.mlb-liveblog-list {
 	line-height: 11px;
 	font-size: 11px;
 	border-radius: 50%;
+	background-color: var(--mlb-dot-bg);
+	border: 3px solid var(--mlb-dot-border);
+}
+
+.mlb-liveblog-bottom {
+	margin-top: 15px;
+	padding-bottom: 20px;
+}
+
+.mlb-liveblog-action-share {
+	float: right;
+}
+
+.mlb-liveblog-action-share a {
+	display: inline-block;
+	color: var(--mlb-share);
+}
+
+.mlb-liveblog-action-share a:hover {
+	color: var(--mlb-share-hover);
+}
+
+.mlb-liveblog-content {
+	width: 100%;
+	overflow: hidden;
+}
+
+.mlb-liveblog-content p:last-of-type {
+	margin-bottom: 0;
+}
+
+.mlb-no-liveblog-entries-message {
+	font-style: italic;
+	margin: 15px 0;
+}
+
+/* 编辑器内联编辑入口：只在 mlb-is-editor 下出现 */
+.mlb-liveblog-action-edit {
+	float: left;
+	width: 40px;
+	height: 20px;
+	font-size: 12px;
+	margin-top: 2px;
+	margin-right: 10px;
+	border: 1px solid var(--mlb-edit-border);
+	background: var(--mlb-edit-bg);
+	border-radius: 3px;
+	text-align: center;
+}
+
+.mlb-liveblog-action-edit a {
+	display: block;
+	color: var(--mlb-edit-text);
 }
 
 .mlb-is-editor .mlb-liveblog-action-edit {
 	display: block;
 }
 
+.mlb-liveblog-head {
+	height: 24px;
+	font-size: 14px;
+	margin-bottom: 10px;
+}
+
+.mlb-liveblog-head .mlb-liveblog-post-title {
+	float: left;
+	margin-right: 10px;
+}
+
+.mlb-liveblog-head .mlb-liveblog-post-time {
+	float: right;
+	margin: 0;
+	padding: 0;
+	font-size: 14px !important;
+	color: var(--mlb-muted);
+}
+
+.mlb-liveblog-post-author {
+	float: left;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-right: 10px;
+}
+
+.mlb-liveblog-post-author-name {
+	font-size: 13px;
+	margin-left: 8px;
+}
+
+.mlb-liveblog-post-author-avatar img {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	vertical-align: middle;
+}
+
 .mlb-hide {
 	display: none;
 }
 
+.mlb-button {
+	color: var(--mlb-button-text);
+}
+
+/* ---------- 交互 ---------- */
 @keyframes mlb-liveblog-highlight {
 	0% {
-		background: #fefcbf;
+		background: var(--mlb-highlight);
 	}
 
 	100% {
@@ -49,7 +232,13 @@ ul.mlb-liveblog-list {
 }
 
 #mlb-load-more {
-	/* border: 0; */
-	border: 1px solid #e6e6e6;
+	border: 1px solid var(--mlb-button-border);
 	margin-top: 10px;
+}
+
+/* 轮询发现新条目时才由 JS 显示；与「Load more」并排时留出间距。 */
+#mlb-show-new-posts {
+	border: 1px solid var(--mlb-button-border);
+	margin-top: 10px;
+	margin-right: 8px;
 }

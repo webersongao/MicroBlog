@@ -1,18 +1,12 @@
 /**
  * Liveblog admin: metabox interactions.
  *
- * 1. 「Enable liveblog」勾选后立即显示 Auto Refresh / Live Status，无需保存刷新。
- * 2. 连载条目（microlive）未选择原始连载时，禁止发布：
+ * 1. 连载条目（microlive）未选择原始连载时，禁止发布：
  *    - 古腾堡：lockPostSaving 原生锁定发布按钮（含预发布面板，无法绕过）；
  *    - 经典编辑器：拦截表单提交并弹窗提示。
  */
 jQuery(function ($) {
 	var $select = $('#mlb-liveblog');
-
-	// 勾选「Enable liveblog」即时切换附加选项的显示。
-	$(document).on('change', '#mlb-show-liveblogs', function () {
-		$('#mlb-liveblog-extra').prop('hidden', !this.checked);
-	});
 
 	function parentSelected() {
 		return !$select.length || !$select.data('required') || !!$select.val();

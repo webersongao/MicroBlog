@@ -1,6 +1,6 @@
 <?php
 /**
- * 微博文章类型、话题分类法、Feed 与固定链接。
+ * 微博文章类型、Feed 与固定链接。
  *
  * @package MicroBlog
  */
@@ -28,18 +28,17 @@ function mbfun_create_micropost_type()
         }
     }
 
-    mbfun_register_micropost_type(array_unique($supports), in_array('mb_posttag', (array) mbfun_setting('mb_editor_func', array()), true));
+    mbfun_register_micropost_type(array_unique($supports));
 }
 add_action('init', 'mbfun_create_micropost_type', 5);
 
 /**
- * 注册文章类型；同时按设置决定是否挂载话题分类法。
+ * 注册文章类型。
  *
  * @param array $supports 编辑器支持项。
- * @param bool  $microtag 是否启用话题。
  * @return void
  */
-function mbfun_register_micropost_type($supports = array(), $microtag = false)
+function mbfun_register_micropost_type($supports = array())
 {
     if (!$supports) {
         $supports = array('title', 'editor', 'comments');
@@ -58,10 +57,6 @@ function mbfun_register_micropost_type($supports = array(), $microtag = false)
         'show_in_rest' => use_block_editor_for_post_type('post'),
         'description' => __('Publish a short microblog with MicroBlog, then show it with a shortcode or a widget.', MICROBLOG_DOMAIN),
     ));
-
-    if ($microtag) {
-        mbfun_register_micropost_taxonomy();
-    }
 }
 
 /**
@@ -99,42 +94,6 @@ function mbfun_get_micropost_labels()
         'items_list'               => __('Microblog List', MICROBLOG_DOMAIN),
         'items_list_navigation'    => __('Microblog list navigation', MICROBLOG_DOMAIN),
     );
-}
-
-/**
- * 微博话题分类法。
- *
- * @return void
- */
-function mbfun_register_micropost_taxonomy()
-{
-    register_taxonomy('micropost_topic', 'micropost', array(
-        'label'        => __('Microblog Topics', MICROBLOG_DOMAIN),
-        'labels'       => array(
-            'name'                       => __('Microblog Topics', MICROBLOG_DOMAIN),
-            'singular_name'              => __('Microblog Topic', MICROBLOG_DOMAIN),
-            'all_items'                  => __('All Topics', MICROBLOG_DOMAIN),
-            'add_new_item'               => __('Add New Topic', MICROBLOG_DOMAIN),
-            'search_items'               => __('Search Topics', MICROBLOG_DOMAIN),
-            'popular_items'              => __('Popular Topics', MICROBLOG_DOMAIN),
-            'edit_item'                  => __('Edit Topic', MICROBLOG_DOMAIN),
-            'view_item'                  => __('View Topic', MICROBLOG_DOMAIN),
-            'update_item'                => __('Update Topic', MICROBLOG_DOMAIN),
-            'not_found'                  => __('Topic not found.', MICROBLOG_DOMAIN),
-            'no_terms'                   => __('No topics.', MICROBLOG_DOMAIN),
-            'choose_from_most_used'      => __('Choose from the most used topics', MICROBLOG_DOMAIN),
-            'separate_items_with_commas' => __('Separate topics with commas', MICROBLOG_DOMAIN),
-            'back_to_items'              => __('Go to Topics', MICROBLOG_DOMAIN),
-        ),
-        'public'       => true,
-        'show_in_rest' => true,
-        'hierarchical' => false,
-        'show_tagcloud' => false,
-        'show_admin_column' => true,
-        'rest_base'    => 'micropost_topics',
-        'rewrite'      => array('slug' => 'micropost_topics'),
-        'description'  => __('Group microblogs on the same subject with topic tags.', MICROBLOG_DOMAIN),
-    ));
 }
 
 /**

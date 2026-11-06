@@ -43,14 +43,8 @@ function microblog_admin_needs_assets($hook)
         return false;
     }
 
-    // 连载模块未启用时 meta box 不存在，但条目类型仍需这套样式。
-    $post_types = array('microlive');
-
-    if (function_exists('mbfun_get_live_supported_post_types')) {
-        $post_types = array_merge($post_types, (array) mbfun_get_live_supported_post_types());
-    }
-
-    return in_array($screen->post_type, array_values(array_unique($post_types)), true);
+    // 只有连载条目编辑页有「选择原文」metabox，普通文章页不再需要这套样式。
+    return 'microlive' === $screen->post_type;
 }
 
 /**

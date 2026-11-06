@@ -2,7 +2,7 @@
 /**
  * 渲染片段：短代码、小工具、模板共用的 HTML 片段。
  *
- * 旧实现里「评论图标链接」「头像」「话题」「九宫格图片」在
+ * 旧实现里「评论图标链接」「头像」「九宫格图片」在
  * shortcode / widget 中各写一遍，改一处漏一处。这里收口。
  *
  * @package MicroBlog
@@ -118,36 +118,6 @@ function mbfun_get_author_html($post_id = 0)
 
     return "<span class='mb-shortcode-post-user-avatar'>" . get_avatar($author, 35) . "</span>"
         . "<span class='mb-shortcode-post-user-name'>" . esc_html(get_the_author_meta('display_name', $author)) . "</span>";
-}
-
-/**
- * 话题（#tag#）链接串。
- *
- * @param int $post_id 文章 ID。
- * @return string
- */
-function mbfun_get_topics_html($post_id = 0)
-{
-    $post_id = $post_id ? (int) $post_id : get_the_ID();
-    $terms   = wp_get_post_terms($post_id, 'micropost_topic');
-
-    if (is_wp_error($terms) || !$terms) {
-        return '';
-    }
-
-    $html = '';
-
-    foreach ($terms as $term) {
-        $link = get_term_link($term);
-
-        if (is_wp_error($link)) {
-            continue;
-        }
-
-        $html .= '<a href="' . esc_url($link) . '" target="_blank">#' . esc_html($term->name) . '# </a>';
-    }
-
-    return $html;
 }
 
 /**

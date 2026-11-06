@@ -4,7 +4,7 @@ Tags: microblog, weibo, short content, liveblog
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,11 +20,9 @@ MicroBlog turns your WordPress site into a microblog (similar to Weibo or Twitte
 * `[microblog]` shortcode to show the latest microblogs on any post or page, with pagination.
 * A "Microblog" sidebar widget with optional excerpt and RSS link.
 * A "Quick Microblog" dashboard widget for posting without leaving the dashboard.
-* Optional topics (hashtag-style taxonomy) to group microblogs by subject.
-* Optional reposting: link a new microblog to the one it reposts.
 * Custom URL slug (default `microposts`), e.g. `/microposts/123.html`, with its own feed.
-* Fuzzy ("3 minutes ago") or fixed date formats, optional titles, avatars and topics in the footer.
-* Optional Liveblog module: attach a rolling, auto-refreshing update stream to any post.
+* Fuzzy ("3 minutes ago") or fixed date formats, optional titles and avatars in the footer.
+* Optional Liveblog module: attach a rolling update stream to any post in a supported post type, with a per-post auto refresh switch.
 * Fully translatable; English is the source language.
 
 **Shortcode attributes**
@@ -35,7 +33,16 @@ MicroBlog turns your WordPress site into a microblog (similar to Weibo or Twitte
 
 **Liveblog module**
 
-When enabled under Tools → MicroBlog Settings → General, any supported post type can be turned into a liveblog. Entries are separate posts attached to the liveblog, rendered in a rolling list that can poll for new updates. Themes can override the templates from a `micro_live_theme/` folder.
+When enabled under Tools → MicroBlog Settings → General, every published post in a supported post type can be used as a liveblog source — there is no per-post "enable" flag to set first. Entries are separate posts attached to a source and rendered in a rolling list.
+
+The "Liveblog display" column on the post list screen shows one of four states:
+
+* Not enabled — no liveblog entry references this post. Derived automatically and read-only.
+* Active · Hidden — entries reference the post, but the front-end block is hidden.
+* Active · Default display — the block is shown and loaded once. This is the finished state; the front end does not label it as finished.
+* Active · Auto refresh — the block is shown and checks for new entries at the interval set in Liveblog settings.
+
+The three active states can be switched directly from that column. There is no editor meta box and no row action, and posts without entries never render an empty block. Themes can override the templates from a `micro_live_theme/` folder.
 
 == Installation ==
 
@@ -64,6 +71,31 @@ Yes. The microblog post type follows your site's editor setting, and the quick p
 
 No. It is optional and disabled by default. Turning it off does not delete any content or settings.
 
+= Does the liveblog refresh automatically? =
+
+Only for posts set to "Active · Auto refresh". The front end then checks the feed at a configurable interval (10–300 seconds, 30 by default) and shows a "Show new updates" button when new entries appear; the list is rebuilt only after the visitor clicks it. Checks are skipped while the browser tab is hidden or a previous check is still running.
+
+"Active · Default display" loads the entries once and never polls — that is the finished state, without any finished label on the page. Hidden and not-enabled posts make no feed requests at all.
+
+== Settings reference ==
+
+Stored options and post meta, kept here as the contract for future data migration.
+
+= Options =
+
+* `microblog_general_data` (array)
+  * `mb_color_mode` — `auto` | `light` | `dark`. Controls the color mode of the microblog shortcode, the widget and liveblog blocks. Missing value means `auto`: follow the host theme's `data-color-mode` when present, otherwise follow the visitor device (pure CSS).
+* `microblog_live_data` (array)
+  * `ml_cache_enabled` — **removed.** The feed is always cached for 5 minutes per liveblog ID (`mlb_feed_{id}` transient) and purged on any entry change, so the on/off switch (and its `object` branch, which did nothing without a persistent object cache) is gone. Leftover values are ignored and dropped on the next settings save.
+  * `ml_refresh_interval` — polling interval in seconds, 10–300.
+  * `ml_append_timestamp` — **removed in 1.9.1.** The liveblog feed URL always carries a timestamp now: minute precision on first load (so a CDN can still share one minute of cache) and millisecond precision for polling. Stale values are ignored.
+  * `ml_theme_style` — **removed in 1.9.0.** Replaced by `mb_color_mode`; the `mlb-theme-{mode}` CSS class is still printed for third-party selectors.
+
+= Post meta =
+
+* `_micro_post_live_enable` — `default` | `auto`, absent means "not enabled". `default` is the finished state (entries load once, no polling, no front-end label); `auto` polls for new entries.
+* `_micro_live_post_id` — the liveblog source (article) an entry belongs to. An entry cannot be published without it.
+
 == Screenshots ==
 
 1. The Microblog settings screen.
@@ -71,7 +103,18 @@ No. It is optional and disabled by default. Turning it off does not delete any c
 
 == Changelog ==
 
+= 1.9.1 =
+* Added a color mode setting for the shortcode, the widget and liveblog blocks: automatic (follow the host theme, or the visitor device when the theme has no color mode), light or dark. All plugin colors now come from CSS custom properties.
+* The liveblog feed URL always carries a timestamp, so CDNs and proxies cannot serve stale entries. The "Feed timestamp" switch was removed.
+* The "Write Liveblog" screen now lists articles that are already liveblog sources by default, with a post type filter and a keyword search in the top right corner.
+* Fixed contrast issues in dark mode (liveblog edit button, microblog timestamps) and a self-referential CSS custom property on the microblog container.
+
 = 1.9.0 =
+* Removed microblog reposting and the microblog topics taxonomy.
+* Removed the liveblog open/closed status; automatic refresh is now a per-post display state instead of a global setting.
+* Any published post in a supported post type can now be a liveblog source; the post list screen shows a four-state "Liveblog display" column (Not enabled / Active · Hidden / Active · Default display / Active · Auto refresh) with direct switching, and no row action.
+* "Active · Default display" loads the entries once (the finished state, without a front-end label); "Active · Auto refresh" polls at a configurable interval and offers a "Show new updates" button. Posts without entries no longer render an empty block.
+* Replaced the bundled moment.js locale bundle with dependency-free JavaScript; all UI strings, including the refresh button, are translated through the plugin's language files.
 * Added full internationalization: English source strings, `microblog` text domain and a `languages/` folder.
 * Improved the Liveblog meta box experience and admin notices.
 * Escaped settings output and hardened admin screens.

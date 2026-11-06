@@ -1,0 +1,71 @@
+/*
+ * 文章列表页「连载显示」四态列。
+ * 只在支持类型的 edit.php 加载，配色沿用 WordPress 后台原生色板。
+ */
+
+.column-mlb_liveblog_display {
+    width: 16%;
+}
+
+.mlb-state-current {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.4;
+}
+
+.mlb-state-current .dashicons {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.mlb-state-none {
+    color: #a7aaad;
+}
+
+.mlb-state-off {
+    color: #646970;
+}
+
+.mlb-state-default {
+    color: #1d2327;
+    font-weight: 600;
+}
+
+.mlb-state-auto {
+    color: #2271b1;
+    font-weight: 600;
+}
+
+.mlb-state-switch {
+    margin-top: 4px;
+    color: #a7aaad;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.mlb-state-switch a {
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.mlb-state-switch .mlb-state-current-mode {
+    color: #1d2327;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.mlb-state-sep {
+    color: #c3c4c7;
+    padding: 0 2px;
+}
+
+@media screen and (max-width: 782px) {
+    /* WP 核心会隐藏附加列；这里只保证状态文字不把单元格撑破。 */
+    .column-mlb_liveblog_display {
+        width: auto;
+    }
+}

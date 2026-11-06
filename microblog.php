@@ -26,7 +26,7 @@ define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('MICROBLOG_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
 define('MICROBLOG_DOMAIN', 'microblog');
-define('MICROBLOG_VERSION', '1.9.0');
+define('MICROBLOG_VERSION', '1.9.1');
 
 /*
  * 加载顺序：设置层 → 渲染片段 → 公共函数 → 各功能模块。
@@ -39,7 +39,6 @@ $microblog_includes = array(
     'includes/microblog-index.php',
     'includes/microblog-widget.php',
     'includes/microblog-shortcode.php',
-    'includes/microblog-forward.php',
     'includes/microblog-quick-pub.php',
 );
 

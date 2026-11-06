@@ -50,10 +50,10 @@ function microblog_shortcode($atts)
     if (!$query->have_posts()) {
         wp_reset_postdata();
 
-        return "<div class='microblog-shortcode'><p>" . esc_html($atts['null_text']) . '</p></div>';
+        return "<div class='microblog-shortcode'" . mbfun_color_mode_attr() . '><p>' . esc_html($atts['null_text']) . '</p></div>';
     }
 
-    $out  = "<div class='microblog-shortcode'>";
+    $out  = "<div class='microblog-shortcode'" . mbfun_color_mode_attr() . '>';
     $out .= '<hr>';
     $out .= "<div class='mb-shortcode-content'>";
     $out .= "<div class='mb-shortcode-post'>";
@@ -64,7 +64,6 @@ function microblog_shortcode($atts)
         $post_id    = get_the_ID();
         $post_title = $title_on ? get_the_title() : '';
         $show_user  = in_array('conbottomuser', $bottom, true);
-        $show_tags  = in_array('conbottomtag', $bottom, true);
 
         $out .= "<div class='mb-shortcode-post-main micropost-main-" . (int) $post_id . "'>";
 
@@ -99,16 +98,9 @@ function microblog_shortcode($atts)
         $out .= mbfun_get_images_html(get_the_content(), $lightbox);
         $out .= '</div>';
 
-        // 3. 头像、话题、评论。
+        // 3. 头像、评论。
         $out .= "<div class='mb-shortcode-post-bottom'>";
         $out .= "<div class='mb-shortcode-post-user'>" . ($show_user ? mbfun_get_author_html($post_id) : '') . '</div>';
-
-        $topics = $show_tags ? mbfun_get_topics_html($post_id) : '';
-
-        if ('' !== $topics) {
-            $out .= "<span class='mb-shortcode-post-bottom-topics'>" . $topics . '</span>';
-        }
-
         $out .= mbfun_get_action_link_html($post_id);
         $out .= '</div>';
 

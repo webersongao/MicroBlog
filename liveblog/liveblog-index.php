@@ -25,7 +25,6 @@ if (!class_exists('Micro_Liveblog')) {
                 add_action('init', [self::$instance, 'load_textdomain'], 1);
                 add_action('wp_enqueue_scripts', [self::$instance, 'enqueue_assets']);
                 add_action('admin_enqueue_scripts', [self::$instance, 'enqueue_assets']);
-                add_action('init', [self::$instance, 'setup_caching']);
                 add_action('init', [self::$instance, 'setup_api']);
             }
 
@@ -45,9 +44,7 @@ if (!class_exists('Micro_Liveblog')) {
                 'live-social-logos.php',
                 'api/class-feedfactory.php',
                 'api/class-liveentry.php',
-                'api/class-livefeed.php',
-                'caching/class-live-transient.php',
-                'caching/class-live-object.php'
+                'api/class-livefeed.php'
             ];
 
             foreach ($files as $file) {
@@ -73,59 +70,43 @@ if (!class_exists('Micro_Liveblog')) {
                 wp_register_script('mlb-admin', mbfun_get_plugin_url() . 'assets/js/liveblog-admin.js', ['jquery', 'selectize'], mbfun_get_plugin_version());
                 wp_register_style('selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.default.css', null, '0.12.4');
 
-                // 只在出现连载 metabox 的编辑页入队（此前仅注册未入队，selectize 从未生效）。
+                // 只有连载条目编辑页有「选择原文」metabox，普通文章页不再需要 selectize。
                 $screen = function_exists('get_current_screen') ? get_current_screen() : null;
 
-                if ($screen && $screen->base === 'post') {
-                    $post_types = array_merge(
-                        ['microlive'],
-                        (array) mbfun_get_live_supported_post_types()
-                    );
+                if ($screen && 'post' === $screen->base && 'microlive' === $screen->post_type) {
+                    wp_enqueue_script('mlb-admin');
+                    wp_enqueue_style('selectize');
 
-                    if (in_array($screen->post_type, array_values(array_unique($post_types)), true)) {
-                        wp_enqueue_script('mlb-admin');
-                        wp_enqueue_style('selectize');
-
-                        wp_localize_script('mlb-admin', 'mlbAdminL10n', [
-                            'selectLiveblog' => __('Please select a liveblog before saving.', MICROBLOG_DOMAIN),
-                        ]);
-                    }
+                    wp_localize_script('mlb-admin', 'mlbAdminL10n', [
+                        'selectLiveblog' => __('Please select a liveblog before saving.', MICROBLOG_DOMAIN),
+                    ]);
                 }
             } else {
                 if (in_array(get_post_type(), mbfun_get_live_supported_post_types())) {
                     wp_register_script('micro_lb_script', mbfun_get_plugin_url() . 'assets/js/liveblog.js', ['jquery'], mbfun_get_plugin_version());
                     wp_localize_script('micro_lb_script', 'micro_lb_data', [
-                        'datetime_format' => mbfun_get_live_option('ml_entry_date_format', 'human'),
-                        'locale'          => get_locale(),
-                        'interval'        => mbfun_get_live_update_interval(),
-                        'autoPolling'     => mbfun_get_live_update_autoPolling(),
-                        'new_post_msg'    => __('There is %s update.', MICROBLOG_DOMAIN),
-                        'new_posts_msg'   => __('There are %s updates.', MICROBLOG_DOMAIN),
-                        'now_more_posts'  => __("That's All.", MICROBLOG_DOMAIN)
+                        'now_more_posts'  => __("That's All.", MICROBLOG_DOMAIN),
+                        'show_new_posts'  => __('Show %s new updates', MICROBLOG_DOMAIN),
                     ]);
                     wp_enqueue_script('micro_lb_script');
 
-                    $this->mlb_enqueue_theme_styles(mbfun_get_live_theme());
+                    $this->mlb_enqueue_theme_styles();
                 }
             }
         }
 
-        private function mlb_enqueue_theme_styles($theme)
+        /**
+         * 连载前台样式。
+         *
+         * 1.9.1 起不再按 light / dark 加载两份文件：颜色统一由 liveblog.css
+         * 里的 --mlb-* 令牌提供，模式来自插件「颜色模式」设置。
+         */
+        private function mlb_enqueue_theme_styles()
         {
-            $liveblog_css = mbfun_get_plugin_url() . 'assets/css/liveblog.css';
-            $theme_css = mbfun_get_plugin_url() . 'assets/css/themes/' . $theme . '.css';
-
             wp_enqueue_style(
-                'mlb-theme-liveblog',
-                $liveblog_css,
+                'mlb-liveblog',
+                mbfun_get_plugin_url() . 'assets/css/liveblog.css',
                 null,
-                mbfun_get_plugin_version()
-            );
-
-            wp_enqueue_style(
-                'mlb-theme-' . $theme,
-                $theme_css,
-                ['mlb-theme-liveblog'],
                 mbfun_get_plugin_version()
             );
         }
@@ -133,16 +114,6 @@ if (!class_exists('Micro_Liveblog')) {
         public function setup_api()
         {
             new MicroLiveblogs\API\LiveFeed();
-        }
-
-        public function setup_caching()
-        {
-            $cache = mbfun_get_live_option('ml_cache_enabled', false);
-            if ($cache == 'object') {
-                MicroLiveblogs\Caching\ObjectCaching::init();
-            } elseif ($cache == 'transient') {
-                MicroLiveblogs\Caching\TransientCaching::init();
-            }
         }
     }
 }

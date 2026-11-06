@@ -36,6 +36,14 @@ function microblog_general_setting_admin()
         'microblog_general_section_name',
         'microblog_general_section_base'
     );
+
+    add_settings_field(
+        'microblog_color_mode',
+        __('Color mode', MICROBLOG_DOMAIN),
+        'microblog_color_mode_input',
+        'microblog_general_section_name',
+        'microblog_general_section_base'
+    );
 }
 
 /**
@@ -51,6 +59,10 @@ function microblog_general_data_sanitize($input)
     }
 
     $input['msk_liveblog_regist'] = empty($input['msk_liveblog_regist']) ? 0 : 1;
+
+    if (!isset($input['mb_color_mode']) || !in_array($input['mb_color_mode'], array('light', 'dark', 'auto'), true)) {
+        $input['mb_color_mode'] = 'auto';
+    }
 
     return $input;
 }
@@ -92,4 +104,36 @@ function microblog_module_display_input()
         <?php esc_html_e('Enable (turning it off keeps your data and settings)', MICROBLOG_DOMAIN); ?>
     </label>
     <?php
+}
+
+/**
+ * 前台颜色模式。
+ *
+ * 影响插件所有前台输出：微博短代码、小工具、连载区块。
+ * auto 在宿主主题提供了 data-color-mode 时跟随主题，否则跟随设备。
+ *
+ * @return void
+ */
+function microblog_color_mode_input()
+{
+    $value   = mbfun_get_color_mode();
+    $options = array(
+        'auto'  => __('Automatic (follow device)', MICROBLOG_DOMAIN),
+        'light' => __('Light', MICROBLOG_DOMAIN),
+        'dark'  => __('Dark', MICROBLOG_DOMAIN),
+    );
+
+    echo '<select name="microblog_general_data[mb_color_mode]" id="microblog_color_mode">';
+
+    foreach ($options as $key => $label) {
+        printf(
+            '<option value="%1$s" %2$s>%3$s</option>',
+            esc_attr($key),
+            selected($value, $key, false),
+            esc_html($label)
+        );
+    }
+
+    echo '</select>';
+    echo '<p class="description">' . esc_html__('Applies to the microblog shortcode, the widget and liveblog blocks. Automatic follows your theme when it supports color modes (including the visitor switch in the header), and the visitor device otherwise.', MICROBLOG_DOMAIN) . '</p>';
 }

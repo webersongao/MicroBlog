@@ -15,21 +15,31 @@ function mlb_liveblog_query_parse_filter($query)
 {
 	global $pagenow;
 
-	$current_page = isset($_GET['post_type']) ? $_GET['post_type'] : '';
+	// 计算 ID 列表时内部会调用 get_posts()，而每次 WP_Query 都会再次触发
+	// parse_query；不加锁会无限递归直到内存耗尽。
+	static $busy = false;
 
-	if (! is_admin()) {
+	if ($busy
+		|| ! is_admin()
+		|| 'edit.php' !== $pagenow
+		|| ! isset($_GET['micro_type'])
+		|| ! isset($_GET['post_type'])) {
 		return $query;
 	}
 
-	if (! in_array($current_page, mbfun_get_live_supported_post_types()) && 'edit.php' !== $pagenow) {
+	$post_type = sanitize_key(wp_unslash($_GET['post_type']));
+
+	if (! in_array($post_type, (array) mbfun_get_live_supported_post_types(), true)) {
 		return $query;
 	}
 
-	if (isset($_GET['micro_type'])) {
-		$query->query_vars['meta_key']     = '_micro_post_live_enable';
-		$query->query_vars['meta_value']   = '1';
-		$query->query_vars['meta_compare'] = '=';
-	}
+	// 与 quicklink 的计数共用同一份「有条目引用且已展示」的 ID 列表，
+	// 避免按 meta_value 筛选时漏掉 default / auto 两种新状态。
+	$busy = true;
+	$ids  = mlb_get_displaying_source_ids($post_type);
+	$busy = false;
+
+	$query->query_vars['post__in'] = $ids ? $ids : array(0);
 
 	return $query;
 }
@@ -43,24 +53,27 @@ add_filter('parse_query', 'mlb_liveblog_query_parse_filter');
  */
 function mlb_liveblogs_add_quicklinks($quicklinks)
 {
+	// 文章列表页默认不带 post_type 参数，get_query_var() 取不到类型，
+	// 用当前屏幕的 post_type 才能让计数与筛选落在同一种类型上。
+	$screen    = function_exists('get_current_screen') ? get_current_screen() : null;
+	$post_type = $screen ? $screen->post_type : get_query_var('post_type');
 
-	if (! in_array(get_query_var('post_type'), mbfun_get_live_supported_post_types())) {
+	if (! in_array($post_type, (array) mbfun_get_live_supported_post_types(), true)) {
 		return $quicklinks;
 	}
 
-	$liveblog_count = mbfun_get_live_liveblogs_count(array('post_type' => get_query_var('post_type')));
+	$display_count = mbfun_get_live_display_count(array('post_type' => $post_type));
 
-	if ($liveblog_count > 0) {
-
+	if ($display_count > 0) {
 		$current = isset($_GET['micro_type']) ? 'current' : null;
 
-	$quicklinks['mlb_liveblogs'] = sprintf(
-		'<a href="%1$s" class="%2$s">%3$s <span class="count">(%4$d)</span></a>',
-		esc_url(admin_url('edit.php?post_type=' . get_query_var('post_type') . '&micro_type=liveblog')),
-		esc_attr($current),
-		esc_html(__('Liveblog source', MICROBLOG_DOMAIN)),
-		(int) $liveblog_count
-	);
+		$quicklinks['mlb_liveblogs'] = sprintf(
+			'<a href="%1$s" class="%2$s">%3$s <span class="count">(%4$d)</span></a>',
+			esc_url(admin_url('edit.php?post_type=' . $post_type . '&micro_type=liveblog')),
+			esc_attr($current),
+			esc_html__('Liveblog display', MICROBLOG_DOMAIN),
+			(int) $display_count
+		);
 	}
 
 	return $quicklinks;
@@ -76,27 +89,6 @@ function mlb_liveblog_register_quicklink_filters()
 	}
 }
 add_action('init', 'mlb_liveblog_register_quicklink_filters');
-
-/**
- * Liveblog post state
- *
- * Maybe sets liveblog status after post title in admin area.
- *
- * @param  array   $post_states
- * @param  WP_Post $post
- * @return array
- */
-function mlb_liveblog_post_state($post_states, $post)
-{
-	if ($post instanceof WP_Post
-		&& get_post_meta($post->ID, '_micro_post_live_enable', true)
-		&& 'closed' === mbfun_get_live_liveblog_status($post->ID)) {
-		$post_states[] = __('Closed', MICROBLOG_DOMAIN);
-	}
-
-	return $post_states;
-}
-add_filter('display_post_states', 'mlb_liveblog_post_state', 2, 10);
 
 /**
  * Is prefix title enabled
@@ -239,8 +231,8 @@ function mlb_add_post_dropdown_filter_to_manage_posts()
 		return;
 	}
 
-	// 直接渲染下拉菜单
-	$liveblogs = mbfun_get_live_liveblogs_by_status('all');
+	// 只列已被条目引用的原文，避免放开原文池后下拉框塞进全站文章。
+	$liveblogs = mbfun_get_live_liveblog_sources(true);
 
 	echo '<select name="live_id">';
 	echo '<option value="all">' . esc_html__('All liveblogs', MICROBLOG_DOMAIN) . '</option>';

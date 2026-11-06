@@ -61,7 +61,9 @@ class MLB_Liveblog {
 	 * @return int|null
 	 */
 	private function mlb_get_liveblog_id() {
-		return mlb_is_liveblog() ? get_the_ID() : $this->liveblog_post_id;
+		// 明确传了 ID（[micro_liveblog live_id=...]）时以它为准，
+		// 否则会被当前全局 $post 覆盖，导致端点、权限与状态判断互相不一致。
+		return $this->liveblog_post_id ?: ( mlb_is_liveblog() ? get_the_ID() : null );
 	}
 
 	/**
@@ -82,20 +84,18 @@ class MLB_Liveblog {
         wp_enqueue_script( 'wp-embed' );
 
 		$classes = array( 'mlb-liveblog', 'mlb-theme-' . mbfun_get_live_theme() );
-
 		if ( current_user_can( 'edit_post', $this->mlb_get_liveblog_id() ) ) {
 			$classes[] = 'mlb-is-editor';
 		}
 
-		$liveblog_id = $this->mlb_get_liveblog_id();
+		$liveblog_id  = $this->mlb_get_liveblog_id();
+		$auto_refresh = $liveblog_id ? mlb_has_auto_refresh( $liveblog_id ) : false;
 
 		do_action( 'mlb_before_liveblog', $liveblog_id, array() );
 
-		$content .= '<div id="mlb-liveblog" class="' . esc_attr( implode( ' ', $classes ) ) . '" data-append-timestamp="' . esc_attr( mbfun_get_live_option( 'ml_append_timestamp', false ) ) . '" data-status="' . esc_attr( mbfun_get_live_liveblog_status( $liveblog_id ) ) . '" data-highlighted-entry="' . esc_attr( mbfun_get_live_highlighted_entry_id() ) . '" data-show-entries="' . esc_attr( mbfun_get_live_show_entries() ) . '" data-endpoint="' . esc_url( $this->endpoint ) . '">';
-
-		$content .= '<div class="mlb-liveblog-closed-message" style="display: none;">' . esc_html__( 'The liveblog has ended.', MICROBLOG_DOMAIN ) . '</div>';
-
-		$content .= '<button id="mlb-show-new-posts" class="mlb-button button" style="display: none;"></button>';
+		$content .= '<div id="mlb-liveblog" class="' . esc_attr( implode( ' ', $classes ) ) . '"' . mbfun_color_mode_attr() . ' data-highlighted-entry="' . esc_attr( mbfun_get_live_highlighted_entry_id() ) . '" data-show-entries="' . esc_attr( mbfun_get_live_show_entries() ) . '" data-endpoint="' . esc_url( $this->endpoint ) . '"'
+			. ' data-autorefresh="' . ( $auto_refresh ? '1' : '0' ) . '"'
+			. ' data-refresh-interval="' . esc_attr( mbfun_get_live_update_interval() ) . '">';
 
 		$content .= '<div class="mlb-no-liveblog-entries-message" style="display: none;">' . esc_html__( 'No liveblog updates yet.', MICROBLOG_DOMAIN ) . '</div>';
 
@@ -144,6 +144,12 @@ class MLB_Liveblog {
 					</circle>
 				</g>';
 		$content .= '</svg></div>';
+
+		// 只有「开启中·自动刷新」才输出按钮；「默认展示」（相当于已完结）不轮询、也不提示。
+		if ( $auto_refresh ) {
+			$content .= '<button id="mlb-show-new-posts" style="display: none;" class="mlb-button button">' . esc_html__( 'Show new updates', MICROBLOG_DOMAIN ) . '</button>';
+		}
+
 		$content .= '<button id="mlb-load-more" style="display: none;" class="mlb-button button">' . esc_html__( 'Load more', MICROBLOG_DOMAIN ) . '</button>';
 		$content .= '</div>';
 

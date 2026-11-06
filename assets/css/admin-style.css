@@ -124,74 +124,49 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     width: 100%;
 }
 
-/* 复选框：方框在前、文案在后，符合系统表单习惯。 */
-.mlb-checkbox {
-    margin: 0;
-}
+/* 说明：连载编辑器里的「Live Status」「Auto Refresh」控件已移除，
+   四态开关移到文章列表页，那里的列样式单独放在 liveblog-admin-column.css。
+   这里只保留条目编辑页的「选择原文」排版。 */
 
-.mlb-checkbox > label {
-    display: inline-flex;
+/* =====================================================================
+   连载原文选择页：筛选条放在标题右侧
+   ===================================================================== */
+
+.mlb-picker-filter {
+    float: right;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    margin: 0;
-    color: #1d2327;
+    gap: 8px;
+    margin: 0 0 8px 16px;
 }
 
-.mlb-checkbox input[type="checkbox"] {
-    margin: 0;
+.mlb-picker-filter select {
+    max-width: 220px;
 }
 
-/* 从属于上级开关的选项：浅灰面板 + 标签左列，用层级说明从属关系。 */
-.mlb-options {
-    display: grid;
-    grid-template-columns: 88px minmax(0, 1fr);
-    align-items: center;
-    gap: 12px 16px;
-    margin: 12px 0 0;
-    padding: 14px 16px;
-    border: 1px solid #dcdcde;
-    border-radius: 4px;
-    background: #f6f7f7;
-}
-
-/* [hidden] 必须显式关掉 display，否则会被上面的 grid 覆盖。 */
-.mlb-options[hidden] {
-    display: none;
-}
-
-.mlb-options > label {
-    margin: 0;
-    color: #1d2327;
-}
-
-.mlb-options select {
-    width: auto;
-    min-width: 180px;
-    max-width: 100%;
-    margin: 0;
-    justify-self: start;
-}
-
-.mlb-options-wide {
-    grid-column: 1 / -1;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    justify-self: start;
-}
-
-.mlb-options-wide input[type="checkbox"] {
+.mlb-picker-filter input[type="search"] {
+    width: 220px;
     margin: 0;
 }
 
-@media screen and (max-width: 600px) {
-    .mlb-options {
-        grid-template-columns: 1fr;
-        gap: 6px;
-        padding: 12px;
+.mlb-picker-filter .button {
+    margin: 0;
+}
+
+.mlb-picker-count {
+    margin: 14px 0 6px;
+    color: #646970;
+}
+
+@media screen and (max-width: 782px) {
+    .mlb-picker-filter {
+        float: none;
+        flex-wrap: wrap;
+        margin: 12px 0;
     }
 
-    .mlb-options select {
-        width: 100%;
+    .mlb-picker-filter input[type="search"] {
+        flex: 1 1 160px;
+        width: auto;
     }
 }

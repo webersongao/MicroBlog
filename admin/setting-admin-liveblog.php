@@ -71,8 +71,73 @@ function microblog_liveblog_section_desc() {
 
 function microblog_liveblog_data_sanitize($input) {
 
+	if ( ! is_array( $input ) ) {
+		return array();
+	}
 
-    return $input;
+	// 轮询间隔必须落在 10–300 秒：只靠 HTML min/max 挡不住绕过表单的请求。
+	if ( isset( $input['ml_auto_refresh_interval'] ) ) {
+		$seconds = absint( $input['ml_auto_refresh_interval'] );
+		$input['ml_auto_refresh_interval'] = min( 300, max( 10, $seconds ?: 30 ) );
+	}
+
+	// 条目时间只收四个白名单值；空串是旧版本「相对时间」的存法，一并纠正。
+	if ( isset( $input['ml_entry_date_format'] ) ) {
+		$allowed = array( 'human', 'date', 'time', 'datetime' );
+		$format  = (string) $input['ml_entry_date_format'];
+
+		$input['ml_entry_date_format'] = in_array( $format, $allowed, true ) ? $format : 'human';
+	}
+
+	return $input;
+}
+
+/**
+ * 条目时间的可选值。
+ *
+ * 标签里直接放「渲染后的示例」，而不是 Y年n月j日 / ag:i 这类格式符：
+ * 格式符对普通用户等于乱码，也看不出两档的区别。示例读的是站点时区与
+ * 「设置 → 常规」里的格式，所见即前台所得。
+ *
+ * 值只有 human / date / time / datetime 四个，前台按白名单渲染，
+ * 详见 mbfun_get_live_entry_display_date()。
+ *
+ * @return array 值 => 带示例的标签
+ */
+function microblog_live_entry_time_options() {
+	return array(
+		'human'    => __('Relative time (3 minutes ago)', MICROBLOG_DOMAIN ),
+		/* translators: %s: example date rendered with the site date format */
+		'date'     => sprintf( __('Date only (%s)', MICROBLOG_DOMAIN ), date_i18n( get_option('date_format') ) ),
+		/* translators: %s: example time rendered with the site time format */
+		'time'     => sprintf( __('Time only (%s)', MICROBLOG_DOMAIN ), date_i18n( get_option('time_format') ) ),
+		/* translators: %s: example date and time rendered with the site formats */
+		'datetime' => sprintf( __('Date and time (%s)', MICROBLOG_DOMAIN ), date_i18n( mbfun_get_live_datetime_format() ) ),
+	);
+}
+
+/**
+ * 条目时间的说明。
+ *
+ * 明确写出「格式来自哪里」，否则用户只看到一串看不懂的格式符，
+ * 也不知道该去常规设置里改。
+ *
+ * @return string
+ */
+function microblog_live_entry_time_desc() {
+	$link = sprintf(
+		'<a href="%1$s">%2$s</a>',
+		esc_url( admin_url('options-general.php') ),
+		esc_html__( 'Settings → General', MICROBLOG_DOMAIN )
+	);
+
+	/* translators: 1: link to the General Settings screen, 2: date format, 3: time format */
+	return sprintf(
+		__('How each entry shows its time. Date and time formats come from %1$s (currently %2$s and %3$s).', MICROBLOG_DOMAIN ),
+		$link,
+		'<code>' . esc_html( get_option('date_format') ) . '</code>',
+		'<code>' . esc_html( get_option('time_format') ) . '</code>'
+	);
 }
 
 /**
@@ -88,34 +153,11 @@ function mbfun_get_registered_settings() {
 			array(
 				'id'            => 'ml_post_types',
 				'name'          => __('Supported', MICROBLOG_DOMAIN ),
-				'desc'          => __('Select the post types that can be used as liveblogs.', MICROBLOG_DOMAIN ),
+				'desc'          => __('Published posts in these types can be liveblog sources; their list screens show the liveblog state and let you switch the display mode.', MICROBLOG_DOMAIN ),
 				'type'          => 'multiple_checkbox',
 				'options'       => $mlb_alltypes,
 				'default_value' => array('post' ),
 			),
-			array(
-				'id'            => 'ml_theme_style',
-				'name'          => __('Theme', MICROBLOG_DOMAIN ),
-				'desc'          => __('Color theme of the liveblog block.', MICROBLOG_DOMAIN ),
-				'type'          => 'select',
-				'options'       => array(
-					'light'     => __('Light', MICROBLOG_DOMAIN ),
-					'dark'      => __('Dark', MICROBLOG_DOMAIN ),
-				),
-				'default_value' => 'light',
-			),
-			array(
-				'id'   => 'ml_display_autopolling',
-				'name' => __('Auto Refresh', MICROBLOG_DOMAIN ),
-				'desc' => __('Automatically check for and load new liveblog entries.', MICROBLOG_DOMAIN ),
-				'type' => 'checkbox',
-			),
-			// array(
-			// 	'id'   => 'ml_title_prefix',
-			// 	'name' => __('标题前缀', MICROBLOG_DOMAIN ),
-			// 	'desc' => __('为空则默认：liveblog ,长度(1,20) .', MICROBLOG_DOMAIN ),
-			// 	'type' => 'text_input',
-			// ),
 			array(
 				'id'            => 'ml_post_layout',
 				'name'          => __('Layout', MICROBLOG_DOMAIN ),
@@ -135,13 +177,19 @@ function mbfun_get_registered_settings() {
 				'type' => 'checkbox',
 			),
 			array(
-				'id'            => 'ml_update_interval',
-				'name'          => __('Refresh Interval', MICROBLOG_DOMAIN ),
-				'desc'          => __('Seconds between checks for new entries when auto refresh is on (10-360).', MICROBLOG_DOMAIN ),
-				'type'          => 'number',
-				'min'           => 10,
-				'max'           => 360,
-				'default_value' => 30,
+				'id'   => 'ml_prefix_title',
+				'name' => __('Show Prefix', MICROBLOG_DOMAIN ),
+				// 前缀词本身走翻译：前台标题里显示的就是这个译词（zh_CN 为「连载」）。
+				'desc' => sprintf(__('Automatically prefix the liveblog title with "%s".', MICROBLOG_DOMAIN), __('Liveblog', MICROBLOG_DOMAIN )),
+				'type' => 'checkbox',
+			),
+			array(
+				'id'      => 'ml_entry_date_format',
+				'name'    => __('Entry time', MICROBLOG_DOMAIN ),
+				'desc'    => microblog_live_entry_time_desc(),
+				'type'    => 'select',
+				'default_value' => 'human',
+				'options' => microblog_live_entry_time_options(),
 			),
 			array(
 				'id'            => 'ml_show_entries',
@@ -153,39 +201,13 @@ function mbfun_get_registered_settings() {
 				'default_value' => 10,
 			),
 			array(
-				'id'   => 'ml_prefix_title',
-				'name' => __('Show Prefix', MICROBLOG_DOMAIN ),
-				'desc' => __('Automatically prefix the liveblog title with "Liveblog".', MICROBLOG_DOMAIN ),
-				'type' => 'checkbox',
-			),
-			array(
-				'id'      => 'ml_entry_date_format',
-				'name'    => __('Time Format', MICROBLOG_DOMAIN ),
-				'desc'    => __('How entry dates are displayed.', MICROBLOG_DOMAIN ),
-				'type'    => 'select',
-				'options' => array(
-					''         => __('Relative time (e.g. 3 minutes ago)', MICROBLOG_DOMAIN ),
-					'date'     => sprintf( __('Date: %s', MICROBLOG_DOMAIN ), get_option('date_format' ) ),
-					'time'     => sprintf( __('Time: %s', MICROBLOG_DOMAIN ), get_option('time_format' ) ),
-					'datetime' => sprintf( __('Date and time: %s', MICROBLOG_DOMAIN ), mbfun_get_live_datetime_format() ),
-				),
-			),
-			array(
-				'id'      => 'ml_cache_enabled',
-				'name'    => __('Enable Cache', MICROBLOG_DOMAIN ),
-				'desc'    => __('Cache liveblog content with an object cache or transients.', MICROBLOG_DOMAIN ),
-				'type'    => 'select',
-				'options' => array(
-					''          => __('Disabled', MICROBLOG_DOMAIN ),
-					'object'    => __('Object', MICROBLOG_DOMAIN ),
-					'transient' => __('Transient', MICROBLOG_DOMAIN ),
-				),
-			),
-			array(
-				'id'   => 'ml_append_timestamp',
-				'name' => __('Feed Timestamp', MICROBLOG_DOMAIN ),
-				'desc' => __('Append a timestamp to the liveblog feed URL to avoid stale caches.', MICROBLOG_DOMAIN ),
-				'type' => 'checkbox',
+				'id'            => 'ml_auto_refresh_interval',
+				'name'          => __('Auto Refresh Interval', MICROBLOG_DOMAIN ),
+				'desc'          => __('Seconds between checks for new entries on liveblogs with auto refresh enabled (10-300).', MICROBLOG_DOMAIN ),
+				'type'          => 'number',
+				'min'           => 10,
+				'max'           => 300,
+				'default_value' => 30,
 			),
 		),
 	);
@@ -249,12 +271,22 @@ function microblog_live_text_callback( $args ) {
 function microblog_live_select_callback( $args ) {
 	$mlb_options = mbfun_get_liveblog_settings();
 
-	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : ( $args['default_value'] ?? null );
+	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : null;
+
+	// 旧版本把「相对时间」存成空串，还有已废弃的选项值。
+	// 不归一化的话，<select> 会显示成第一项、实际喂给前台的却是空值——
+	// 「看着选了相对时间，前台却按日期时间渲染」就是这么来的。
+	$options = is_array( $args['options'] ) ? $args['options'] : array();
+	$key     = is_scalar( $value ) ? (string) $value : '';
+
+	if ( '' === $key || ! array_key_exists( $key, $options ) ) {
+		$value = isset( $args['default_value'] ) ? $args['default_value'] : $key;
+	}
 
 	$html = '<select id="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" name="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']" />';
 
-	if ( ! empty( $args['options'] ) ) {
-		foreach ( $args['options'] as $option_value => $option_name ) {
+	if ( ! empty( $options ) ) {
+		foreach ( $options as $option_value => $option_name ) {
 			$selected = selected( $value, $option_value, false );
 
 			$html .= '<option value="' . esc_attr( $option_value ) . '" ' . $selected . '>' . esc_html( $option_name ) . '</option>';
@@ -263,7 +295,10 @@ function microblog_live_select_callback( $args ) {
 
 	$html .= '</select>';
 
-	$html .= '<label for="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']">' . wp_kses_post( $args['desc'] ) . '</label>';
+	// 说明单独占一行：长下拉框后面紧跟一段文字时会被挤到右边、还会被下拉面板盖住。
+	if ( '' !== $args['desc'] ) {
+		$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
+	}
 
 	echo $html;
 }

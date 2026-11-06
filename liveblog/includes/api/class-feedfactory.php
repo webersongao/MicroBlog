@@ -23,7 +23,6 @@ class FeedFactory {
 			'id'          => $liveblog->ID,
 			'title'       => $liveblog->post_title,
 			'url'         => get_permalink( $liveblog->ID ),
-			'status'      => get_post_meta( $liveblog->ID, '_micro_post_live_status', true ),
 			'last_update' => $entries[0]->datetime ?? get_post_modified_time( 'Y-m-d H:i:s', false, $liveblog ),
 			'updates'     => $entries,
 		);

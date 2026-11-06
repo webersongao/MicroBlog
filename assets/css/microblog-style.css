@@ -7,6 +7,51 @@ AuthorLink: https://www.webersongao.com
 Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
 */
 
+
+/* =====================================================================
+   配色令牌
+   ---------------------------------------------------------------------
+   短代码与小工具是两个独立入口，各自带 data-mlb-color-mode 属性；
+   颜色统一走 --mb-* 令牌，插件设置里的「颜色模式」决定取值。
+   auto 优先跟随宿主主题的 data-color-mode，没有该属性时跟随设备。
+   ===================================================================== */
+
+.microblog-shortcode,
+.microblog-widget {
+    --mb-text: #666;
+    --mb-text-faint: #767676;
+    --mb-link: #21759b;
+}
+
+/* 插件设置里明确选深色 */
+.microblog-shortcode[data-mlb-color-mode="dark"],
+.microblog-widget[data-mlb-color-mode="dark"] {
+    --mb-text: #b8b8b8;
+    --mb-text-faint: #9a9a9a;
+    --mb-link: #6cb2d1;
+}
+
+/* auto + 宿主主题已解析为深色 */
+[data-color-mode="dark"] .microblog-shortcode[data-mlb-color-mode="auto"],
+[data-color-mode="dark"] .microblog-widget[data-mlb-color-mode="auto"] {
+    --mb-text: #b8b8b8;
+    --mb-text-faint: #9a9a9a;
+    --mb-link: #6cb2d1;
+}
+
+/* auto + 设备深色（宿主没有颜色模式时同样生效） */
+@media (prefers-color-scheme: dark) {
+
+    [data-color-mode="auto"] .microblog-shortcode[data-mlb-color-mode="auto"],
+    [data-color-mode="auto"] .microblog-widget[data-mlb-color-mode="auto"],
+    html:not([data-color-mode]) .microblog-shortcode[data-mlb-color-mode="auto"],
+    html:not([data-color-mode]) .microblog-widget[data-mlb-color-mode="auto"] {
+        --mb-text: #b8b8b8;
+        --mb-text-faint: #9a9a9a;
+        --mb-link: #6cb2d1;
+    }
+}
+
 /* 短代码样式 */
 .microblog-shortcode {
     display: block;
@@ -52,19 +97,19 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 .mb-shortcode-post-user-name {
-    color: #666;
+    color: var(--mb-text);
     font-weight: bold;
 }
 
 .mb-shortcode-post-date {
-    color: #6666669c;
+    color: var(--mb-text-faint);
     /* margin-right: 10px; */
     flex-shrink: 0;
     float: right;
 }
 
 .mb-shortcode-post-content {
-    color: #666;
+    color: var(--mb-text);
     font-size: 16px;
     font-weight: 400;
     margin-top: 10px;
@@ -76,7 +121,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 .mb-shortcode-post-content a {
-    color: #21759b;
+    color: var(--mb-link);
 }
 
 .mb-shortcode-post-content-image-single {
@@ -135,7 +180,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 .mb-shortcode-post-head a {
-    color: #666;
+    color: var(--mb-text);
     font-size: 14px;
 
 }
@@ -149,12 +194,12 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 .mb-shortcode-pagelink {
-    color: #666;
+    color: var(--mb-text);
     text-align: center;
 }
 
 .mb-shortcode-pagelink a {
-    color: #666;
+    color: var(--mb-text);
     margin: 0 5px;
     display: inline-block;
     text-decoration: none;
@@ -167,7 +212,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 .mb-shortcode-loadmore a {
-    color: #666;
+    color: var(--mb-text);
 }
 
 /* 小部件样式 */
@@ -181,14 +226,14 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 .microblog-widget-head-title {
-    color: #666;
+    color: var(--mb-text);
     margin-right: 5px;
     font-weight: bold;
     white-space: normal;
 }
 
 .microblog-widget-head-title a {
-    color: #666;
+    color: var(--mb-text);
 }
 
 .microblog-widget-content {
@@ -196,7 +241,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 .microblog-widget-content p {
-    color: #666;
+    color: var(--mb-text);
 }
 
 .microblog-widget-bottom {
@@ -204,21 +249,13 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 .mb-shortcode-post-bottom a {
-    color: #666;
+    color: var(--mb-text);
     font-size: 14px;
 
 }
 
-.mb-shortcode-post-bottom-topics {
-    display: flex;
-    flex-grow: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
 .microblog-widget-bottom-date {
-    color: #6666669c;
+    color: var(--mb-text-faint);
     margin-left: 5px;
     float: left;
 }
@@ -229,5 +266,5 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 .microblog-widget-bottom-comment a {
-    color: #666;
+    color: var(--mb-text);
 }

@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MicroBlog 1.9.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-05 08:35+0800\n"
+"Report-Msgid-Bugs-To: https://www.webersongao.com\n"
+"POT-Creation-Date: 2026-11-05 23:11+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: admin/class-mb-admin-page.php:31 includes/microblog-index.php:49
-#: includes/microblog-index.php:75 includes/microblog-index.php:76
-#: includes/microblog-index.php:77 includes/microblog-index.php:81
-#: includes/microblog-widget.php:47
+#: admin/class-mb-admin-page.php:31 includes/microblog-index.php:48 includes/microblog-index.php:70 includes/microblog-index.php:71 includes/microblog-index.php:72 includes/microblog-index.php:76 includes/microblog-widget.php:47
 msgid "Microblog"
 msgstr ""
 
@@ -28,10 +25,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: admin/class-mb-admin-page.php:46 admin/setting-admin-general.php:34
-#: liveblog/includes/live-metabox.php:21
-#: liveblog/includes/live-post-types.php:20
-#: liveblog/includes/live-post-types.php:27
+#: admin/class-mb-admin-page.php:46 admin/setting-admin-general.php:34 admin/setting-admin-liveblog.php:183 liveblog/includes/live-filters.php:114 liveblog/includes/live-post-types.php:19 liveblog/includes/live-post-types.php:20 liveblog/includes/live-post-types.php:21 liveblog/includes/live-post-types.php:27
 msgid "Liveblog"
 msgstr ""
 
@@ -47,11 +41,11 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: admin/setting-admin-general.php:76
+#: admin/setting-admin-general.php:88
 msgid "Optional MicroBlog modules. Enable the ones you need."
 msgstr ""
 
-#: admin/setting-admin-general.php:90
+#: admin/setting-admin-general.php:104
 msgid "Enable (turning it off keeps your data and settings)"
 msgstr ""
 
@@ -65,444 +59,339 @@ msgid ""
 "events."
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:90
+#: admin/setting-admin-liveblog.php:155 liveblog/includes/live-parent-picker.php:277
 msgid "Supported"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:91
-msgid "Select the post types that can be used as liveblogs."
+#: admin/setting-admin-liveblog.php:156
+msgid ""
+"Published posts in these types can be liveblog sources; their list screens "
+"show the liveblog state and let you switch the display mode."
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:98
-msgid "Theme"
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:99
-msgid "Color theme of the liveblog block."
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:102
+#: admin/setting-admin-general.php:122
 msgid "Light"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:103
+#: admin/setting-admin-general.php:123
 msgid "Dark"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:109 liveblog/includes/live-metabox.php:100
-msgid "Auto Refresh"
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:110
-msgid "Automatically check for and load new liveblog entries."
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:121
+#: admin/setting-admin-liveblog.php:163
 msgid "Layout"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:122
+#: admin/setting-admin-liveblog.php:164
 msgid "Information shown for each liveblog entry."
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:125 admin/setting-admin-micropost.php:38
+#: admin/setting-admin-liveblog.php:167 admin/setting-admin-micropost.php:41
 msgid "Title"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:126 admin/setting-admin-micropost.php:221
+#: admin/setting-admin-liveblog.php:168 admin/setting-admin-micropost.php:206
 msgid "Author"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:127
+#: admin/setting-admin-liveblog.php:169
 msgid "Share buttons"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:133
+#: admin/setting-admin-liveblog.php:175
 msgid "Display Order"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:134
+#: admin/setting-admin-liveblog.php:176
 msgid "Newest first by default; enable to show oldest first."
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:139
-msgid "Refresh Interval"
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:140
-msgid ""
-"Seconds between checks for new entries when auto refresh is on (10-360)."
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:148
+#: admin/setting-admin-liveblog.php:196
 msgid "Entries per Page"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:149
+#: admin/setting-admin-liveblog.php:197
 msgid "Number of entries shown before \"Load more\" (3-50)."
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:157
-msgid "Show Prefix"
+#: admin/setting-admin-liveblog.php:205
+msgid "Auto Refresh Interval"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:158
-msgid "Automatically prefix the liveblog title with \"Liveblog\"."
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:163 admin/setting-admin-micropost.php:66
-msgid "Time Format"
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:164
-msgid "How entry dates are displayed."
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:167
-msgid "Relative time (e.g. 3 minutes ago)"
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:168
-#, php-format
-msgid "Date: %s"
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:169
-#, php-format
-msgid "Time: %s"
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:170
-#, php-format
-msgid "Date and time: %s"
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:175
-msgid "Enable Cache"
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:176
-msgid "Cache liveblog content with an object cache or transients."
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:179
-msgid "Disabled"
-msgstr ""
-
-#: admin/setting-admin-liveblog.php:180
-msgid "Object"
+#: admin/setting-admin-liveblog.php:206
+msgid ""
+"Seconds between checks for new entries on liveblogs with auto refresh "
+"enabled (10-300)."
 msgstr ""
 
 #: admin/setting-admin-liveblog.php:181
-msgid "Transient"
+msgid "Show Prefix"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:186
-msgid "Feed Timestamp"
+#: admin/setting-admin-liveblog.php:183
+msgid "Automatically prefix the liveblog title with \"%s\"."
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:187
-msgid "Append a timestamp to the liveblog feed URL to avoid stale caches."
+#: admin/setting-admin-micropost.php:62
+msgid "Time Format"
 msgstr ""
 
-#: admin/setting-admin-liveblog.php:204
+#: admin/setting-admin-liveblog.php:188
+msgid "Entry time"
+msgstr ""
+
 #, php-format
+#: admin/setting-admin-liveblog.php:136
+msgid ""
+"How each entry shows its time. Date and time formats come from %1$s "
+"(currently %2$s and %3$s)."
+msgstr ""
+
+#: admin/setting-admin-liveblog.php:131
+msgid "Settings → General"
+msgstr ""
+
+#: admin/setting-admin-liveblog.php:109
+msgid "Relative time (3 minutes ago)"
+msgstr ""
+
+#, php-format
+#: admin/setting-admin-liveblog.php:111
+msgid "Date only (%s)"
+msgstr ""
+
+#, php-format
+#: admin/setting-admin-liveblog.php:113
+msgid "Time only (%s)"
+msgstr ""
+
+#, php-format
+#: admin/setting-admin-liveblog.php:115
+msgid "Date and time (%s)"
+msgstr ""
+
+#: liveblog/includes/api/class-livefeed.php:49
+msgid "The liveblog does not exist."
+msgstr ""
+
+#, php-format
+#: admin/setting-admin-liveblog.php:226
 msgid "The callback function used for the %s setting is missing."
 msgstr ""
 
-#: admin/setting-admin-micropost.php:31
+#: admin/setting-admin-micropost.php:34
 msgid "Style Settings"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:45 includes/microblog-forward.php:72
-msgid "Repost"
-msgstr ""
-
-#: admin/setting-admin-micropost.php:52
+#: admin/setting-admin-micropost.php:48
 msgid "RSS Feed"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:59
+#: admin/setting-admin-micropost.php:55
 msgid "Editor"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:73
+#: admin/setting-admin-micropost.php:69
 msgid "URL slug"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:82
+#: admin/setting-admin-micropost.php:78
 msgid "Shortcode & Widget"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:89
+#: admin/setting-admin-micropost.php:85
 msgid "Number of Microblogs"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:96
+#: admin/setting-admin-micropost.php:92
 msgid "Bottom Bar"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:103
+#: admin/setting-admin-micropost.php:99
 msgid "Lightbox"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:124
+#: admin/setting-admin-micropost.php:120
 msgid "Invalid slug. Use lowercase letters and numbers only, 1-20 characters."
 msgstr ""
 
-#: admin/setting-admin-micropost.php:145
+#: admin/setting-admin-micropost.php:141
 msgid ""
 "Make sure you have added the [microblog] shortcode to a page or the "
 "Microblog widget to a sidebar."
 msgstr ""
 
-#: admin/setting-admin-micropost.php:150
+#: admin/setting-admin-micropost.php:146
 msgid "Make sure \"Show title\" is enabled."
 msgstr ""
 
-#: admin/setting-admin-micropost.php:160
+#: admin/setting-admin-micropost.php:146 admin/setting-admin-micropost.php:156
 msgid "Show title"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:171
+#: admin/setting-admin-micropost.php:167
 msgid "Hide time"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:180
+#: admin/setting-admin-micropost.php:176
 msgid "1 minute ago / 3 days ago..."
 msgstr ""
 
-#: admin/setting-admin-micropost.php:191
-msgid "Enable reposting"
-msgstr ""
-
-#: admin/setting-admin-micropost.php:205
+#. translators: %s: RSS link.
 #, php-format
+#: admin/setting-admin-micropost.php:190
 msgid "Include in the main site feed ( %s )"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:225
+#: admin/setting-admin-micropost.php:210
 msgid "Excerpt"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:229
+#: admin/setting-admin-micropost.php:214
 msgid "Featured image"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:233
-msgid "Microblog topics"
-msgstr ""
-
-#: admin/setting-admin-micropost.php:243
+#: admin/setting-admin-micropost.php:224
 msgid ""
 "Letters and numbers only, 1-20 characters. Leave empty to use \"microposts\"."
 msgstr ""
 
-#: admin/setting-admin-micropost.php:255
+#: admin/setting-admin-micropost.php:236
 msgid "Number per page (range: 3-20)"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:269
+#. translators: 1: link to the Simple Lightbox plugin, 2: link to a Lightbox explanation.
 #, php-format
+#: admin/setting-admin-micropost.php:250
 msgid ""
 "Enable? (make sure the %1$s plugin is installed, or your theme supports %2$s)"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:270
+#: admin/setting-admin-micropost.php:251
 msgid "Simple Lightbox"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:271
+#: admin/setting-admin-micropost.php:252
 msgid "Lightbox effects"
 msgstr ""
 
-#: admin/setting-admin-micropost.php:284
-msgid "Show avatar"
+#: admin/setting-admin-micropost.php:263
+msgid "Activate Simple Lightbox"
+msgstr ""
+
+#: admin/setting-admin-micropost.php:266
+msgid "Install Simple Lightbox"
 msgstr ""
 
 #: admin/setting-admin-micropost.php:288
-msgid "Show topics"
+msgid "Show avatar"
 msgstr ""
 
-#: includes/microblog-forward.php:40
-msgid "Repost this microblog"
-msgstr ""
-
-#: includes/microblog-forward.php:115
-msgid "Repost of:"
-msgstr ""
-
-#: includes/microblog-forward.php:118
-msgid ""
-"The repost link is saved with this post. To repost a different microblog, "
-"use \"Repost this microblog\" from the list screen again."
-msgstr ""
-
-#: includes/microblog-forward.php:136
-msgid "Select a microblog to repost"
-msgstr ""
-
-#: includes/microblog-functions.php:242
+#: includes/microblog-functions.php:273
 msgid "just now"
 msgstr ""
 
-#: includes/microblog-functions.php:246
 #, php-format
+#: includes/microblog-functions.php:277
 msgid "%d minutes ago"
 msgstr ""
 
-#: includes/microblog-functions.php:250
 #, php-format
+#: includes/microblog-functions.php:281
 msgid "%d hours ago"
 msgstr ""
 
-#: includes/microblog-index.php:59
+#, php-format
+#: includes/microblog-functions.php:441
+msgid "Microblog: %s"
+msgstr ""
+
+#: includes/microblog-index.php:58
 msgid ""
 "Publish a short microblog with MicroBlog, then show it with a shortcode or a "
 "widget."
 msgstr ""
 
-#: includes/microblog-index.php:78 includes/microblog-index.php:80
+#: includes/microblog-index.php:73 includes/microblog-index.php:75
 msgid "New Microblog"
 msgstr ""
 
-#: includes/microblog-index.php:79
+#: includes/microblog-index.php:74
 msgid "Write Microblog"
 msgstr ""
 
-#: includes/microblog-index.php:82 includes/microblog-index.php:99
+#: includes/microblog-index.php:77 includes/microblog-index.php:94
 msgid "Microblog List"
 msgstr ""
 
-#: includes/microblog-index.php:83
+#: includes/microblog-index.php:78
 msgid "View Microblog"
 msgstr ""
 
-#: includes/microblog-index.php:84
+#: includes/microblog-index.php:79
 msgid "Search Microblogs"
 msgstr ""
 
-#: includes/microblog-index.php:85
+#: includes/microblog-index.php:80
 msgid "Edit Microblog"
 msgstr ""
 
-#: includes/microblog-index.php:86
+#: includes/microblog-index.php:81
 msgid "No microblogs found."
 msgstr ""
 
-#: includes/microblog-index.php:87
+#: includes/microblog-index.php:82
 msgid "No microblogs found in Trash."
 msgstr ""
 
-#: includes/microblog-index.php:88
+#: includes/microblog-index.php:83
 msgid "Microblog updated."
 msgstr ""
 
-#: includes/microblog-index.php:89
+#: includes/microblog-index.php:84
 msgid "Microblog published."
 msgstr ""
 
-#: includes/microblog-index.php:90
+#: includes/microblog-index.php:85
 msgid "Microblog published privately."
 msgstr ""
 
-#: includes/microblog-index.php:91
+#: includes/microblog-index.php:86
 msgid "Microblog reverted to draft."
 msgstr ""
 
-#: includes/microblog-index.php:92
+#: includes/microblog-index.php:87
 msgid "Microblog scheduled."
 msgstr ""
 
-#: includes/microblog-index.php:93
+#: includes/microblog-index.php:88
 msgid "Microblog featured image"
 msgstr ""
 
-#: includes/microblog-index.php:94 liveblog/includes/live-post-types.php:38
+#: includes/microblog-index.php:89 liveblog/includes/live-post-types.php:38
 msgid "Set featured image"
 msgstr ""
 
-#: includes/microblog-index.php:95 liveblog/includes/live-post-types.php:39
+#: includes/microblog-index.php:90 liveblog/includes/live-post-types.php:39
 msgid "Use featured image"
 msgstr ""
 
-#: includes/microblog-index.php:96 liveblog/includes/live-post-types.php:40
+#: includes/microblog-index.php:91 liveblog/includes/live-post-types.php:40
 msgid "Remove featured image"
 msgstr ""
 
-#: includes/microblog-index.php:97
+#: includes/microblog-index.php:92
 msgid "Filter microblog list"
 msgstr ""
 
-#: includes/microblog-index.php:98
+#: includes/microblog-index.php:93
 msgid "Filter by microblog date"
 msgstr ""
 
-#: includes/microblog-index.php:100
+#: includes/microblog-index.php:95
 msgid "Microblog list navigation"
 msgstr ""
 
-#: includes/microblog-index.php:112 includes/microblog-index.php:114
-msgid "Microblog Topics"
-msgstr ""
-
-#: includes/microblog-index.php:115
-msgid "Microblog Topic"
-msgstr ""
-
-#: includes/microblog-index.php:116
-msgid "All Topics"
-msgstr ""
-
-#: includes/microblog-index.php:117
-msgid "Add New Topic"
-msgstr ""
-
-#: includes/microblog-index.php:118
-msgid "Search Topics"
-msgstr ""
-
-#: includes/microblog-index.php:119
-msgid "Popular Topics"
-msgstr ""
-
-#: includes/microblog-index.php:120
-msgid "Edit Topic"
-msgstr ""
-
-#: includes/microblog-index.php:121
-msgid "View Topic"
-msgstr ""
-
-#: includes/microblog-index.php:122
-msgid "Update Topic"
-msgstr ""
-
-#: includes/microblog-index.php:123
-msgid "Topic not found."
-msgstr ""
-
-#: includes/microblog-index.php:124
-msgid "No topics."
-msgstr ""
-
-#: includes/microblog-index.php:125
-msgid "Choose from the most used topics"
-msgstr ""
-
-#: includes/microblog-index.php:126
-msgid "Separate topics with commas"
-msgstr ""
-
-#: includes/microblog-index.php:127
-msgid "Go to Topics"
-msgstr ""
-
-#: includes/microblog-index.php:136
-msgid "Group microblogs on the same subject with topic tags."
-msgstr ""
-
-#: includes/microblog-index.php:181
+#: includes/microblog-index.php:140
 msgid "[Microblog] "
 msgstr ""
 
@@ -534,13 +423,13 @@ msgstr ""
 msgid "You are not allowed to perform this action."
 msgstr ""
 
-#: includes/microblog-quick-pub.php:71
 #, php-format
+#: includes/microblog-quick-pub.php:71
 msgid "❌ The microblog must be at least %d characters long!"
 msgstr ""
 
-#: includes/microblog-quick-pub.php:79
 #, php-format
+#: includes/microblog-quick-pub.php:79
 msgid "Microblog %s"
 msgstr ""
 
@@ -552,7 +441,7 @@ msgstr ""
 msgid "✅ Microblog published."
 msgstr ""
 
-#: includes/microblog-shortcode.php:128
+#: includes/microblog-shortcode.php:120
 msgid "View all..."
 msgstr ""
 
@@ -572,156 +461,230 @@ msgstr ""
 msgid "Show RSS link?"
 msgstr ""
 
-#: liveblog/includes/live-class-liveblog.php:77
 #, php-format
+#: liveblog/includes/live-class-liveblog.php:79
 msgid ""
 "<a rel=\"noamphtml\" class=\"mlb-view-liveblog-link button\" "
 "href=\"%s\">View the liveblog</a>"
-msgstr ""
-
-#: liveblog/includes/live-class-liveblog.php:96
-msgid "The liveblog has ended."
 msgstr ""
 
 #: liveblog/includes/live-class-liveblog.php:100
 msgid "No liveblog updates yet."
 msgstr ""
 
-#: liveblog/includes/live-class-liveblog.php:147
+#: liveblog/includes/live-class-liveblog.php:150
+msgid "Show new updates"
+msgstr ""
+
+#: admin/setting-admin-liveblog.php:197 liveblog/includes/live-class-liveblog.php:153
 msgid "Load more"
 msgstr ""
 
-#: liveblog/includes/live-filters.php:61
-msgid "Liveblog source"
+#: liveblog/includes/live-filters.php:74 liveblog/includes/live-metabox.php:328
+msgid "Liveblog display"
 msgstr ""
 
-#: liveblog/includes/live-filters.php:94
-#: liveblog/includes/live-functions.php:277
-msgid "Closed"
-msgstr ""
-
-#: liveblog/includes/live-filters.php:156
+#: liveblog/includes/live-filters.php:148
 msgid "Source Liveblog"
 msgstr ""
 
-#: liveblog/includes/live-filters.php:246
+#: liveblog/includes/live-filters.php:238
 msgid "All liveblogs"
 msgstr ""
 
-#: liveblog/includes/live-functions.php:276
-msgid "Open"
+#: liveblog/includes/live-functions.php:275
+msgid "Not enabled"
 msgstr ""
 
-#: liveblog/includes/live-functions.php:542
+#: liveblog/includes/live-functions.php:276
+msgid "Active · Hidden"
+msgstr ""
+
+#: liveblog/includes/live-functions.php:277
+msgid "Active · Default display"
+msgstr ""
+
+#: liveblog/includes/live-functions.php:278
+msgid "Active · Auto refresh"
+msgstr ""
+
+#: liveblog/includes/live-functions.php:290
+msgid "Hidden"
+msgstr ""
+
+#: liveblog/includes/live-functions.php:291
+msgid "Default display"
+msgstr ""
+
+#: liveblog/includes/live-functions.php:292
+msgid "Auto refresh"
+msgstr ""
+
+#: liveblog/includes/live-functions.php:654
 msgid "Edit This"
 msgstr ""
 
-#: liveblog/includes/live-functions.php:739
 #, php-format
+#: liveblog/includes/live-functions.php:860
 msgctxt "%s = human-readable time difference"
 msgid "%s ago"
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:24
+#: liveblog/includes/live-metabox.php:25 liveblog/includes/live-metabox.php:156 liveblog/includes/live-metabox.php:315
 msgid "Liveblog Entry - Source"
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:95 liveblog/includes/live-metabox.php:358
-msgid "Enable liveblog"
+#: liveblog/includes/live-metabox.php:80 liveblog/includes/live-metabox.php:314
+msgid "The last publish attempt was blocked."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:103
-msgid "Live Status"
-msgstr ""
-
-#: liveblog/includes/live-metabox.php:138
-#, php-format
+#: liveblog/includes/live-metabox.php:81
 msgid ""
-"This item is attached to a <a href=\"%s\">closed</a> liveblog, Display this "
-"when it is open. "
+"A liveblog entry must be linked to a parent liveblog before it can be "
+"published. Pick a liveblog below, then publish again."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:141
+#: liveblog/includes/live-metabox.php:88 liveblog/includes/live-metabox.php:280
 msgid "Select liveblog"
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:143
+#: liveblog/includes/live-metabox.php:90
 msgid "— Select an entry liveblog —"
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:152
+#: liveblog/includes/live-metabox.php:104
 msgid "Direct link to entry"
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:157
-msgid "There is no liveblog created yet."
+#: liveblog/includes/live-metabox.php:110
+msgid "No liveblog sources found."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:159
-#, php-format
-msgid ""
-"Alternatively, you can enable the <a href=\"%s\">disabled</a> liveblog "
-"status "
-msgstr ""
-
-#: liveblog/includes/live-metabox.php:278
+#: liveblog/includes/live-metabox.php:156
 msgid ""
 "Liveblog entry saved without a parent liveblog: pick one in the \"Liveblog "
 "Entry - Source\" box and update again, or the entry will not be displayed."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:285
+#: liveblog/includes/live-metabox.php:166
 msgid ""
 "The selected liveblog no longer exists. The link has been cleared; please "
 "pick a liveblog again."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:357
-msgid "Disable liveblog"
+#: liveblog/includes/live-metabox.php:280
+msgid ""
+"A liveblog entry must be linked to a parent liveblog before publishing. The "
+"post was saved as a draft; pick a liveblog in the \"Select liveblog\" box "
+"and publish again."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:394
+#: liveblog/includes/live-metabox.php:315
+msgid ""
+"A liveblog entry must be linked to a parent liveblog before it can be "
+"published. Pick a liveblog in the \"Liveblog Entry - Source\" box below, "
+"then publish again."
+msgstr ""
+
+#: liveblog/includes/live-metabox.php:393
+msgid "Set liveblog display state"
+msgstr ""
+
+#: liveblog/includes/live-metabox.php:456 liveblog/includes/live-parent-picker.php:123
 msgid "You are not allowed to do that."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php:402
+#: liveblog/includes/live-metabox.php:464
 msgid "Invalid post."
 msgstr ""
 
-#: liveblog/includes/live-post-types.php:19
+#: liveblog/includes/live-metabox.php:468
+msgid "Invalid liveblog state."
+msgstr ""
+
+#: liveblog/includes/live-metabox.php:472
+msgid "This post has no liveblog entries."
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:90
+msgid "Select a liveblog source"
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:91 liveblog/includes/live-post-types.php:22 liveblog/includes/live-post-types.php:25
+msgid "New Liveblog"
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:193 liveblog/includes/live-post-types.php:23
+msgid "Write Liveblog"
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:218
+msgid ""
+"A liveblog entry must be attached to a liveblog source (publish or private). "
+"Pick one below to start writing."
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:208 liveblog/includes/live-parent-picker.php:212 liveblog/includes/live-post-types.php:29
+msgid "Search Liveblogs"
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:235
+msgid "Liveblog source"
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:236
+msgid "Type"
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:237
+msgid "Date"
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:256
+msgid "Write entry"
+msgstr ""
+
+#, php-format
+#: liveblog/includes/live-parent-picker.php:277
+msgid ""
+"The source pool is limited to the post types chosen under \"Supported\" in "
+"the %s."
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:278
+msgid "MicroBlog settings"
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:287
+msgid "Pick none for now — save as draft"
+msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:290
+msgid ""
+"The entry stays a draft and cannot be published until a liveblog source is "
+"linked."
+msgstr ""
+
+#: admin/class-mb-admin-page.php:46 admin/setting-admin-general.php:34 admin/setting-admin-liveblog.php:183 liveblog/includes/live-filters.php:114 liveblog/includes/live-post-types.php:19 liveblog/includes/live-post-types.php:20 liveblog/includes/live-post-types.php:21 liveblog/includes/live-post-types.php:27
 msgctxt "post type general name"
 msgid "Liveblog"
 msgstr ""
 
-#: liveblog/includes/live-post-types.php:21
+#: admin/class-mb-admin-page.php:46 admin/setting-admin-general.php:34 admin/setting-admin-liveblog.php:183 liveblog/includes/live-filters.php:114 liveblog/includes/live-post-types.php:19 liveblog/includes/live-post-types.php:20 liveblog/includes/live-post-types.php:21 liveblog/includes/live-post-types.php:27
 msgctxt "post type singular name"
 msgid "Liveblog"
-msgstr ""
-
-#: liveblog/includes/live-post-types.php:22
-#: liveblog/includes/live-post-types.php:25
-msgid "New Liveblog"
-msgstr ""
-
-#: liveblog/includes/live-post-types.php:23
-msgid "Write Liveblog"
 msgstr ""
 
 #: liveblog/includes/live-post-types.php:24
 msgid "Edit Liveblog"
 msgstr ""
 
-#: liveblog/includes/live-post-types.php:26
-#: liveblog/includes/live-post-types.php:42
+#: liveblog/includes/live-post-types.php:26 liveblog/includes/live-post-types.php:42
 msgid "Liveblog List"
 msgstr ""
 
 #: liveblog/includes/live-post-types.php:28
 msgid "View Link"
-msgstr ""
-
-#: liveblog/includes/live-post-types.php:29
-msgid "Search Liveblogs"
 msgstr ""
 
 #: liveblog/includes/live-post-types.php:30
@@ -772,33 +735,28 @@ msgstr ""
 msgid "MicroLive liveblog error: live_id or endpoint cannot be empty."
 msgstr ""
 
-#: liveblog/liveblog-index.php:89
+#: liveblog/liveblog-index.php:81
 msgid "Please select a liveblog before saving."
 msgstr ""
 
-#: liveblog/liveblog-index.php:101
-#, php-format
-msgid "There is %s update."
-msgstr ""
-
-#: liveblog/liveblog-index.php:102
-#, php-format
-msgid "There are %s updates."
-msgstr ""
-
-#: liveblog/liveblog-index.php:103
+#: liveblog/liveblog-index.php:88
 msgid "That's All."
 msgstr ""
 
-#: microblog.php:83
+#, php-format
+#: liveblog/liveblog-index.php:89
+msgid "Show %s new updates"
+msgstr ""
+
+#: microblog.php:82
 msgid "MicroBlog - Control Panel"
 msgstr ""
 
-#: microblog.php:84
+#: microblog.php:83
 msgid "MicroBlog Settings"
 msgstr ""
 
-#: microblog.php:102
+#: microblog.php:101
 msgid "Settings"
 msgstr ""
 
@@ -814,73 +772,54 @@ msgstr ""
 msgid "Share via Weibo"
 msgstr ""
 
-#: includes/microblog-functions.php
-msgid "Microblog: %s"
+#: admin/setting-admin-general.php:42
+msgid "Color mode"
 msgstr ""
 
-msgid "Install Simple Lightbox"
+#: admin/setting-admin-general.php:121
+msgid "Automatic (follow device)"
 msgstr ""
 
-msgid "Activate Simple Lightbox"
+#: admin/setting-admin-general.php:138
+msgid "Applies to the microblog shortcode, the widget and liveblog blocks. Automatic follows your theme when it supports color modes (including the visitor switch in the header), and the visitor device otherwise."
 msgstr ""
 
-#: liveblog/includes/live-metabox.php
-msgid "The last publish attempt was blocked."
+#: liveblog/includes/live-parent-picker.php:168
+msgid "Already a liveblog source"
 msgstr ""
 
-#: liveblog/includes/live-metabox.php
-msgid "A liveblog entry must be linked to a parent liveblog before it can be published. Pick a liveblog in the \"Liveblog Entry - Source\" box below, then publish again."
+#: liveblog/includes/live-parent-picker.php:169
+msgid "All articles"
 msgstr ""
 
-#: liveblog/includes/live-metabox.php
-msgid "A liveblog entry must be linked to a parent liveblog before it can be published. Pick a liveblog below, then publish again."
+#: liveblog/includes/live-parent-picker.php:199
+msgid "Post type"
 msgstr ""
 
-#: liveblog/includes/live-parent-picker.php
-msgid "Select a liveblog source"
+#: liveblog/includes/live-parent-picker.php:210
+msgid "Search by title or ID"
 msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:226
+msgid "%d article"
 msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "A liveblog entry must be attached to a liveblog source (publish or private). Pick one below to start writing."
+
+#: liveblog/includes/live-parent-picker.php:226
+msgid "%d articles"
 msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:267
+msgid "No liveblog has been started yet."
 msgstr ""
+
+#: liveblog/includes/live-parent-picker.php:268
+msgid "Switch the filter to “All articles” and pick an article to start a liveblog."
 msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "Type"
+
+#: liveblog/includes/live-parent-picker.php:270
+msgid "No matching articles found."
 msgstr ""
-msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "Status"
-msgstr ""
-msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "Date"
-msgstr ""
-msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "Write entry"
-msgstr ""
-msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "No liveblog sources found."
-msgstr ""
-msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "Open the article you want to follow and check \"Enable liveblog\" in its Liveblog box."
-msgstr ""
-msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "The source pool is limited to the post types chosen under \"Supported\" in the %s."
-msgstr ""
-msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "MicroBlog settings"
-msgstr ""
-msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "Pick none for now — save as draft"
-msgstr ""
-msgstr ""
-#: liveblog/includes/live-parent-picker.php
-msgid "The entry stays a draft and cannot be published until a liveblog source is linked."
+
+#: liveblog/includes/live-parent-picker.php:271
+msgid "Try another post type, or clear the keyword."
 msgstr ""
