@@ -205,7 +205,7 @@ function mbfun_get_lasted_micropost_slug_name()
 }
 
 /**
- * 旧接口：曾用于写全局变量，现在只是让 slug 缓存失效。
+ * 让 slug 缓存失效。
  *
  * @deprecated 直接调用 mbfun_get_micropost_slug(true)。
  * @param string $new_value 新 slug。

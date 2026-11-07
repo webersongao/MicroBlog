@@ -110,8 +110,6 @@ class MB_Admin_Page
         echo '</h2>';
 
         self::render_form($tabs[$tab]);
-        self::render_upgrade_box();
-        self::render_upgrade_notice();
         echo '</div>';
     }
 
@@ -157,89 +155,4 @@ class MB_Admin_Page
         echo '</form>';
     }
 
-    /**
-     * 输出「数据库升级」区块：说明 + 独立按钮。
-     *
-     * 与设置表单分开（表单提交走 options.php，这里走 admin-post.php）。
-     *
-     * @return void
-     */
-    private static function render_upgrade_box()
-    {
-        $url = wp_nonce_url(admin_url('admin-post.php?action=microblog_db_upgrade'), 'microblog_db_upgrade');
-
-        echo '<div class="microblog-db-upgrade" style="margin-top:24px;padding:16px;background:#fff;border:1px solid #c3c4c7;border-left-width:4px;">';
-        echo '<h2 class="title" style="margin-top:0;">' . esc_html__('Database upgrade', MICROBLOG_DOMAIN) . '</h2>';
-        echo '<p class="description" style="max-width:640px;">'
-            . esc_html__('Manually migrate legacy option names and setting keys from older versions to the current naming scheme. Safe to run anytime.', MICROBLOG_DOMAIN)
-            . '</p>';
-        echo '<p><a class="button button-secondary" href="' . esc_url($url) . '">'
-            . esc_html__('Run upgrade', MICROBLOG_DOMAIN)
-            . '</a></p>';
-        echo '</div>';
-    }
-
-    /**
-     * 输出「数据库升级」结果通知（带回来的是只读标记，仅按 0/1 取值）。
-     *
-     * @return void
-     */
-    private static function render_upgrade_notice()
-    {
-        if (!isset($_GET['mb_upgrade'])) {
-            return;
-        }
-
-        $moved = !empty($_GET['mb_o']);
-        $keys  = !empty($_GET['mb_k']);
-
-        echo '<div class="notice notice-success is-dismissible"><p><strong>'
-            . esc_html__('Database upgrade', MICROBLOG_DOMAIN)
-            . '</strong></p><ul style="margin-left:18px;list-style:disc;">';
-
-        if ($moved) {
-            echo '<li>' . esc_html__('Migrated the legacy option "theme_microblog_data" to "microblog_micropost_data".', MICROBLOG_DOMAIN) . '</li>';
-        }
-
-        if ($keys) {
-            echo '<li>' . esc_html__('Renamed the legacy setting key "msk_liveblog_regist" to "mb_liveblog_regist".', MICROBLOG_DOMAIN) . '</li>';
-        }
-
-        if (!$moved && !$keys) {
-            echo '<li>' . esc_html__('Database is up to date. Nothing to migrate.', MICROBLOG_DOMAIN) . '</li>';
-        }
-
-        echo '</ul></div>';
-    }
-
-    /**
-     * 处理「数据库升级」按钮（admin-post）。
-     *
-     * 手动触发旧配置迁移并把结果带回设置页展示，便于旧库主动升级。
-     *
-     * @return void
-     */
-    public static function handle_db_upgrade()
-    {
-        if (!current_user_can('manage_options')) {
-            wp_die(esc_html__('You do not have permission to do this.', MICROBLOG_DOMAIN), 403);
-        }
-
-        check_admin_referer('microblog_db_upgrade');
-
-        $result = microblog_migrate_legacy_option();
-
-        wp_safe_redirect(add_query_arg(
-            array(
-                'page'       => MICROBLOG_BASEFOLDER . '/microblog.php',
-                'tab'        => 'micropost',
-                'mb_upgrade' => 1,
-                'mb_o'       => (int) $result['option_moved'],
-                'mb_k'       => (int) $result['subkey_renamed'],
-            ),
-            admin_url('tools.php')
-        ));
-        exit;
-    }
 }
-add_action('admin_post_microblog_db_upgrade', array('MB_Admin_Page', 'handle_db_upgrade'));

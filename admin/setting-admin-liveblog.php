@@ -274,8 +274,6 @@ function microblog_live_select_callback( $args ) {
 	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : null;
 
 	// 旧版本把「相对时间」存成空串，还有已废弃的选项值。
-	// 不归一化的话，<select> 会显示成第一项、实际喂给前台的却是空值——
-	// 「看着选了相对时间，前台却按日期时间渲染」就是这么来的。
 	$options = is_array( $args['options'] ) ? $args['options'] : array();
 	$key     = is_scalar( $value ) ? (string) $value : '';
 

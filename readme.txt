@@ -85,9 +85,15 @@ Stored options and post meta, kept here as the contract for future data migratio
 
 * `microblog_general_data` (array)
   * `mb_color_mode` — `auto` | `light` | `dark`. Controls the color mode of the microblog shortcode, the widget and liveblog blocks. Missing value means `auto`: follow the host theme's `data-color-mode` when present, otherwise follow the visitor device (pure CSS).
-* `microblog_live_data` (array)
+* `microblog_liveblog_data` (array)
+  * `ml_post_types` — array of post types whose published posts can be liveblog sources. Default `array('post')`.
+  * `ml_post_layout` — array of `ml_layout_title` / `ml_layout_author` / `ml_layout_tshare`; missing value shows none of them.
+  * `ml_display_revort_sort` — checkbox; oldest first when set.
+  * `ml_prefix_title` — checkbox; prefix the liveblog title with "Liveblog".
+  * `ml_entry_date_format` — `human` | `date` | `time` | `datetime`; legacy empty strings are normalized to `human`.
+  * `ml_show_entries` — int 3–50, entries per page before "Load more".
+  * `ml_auto_refresh_interval` — polling interval in seconds, 10–300, default 30. (Formerly `ml_update_interval`; renamed in 1.9.1.)
   * `ml_cache_enabled` — **removed.** The feed is always cached for 5 minutes per liveblog ID (`mlb_feed_{id}` transient) and purged on any entry change, so the on/off switch (and its `object` branch, which did nothing without a persistent object cache) is gone. Leftover values are ignored and dropped on the next settings save.
-  * `ml_refresh_interval` — polling interval in seconds, 10–300.
   * `ml_append_timestamp` — **removed in 1.9.1.** The liveblog feed URL always carries a timestamp now: minute precision on first load (so a CDN can still share one minute of cache) and millisecond precision for polling. Stale values are ignored.
   * `ml_theme_style` — **removed in 1.9.0.** Replaced by `mb_color_mode`; the `mlb-theme-{mode}` CSS class is still printed for third-party selectors.
 

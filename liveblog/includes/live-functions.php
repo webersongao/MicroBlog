@@ -772,10 +772,7 @@ function mlb_add_meta_data()
 add_action('wp_head', 'mlb_add_meta_data');
 
 /**
- * 构建 liveblog feed（不回源 HTTP 请求自己）。
- *
- * 旧实现用 file_get_contents 请求自身 REST 端点并禁用 SSL 校验：
- * 每次 wp_head 都产生一次自 HTTP 请求（单进程 FPM 有死锁风险）。
+ * 构建 liveblog feed（不回源 HTTP 请求自己，避免每次 wp_head 产生自 HTTP 请求）。
  *
  * 全站只有这一层缓存：按 liveblog ID 存 5 分钟 transient，
  * 前台轮询（默认 30 秒一次）与页头结构化数据共用同一份。
@@ -793,7 +790,6 @@ function mbfun_get_live_feed_local($liveblog_id)
 		return null;
 	}
 
-	// 前缀统一为 microblog_（原名 mlb_feed_，2026-11-06 改名，旧键是缓存可自然过期）。
 	$cache_key = 'microblog_liveblog_feed_' . $liveblog_id;
 
 	$feed = get_transient($cache_key);
