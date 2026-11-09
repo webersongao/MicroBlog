@@ -1,15 +1,6 @@
-/*
-PluName: 微博 MicroBlog
-PluLink: https://www.webersongao.com/tag/microblog
-Desc: 将您的WordPress网站用作微博；在小部件中显示微博或使用短代码显示微博。
-Author: WebersonGao
-AuthorLink: https://www.webersongao.com
-Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
-*/
+/* MicroBlog */
 
-/* =====================================================================
-   设置页：只做少量对齐，结构与配色沿用 WordPress 后台原生样式
-   ===================================================================== */
+/* 设置页 */
 
 .microblog-settings-wrap .wp-heading-inline {
     margin-right: 8px;
@@ -39,7 +30,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     margin-bottom: 8px;
 }
 
-/* 原生 form-table：标签列收窄一点，说明文字不铺满整行 */
+/* 原生 form-table */
 .microblog-settings-wrap .form-table th {
     width: 160px;
     padding-left: 0;
@@ -64,7 +55,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     margin-top: 8px;
 }
 
-/* 选项之间的横向间距，避免 checkbox 挤成一坨 */
 .microblog-admin-option-label,
 .microblog-settings-wrap .form-table td label {
     margin-right: 16px;
@@ -84,7 +74,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 }
 
 
-/* ---- 快速发微博（仪表盘） ---- */
+/* 快速发微博 */
 
 #quick-micropost-form { margin-top: 20px;}
 #quick-micropost-form label { display: block;  margin-bottom: 5px; }
@@ -94,14 +84,11 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 #quick-micropost-message { color:#2271b1; float: right;}
 
 
-/*  ====== liveblog metabox ====== */
-
-/* 表单区限宽：控件不再被拉到横贯整个 metabox 的一条线上。 */
+/* 表单区限宽 */
 .mlb-fields {
     max-width: 560px;
 }
 
-/* 标签在上、控件在下（长选项与只读链接更适合这种排版）。 */
 .mlb-field {
     display: grid;
     gap: 6px;
@@ -124,13 +111,9 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     width: 100%;
 }
 
-/* 说明：连载编辑器里的「Live Status」「Auto Refresh」控件已移除，
-   四态开关移到文章列表页，那里的列样式单独放在 liveblog-admin-column.css。
-   这里只保留条目编辑页的「选择原文」排版。 */
+/* 说明 */
 
-/* =====================================================================
-   连载原文选择页：筛选条放在标题右侧
-   ===================================================================== */
+/* 连载原文选择页 */
 
 .mlb-picker-filter {
     float: right;

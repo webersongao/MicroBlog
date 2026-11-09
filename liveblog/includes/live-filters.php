@@ -1,22 +1,14 @@
 <?php
 
-// Exit if accessed directly
 if (! defined('ABSPATH')) {
 	exit;
 }
 
-/**
- * Parse filter.
- *
- * @param WP_Query $query The WP Query.
- * @return void
- */
+/* Parse filter */
 function mlb_liveblog_query_parse_filter($query)
 {
 	global $pagenow;
 
-	// 计算 ID 列表时内部会调用 get_posts()，而每次 WP_Query 都会再次触发
-	// parse_query；不加锁会无限递归直到内存耗尽。
 	static $busy = false;
 
 	if ($busy
@@ -33,8 +25,6 @@ function mlb_liveblog_query_parse_filter($query)
 		return $query;
 	}
 
-	// 与 quicklink 的计数共用同一份「有条目引用且已展示」的 ID 列表，
-	// 避免按 meta_value 筛选时漏掉 default / auto 两种新状态。
 	$busy = true;
 	$ids  = mlb_get_displaying_source_ids($post_type);
 	$busy = false;
@@ -45,16 +35,9 @@ function mlb_liveblog_query_parse_filter($query)
 }
 add_filter('parse_query', 'mlb_liveblog_query_parse_filter');
 
-/**
- * Add quicklinks
- *
- * @param  array $quicklinks
- * @return array
- */
+/* Add quicklinks */
 function mlb_liveblogs_add_quicklinks($quicklinks)
 {
-	// 文章列表页默认不带 post_type 参数，get_query_var() 取不到类型，
-	// 用当前屏幕的 post_type 才能让计数与筛选落在同一种类型上。
 	$screen    = function_exists('get_current_screen') ? get_current_screen() : null;
 	$post_type = $screen ? $screen->post_type : get_query_var('post_type');
 
@@ -79,9 +62,6 @@ function mlb_liveblogs_add_quicklinks($quicklinks)
 	return $quicklinks;
 }
 
-/**
- * Register quicklink filters
- */
 function mlb_liveblog_register_quicklink_filters()
 {
 	foreach (mbfun_get_live_supported_post_types() as $post_type) {
@@ -90,11 +70,6 @@ function mlb_liveblog_register_quicklink_filters()
 }
 add_action('init', 'mlb_liveblog_register_quicklink_filters');
 
-/**
- * Is prefix title enabled
- *
- * @return boolean
- */
 function mlb_is_prefix_title_enabled()
 {
 	$mlb_options = mbfun_get_liveblog_settings();
@@ -102,13 +77,6 @@ function mlb_is_prefix_title_enabled()
 	return apply_filters('mlb_prefix_title_enabled', ! empty($mlb_options['ml_prefix_title']) ? true : false);
 }
 
-/**
- * Apply title prefix
- *
- * @param  string $title
- * @param  int    $post_id
- * @return string
- */
 function mlb_apply_live_title_prefix($title, $post_id = null)
 {
 	$livePrefix = mbfun_get_liveblog_option('ml_title_prefix', 'Liveblog');
@@ -119,12 +87,6 @@ function mlb_apply_live_title_prefix($title, $post_id = null)
 	return $title;
 }
 
-/**
- * Apply title prefix filter condition
- *
- * @param  WP_Query $query
- * @return void
- */
 function mlb_apply_title_prefix_filter_condition($query)
 {
 	global $wp_query;
@@ -137,12 +99,6 @@ function mlb_apply_title_prefix_filter_condition($query)
 }
 add_action('loop_start', 'mlb_apply_title_prefix_filter_condition', 1, 10);
 
-/**
- * Adds the liveblog column to the entries overview.
- *
- * @param array $columns
- * @return array
- */
 function mlb_set_show_liveblog_column($columns)
 {
 	$columns['mlb_liveblog'] = __('Source Liveblog', MICROBLOG_DOMAIN);
@@ -151,13 +107,6 @@ function mlb_set_show_liveblog_column($columns)
 }
 add_filter('manage_microlive_posts_columns', 'mlb_set_show_liveblog_column');
 
-/**
- * Adds the liveblog link in the Liveblog column.
- *
- * @param string  $column
- * @param integer $post_id
- * @return void
- */
 function mlb_populate_herf_liveblog_column($column, $post_id)
 {
 	if ($column !== 'mlb_liveblog') {
@@ -175,15 +124,8 @@ function mlb_populate_herf_liveblog_column($column, $post_id)
 }
 add_action('manage_microlive_posts_custom_column', 'mlb_populate_herf_liveblog_column', 10, 2);
 
-/**
- * Maybe append the liveblog to the post contnet.
- *
- * @param string $content
- * @return string
- */
 function mlb_maybe_add_liveblog($content)
 {
-	// 如果是 feed 输出，则直接返回原始内容
 	if (is_feed()) {
 		return $content;
 	}
@@ -199,30 +141,16 @@ function mlb_maybe_add_liveblog($content)
 add_filter('the_content', 'mlb_maybe_add_liveblog');
 
 
-// ===========   增加过滤项  ===============//
-
 add_action('restrict_manage_posts', 'mlb_add_post_dropdown_filter_to_manage_posts');
 add_action('pre_get_posts', 'mlb_handle_query_vars_for_post_filter');
 add_filter('query_vars', 'mlb_add_query_var_for_post_filter');
 
-/**
- * Register the query_var for filtering posts by liveblog state
- *
- * @param array $query_vars
- * @return array
- * @filter query_vars
- */
 function mlb_add_query_var_for_post_filter($query_vars)
 {
 	$query_vars[] = 'live_id';
 	return $query_vars;
 }
 
-/**
- * Render the liveblog state select to filter posts in the post table
- *
- * @action restrict_manage_posts
- */
 function mlb_add_post_dropdown_filter_to_manage_posts()
 {
 	$current_screen = get_current_screen();
@@ -231,7 +159,6 @@ function mlb_add_post_dropdown_filter_to_manage_posts()
 		return;
 	}
 
-	// 只列已被条目引用的原文，避免放开原文池后下拉框塞进全站文章。
 	$liveblogs = mbfun_get_live_liveblog_sources(true);
 
 	echo '<select name="live_id">';
@@ -247,11 +174,6 @@ function mlb_add_post_dropdown_filter_to_manage_posts()
 }
 
 
-/**
- * Translate the live_id query_var into a meta_query
- *
- * @param WP_Query $query
- */
 function mlb_handle_query_vars_for_post_filter($query)
 {
 

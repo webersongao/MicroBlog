@@ -1,21 +1,5 @@
-/*
- * MicroBlog 连载区块样式。
- *
- * 分两层：
- *   1. 结构层（间距、时间线圆点、按钮位置）—— 与配色无关；
- *   2. 颜色层 —— 全部走 --mlb-* 令牌，令牌由 data-mlb-color-mode 决定。
- *
- * 颜色模式：
- *   light / dark  插件设置里明确指定，覆盖宿主主题；
- *   auto          宿主主题有 data-color-mode 时跟随主题，
- *                 没有时跟随设备（prefers-color-scheme），纯 CSS 完成。
- *
- * 为什么 auto 要分三步：主题的 auto 也走媒体查询，服务端不知道访客偏好，
- * 所以插件必须复用同一套「属性 + 媒体查询」判断，否则会出现深色页面里
- * 嵌一块浅色区块。
- */
 
-/* ---------- 令牌：浅色 ---------- */
+/* 令牌 */
 .mlb-liveblog {
 	--mlb-line: #bbb;
 	--mlb-dot-bg: #eee;
@@ -31,7 +15,7 @@
 	--mlb-edit-text: #595959;
 }
 
-/* ---------- 令牌：深色（插件设置里明确选深色） ---------- */
+/* 令牌 */
 .mlb-liveblog[data-mlb-color-mode="dark"] {
 	--mlb-line: #3f3f3f;
 	--mlb-dot-bg: #232323;
@@ -47,7 +31,7 @@
 	--mlb-edit-text: #9a9a9a;
 }
 
-/* ---------- 令牌：auto 且宿主主题已解析为深色 ---------- */
+/* 令牌 */
 [data-color-mode="dark"] .mlb-liveblog[data-mlb-color-mode="auto"] {
 	--mlb-line: #3f3f3f;
 	--mlb-dot-bg: #232323;
@@ -63,7 +47,7 @@
 	--mlb-edit-text: #9a9a9a;
 }
 
-/* ---------- 令牌：auto + 设备深色（宿主无颜色模式时同样生效） ---------- */
+/* 令牌 */
 @media (prefers-color-scheme: dark) {
 	[data-color-mode="auto"] .mlb-liveblog[data-mlb-color-mode="auto"],
 	html:not([data-color-mode]) .mlb-liveblog[data-mlb-color-mode="auto"] {
@@ -82,7 +66,7 @@
 	}
 }
 
-/* ---------- 结构 ---------- */
+/* 结构 */
 ul.mlb-liveblog-list {
 	list-style: none;
 	margin: 0;
@@ -146,7 +130,7 @@ ul.mlb-liveblog-list {
 	margin: 15px 0;
 }
 
-/* 编辑器内联编辑入口：只在 mlb-is-editor 下出现 */
+/* 编辑器内联编辑入口 */
 .mlb-liveblog-action-edit {
 	float: left;
 	width: 40px;
@@ -216,7 +200,7 @@ ul.mlb-liveblog-list {
 	color: var(--mlb-button-text);
 }
 
-/* ---------- 交互 ---------- */
+/* 交互 */
 @keyframes mlb-liveblog-highlight {
 	0% {
 		background: var(--mlb-highlight);
@@ -236,7 +220,6 @@ ul.mlb-liveblog-list {
 	margin-top: 10px;
 }
 
-/* 轮询发现新条目时才由 JS 显示；与「Load more」并排时留出间距。 */
 #mlb-show-new-posts {
 	border: 1px solid var(--mlb-button-border);
 	margin-top: 10px;

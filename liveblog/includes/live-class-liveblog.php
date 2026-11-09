@@ -1,31 +1,14 @@
 <?php
-// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 class MLB_Liveblog {
 
-	/**
-	 * The endpoint URL.
-	 *
-	 * @var null|string
-	 */
 	public $endpoint = null;
 
-	/**
-	 * The liveblog post ID.
-	 *
-	 * @var int|null
-	 */
 	private $liveblog_post_id = null;
 
-	/**
-	 * Create instance from liveblog id.
-	 *
-	 * @param int $id
-	 * @return MLB_Liveblog
-	 */
 	public static function mlb_fromId( $id ) {
 		$instance = new self();
 
@@ -35,12 +18,6 @@ class MLB_Liveblog {
 		return $instance;
 	}
 
-	/**
-	 * Create instance from endpoint url.
-	 *
-	 * @param string $url
-	 * @return MLB_Liveblog
-	 */
 	public static function mlb_fromEndpoint( $url ) {
 		$instance = new self();
 
@@ -49,32 +26,17 @@ class MLB_Liveblog {
 		return $instance;
 	}
 
-	/**
-	 * Construct
-	 */
+	/* Construct */
 	private function __construct() {
 	}
 
-	/**
-	 * Get the liveblog id if available.
-	 *
-	 * @return int|null
-	 */
 	private function mlb_get_liveblog_id() {
-		// 明确传了 ID（[micro_liveblog live_id=...]）时以它为准，
-		// 否则会被当前全局 $post 覆盖，导致端点、权限与状态判断互相不一致。
 		return $this->liveblog_post_id ?: ( mlb_is_liveblog() ? get_the_ID() : null );
 	}
 
-	/**
-	 * Render the liveblog.
-	 *
-	 * @return string
-	 */
 	public function mlb_content_render() {
         $content = '';
 
-		// AMP is not supported at this moment
 		if ( function_exists( 'amp_is_request' ) && amp_is_request() ) {
             $content .= '<p>' . sprintf( __( '<a rel="noamphtml" class="mlb-view-liveblog-link button" href="%s">View the liveblog</a>', MICROBLOG_DOMAIN ), esc_url( amp_remove_paired_endpoint( amp_get_current_url() ) ) . '#mlb-liveblog' ) . '</p>';
 
@@ -145,7 +107,6 @@ class MLB_Liveblog {
 				</g>';
 		$content .= '</svg></div>';
 
-		// 只有「开启中·自动刷新」才输出按钮；「默认展示」（相当于已完结）不轮询、也不提示。
 		if ( $auto_refresh ) {
 			$content .= '<button id="mlb-show-new-posts" style="display: none;" class="mlb-button button">' . esc_html__( 'Show new updates', MICROBLOG_DOMAIN ) . '</button>';
 		}

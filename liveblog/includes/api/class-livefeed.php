@@ -7,18 +7,12 @@ if (! defined('ABSPATH')) {
 }
 
 class LiveFeed {
-	/**
-	 * Setup.
-	 */
+	/* Setup */
 	public function __construct() {
 		add_action( 'rest_api_init', array( $this, 'register' ) );
 	}
 
-	/**
-	 * Register route.
-	 *
-	 * @return void
-	 */
+	/* Register route */
 	public function register() {
 		register_rest_route(
 			'microlives/v1',
@@ -31,15 +25,6 @@ class LiveFeed {
 		);
 	}
 
-	/**
-	 * Construct the feed.
-	 *
-	 * 与页头结构化数据共用 mbfun_get_live_feed_local() 的 5 分钟缓存：
-	 * 前台默认 30 秒轮询一次，不缓存的话每次都要重建整个条目列表。
-	 *
-	 * @param \WP_REST_Request $request
-	 * @return array|\WP_Error
-	 */
 	public function feed( \WP_REST_Request $request ) {
 		$feed = mbfun_get_live_feed_local( $request->get_param( 'id' ) );
 

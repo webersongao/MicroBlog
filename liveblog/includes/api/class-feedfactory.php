@@ -8,12 +8,6 @@ if (! defined('ABSPATH')) {
 
 class FeedFactory {
 
-	/**
-	 * Make feed for liveblog.
-	 *
-	 * @param int $liveblog_id
-	 * @return array
-	 */
 	public static function make( $liveblog_id ) {
 		$liveblog = mbfun_get_live_liveblog( $liveblog_id );
 
@@ -30,12 +24,6 @@ class FeedFactory {
 		return apply_filters( 'mlb_api_feed', $feed, $liveblog, $liveblog->ID );
 	}
 
-	/**
-	 * Get the liveblog entries.
-	 *
-	 * @param int $liveblog_id
-	 * @return array
-	 */
 	public static function get_entries( $liveblog_id ) {
 
 		$order = mlb_display_revert_sort() ? 'ASC' : 'DESC';

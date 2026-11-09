@@ -5,7 +5,7 @@ Copyright 2023 WebersonGao.com, The Doumao Team.
 */
 
 if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly
+    exit;
 }
 
 if (!class_exists('Micro_Liveblog')) {
@@ -13,7 +13,6 @@ if (!class_exists('Micro_Liveblog')) {
     class Micro_Liveblog
     {
         private static $instance = null;
-        // public $liveblog = null;
 
         public static function instance()
         {
@@ -70,7 +69,6 @@ if (!class_exists('Micro_Liveblog')) {
                 wp_register_script('mlb-admin', mbfun_get_plugin_url() . 'assets/js/liveblog-admin.js', ['jquery', 'selectize'], mbfun_get_plugin_version());
                 wp_register_style('selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.default.css', null, '0.12.4');
 
-                // 只有连载条目编辑页有「选择原文」metabox，普通文章页不再需要 selectize。
                 $screen = function_exists('get_current_screen') ? get_current_screen() : null;
 
                 if ($screen && 'post' === $screen->base && 'microlive' === $screen->post_type) {
@@ -95,12 +93,7 @@ if (!class_exists('Micro_Liveblog')) {
             }
         }
 
-        /**
-         * 连载前台样式。
-         *
-         * 1.9.1 起不再按 light / dark 加载两份文件：颜色统一由 liveblog.css
-         * 里的 --mlb-* 令牌提供，模式来自插件「颜色模式」设置。
-         */
+        /* 连载前台样式 */
         private function mlb_enqueue_theme_styles()
         {
             wp_enqueue_style(

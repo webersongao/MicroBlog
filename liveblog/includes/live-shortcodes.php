@@ -1,16 +1,9 @@
 <?php
 
-// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Liveblog shortcode.
- *
- * @param array $atts
- * @return string
- */
 function mlb_liveblog_shortcode( $atts ) {
 	if ( ! empty( $atts['endpoint'] ) ) {
 		$liveblog = MLB_Liveblog::mlb_fromEndpoint( $atts['endpoint'] );

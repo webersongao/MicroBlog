@@ -1,29 +1,14 @@
 <?php
-/**
- * 后台设置页骨架。
- *
- * 三个标签页原本各写一遍「页头 + 标签导航 + settings_errors + form」，
- * 这里统一：标签页只描述数据（option / section），页面输出沿用
- * WordPress 后台原生结构（h1 + nav-tab-wrapper + form-table + submit_button），
- * 保证与系统其它设置页风格一致。
- *
- * @package MicroBlog
- */
+/* 后台设置页骨架 */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * 设置页渲染器。
- */
+/* 设置页渲染器 */
 class MB_Admin_Page
 {
-    /**
-     * 标签页定义。
-     *
-     * @return array
-     */
+    /* 标签页定义 */
     public static function tabs()
     {
         $tabs = array(
@@ -53,12 +38,7 @@ class MB_Admin_Page
         return apply_filters('microblog_admin_tabs', $tabs);
     }
 
-    /**
-     * 当前标签页（非法值回落到微博）。
-     *
-     * @param array $tabs 标签页定义。
-     * @return string
-     */
+    /* 当前标签页 */
     public static function current_tab($tabs)
     {
         $tab = isset($_GET['tab']) ? sanitize_key(wp_unslash($_GET['tab'])) : 'micropost';
@@ -66,12 +46,7 @@ class MB_Admin_Page
         return isset($tabs[$tab]) ? $tab : 'micropost';
     }
 
-    /**
-     * 页面 URL。
-     *
-     * @param string $tab 标签页。
-     * @return string
-     */
+    /* 页面 URL */
     public static function url($tab)
     {
         return add_query_arg(
@@ -83,11 +58,7 @@ class MB_Admin_Page
         );
     }
 
-    /**
-     * 输出整页。
-     *
-     * @return void
-     */
+    /* 输出整页 */
     public static function render()
     {
         $tabs = self::tabs();
@@ -113,11 +84,7 @@ class MB_Admin_Page
         echo '</div>';
     }
 
-    /**
-     * 页头：原生 h1 + 版本标记 + 一句说明。
-     *
-     * @return void
-     */
+    /* 页头 */
     private static function render_header()
     {
         $version = mbfun_get_plugin_version();
@@ -133,15 +100,9 @@ class MB_Admin_Page
             . '</p>';
     }
 
-    /**
-     * 输出某个标签页的表单。
-     *
-     * @param array $tab 标签页定义。
-     * @return void
-     */
+    /* 输出某个标签页的表单 */
     private static function render_form($tab)
     {
-        // 只显示当前标签页自己的提示，避免串页。
         settings_errors($tab['option_name']);
 
         echo '<form method="post" action="' . esc_url(admin_url('options.php')) . '">';

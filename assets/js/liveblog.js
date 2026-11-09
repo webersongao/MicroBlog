@@ -1,22 +1,3 @@
-/**
- * MicroBlog Liveblog front-end.
- *
- * 纯原生 jQuery，无第三方运行时依赖（旧版是内嵌 moment.js 与上百语言包的
- * webpack 产物）。面向用户的文案统一由 wp_localize_script('micro_lb_data')
- * 提供，并在 languages/ 里翻译。
- *
- * 行为：
- *   1. 首次加载条目 → 超过 showEntries 的折入「Load more」→ 高亮条目滚动定位；
- *   2. 容器 data-autorefresh=1（列表页「开启中·自动刷新」）时按设置页统一间隔
- *      轮询 feed；发现新条目只显示一个按钮，由访客点击后再整表重建，
- *      不打断正在阅读的内容、也不重置「Load more」的展开状态；
- *   3. data-autorefresh=0（「开启中·默认展示」，即已完结）完全不轮询，
- *      页面上也不做任何已完结标记。
- *
- * 保留的扩展点：
- *   window.mlb_after_feed_load(feed)       条目渲染完成后
- *   window.mlb_after_load_more_callback()  点击「Load more」后
- */
 (function ($) {
 	'use strict';
 
@@ -46,7 +27,6 @@
 			}
 		},
 
-		/** 所有选择器都限定在连载容器内，避免同一页多个连载互相干扰。 */
 		$: function (selector) {
 			return this.root.find(selector);
 		},
@@ -55,11 +35,6 @@
 			return this.$('.mlb-liveblog-list');
 		},
 
-		/**
-		 * 始终在 feed 地址后附加时间戳，绕过 CDN / 代理缓存；
-		 * 按分钟取整便于首屏在 CDN 侧共享 1 分钟缓存，
-		 * 轮询强制用毫秒级时间戳，避免浏览器把旧 feed 还回来。
-		 */
 		endpoint: function (bust) {
 			var url = this.root.data('endpoint');
 			var sep = url.indexOf('?') === -1 ? '?' : '&';
@@ -83,10 +58,6 @@
 			});
 		},
 
-		/**
-		 * 清空重建，而不是增量合并：feed 不论升序降序都能保持一致，
-		 * 也不会出现重复条目。renderedIds 供轮询比较「有没有新条目」。
-		 */
 		render: function (feed) {
 			var updates = (feed && feed.updates) || [];
 			var showEntries = parseInt(this.root.data('showEntries'), 10) || 10;
@@ -134,7 +105,6 @@
 			}
 		},
 
-		/** 按设置页统一间隔轮询；页面不可见或上一次请求未结束时跳过。 */
 		startPolling: function () {
 			var seconds = parseInt(this.root.data('refreshInterval'), 10) || 30;
 			var self = this;

@@ -1,20 +1,7 @@
-/*
-PluName: 微博 MicroBlog
-PluLink: https://www.webersongao.com/tag/microblog
-Desc: 将您的WordPress网站用作微博；在小部件中显示微博或使用短代码显示微博。
-Author: WebersonGao
-AuthorLink: https://www.webersongao.com
-Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
-*/
+/* MicroBlog */
 
 
-/* =====================================================================
-   配色令牌
-   ---------------------------------------------------------------------
-   短代码与小工具是两个独立入口，各自带 data-mlb-color-mode 属性；
-   颜色统一走 --mb-* 令牌，插件设置里的「颜色模式」决定取值。
-   auto 优先跟随宿主主题的 data-color-mode，没有该属性时跟随设备。
-   ===================================================================== */
+/* 配色令牌 */
 
 .microblog-shortcode,
 .microblog-widget {
@@ -31,7 +18,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     --mb-link: #6cb2d1;
 }
 
-/* auto + 宿主主题已解析为深色 */
 [data-color-mode="dark"] .microblog-shortcode[data-mlb-color-mode="auto"],
 [data-color-mode="dark"] .microblog-widget[data-mlb-color-mode="auto"] {
     --mb-text: #b8b8b8;
@@ -39,7 +25,7 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     --mb-link: #6cb2d1;
 }
 
-/* auto + 设备深色（宿主没有颜色模式时同样生效） */
+/* auto + 设备深色 */
 @media (prefers-color-scheme: dark) {
 
     [data-color-mode="auto"] .microblog-shortcode[data-mlb-color-mode="auto"],
@@ -67,13 +53,15 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 
 .mb-shortcode-post-main {
     margin-top: 25px;
-    /* margin-bottom: 8px;
-    border-radius: 4px; */
 }
 
 .mb-shortcode-post hr {
     margin-top: 1rem;
     margin-bottom: 1rem;
+}
+
+.microblog-shortcode hr {
+    border-top-color: var(--dm-border, #e6e6e6);
 }
 
 .mb-shortcode-post-bottom {
@@ -103,7 +91,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 
 .mb-shortcode-post-date {
     color: var(--mb-text-faint);
-    /* margin-right: 10px; */
     flex-shrink: 0;
     float: right;
 }
@@ -113,7 +100,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     font-size: 16px;
     font-weight: 400;
     margin-top: 10px;
-    /* padding-left: 45px; */
 }
 
 .mb-shortcode-post-content p {
@@ -139,7 +125,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     max-width: calc(100% - 30px);
     /* 父容器宽度减去两个间距的值 */
     grid-template-columns: repeat(2, minmax(0, 300px));
-    /* 两张图片宽度最大为 300px，但会根据父容器大小自适应 */
     grid-auto-rows: minmax(auto, auto);
     justify-content: center;
     /* 水平居中显示 */
@@ -151,7 +136,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     margin: 10px auto;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: minmax(100px, auto);
-    /* 控制行高，这里设置为自动调整高度 */
 }
 
 .mb-shortcode-post-content-image-item {
@@ -162,7 +146,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
 .mb-shortcode-post-content-image-item img,
 .mb-shortcode-post-content-image-item a img {
     max-width: 100%;
-    /*height: auto;*/
     display: block;
     width: 100%;
     height: 100% !important;
@@ -176,7 +159,6 @@ Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* padding-left: 45px; */
 }
 
 .mb-shortcode-post-head a {

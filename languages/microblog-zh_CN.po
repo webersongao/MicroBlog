@@ -301,7 +301,7 @@ msgid "%d hours ago"
 msgstr "%d小时前"
 
 #, php-format
-#: includes/microblog-functions.php:441
+#: includes/microblog-functions.php:493
 msgid "Microblog: %s"
 msgstr "微博：%s"
 
@@ -427,11 +427,6 @@ msgstr "您没有权限执行此操作。"
 #: includes/microblog-quick-pub.php:71
 msgid "❌ The microblog must be at least %d characters long!"
 msgstr "❌ 微博不可少于%d个字！"
-
-#, php-format
-#: includes/microblog-quick-pub.php:79
-msgid "Microblog %s"
-msgstr "微博 %s"
 
 #: includes/microblog-quick-pub.php:108
 msgid "❌ Failed to publish the microblog: "
@@ -859,3 +854,40 @@ msgstr "数据库已是最新，没有需要迁移的键。"
 #: admin/class-mb-admin-page.php:225
 msgid "You do not have permission to do this."
 msgstr "你没有执行此操作的权限。"
+
+#: includes/microblog-page-template.php
+msgid "Microblog list (plugin)"
+msgstr "微博列表（插件）"
+
+#: includes/microblog-page-template.php
+#, php-format
+msgid "%s views"
+msgstr "%s 次浏览"
+
+#: admin/setting-admin-general.php
+msgid "Page template content order"
+msgstr "微博List页面顺序"
+
+#: admin/setting-admin-general.php
+msgid "Page content before the microblog list"
+msgstr "正文在前，微博列表在后"
+
+#: admin/setting-admin-general.php
+msgid "Microblog list before page content"
+msgstr "微博列表在前，正文在后"
+
+#: admin/setting-admin-general.php
+msgid "Choose whether the page body appears before or after the feed on the \"Microblog list (plugin)\" page template. The shortcode and widget are not affected."
+msgstr "微博List页面模板中，页面正文显示在列表之前还是之后。短代码与小工具不受影响。"
+
+#: admin/setting-admin-general.php
+msgid "Single-page background"
+msgstr "微博List单页背景"
+
+#: admin/setting-admin-general.php
+msgid "Enable (match the theme's single-page background)"
+msgstr "开启（单页卡片背景）"
+
+#: admin/setting-admin-general.php
+msgid "Enabled: the \"Microblog list (plugin)\" page matches a standard KoneyGao page, with the same card background, spacing, rounded corners, shadow and article-list typography. Disabled: a plain WordPress page with no card background, using the plugin's default list styling. Other themes are not affected."
+msgstr "开启：「微博列表（插件）」页面会附带一个单页浅灰卡片背景。关闭：普通 WordPress 页面样式，没有卡片背景。"

@@ -1,9 +1,5 @@
 <?php
-/**
- * 后台入口：注册菜单、加载设置页。
- *
- * @package MicroBlog
- */
+/* 后台入口 */
 
 if (!defined('ABSPATH')) {
     exit;
@@ -13,20 +9,13 @@ require_once __DIR__ . '/class-mb-admin-page.php';
 require_once __DIR__ . '/setting-admin-micropost.php';
 require_once __DIR__ . '/setting-admin-general.php';
 
-// 连载设置依赖连载模块的函数，模块启用时才加载。
 if (mbfun_get_general_option('mb_liveblog_regist', false)) {
     require_once __DIR__ . '/setting-admin-liveblog.php';
 }
 
-/**
- * 当前后台页面是否属于本插件：设置页，或出现连载 metabox 的文章编辑页。
- *
- * @param string $hook 当前页面 hook。
- * @return bool
- */
+/* 当前后台页面是否属于本插件 */
 function microblog_admin_needs_assets($hook)
 {
-    // 注意：管理页 hook 不带 .php 后缀（tools_page_MicroBlog/microblog）。
     $expected = 'tools_page_' . preg_replace('/\.php$/', '', MICROBLOG_PLUGIN_BASENAME);
 
     if ($expected === $hook) {
@@ -43,16 +32,10 @@ function microblog_admin_needs_assets($hook)
         return false;
     }
 
-    // 只有连载条目编辑页有「选择原文」metabox，普通文章页不再需要这套样式。
     return 'microlive' === $screen->post_type;
 }
 
-/**
- * 加载后台资源：样式覆盖设置页与编辑页（metabox 排版依赖它），脚本只在设置页需要。
- *
- * @param string $hook 当前页面 hook。
- * @return void
- */
+/* 加载后台资源 */
 function microblog_admin_enqueue_scripts($hook)
 {
     if (! microblog_admin_needs_assets($hook)) {
@@ -69,11 +52,7 @@ function microblog_admin_enqueue_scripts($hook)
 }
 add_action('admin_enqueue_scripts', 'microblog_admin_enqueue_scripts');
 
-/**
- * 设置页内容（菜单在 microblog.php 注册）。
- *
- * @return void
- */
+/* 设置页内容 */
 function microblog_admin_settings()
 {
     if (!current_user_can('manage_options')) {

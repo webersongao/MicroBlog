@@ -2,24 +2,12 @@
 if (! defined('ABSPATH')) {
 	exit;
 }
-/*
-PluName: 微博 MicroBlog
-PluLink: https://www.webersongao.com/tag/microblog
-Desc: 将您的WordPress网站用作微博；在小部件中显示微博或使用短代码显示微博。
-Author: WebersonGao
-AuthorLink: https://www.webersongao.com
-Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
-*/
+/* MicroBlog */
 
-/*
- * Admin Panel
-*/
+/* Admin Panel */
 
-/*
- * 微博设置：字段注册与回调。页面骨架见 class-mb-admin-page.php。
- */
+/* 微博设置 */
 
-// Register plugin settings
 add_action('admin_init', 'microblog_micropost_setting_admin');
 function microblog_micropost_setting_admin() {
     register_setting(
@@ -28,7 +16,6 @@ function microblog_micropost_setting_admin() {
         'microblog_micropost_data_sanitize'
     );
     
-    // General settings section
     add_settings_section(
         'microblog_micropost_section_base',
         __('Style Settings', MICROBLOG_DOMAIN),
@@ -72,7 +59,6 @@ function microblog_micropost_setting_admin() {
         'microblog_micropost_section_base'
     );
 
-    // Shortcode settings section
     add_settings_section(
         'microblog_micropost_section_shortcode',
         __('Shortcode & Widget', MICROBLOG_DOMAIN),
@@ -123,7 +109,6 @@ function microblog_micropost_data_sanitize($input) {
 
             unset($input['mb_slug_name']);
 
-            // 非法值不落库，保留原设置。
             $old = mbfun_get_micropost_settings();
 
             if (isset($old['mb_slug_name'])) {
@@ -136,17 +121,14 @@ function microblog_micropost_data_sanitize($input) {
 }
 
 
-// Display general settings section content
 function microblog_micropost_section_base_callback() {
     echo '<p>' . esc_html__('Make sure you have added the [microblog] shortcode to a page or the Microblog widget to a sidebar.', MICROBLOG_DOMAIN) . '</p>';
 }
 
-// Display shortcode settings section content
 function microblog_micropost_section_shortcode_callback() {
     echo '<p>' . esc_html__('Make sure "Show title" is enabled.', MICROBLOG_DOMAIN) . '</p>';
 }
 
-// Display settings fields input
 function microblog_post_title_show_input() {
     $options = mbfun_get_micropost_settings();
     $value = isset($options['mb_title_show']) ? $options['mb_title_show'] : false;
@@ -165,7 +147,6 @@ function microblog_post_title_listdate_input() {
     <label class="microblog-admin-option-label">
         <input type='radio' name='microblog_micropost_data[mb_date_format]' value='<?php echo esc_attr('date_hide'); ?>' <?php checked($value, 'date_hide'); ?> />
         <?php esc_html_e('Hide time', MICROBLOG_DOMAIN); ?>
-        <!--echo date_i18n('m-d H:i', current_time('timestamp'));-->
     </label>
     <label class="microblog-admin-option-label">
         <input type='radio' name='microblog_micropost_data[mb_date_format]' value='<?php echo esc_attr('date_date'); ?>' <?php checked($value, 'date_date'); ?> />
@@ -196,7 +177,6 @@ function microblog_post_rss_feed_input() {
 }
 
 
-// Display settings fields input for editor functionality
 function microblog_post_editor_func_callback() {
     $options = mbfun_get_micropost_settings();
     $editor_func = isset($options['mb_editor_func']) ? $options['mb_editor_func'] : array();
@@ -218,7 +198,7 @@ function microblog_post_editor_func_callback() {
 
 function microblog_post_slug_name_callback() {
     $options = mbfun_get_micropost_settings();
-    $value = isset($options['mb_slug_name']) ? sanitize_title($options['mb_slug_name']) : ''; // 获取已保存的设置值
+    $value = isset($options['mb_slug_name']) ? sanitize_title($options['mb_slug_name']) : '';
     ?>
     <input type='text' name='microblog_micropost_data[mb_slug_name]' value='<?php echo esc_attr($value); ?>' maxlength='20' style='width: 120px;' />
     <p class="description"><?php esc_html_e('Letters and numbers only, 1-20 characters. Leave empty to use "microposts".', MICROBLOG_DOMAIN); ?></p>
@@ -254,7 +234,6 @@ function microblog_post_image_lightbox_input() {
     ?>
     </label>
     <?php
-    // Simple Lightbox 未安装且当前用户可安装插件时，提供一键安装/启用入口。
     if (!defined('SLB_VERSION') && !class_exists('SLB_Lightbox') && current_user_can('install_plugins')) {
         $slb_installed = file_exists(WP_PLUGIN_DIR . '/simple-lightbox/simple-lightbox.php');
 

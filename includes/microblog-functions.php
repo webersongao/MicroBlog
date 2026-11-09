@@ -1,96 +1,65 @@
 <?php
-/**
- * 公共函数层：文章类型、时间格式、查询、资源注册。
- *
- * 本文件只放「多个模块都要用」的东西；配置读写见 microblog-settings.php，
- * HTML 片段见 microblog-render.php。旧的 mbfun_get_*_option 系列保留为
- * 薄封装，避免第三方或主题调用时中断。
- *
- * @package MicroBlog
- */
+/* 公共函数层 */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-/** ------------------------------------------------------------------
- * 配置（兼容层）
- * ----------------------------------------------------------------- */
+/* 配置 */
 
-/**
- * 微博配置。
- *
- * @return array
- */
+/* 微博配置 */
 function mbfun_get_micropost_settings()
 {
     return mbfun_get_settings('micropost');
 }
 
-/**
- * 微博单项配置。
- *
- * @param string $key     键名。
- * @param mixed  $default 缺省值。
- * @return mixed
- */
+/* 微博单项配置 */
 function mbfun_get_micropost_option($key = '', $default = false)
 {
     return mbfun_setting($key, $default, 'micropost');
 }
 
-/**
- * 连载配置。
- *
- * @return array
- */
+/* 连载配置 */
 function mbfun_get_liveblog_settings()
 {
     return mbfun_get_settings('liveblog');
 }
 
-/**
- * 连载单项配置。
- *
- * @param string $key     键名。
- * @param mixed  $default 缺省值。
- * @return mixed
- */
+/* 连载单项配置 */
 function mbfun_get_liveblog_option($key = '', $default = false)
 {
     return mbfun_setting($key, $default, 'liveblog');
 }
 
-/**
- * 基础配置。
- *
- * @return array
- */
+/* 基础配置 */
 function mbfun_get_general_settings()
 {
     return mbfun_get_settings('general');
 }
 
-/**
- * 基础单项配置。
- *
- * @param string $key     键名。
- * @param mixed  $default 缺省值。
- * @return mixed
- */
+/* 基础单项配置 */
 function mbfun_get_general_option($key = '', $default = false)
 {
     return mbfun_setting($key, $default, 'general');
 }
 
-/**
- * 前台颜色模式：light / dark / auto。
- *
- * 插件所有前台输出（短代码、小工具、连载区块）共用这一个设置，
- * 避免同一页面上出现两套配色。
- *
- * @return string
- */
+function mbfun_get_page_content_order()
+{
+    $order = mbfun_get_general_option('mb_page_content_order', 'content_first');
+
+    return in_array($order, array('content_first', 'list_first'), true)
+        ? $order
+        : 'content_first';
+}
+
+function mbfun_page_background_enabled()
+{
+    $enabled = (bool) mbfun_get_general_option('mb_page_background', 1);
+
+    return (bool) apply_filters('microblog_page_background_enabled', $enabled);
+}
+
+/* 前台颜色模式 */
 function mbfun_get_color_mode()
 {
     $mode = mbfun_get_general_option('mb_color_mode', 'auto');
@@ -102,35 +71,19 @@ function mbfun_get_color_mode()
     return apply_filters('mbfun_color_mode', $mode);
 }
 
-/**
- * 容器上的颜色模式属性。
- *
- * 只输出属性片段，调用处负责放进标签里。
- *
- * @return string
- */
+/* 容器上的颜色模式属性 */
 function mbfun_color_mode_attr()
 {
     return ' data-mlb-color-mode="' . esc_attr(mbfun_get_color_mode()) . '"';
 }
 
-/**
- * 连载选项（带过滤器，保持向后兼容）。
- *
- * @return array
- */
+/* 连载选项 */
 function mbfun_get_live_options()
 {
     return mbfun_get_settings('liveblog');
 }
 
-/**
- * 连载单项选项（带过滤器）。
- *
- * @param string $key     键名。
- * @param mixed  $default 缺省值。
- * @return mixed
- */
+/* 连载单项选项 */
 function mbfun_get_live_option($key = '', $default = false)
 {
     $value = mbfun_setting($key, $default, 'liveblog');
@@ -140,15 +93,9 @@ function mbfun_get_live_option($key = '', $default = false)
     return apply_filters('mbfun_get_live_option_' . $key, $value, $key, $default);
 }
 
-/** ------------------------------------------------------------------
- * 文章类型与 slug
- * ----------------------------------------------------------------- */
+/* 文章类型与 slug */
 
-/**
- * 查询时可用的微博状态。
- *
- * @return array
- */
+/* 查询时可用的微博状态 */
 function mbfun_get_micropost_types()
 {
     $status = array('publish');
@@ -160,12 +107,7 @@ function mbfun_get_micropost_types()
     return $status;
 }
 
-/**
- * 微博 URL slug（同一请求内只解析一次）。
- *
- * @param bool $refresh 强制重算。
- * @return string
- */
+/* 微博 URL slug */
 function mbfun_get_micropost_slug($refresh = false)
 {
     static $slug = null;
@@ -184,43 +126,24 @@ function mbfun_get_micropost_slug($refresh = false)
     return $slug;
 }
 
-/**
- * 微博 slug（旧名，保留兼容）。
- *
- * @return string
- */
+/* 微博 slug */
 function mbfun_get_micropost_slug_name()
 {
     return mbfun_get_micropost_slug();
 }
 
-/**
- * 微博 slug（旧名，保留兼容）。
- *
- * @return string
- */
+/* 微博 slug */
 function mbfun_get_lasted_micropost_slug_name()
 {
     return mbfun_get_micropost_slug();
 }
 
-/**
- * 让 slug 缓存失效。
- *
- * @deprecated 直接调用 mbfun_get_micropost_slug(true)。
- * @param string $new_value 新 slug。
- * @return void
- */
+/* 让 slug 缓存失效 */
 function mbfun_update_global_microblog_slug_name($new_value)
 {
     mbfun_get_micropost_slug(true);
 }
 
-/**
- * 按「基础设置」里的开关注册/注销连载文章类型。
- *
- * @return void
- */
 function mbfun_update_microblog_display_module()
 {
     if (!function_exists('mbfun_register_liveblog_args')) {
@@ -234,16 +157,9 @@ function mbfun_update_microblog_display_module()
     }
 }
 
-/** ------------------------------------------------------------------
- * 时间格式
- * ----------------------------------------------------------------- */
+/* 时间格式 */
 
-/**
- * 按设置格式化微博时间。
- *
- * @param int $post_time 时间戳。
- * @return string
- */
+/* 按设置格式化微博时间 */
 function mbfun_micropost_format_time($post_time)
 {
     $format = (string) mbfun_setting('mb_date_format', '');
@@ -259,12 +175,7 @@ function mbfun_micropost_format_time($post_time)
     return date_i18n(get_option('date_format'), $post_time);
 }
 
-/**
- * 模糊时间。
- *
- * @param int $post_time 时间戳。
- * @return string
- */
+/* 模糊时间 */
 function mbfun_post_fuzzy_time($post_time)
 {
     $diff = current_time('timestamp') - (int) $post_time;
@@ -288,27 +199,15 @@ function mbfun_post_fuzzy_time($post_time)
     return date_i18n(get_option('date_format'), $post_time);
 }
 
-/**
- * 摘要后缀。
- *
- * @return string
- */
+/* 摘要后缀 */
 function mbfun_micropost_excerpt_more()
 {
     return ' ...';
 }
 
-/** ------------------------------------------------------------------
- * 查询
- * ----------------------------------------------------------------- */
+/* 查询 */
 
-/**
- * 最近微博（WP_Post 数组）。
- *
- * @param int   $paged 页码。
- * @param array $atts  查询参数。
- * @return array
- */
+/* 最近微博 */
 function mbfun_get_recent_microposts($paged = 1, $atts = array())
 {
     $args = wp_parse_args($atts, array(
@@ -329,12 +228,7 @@ function mbfun_get_recent_microposts($paged = 1, $atts = array())
     return $query->posts;
 }
 
-/**
- * 最近微博摘要（主题首页调用，返回结构不可改动）。
- *
- * @param array $atts 查询参数。
- * @return array
- */
+/* 最近微博摘要 */
 function mbfun_get_recent_excerpt_microblogs($atts = array())
 {
     $args = wp_parse_args($atts, array(
@@ -367,15 +261,9 @@ function mbfun_get_recent_excerpt_microblogs($atts = array())
     return $result;
 }
 
-/** ------------------------------------------------------------------
- * 资源与版本
- * ----------------------------------------------------------------- */
+/* 资源与版本 */
 
-/**
- * 前端样式与脚本（重复调用只入队一次）。
- *
- * @return void
- */
+/* 前端样式与脚本 */
 function mbfun_enqueue_scripts_and_styles()
 {
     $version = mbfun_get_plugin_version();
@@ -384,31 +272,18 @@ function mbfun_enqueue_scripts_and_styles()
     wp_enqueue_script('microblog-script', mbfun_asset_url('js/microblog-script.js'), array(), $version, true);
 }
 
-/**
- * 插件 URL（带结尾斜杠）。
- *
- * @return string
- */
+/* 插件 URL */
 function mbfun_get_plugin_url()
 {
     return MICROBLOG_PLUGIN_URL;
 }
 
-/**
- * 插件目录路径（带结尾斜杠）。
- *
- * @return string
- */
+/* 插件目录路径 */
 function mbfun_get_plugin_path()
 {
     return MICROBLOG_PLUGIN_PATH;
 }
 
-/**
- * 资源版本号；开发环境用文件修改时间，避免改完看不到效果。
- *
- * @return string
- */
 function mbfun_get_plugin_version()
 {
     if (function_exists('wp_get_environment_type') && 'development' === wp_get_environment_type()) {
@@ -418,25 +293,38 @@ function mbfun_get_plugin_version()
     return MICROBLOG_VERSION;
 }
 
-/** ------------------------------------------------------------------
- * 占位标题
- * ----------------------------------------------------------------- */
+/* 占位标题 */
 
-/**
- * 微博发布时若无标题，自动补「Microblog: 2026-10-12」占位标题（随站点语言翻译）。
- *
- * @param array $data    过滤后的文章数据。
- * @param array $postarr 原始数据。
- * @return array
- */
+/* 占位标题里的日期时间 */
+function mbfun_micropost_placeholder_datetime($local_date = '')
+{
+    $format = trim((string) get_option('date_format') . ' ' . (string) get_option('time_format'));
+
+    if ('' === $format) {
+        $format = 'Y-m-d H:i';
+    }
+
+    if (is_string($local_date)
+        && preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $local_date)
+        && '0000-00-00' !== substr($local_date, 0, 10)
+    ) {
+        $dt = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $local_date, wp_timezone());
+
+        if ($dt instanceof DateTimeImmutable) {
+            return (string) wp_date($format, $dt->getTimestamp());
+        }
+    }
+
+    return (string) wp_date($format);
+}
+
 function mbfun_micropost_placeholder_title($data, $postarr)
 {
     if ('micropost' !== $data['post_type'] || '' !== trim((string) $data['post_title'])) {
         return $data;
     }
 
-    // 以文章自身发布日期为准（兼容草稿补发/定时发布），本地时区。
-    $date = $data['post_date'] ? mysql2date('Y-m-d', $data['post_date'], false) : current_time('Y-m-d');
+    $date = mbfun_micropost_placeholder_datetime(isset($data['post_date']) ? $data['post_date'] : '');
 
     $data['post_title'] = sprintf(__('Microblog: %s', MICROBLOG_DOMAIN), $date);
 
@@ -444,15 +332,8 @@ function mbfun_micropost_placeholder_title($data, $postarr)
 }
 add_filter('wp_insert_post_data', 'mbfun_micropost_placeholder_title', 10, 2);
 
-/** ------------------------------------------------------------------
- * 重写规则
- * ----------------------------------------------------------------- */
+/* 重写规则 */
 
-/**
- * 重写规则签名变化时才刷新，避免每次请求写库。
- *
- * @return bool 是否执行了刷新。
- */
 function mbfun_maybe_flush_rewrite_rules()
 {
     $supports  = (array) mbfun_setting('mb_editor_func', array());
@@ -461,7 +342,6 @@ function mbfun_maybe_flush_rewrite_rules()
         implode(',', $supports),
         MICROBLOG_VERSION,
         (string) get_option('permalink_structure'),
-        // 连载启停会增删 microlive 文章类型的重写规则，必须参与签名。
         mbfun_get_general_option('mb_liveblog_regist', false) ? 'liveblog-on' : 'liveblog-off',
     )));
 

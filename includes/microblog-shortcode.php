@@ -1,21 +1,11 @@
 <?php
-/**
- * [microblog] 短代码。
- *
- * @package MicroBlog
- */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * 渲染微博列表。
- *
- * @param array $atts 短代码属性。
- * @return string
- */
-function microblog_shortcode($atts)
+/* 渲染微博列表 */
+function microblog_render_list($atts = array())
 {
     $atts = shortcode_atts(array(
         'null_text'   => '(none)',
@@ -67,7 +57,6 @@ function microblog_shortcode($atts)
 
         $out .= "<div class='mb-shortcode-post-main micropost-main-" . (int) $post_id . "'>";
 
-        // 1. 标题与时间。
         $date_text = mbfun_micropost_format_time((int) get_post_time('U', true, $post_id));
 
         if ('' !== $post_title || '' !== $date_text) {
@@ -84,7 +73,6 @@ function microblog_shortcode($atts)
             $out .= '</div>';
         }
 
-        // 2. 正文与配图。
         $out .= "<div class='mb-shortcode-post-content'>";
 
         if (!empty($atts['use_excerpt'])) {
@@ -98,7 +86,6 @@ function microblog_shortcode($atts)
         $out .= mbfun_get_images_html(get_the_content(), $lightbox);
         $out .= '</div>';
 
-        // 3. 头像、评论。
         $out .= "<div class='mb-shortcode-post-bottom'>";
         $out .= "<div class='mb-shortcode-post-user'>" . ($show_user ? mbfun_get_author_html($post_id) : '') . '</div>';
         $out .= mbfun_get_action_link_html($post_id);
@@ -124,5 +111,9 @@ function microblog_shortcode($atts)
     mbfun_enqueue_scripts_and_styles();
 
     return $out;
+}
+function microblog_shortcode($atts)
+{
+    return microblog_render_list((array) $atts);
 }
 add_shortcode('microblog', 'microblog_shortcode');

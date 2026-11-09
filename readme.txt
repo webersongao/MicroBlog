@@ -4,20 +4,21 @@ Tags: microblog, weibo, liveblog, shortcode
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Publish short posts in their own post type and show them with a shortcode, a widget or an optional liveblog stream.
+Publish short posts in their own post type and show them with a shortcode, a page template, a widget or an optional liveblog stream.
 
 == Description ==
 
-MicroBlog adds a `micropost` post type so short updates never mix with regular articles. Each entry has its own permalink (for example `/microposts/123.html`), archive and feed, and can be displayed anywhere with a shortcode or a sidebar widget. It works with any theme; the KoneyGao theme adds an optional home-page block.
+MicroBlog adds a `micropost` post type so short updates never mix with regular articles. Each entry has its own permalink (for example `/microposts/123.html`), archive and feed, and can be displayed anywhere with a shortcode, a page template or a sidebar widget. It works with any theme; the KoneyGao theme only adds an optional home-page block. The plugin ships its own "Microblog list (plugin)" page template, which renders the feed without any shortcode in the page body.
 
 Highlights
 
 * Dedicated `micropost` post type with a configurable URL slug and REST support.
 * `[microblog]` shortcode: latest entries with pagination, excerpts and a responsive single/two/nine-image grid.
+* Built-in "Microblog list (plugin)" page template: choose it under Page Attributes > Template. It renders a centered title with date and view count, your own page body, and the feed, with no theme code required.
 * "Microblog" sidebar widget and a "Quick Microblog" dashboard widget for publishing without leaving the dashboard.
 * Fuzzy ("3 minutes ago") or fixed date formats, optional titles, avatars and an RSS link.
 * Optional Liveblog module: attach a rolling update stream to a published post, with a four-state display column and per-post auto refresh (10-300 seconds).
@@ -29,28 +30,32 @@ Highlights
 1. Upload the `MicroBlog` folder to `/wp-content/plugins/`, or install it from Plugins > Add New.
 2. Activate it on the Plugins screen. Activation writes three defaults and registers the rewrite rules.
 3. Open Tools > MicroBlog Settings to configure display, date format, URL slug, entries per page and images.
-4. Create a page and insert `[microblog]` into its content, or add the "Microblog" widget to a sidebar.
+4. Create a page and choose "Microblog list (plugin)" under Page Attributes > Template (the body can stay empty). This page template is the default and recommended way to show the feed. The `[microblog]` shortcode is still available for embedding the feed inside other content, and the "Microblog" widget can be added to a sidebar.
 5. If `/microposts/...` returns 404, open Settings > Permalinks and save once.
 
 == Configuration notes ==
 
-* Settings are under Tools > MicroBlog Settings in three groups: Microblog (titles, date format, slug, entries per page, editor features, feed and lightbox markup), General (Liveblog switch and color mode), and Liveblog (only shown when that module is enabled).
+* Settings are under Tools > MicroBlog Settings in three groups: Microblog (titles, date format, slug, entries per page, editor features, feed and lightbox markup), General (Liveblog switch, color mode, page template content order and single-page background), and Liveblog (only shown when that module is enabled).
 * URL slug: 1-20 lowercase letters and numbers; empty means `microposts`. Changing it refreshes rewrite rules automatically.
-* `[microblog]` attributes: `null_text` (default `(none)`), `use_excerpt`, and `q` for extra WP_Query arguments. With Liveblog enabled, `[micro_liveblog endpoint="..."]` or `[micro_liveblog live_id="..."]` renders a stream.
+* The "Microblog list (plugin)" page template is the default way to show the feed. It is registered by this plugin via `theme_page_templates` + `template_include`, calls `microblog_render_list()` directly rather than the shortcode, and no theme provides or wraps it.
+* Page template content order: Tools > MicroBlog Settings > General > "Page template content order" chooses whether your page body appears before the feed (default) or after it. Only the "Microblog list (plugin)" page template uses this; the shortcode and widget are not affected.
+* Single-page background: Tools > MicroBlog Settings > General > "Single-page background" decides whether the "Microblog list (plugin)" page template adopts the active theme's page card. Enabled (default) adds the KoneyGao single-page card background and its article-list typography; disabled gives a plain WordPress page with no card background and the plugin's default list styling. Other themes are not affected, and this switch never touches the shortcode or the widget.
+* When the card shell is enabled under KoneyGao, microblog titles are 16px bold with a muted resting color and a strong hover color; the shortcode and widget keep the plugin defaults.
+* Developer filters: `microblog_page_content_before_list` (bool) overrides the body position, and `microblog_page_background_enabled` (bool) overrides the single-page background switch. The template never injects content into the page body.
+* `[microblog]` is retained as an optional shortcode for embedding the feed inside a post or page body. Attributes: `null_text` (default `(none)`), `use_excerpt`, and `q` for extra WP_Query arguments. With Liveblog enabled, `[micro_liveblog endpoint="..."]` or `[micro_liveblog live_id="..."]` renders a stream. WordPress.org permits plugins to register shortcodes (Plugin Developer Handbook > Shortcodes); themes may not, which is why the companion theme ships page templates instead.
 * Liveblog is off by default. Turning it off does not delete entries or settings. The "Liveblog display" column on the post list switches between Not enabled / Hidden / Default display / Auto refresh; only the last state polls, and polling pauses while the tab is hidden.
 * The image lightbox option only changes image markup to suit the optional Simple Lightbox plugin. That plugin is not a dependency.
-* `[microarchive]` is a KoneyGao theme shortcode, not a plugin shortcode.
 
 == Frequently Asked Questions ==
 
 = Where do microblogs appear? =
-They are a separate post type. Use `[microblog]`, the widget, or the archive at your configured slug (default `/microposts`).
+They are a separate post type. The default is the plugin's "Microblog list (plugin)" page template; `[microblog]`, the widget, and the archive at your configured slug (default `/microposts`) remain available as alternatives.
 
 = Can I change the microblog URL? =
 Yes: Tools > MicroBlog Settings > Microblog > URL slug. Save Settings > Permalinks once if links return 404.
 
 = Does it work with the block editor and any theme? =
-Yes on both. The post type follows your editor setting and the plugin ships its own styles. KoneyGao only adds an optional home-page block and shares the `data-color-mode` color contract.
+Yes on both. The post type follows your editor setting and the plugin ships its own styles and page template. KoneyGao only adds an optional home-page block; the plugin template follows the theme's `data-color-mode` and CSS variables when present, with neutral fallbacks elsewhere. Under KoneyGao the "Single-page background" setting lets you turn that theme-specific card shell off and fall back to a plain page.
 
 = What happens when I uninstall? =
 Deactivate the plugin on the Plugins screen, then click Delete. `uninstall.php` removes the five plugin options (settings groups, rewrite signature and the widget option) but deliberately keeps all microblog and liveblog entries, post meta and transients -- they are your content. Delete that content manually first if you want a completely clean site.
@@ -60,18 +65,28 @@ No. The front end only polls for posts set to "Auto refresh" and skips checks wh
 
 == Screenshots ==
 
-1. The `[microblog]` shortcode showing the latest entries on a page.
+1. The microblog list page showing the latest entries, rendered by the plugin's "Microblog list (plugin)" page template (or by `[microblog]`).
 2. The microblog archive at the default `/microposts` slug.
 3. A single microblog entry with its author card and comment form.
 
 == Changelog ==
 
+= 1.9.2 =
+* Renamed the two General settings in the Chinese admin UI to "微博List页面顺序" and "微博List单页背景"; shortened their Chinese descriptions. English strings are unchanged.
+* Swapped the resting and hover colors of microblog list titles under KoneyGao and set them to 16px bold.
+* Bumped the stylesheet version so browsers and CDNs pick up the new CSS.
+
 = 1.9.1 =
 * Auto / light / dark color mode driven by CSS custom properties.
 * Liveblog feed URLs always carry a timestamp so CDNs cannot serve stale entries.
 * Dark-mode contrast fixes; the "Write Liveblog" screen now lists existing sources by default.
+* Built-in "Microblog list (plugin)" page template with a centered header, configurable body position and centered title/date/view count; the theme card shell plus article-list typography can be switched off with "Single-page background".
+* Page template cards match a standard page under KoneyGao in light and dark mode across six widths; the microblog list title, body text, date and divider now follow the theme's article list when the shell is enabled.
 
 == Upgrade Notice ==
+
+= 1.9.2 =
+No database migration. Purge the page cache after updating so the new stylesheet version is served.
 
 = 1.9.1 =
 No database migration. Purge the page cache after updating.

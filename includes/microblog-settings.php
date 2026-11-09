@@ -1,19 +1,10 @@
 <?php
-/**
- * 设置访问层：全插件唯一的配置读写入口。
- *
- * @package MicroBlog
- */
+/* 设置访问层 */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * 配置组 => option 名。
- *
- * @return array
- */
 function mbfun_setting_groups()
 {
     return array(
@@ -23,13 +14,7 @@ function mbfun_setting_groups()
     );
 }
 
-/**
- * 读取整组配置。
- *
- * @param string $group   组名。
- * @param bool   $refresh 是否强制重新读取。
- * @return array
- */
+/* 读取整组配置 */
 function mbfun_get_settings($group = 'micropost', $refresh = false)
 {
     $groups = mbfun_setting_groups();
@@ -55,14 +40,6 @@ function mbfun_get_settings($group = 'micropost', $refresh = false)
     return $GLOBALS['mbfun_settings_cache'][$group];
 }
 
-/**
- * 读取单个配置项。存在即返回，不受 0 / false / 空数组影响。
- *
- * @param string $key     配置键。
- * @param mixed  $default 缺省值。
- * @param string $group   组名。
- * @return mixed
- */
 function mbfun_setting($key, $default = null, $group = 'micropost')
 {
     $settings = mbfun_get_settings($group);
@@ -70,12 +47,7 @@ function mbfun_setting($key, $default = null, $group = 'micropost')
     return array_key_exists($key, $settings) ? $settings[$key] : $default;
 }
 
-/**
- * 清空缓存（保存设置、切换模块后调用）。
- *
- * @param string|null $group 组名，null 表示全部。
- * @return void
- */
+/* 清空缓存 */
 function mbfun_flush_settings_cache($group = null)
 {
     unset($GLOBALS['mbfun_settings_cache']);
@@ -85,7 +57,6 @@ function mbfun_flush_settings_cache($group = null)
     }
 }
 
-// option 被更新后让缓存失效，避免同一请求内读到旧值。
 add_action('update_option', function ($option) {
     if (in_array($option, mbfun_setting_groups(), true)) {
         mbfun_flush_settings_cache();

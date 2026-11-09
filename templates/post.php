@@ -2,9 +2,6 @@
 if (! defined('ABSPATH')) {
 	exit;
 }
-/**
- * Template for liveblog post.
- */
 
 do_action( 'mlb_before_liveblog_post', $post );
 ?>

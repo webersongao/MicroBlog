@@ -1,19 +1,10 @@
 <?php
-/**
- * 微博文章类型、Feed 与固定链接。
- *
- * @package MicroBlog
- */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * 注册微博文章类型。
- *
- * @return void
- */
+/* 注册微博文章类型 */
 function mbfun_create_micropost_type()
 {
     $supports = array('title', 'editor', 'comments');
@@ -32,12 +23,7 @@ function mbfun_create_micropost_type()
 }
 add_action('init', 'mbfun_create_micropost_type', 5);
 
-/**
- * 注册文章类型。
- *
- * @param array $supports 编辑器支持项。
- * @return void
- */
+/* 注册文章类型 */
 function mbfun_register_micropost_type($supports = array())
 {
     if (!$supports) {
@@ -59,11 +45,7 @@ function mbfun_register_micropost_type($supports = array())
     ));
 }
 
-/**
- * 微博文章类型的标签。
- *
- * @return array
- */
+/* 微博文章类型的标签 */
 function mbfun_get_micropost_labels()
 {
     return array(
@@ -96,12 +78,7 @@ function mbfun_get_micropost_labels()
     );
 }
 
-/**
- * Feed 中带上微博。
- *
- * @param WP_Query $query 查询对象。
- * @return void
- */
+/* Feed 中带上微博 */
 function mbfun_customize_main_query($query)
 {
     if (is_admin() || !$query->is_main_query() || !$query->is_feed) {
@@ -127,13 +104,7 @@ function mbfun_customize_main_query($query)
 }
 add_action('pre_get_posts', 'mbfun_customize_main_query');
 
-/**
- * Feed 中给微博标题加前缀。
- *
- * @param string $title   标题。
- * @param int    $post_id 文章 ID。
- * @return string
- */
+/* Feed 中给微博标题加前缀 */
 function microblog_formart_micropost_feed_title($title, $post_id)
 {
     if ('micropost' === get_post_type($post_id)) {
@@ -143,11 +114,7 @@ function microblog_formart_micropost_feed_title($title, $post_id)
     return $title;
 }
 
-/**
- * 微博固定链接：/microposts/{ID}.html。
- *
- * @return void
- */
+/* 微博固定链接 */
 function mbfun_custom_microblog_rewrite_rule()
 {
     add_rewrite_rule(
@@ -158,13 +125,7 @@ function mbfun_custom_microblog_rewrite_rule()
 }
 add_action('init', 'mbfun_custom_microblog_rewrite_rule');
 
-/**
- * 微博永久链接。
- *
- * @param string  $permalink 原链接。
- * @param WP_Post $post      文章。
- * @return string
- */
+/* 微博永久链接 */
 function mbfun_custom_microblog_permalink($permalink, $post)
 {
     if ('micropost' !== get_post_type($post)) {
@@ -173,17 +134,10 @@ function mbfun_custom_microblog_permalink($permalink, $post)
 
     $url = home_url(mbfun_get_micropost_slug() . '/' . $post->ID . '.html');
 
-    // 跟随站点固定链接的结尾斜杠设置，避免每次访问都吃一次 301。
     return user_trailingslashit($url, 'single');
 }
 add_filter('post_type_link', 'mbfun_custom_microblog_permalink', 10, 2);
 
-/**
- * 分页时去掉 name 参数，避免 404。
- *
- * @param array $query_string 查询变量。
- * @return array
- */
 function mbfun_remove_page_from_query_string($query_string)
 {
     if (isset($query_string['name'], $query_string['paged'])) {
@@ -197,14 +151,6 @@ function mbfun_remove_page_from_query_string($query_string)
 }
 add_filter('request', 'mbfun_remove_page_from_query_string');
 
-/**
- * 分类分页时把自定义文章类型带进查询。
- *
- * 会改变分类归档的内容集合，允许主题/插件用过滤器关掉。
- *
- * @param array $qs 查询变量。
- * @return array
- */
 function mbfun_fix_category_pagination($qs)
 {
     if (empty($qs['category_name']) || empty($qs['paged'])) {
@@ -223,11 +169,7 @@ function mbfun_fix_category_pagination($qs)
 }
 add_filter('request', 'mbfun_fix_category_pagination');
 
-/**
- * 规则变化后刷新重写规则（只写一次库）。
- *
- * @return void
- */
+/* 规则变化后刷新重写规则 */
 function mbfun_maybe_flush_rewrite_rules_on_init()
 {
     mbfun_maybe_flush_rewrite_rules();

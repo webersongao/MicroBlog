@@ -1,35 +1,20 @@
 <?php
-/**
- * 「微博」小工具。
- *
- * @package MicroBlog
- */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * 注册小工具。
- *
- * @return void
- */
+/* 注册小工具 */
 function mbfun_load_microblog_widget()
 {
     register_widget('Microblog_SideWidget');
 }
 add_action('widgets_init', 'mbfun_load_microblog_widget');
 
-/**
- * 侧边栏微博列表。
- */
+/* 侧边栏微博列表 */
 class Microblog_SideWidget extends WP_Widget
 {
-    /**
-     * 默认实例。
-     *
-     * @return array
-     */
+    /* 默认实例 */
     private function defaults()
     {
         return array(
@@ -49,12 +34,7 @@ class Microblog_SideWidget extends WP_Widget
         );
     }
 
-    /**
-     * 后台表单。
-     *
-     * @param array $instance 实例。
-     * @return void
-     */
+    /* 后台表单 */
     public function form($instance)
     {
         $instance = wp_parse_args((array) $instance, $this->defaults());
@@ -94,13 +74,7 @@ class Microblog_SideWidget extends WP_Widget
         }
     }
 
-    /**
-     * 保存实例。
-     *
-     * @param array $new_instance 新值。
-     * @param array $old_instance 旧值。
-     * @return array
-     */
+    /* 保存实例 */
     public function update($new_instance, $old_instance)
     {
         return array(
@@ -111,13 +85,7 @@ class Microblog_SideWidget extends WP_Widget
         );
     }
 
-    /**
-     * 前台输出。
-     *
-     * @param array $args     侧边栏参数。
-     * @param array $instance 实例。
-     * @return void
-     */
+    /* 前台输出 */
     public function widget($args, $instance)
     {
         $instance = wp_parse_args((array) $instance, $this->defaults());

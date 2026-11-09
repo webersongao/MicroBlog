@@ -1,19 +1,10 @@
 <?php
-/**
- * 仪表盘「快速发微博」小部件。
- *
- * @package MicroBlog
- */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * 注册仪表盘小部件。
- *
- * @return void
- */
+/* 注册仪表盘小部件 */
 function mbfun_register_quick_micropost_widget()
 {
     if (!current_user_can('edit_posts')) {
@@ -24,11 +15,7 @@ function mbfun_register_quick_micropost_widget()
 }
 add_action('wp_dashboard_setup', 'mbfun_register_quick_micropost_widget');
 
-/**
- * 小部件内容。
- *
- * @return void
- */
+/* 小部件内容 */
 function mbfun_display_quick_micropost_widget()
 {
     $notice = isset($_GET['micropost_pub_alert']) ? sanitize_text_field(wp_unslash($_GET['micropost_pub_alert'])) : '';
@@ -49,11 +36,7 @@ function mbfun_display_quick_micropost_widget()
     <?php
 }
 
-/**
- * 处理提交。
- *
- * @return void
- */
+/* 处理提交 */
 function mbfun_handle_quick_micropost_submission()
 {
     if (!current_user_can('edit_posts')) {
@@ -75,15 +58,9 @@ function mbfun_handle_quick_micropost_submission()
 
     $title = isset($_POST['micropost_title']) ? sanitize_text_field(wp_unslash($_POST['micropost_title'])) : '';
 
-    if ('' === $title) {
-        $title = sprintf(__('Microblog %s', MICROBLOG_DOMAIN), gmdate('Y-m-d H:i'));
-    }
-
-    // 区块编辑器下把纯文本段落包成区块，避免编辑器显示为「经典」内容。
     if (use_block_editor_for_post_type('micropost')) {
         $blocks = '';
 
-        // 必须带 /u：\R 在非 UTF-8 模式下会把汉字里的 0x85 当成换行，切碎字符。
         foreach (preg_split('/\R/u', $content) as $paragraph) {
             $paragraph = trim($paragraph);
 
@@ -112,12 +89,7 @@ function mbfun_handle_quick_micropost_submission()
 }
 add_action('admin_post_quick_micropost', 'mbfun_handle_quick_micropost_submission');
 
-/**
- * 带提示信息跳回上一页。
- *
- * @param string $message 提示。
- * @return void
- */
+/* 带提示信息跳回上一页 */
 function mbfun_redirect_with_message($message)
 {
     $back = wp_get_referer();

@@ -1,7 +1,5 @@
 <?php
-/*
- * 基础设置：字段注册与回调。页面骨架见 class-mb-admin-page.php。
- */
+/* 基础设置 */
 
 if (!defined('ABSPATH')) {
     exit;
@@ -9,11 +7,7 @@ if (!defined('ABSPATH')) {
 
 add_action('admin_init', 'microblog_general_setting_admin');
 
-/**
- * 注册基础设置。
- *
- * @return void
- */
+/* 注册基础设置 */
 function microblog_general_setting_admin()
 {
     register_setting(
@@ -44,14 +38,25 @@ function microblog_general_setting_admin()
         'microblog_general_section_name',
         'microblog_general_section_base'
     );
+
+    add_settings_field(
+        'microblog_page_content_order',
+        __('Page template content order', MICROBLOG_DOMAIN),
+        'microblog_page_content_order_input',
+        'microblog_general_section_name',
+        'microblog_general_section_base'
+    );
+
+    add_settings_field(
+        'microblog_page_background',
+        __('Single-page background', MICROBLOG_DOMAIN),
+        'microblog_page_background_input',
+        'microblog_general_section_name',
+        'microblog_general_section_base'
+    );
 }
 
-/**
- * 清洗基础设置。
- *
- * @param mixed $input 提交值。
- * @return array
- */
+/* 清洗基础设置 */
 function microblog_general_data_sanitize($input)
 {
     if (!is_array($input)) {
@@ -64,10 +69,16 @@ function microblog_general_data_sanitize($input)
         $input['mb_color_mode'] = 'auto';
     }
 
+    if (!isset($input['mb_page_content_order'])
+        || !in_array($input['mb_page_content_order'], array('content_first', 'list_first'), true)) {
+        $input['mb_page_content_order'] = 'content_first';
+    }
+
+    $input['mb_page_background'] = empty($input['mb_page_background']) ? 0 : 1;
+
     return $input;
 }
 
-// 模块开关落库后再同步文章类型，避免读到旧值。
 add_action('update_option_microblog_general_data', function () {
     mbfun_flush_settings_cache('general');
 
@@ -78,27 +89,18 @@ add_action('update_option_microblog_general_data', function () {
     mbfun_maybe_flush_rewrite_rules();
 });
 
-/**
- * 分区说明。
- *
- * @return void
- */
+/* 分区说明 */
 function microblog_general_section_base_callback()
 {
     echo '<p>' . esc_html__('Optional MicroBlog modules. Enable the ones you need.', MICROBLOG_DOMAIN) . '</p>';
 }
 
-/**
- * 连载模块开关。
- *
- * @return void
- */
+/* 连载模块开关 */
 function microblog_module_display_input()
 {
     $value = mbfun_get_general_option('mb_liveblog_regist', false);
     ?>
     <label>
-        <!-- 隐藏域保证取消勾选时 $_POST 里仍有该键，否则整个数组缺失导致保存无效 -->
         <input type='hidden' name='microblog_general_data[mb_liveblog_regist]' value='0' />
         <input type='checkbox' name='microblog_general_data[mb_liveblog_regist]' value='1' <?php checked((bool) $value, true); ?> />
         <?php esc_html_e('Enable (turning it off keeps your data and settings)', MICROBLOG_DOMAIN); ?>
@@ -106,14 +108,7 @@ function microblog_module_display_input()
     <?php
 }
 
-/**
- * 前台颜色模式。
- *
- * 影响插件所有前台输出：微博短代码、小工具、连载区块。
- * auto 在宿主主题提供了 data-color-mode 时跟随主题，否则跟随设备。
- *
- * @return void
- */
+/* 前台颜色模式 */
 function microblog_color_mode_input()
 {
     $value   = mbfun_get_color_mode();
@@ -136,4 +131,44 @@ function microblog_color_mode_input()
 
     echo '</select>';
     echo '<p class="description">' . esc_html__('Applies to the microblog shortcode, the widget and liveblog blocks. Automatic follows your theme when it supports color modes (including the visitor switch in the header), and the visitor device otherwise.', MICROBLOG_DOMAIN) . '</p>';
+}
+
+function microblog_page_content_order_input()
+{
+    $value   = mbfun_get_page_content_order();
+    $options = array(
+        'content_first' => __('Page content before the microblog list', MICROBLOG_DOMAIN),
+        'list_first'    => __('Microblog list before page content', MICROBLOG_DOMAIN),
+    );
+
+    echo '<select name="microblog_general_data[mb_page_content_order]" id="microblog_page_content_order">';
+
+    foreach ($options as $key => $label) {
+        printf(
+            '<option value="%1$s" %2$s>%3$s</option>',
+            esc_attr($key),
+            selected($value, $key, false),
+            esc_html($label)
+        );
+    }
+
+    echo '</select>';
+    echo '<p class="description">'
+        . esc_html__('Choose whether the page body appears before or after the feed on the "Microblog list (plugin)" page template. The shortcode and widget are not affected.', MICROBLOG_DOMAIN)
+        . '</p>';
+}
+
+function microblog_page_background_input()
+{
+    $enabled = mbfun_page_background_enabled();
+    ?>
+    <label for="microblog_page_background">
+        <input type='hidden' name='microblog_general_data[mb_page_background]' value='0' />
+        <input type='checkbox' name='microblog_general_data[mb_page_background]' id='microblog_page_background' value='1' <?php checked($enabled, true); ?> />
+        <?php esc_html_e('Enable (match the theme\'s single-page background)', MICROBLOG_DOMAIN); ?>
+    </label>
+    <p class="description">
+        <?php esc_html_e('Enabled: the "Microblog list (plugin)" page matches a standard KoneyGao page, with the same card background, spacing, rounded corners, shadow and article-list typography. Disabled: a plain WordPress page with no card background, using the plugin\'s default list styling. Other themes are not affected.', MICROBLOG_DOMAIN); ?>
+    </p>
+    <?php
 }

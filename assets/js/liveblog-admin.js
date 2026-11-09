@@ -1,10 +1,3 @@
-/**
- * Liveblog admin: metabox interactions.
- *
- * 1. 连载条目（microlive）未选择原始连载时，禁止发布：
- *    - 古腾堡：lockPostSaving 原生锁定发布按钮（含预发布面板，无法绕过）；
- *    - 经典编辑器：拦截表单提交并弹窗提示。
- */
 jQuery(function ($) {
 	var $select = $('#mlb-liveblog');
 
@@ -12,7 +5,6 @@ jQuery(function ($) {
 		return !$select.length || !$select.data('required') || !!$select.val();
 	}
 
-	// 经典编辑器：表单提交前拦截。
 	$('form#post').on('submit', function (e) {
 		if (!parentSelected()) {
 			e.preventDefault();
@@ -22,7 +14,6 @@ jQuery(function ($) {
 		}
 	});
 
-	// 古腾堡：用官方 lockPostSaving 原生锁定（按钮 disabled，预发布面板同样被拦）。
 	function applyGutenbergState() {
 		if (!$select.length || typeof $select.prop !== 'function') {
 			return;
@@ -56,11 +47,9 @@ jQuery(function ($) {
 		}
 	}
 
-	// 原文切换时立即刷新锁定状态；页面加载后按初始状态应用。
 	if ($select.length) {
 		$select.on('change', applyGutenbergState);
 
-		// 古腾堡脚本与数据 store 就绪有先后，轮询到可用为止。
 		var tries = 0;
 
 		(function waitStore() {

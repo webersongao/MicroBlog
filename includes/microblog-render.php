@@ -1,43 +1,23 @@
 <?php
-/**
- * 渲染片段：短代码、小工具、模板共用的 HTML 片段。
- *
- * @package MicroBlog
- */
+/* 渲染片段 */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * 插件资源 URL。
- *
- * @param string $path 相对 assets/ 的路径。
- * @return string
- */
+/* 插件资源 URL */
 function mbfun_asset_url($path = '')
 {
     return MICROBLOG_PLUGIN_URL . 'assets/' . ltrim($path, '/');
 }
 
-/**
- * 图标 URL。
- *
- * @param string $name 文件名。
- * @return string
- */
+/* 图标 URL */
 function mbfun_icon_url($name)
 {
     return mbfun_asset_url('images/' . $name);
 }
 
-/**
- * 从正文中提取图片片段。
- *
- * @param string $content  正文。
- * @param bool   $lightbox 是否按灯箱结构（<a><img></a>）匹配。
- * @return array 匹配到的 HTML 片段数组。
- */
+/* 从正文中提取图片片段 */
 function mbfun_get_post_images($content, $lightbox = false)
 {
     if ('' === (string) $content) {
@@ -55,12 +35,7 @@ function mbfun_get_post_images($content, $lightbox = false)
     return $matches[0];
 }
 
-/**
- * 图片区容器类名（按数量决定单图 / 双图 / 九宫格）。
- *
- * @param int $count 图片数量。
- * @return string
- */
+/* 图片区容器类名 */
 function mbfun_get_images_class($count)
 {
     if (1 === (int) $count) {
@@ -74,13 +49,7 @@ function mbfun_get_images_class($count)
     return 'mb-shortcode-post-content-image-grid';
 }
 
-/**
- * 生成图片区 HTML。
- *
- * @param string $content  正文。
- * @param bool   $lightbox 是否灯箱结构。
- * @return string 无图片时返回空串。
- */
+/* 生成图片区 HTML */
 function mbfun_get_images_html($content, $lightbox = false)
 {
     $images = mbfun_get_post_images($content, $lightbox);
@@ -98,12 +67,7 @@ function mbfun_get_images_html($content, $lightbox = false)
     return $html . '</div>';
 }
 
-/**
- * 作者头像 + 昵称。
- *
- * @param int $post_id 文章 ID。
- * @return string
- */
+/* 作者头像 + 昵称 */
 function mbfun_get_author_html($post_id = 0)
 {
     $post_id = $post_id ? (int) $post_id : get_the_ID();
@@ -117,13 +81,6 @@ function mbfun_get_author_html($post_id = 0)
         . "<span class='mb-shortcode-post-user-name'>" . esc_html(get_the_author_meta('display_name', $author)) . "</span>";
 }
 
-/**
- * 底部「评论数 / 更多」链接。
- *
- * @param int    $post_id 文章 ID。
- * @param string $class   外层 span 类名。
- * @return string
- */
 function mbfun_get_action_link_html($post_id = 0, $class = 'mb-shortcode-post-bottom-link')
 {
     $post_id = $post_id ? (int) $post_id : get_the_ID();
@@ -147,12 +104,7 @@ function mbfun_get_action_link_html($post_id = 0, $class = 'mb-shortcode-post-bo
         . "</a></span>";
 }
 
-/**
- * 微博正文（去掉区块注释、图注与图片）。
- *
- * @param int|WP_Post|null $post 文章。
- * @return string
- */
+/* 微博正文 */
 function mbfun_get_micropost_content($post = null)
 {
     $post = get_post($post);
@@ -163,13 +115,9 @@ function mbfun_get_micropost_content($post = null)
 
     $content = $post->post_content;
 
-    // 古腾堡区块注释 / figure / figcaption。
     $content = preg_replace('/<!--\s*\/?wp:[^\>]+-->|<figure[^>]*>.*?<\/figure>|<figcaption[^>]*>.*?<\/figcaption>/s', '', $content);
-    // 经典编辑器图注与图片链接。
     $content = preg_replace('/\[caption[^\]]*\]|\[\/caption\]|<a\s[^>]*><img[^>]+><\/a>/', '', $content);
-    // 残余的独立 <img>：配图由 mbfun_get_images_html() 统一输出，避免重复。
     $content = preg_replace('/<img[^>]*>/i', '', $content);
-    // 清掉因移除图片产生的空段落。
     $content = preg_replace('/<p>\s*(&nbsp;)?\s*<\/p>/i', '', $content);
 
     return trim(str_replace('&nbsp;', '', $content));

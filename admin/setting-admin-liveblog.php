@@ -1,25 +1,11 @@
 <?php
-/*
-PluName: 微博 MicroBlog
-PluLink: https://www.webersongao.com/tag/microblog
-Desc: 将您的WordPress网站用作微博；在小部件中显示微博或使用短代码显示微博。
-Author: WebersonGao
-AuthorLink: https://www.webersongao.com
-Based on simple-microblogging plugin developed by Samuel Coskey, Victoria Gitman(http://boolesrings.org),Thanks to obaby(https://h4ck.org.cn/) Thanks to ChatGPT.
-*/
+/* MicroBlog */
 
 if ( ! defined('ABSPATH' ) ) {
     exit;
 }  
-/*
- * 连载设置：字段注册与回调。页面骨架见 class-mb-admin-page.php。
- */
+/* 连载设置 */
 
-/**
- * Register settings
- *
- * @return void
- */
 add_action('admin_init', 'microblog_liveblog_setting_admin' );
 function microblog_liveblog_setting_admin() {
 	register_setting('microblog_liveblog_setting_field', 'microblog_liveblog_data', 'microblog_liveblog_data_sanitize' );
@@ -60,11 +46,7 @@ function microblog_liveblog_setting_admin() {
 	}
 }
 
-/**
- * 分区说明。
- *
- * @return void
- */
+/* 分区说明 */
 function microblog_liveblog_section_desc() {
 	echo '<p>' . esc_html__('Enable a rolling liveblog view for posts — great for live coverage and events.', MICROBLOG_DOMAIN) . '</p>';
 }
@@ -75,13 +57,11 @@ function microblog_liveblog_data_sanitize($input) {
 		return array();
 	}
 
-	// 轮询间隔必须落在 10–300 秒：只靠 HTML min/max 挡不住绕过表单的请求。
 	if ( isset( $input['ml_auto_refresh_interval'] ) ) {
 		$seconds = absint( $input['ml_auto_refresh_interval'] );
 		$input['ml_auto_refresh_interval'] = min( 300, max( 10, $seconds ?: 30 ) );
 	}
 
-	// 条目时间只收四个白名单值；空串是旧版本「相对时间」的存法，一并纠正。
 	if ( isset( $input['ml_entry_date_format'] ) ) {
 		$allowed = array( 'human', 'date', 'time', 'datetime' );
 		$format  = (string) $input['ml_entry_date_format'];
@@ -92,18 +72,7 @@ function microblog_liveblog_data_sanitize($input) {
 	return $input;
 }
 
-/**
- * 条目时间的可选值。
- *
- * 标签里直接放「渲染后的示例」，而不是 Y年n月j日 / ag:i 这类格式符：
- * 格式符对普通用户等于乱码，也看不出两档的区别。示例读的是站点时区与
- * 「设置 → 常规」里的格式，所见即前台所得。
- *
- * 值只有 human / date / time / datetime 四个，前台按白名单渲染，
- * 详见 mbfun_get_live_entry_display_date()。
- *
- * @return array 值 => 带示例的标签
- */
+/* 条目时间的可选值 */
 function microblog_live_entry_time_options() {
 	return array(
 		'human'    => __('Relative time (3 minutes ago)', MICROBLOG_DOMAIN ),
@@ -116,14 +85,7 @@ function microblog_live_entry_time_options() {
 	);
 }
 
-/**
- * 条目时间的说明。
- *
- * 明确写出「格式来自哪里」，否则用户只看到一串看不懂的格式符，
- * 也不知道该去常规设置里改。
- *
- * @return string
- */
+/* 条目时间的说明 */
 function microblog_live_entry_time_desc() {
 	$link = sprintf(
 		'<a href="%1$s">%2$s</a>',
@@ -140,11 +102,6 @@ function microblog_live_entry_time_desc() {
 	);
 }
 
-/**
- * Get registered settings
- *
- * @return array
- */
 function mbfun_get_registered_settings() {
 
 	$mlb_alltypes = mbfun_get_live_all_post_types();
@@ -179,7 +136,6 @@ function mbfun_get_registered_settings() {
 			array(
 				'id'   => 'ml_prefix_title',
 				'name' => __('Show Prefix', MICROBLOG_DOMAIN ),
-				// 前缀词本身走翻译：前台标题里显示的就是这个译词（zh_CN 为「连载」）。
 				'desc' => sprintf(__('Automatically prefix the liveblog title with "%s".', MICROBLOG_DOMAIN), __('Liveblog', MICROBLOG_DOMAIN )),
 				'type' => 'checkbox',
 			),
@@ -215,12 +171,6 @@ function mbfun_get_registered_settings() {
 	return apply_filters('mlb_registered_settings', $mlb_sections );
 }
 
-/**
- * Missing callback
- *
- * @param  array $args
- * @return void
- */
 function microblog_live_missing_callback( $args ) {
 	printf(
 		esc_html__('The callback function used for the %s setting is missing.', MICROBLOG_DOMAIN ),
@@ -228,12 +178,6 @@ function microblog_live_missing_callback( $args ) {
 	);
 }
 
-/**
- * Checkbox callback
- *
- * @param  array $args
- * @return void
- */
 function microblog_live_checkbox_callback( $args ) {
 	$mlb_options = mbfun_get_liveblog_settings();
 
@@ -245,12 +189,7 @@ function microblog_live_checkbox_callback( $args ) {
 	echo $html;
 }
 
-/**
- * Text callback
- *
- * @param  array $args
- * @return void
- */
+/* Text callback */
 function microblog_live_text_callback( $args ) {
 	$mlb_options = mbfun_get_liveblog_settings();
 
@@ -262,18 +201,11 @@ function microblog_live_text_callback( $args ) {
 	echo $html;
 }
 
-/**
- * Select callback
- *
- * @param  array $args
- * @return void
- */
 function microblog_live_select_callback( $args ) {
 	$mlb_options = mbfun_get_liveblog_settings();
 
 	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : null;
 
-	// 旧版本把「相对时间」存成空串，还有已废弃的选项值。
 	$options = is_array( $args['options'] ) ? $args['options'] : array();
 	$key     = is_scalar( $value ) ? (string) $value : '';
 
@@ -293,7 +225,6 @@ function microblog_live_select_callback( $args ) {
 
 	$html .= '</select>';
 
-	// 说明单独占一行：长下拉框后面紧跟一段文字时会被挤到右边、还会被下拉面板盖住。
 	if ( '' !== $args['desc'] ) {
 		$html .= '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 	}
@@ -301,12 +232,6 @@ function microblog_live_select_callback( $args ) {
 	echo $html;
 }
 
-/**
- * Multiple Select callback
- *
- * @param  array $args
- * @return void
- */
 function microblog_live_multiple_checkbox_callback( $args ) {
 	$mlb_options = mbfun_get_liveblog_settings();
 	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : $args['default_value'];
@@ -324,12 +249,6 @@ function microblog_live_multiple_checkbox_callback( $args ) {
 	echo $html;
 }
 
-/**
- * Number callback
- *
- * @param  array $args
- * @return void
- */
 function microblog_live_number_callback( $args ) {
 	$mlb_options = mbfun_get_liveblog_settings();
 
@@ -343,12 +262,6 @@ function microblog_live_number_callback( $args ) {
 	echo $html;
 }
 
-/**
- * Number callback
- *
- * @param  array $args
- * @return void
- */
 function microblog_live_text_input_callback( $args ) {
 
 	$mlb_options = mbfun_get_liveblog_settings();

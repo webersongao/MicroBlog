@@ -1,7 +1,3 @@
-/*
- * 文章列表页「连载显示」四态列。
- * 只在支持类型的 edit.php 加载，配色沿用 WordPress 后台原生色板。
- */
 
 .column-mlb_liveblog_display {
     width: 16%;
@@ -64,7 +60,6 @@
 }
 
 @media screen and (max-width: 782px) {
-    /* WP 核心会隐藏附加列；这里只保证状态文字不把单元格撑破。 */
     .column-mlb_liveblog_display {
         width: auto;
     }

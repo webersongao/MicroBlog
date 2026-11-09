@@ -1,0 +1,194 @@
+
+.mb-page-template {
+    --mb-fg: var(--dm-text, #444444);
+    --mb-fg-strong: var(--dm-text-strong, #222222);
+    --mb-surface: var(--dm-surface, transparent);
+
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 10px;
+    color: var(--mb-fg);
+    background: var(--mb-surface)
+}
+
+.mb-page-header {
+    margin: 0 0 24px;
+    text-align: center
+}
+
+.mb-page-title {
+    margin: 0 0 12px;
+    color: var(--mb-fg-strong);
+    font-size: 28px;
+    line-height: 1.35
+}
+
+.mb-page-meta {
+    color: var(--mb-fg);
+    font-size: 13px
+}
+
+.mb-page-content {
+    margin: 0 0 18px
+}
+
+body.wp-theme-KoneyGao .mb-page-template:not(.mb-page-theme-shell) {
+    background: transparent
+}
+
+/* KoneyGao 主题适配 */
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell {
+    max-width: 960px;
+    margin: 30px -10px 40px;
+    padding: 35px;
+    border-radius: 5px;
+    background: var(--dm-surface, #fff);
+    box-shadow: var(--dm-shadow-card, 0 5px 60px -10px rgba(0, 0, 0, .07))
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-page-header {
+    margin: 0 0 27px
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-page-title {
+    margin: 0 0 15px;
+    color: var(--dm-text-strong, #151515);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-transform: uppercase
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-page-meta {
+    margin-bottom: 0;
+    color: var(--dm-text-muted, #888888);
+    font-size: 14px;
+    line-height: 1.2
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .microblog-shortcode > hr:first-child {
+    display: none
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post {
+    margin-right: 0;
+    margin-left: 0
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-head {
+    align-items: center;
+    gap: 12px;
+    margin-top: 0;
+    margin-bottom: 10px
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-head-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--dm-text-muted, #767676);
+    font-family: Montserrat, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.4;
+    text-transform: uppercase
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-head a {
+    color: var(--dm-text-muted, #767676);
+    font-family: Montserrat, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.4;
+    text-transform: uppercase;
+    text-decoration: none
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-head a:hover,
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-head-title:hover,
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-head-title:hover a {
+    color: var(--dm-text-strong, #151515)
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-date {
+    flex: 0 0 auto;
+    float: none;
+    color: var(--dm-text-muted, #767676);
+    font-size: 14px;
+    line-height: 1.2;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-content {
+    margin-top: 0;
+    color: var(--dm-text, #666666);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.7
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-content p {
+    margin-bottom: 15px;
+    color: var(--dm-text, #666666);
+    font-size: 14px;
+    line-height: 1.7
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-content > p a {
+    color: var(--dm-text-strong, #151515);
+    text-decoration: underline
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-content > p a:hover {
+    color: var(--dm-text-muted, #767676);
+    text-decoration: none
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-bottom {
+    margin-top: 15px;
+    color: var(--dm-text-muted, #767676);
+    font-size: 14px;
+    line-height: 1.2
+}
+
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-bottom a,
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-pagelink,
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-pagelink a,
+body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-loadmore a {
+    color: var(--dm-text-muted, #767676);
+    font-size: 14px
+}
+
+@media (max-width: 767px) {
+    body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell {
+        margin: 10px -10px 22px;
+        padding: 15px;
+        box-shadow: none
+    }
+
+    body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-head-title,
+    body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-head a {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1.35
+    }
+
+    body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-shortcode-post-date {
+        font-size: 12px
+    }
+}
+
+@media (max-width: 480px) {
+    .mb-page-title {
+        font-size: 23px
+    }
+
+    body.wp-theme-KoneyGao .mb-page-template.mb-page-theme-shell .mb-page-title {
+        font-size: 22px
+    }
+}
