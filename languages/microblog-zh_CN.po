@@ -67,7 +67,7 @@ msgstr "支持"
 msgid ""
 "Published posts in these types can be liveblog sources; their list screens "
 "show the liveblog state and let you switch the display mode."
-msgstr "这些类型下已发布的文章都可作为连载原文，其列表页会显示连载状态并允许切换显示模式。"
+msgstr "开启后，该类型下已发布的文章都可作为连载原文"
 
 #: admin/setting-admin-general.php:122
 msgid "Light"
@@ -144,7 +144,7 @@ msgstr "条目时间"
 msgid ""
 "How each entry shows its time. Date and time formats come from %1$s "
 "(currently %2$s and %3$s)."
-msgstr "连载条目时间的显示方式。日期与时间的格式取自 %1$s（当前为 %2$s 与 %3$s）。"
+msgstr "时间显示方式。格式取自 %1$s（当前为 %2$s 与 %3$s）。"
 
 #: admin/setting-admin-liveblog.php:131
 msgid "Settings → General"
@@ -890,4 +890,4 @@ msgstr "开启（单页卡片背景）"
 
 #: admin/setting-admin-general.php
 msgid "Enabled: the \"Microblog list (plugin)\" page matches a standard KoneyGao page, with the same card background, spacing, rounded corners, shadow and article-list typography. Disabled: a plain WordPress page with no card background, using the plugin's default list styling. Other themes are not affected."
-msgstr "开启：「微博列表（插件）」页面会附带一个单页浅灰卡片背景。关闭：普通 WordPress 页面样式，没有卡片背景。"
+msgstr "开启：微博List页面模板页面会附带浅灰卡片背景。关闭：普通页面样式，没有卡片背景。"

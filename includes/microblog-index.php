@@ -153,7 +153,7 @@ add_filter('request', 'mbfun_remove_page_from_query_string');
 
 function mbfun_fix_category_pagination($qs)
 {
-    if (empty($qs['category_name']) || empty($qs['paged'])) {
+    if (is_admin() || empty($qs['category_name']) || empty($qs['paged'])) {
         return $qs;
     }
 
