@@ -1,0 +1,47 @@
+/* 区块编辑器文档侧栏：连载原文一行 */
+
+.mlb-editor-parent {
+	display: flex;
+	align-items: baseline;
+	justify-content: flex-start;
+	gap: 0;
+	min-width: 0;
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.6;
+}
+
+/* 标签略小一号：标准 280px 文档侧栏内，中文标题可完整排在同一行 */
+.mlb-editor-parent__label {
+	flex: none;
+	font-size: 11px;
+	color: #757575;
+	white-space: nowrap;
+}
+
+/* 最多两行：超长标题不会把侧栏撑开，完整标题仍可由 title 属性查看 */
+.mlb-editor-parent__link {
+	min-width: 0;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	color: #2271b1;
+	text-decoration: none;
+	overflow-wrap: anywhere;
+}
+
+.mlb-editor-parent__link:hover,
+.mlb-editor-parent__link:focus {
+	text-decoration: underline;
+}
+
+@media (prefers-color-scheme: dark) {
+	.mlb-editor-parent__label {
+		color: #b0b0b0;
+	}
+
+	.mlb-editor-parent__link {
+		color: #72aee6;
+	}
+}

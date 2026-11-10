@@ -4,7 +4,7 @@ Tags: microblog, weibo, liveblog, shortcode
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.9.6
+Stable tag: 1.9.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,7 +31,7 @@ Highlights
 2. Activate it on the Plugins screen. Activation writes three defaults and registers the rewrite rules.
 3. Open Tools > MicroBlog Settings to configure display, date format, URL slug, entries per page and images.
 4. Create a page and choose "Microblog list (plugin)" under Page Attributes > Template (the body can stay empty). This page template is the default and recommended way to show the feed. The `[microblog]` shortcode is still available for embedding the feed inside other content, and the "Microblog" widget can be added to a sidebar.
-5. If `/microposts/...` returns 404, open Settings > Permalinks and save once.
+5. Since 1.9.8 missing rewrite rules are rebuilt automatically. If `/microposts/...` still returns 404, open Settings > Permalinks and save once, then purge the page cache.
 
 == Configuration notes ==
 
@@ -44,7 +44,7 @@ Highlights
 * Developer filters: `microblog_page_content_before_list` (bool) overrides the body position, and `microblog_page_background_enabled` (bool) overrides the single-page background switch. The template never injects content into the page body.
 * `[microblog]` is retained as an optional shortcode for embedding the feed inside a post or page body. Attributes: `null_text` (default `(none)`), `use_excerpt`, and `q` for extra WP_Query arguments. With Liveblog enabled, `[micro_liveblog endpoint="..."]` or `[micro_liveblog live_id="..."]` renders a stream. WordPress.org permits plugins to register shortcodes (Plugin Developer Handbook > Shortcodes); themes may not, which is why the companion theme ships page templates instead.
 * Liveblog is off by default. Turning it off does not delete entries or settings. The "Liveblog display" column on the post list switches between Not enabled / Hidden / Default display / Auto refresh; only the last state polls, and polling pauses while the tab is hidden.
-* The image lightbox option only changes image markup to suit the optional Simple Lightbox plugin. That plugin is not a dependency.
+* The image lightbox option emits linked image markup and, when Simple Lightbox is active, passes that markup through its official slb_activate() template tag. This is required because the page template and widget output their HTML directly instead of going through the_content. Simple Lightbox is still not a dependency.
 
 == Frequently Asked Questions ==
 
@@ -70,6 +70,15 @@ No. The front end only polls for posts set to "Auto refresh" and skips checks wh
 3. A single microblog entry with its author card and comment form.
 
 == Changelog ==
+
+= 1.9.8 =
+* Fixed microblog images not opening in the lightbox. The "Microblog list (plugin)" page template and the sidebar widget output their markup directly, bypassing the_content; Simple Lightbox only scans the_content and therefore never loaded its main script on those pages. With the image lightbox option enabled, image markup is now passed through Simple Lightbox's official slb_activate() template tag, so the shortcode, page template and widget behave the same.
+* Fixed microblog archive and single-entry links returning 404 after an update. Rewrite rules are now validated in addition to the version signature: if the persisted rules lost the micropost archive or the /slug/ID.html rule (saving Settings > Permalinks while the plugin was inactive, an object-cache rollback, or a flush that failed during deployment), they are rebuilt automatically. A five-minute guard prevents repeated rebuilds.
+* The version bump also forces one rewrite-rule rebuild on update, so existing 404s heal without a manual Permalinks save.
+
+= 1.9.7 =
+* The block editor's document sidebar now shows the parent liveblog source for a liveblog entry as a single "Liveblog source:" row, with a link back to the source article. On post-new.php it reads the mlb_parent query argument; on post.php it reads the saved _micro_live_post_id meta. Read-only, no database writes.
+* Added the "Liveblog source:" Chinese translation and rebuilt the .mo catalogue.
 
 = 1.9.6 =
 * Liveblog WeChat share cards now carry a longer excerpt. The old wp_trim_words() call treated a whole Chinese paragraph as one word and produced only about 40 characters, leaving most of the card body empty; the card now supplies enough text for the theme's five-line clamp.
@@ -108,6 +117,12 @@ No. The front end only polls for posts set to "Auto refresh" and skips checks wh
 * Page template cards match a standard page under KoneyGao in light and dark mode across six widths; the microblog list title, body text, date and divider now follow the theme's article list when the shell is enabled.
 
 == Upgrade Notice ==
+
+= 1.9.8 =
+No database migration. The plugin rebuilds rewrite rules once on update; if microblog links still return 404, open Settings > Permalinks and save once, then purge the LiteSpeed / CDN cache. Clear the page cache so the lightbox script is picked up.
+
+= 1.9.7 =
+No database migration and no editor settings change. Clear any page or opcode cache after updating so the new sidebar script, stylesheet and language catalogue are picked up.
 
 = 1.9.6 =
 No database migration. Update the KoneyGao theme together with this plugin: the longer excerpt is capped by the theme's five-line clamp and tighter font sizes, so an older stylesheet will make the card taller. Clear the page cache after updating.

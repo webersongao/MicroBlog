@@ -900,3 +900,7 @@ msgstr ""
 #: templates/sharing.php
 msgid "Share on WeChat"
 msgstr ""
+
+#: liveblog/includes/live-metabox.php
+msgid "Liveblog source:"
+msgstr ""

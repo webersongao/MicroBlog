@@ -4,7 +4,7 @@ Tags: microblog, weibo, liveblog, shortcode
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.9.6
+Stable tag: 1.9.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,7 @@ MicroBlog 增加 `micropost` 内容类型，让短动态不与正式文章混在
 2. 在插件列表页启用。启用时会写入三组默认设置并注册重写规则。
 3. 打开「工具 → MicroBlog 设置」，配置显示方式、日期格式、URL 前缀、每页条数与图片。
 4. 新建页面，在「页面属性 → 模板」中选择「微博列表（插件）」（正文可留空）。**这是默认且推荐的方式**；`[microblog]` 短代码仍然保留，用于在其他文章或页面正文里内嵌微博流；也可以把「微博」小工具拖到侧栏。
-5. 若 `/microposts/...` 返回 404，打开「设置 → 固定链接」保存一次即可。
+5. 1.9.8 起插件会自动重建缺失的重写规则；若 `/microposts/...` 仍返回 404，再打开「设置 → 固定链接」保存一次并清理页面缓存。
 
 == 配置要点 ==
 
@@ -46,7 +46,7 @@ MicroBlog 增加 `micropost` 内容类型，让短动态不与正式文章混在
 * 开发者 filter：`microblog_page_content_before_list`（布尔）覆盖正文顺序，`microblog_page_background_enabled`（布尔）覆盖单页背景开关。模板不会往页面正文里注入任何内容。
 * `[microblog]` 作为**可选短代码保留**，用于在文章或页面正文里内嵌微博流。可用属性：`null_text`（默认 `(none)`）、`use_excerpt`、`q`（附加 WP_Query 参数）。开启连载后，`[micro_liveblog endpoint="..."]` 或 `[micro_liveblog live_id="..."]` 用于渲染更新流。WordPress.org 允许插件注册短代码（Plugin Developer Handbook → Shortcodes），但不允许主题注册，所以配套主题一律使用页面模板。
 * 连载默认关闭；关闭不会删除已有条目和设置。文章列表的「连载显示」列有四种状态：未启用 / 隐藏 / 默认显示 / 自动刷新，只有最后一种会轮询，且浏览器标签页隐藏时自动暂停。
-* 「图片灯箱」选项只改变图片标记，以适配可选的 Simple Lightbox 插件；该插件不是依赖。
+* 「图片灯箱」选项输出带链接的图片标记；若 Simple Lightbox 已启用，还会经其官方 slb_activate() 主动激活——页面模板与小工具直接输出 HTML、不经过 the_content，必须显式激活才能加载灯箱主脚本。该插件仍不是依赖。
 
 == 常见问题 ==
 
@@ -82,6 +82,15 @@ MicroBlog 增加 `micropost` 内容类型，让短动态不与正式文章混在
 这三张图对应 `screenshot-1.png` / `screenshot-2.png` / `screenshot-3.png`（1200×900）。它们属于 WordPress.org 插件 SVN **根目录的 `assets/`**，用于官方插件页展示；与插件运行时目录里的 `assets/`（css / js / images）不是同一个位置，不要混放。
 
 == 更新日志 ==
+
+= 1.9.8 =
+* 修复微博图片没有灯箱效果：「微博列表（插件）」页面模板与侧栏小工具直接输出 HTML，不经过 the_content；Simple Lightbox 只扫描 the_content，因此这些页面从未加载灯箱主脚本。开启「图片灯箱」后，图片 HTML 现在经官方 slb_activate() 主动激活，短代码、页面模板、小工具三条路径一致。
+* 修复升级后微博归档页与详情页 404：除版本签名外，新增对已保存 rewrite 规则的校验。若规则里丢失 micropost 归档或 /slug/ID.html 规则（插件停用期间保存过「固定链接」、对象缓存回滚、部署时 flush 未写成功等），会自动重建；并用 5 分钟节流避免反复重建。
+* 版本号提升会强制触发一次 rewrite 规则重建，已有 404 无需手动保存固定链接即可自愈。
+
+= 1.9.7 =
+* 区块编辑器的文档侧栏新增一行「连载原文：」，显示本条连载所属原文的标题并链接回原文编辑页。新建条目时读取 mlb_parent 查询参数，编辑既有条目时读取已保存的 _micro_live_post_id。纯只读渲染，不写数据库。
+* 新增「Liveblog source:」中文文案并重新编译 .mo 语言包。
 
 = 1.9.6 =
 * 连载条目的微信分享卡片正文更长：旧写法用 wp_trim_words() 按「词」截断，中文整段被当成一个词，实际只截出约 40 字，正文区大半空着；现在按字符宽度提供足够素材，由主题的 5 行 line-clamp 兜底。
@@ -120,6 +129,12 @@ MicroBlog 增加 `micropost` 内容类型，让短动态不与正式文章混在
 * 在 KoneyGao 下，页面模板卡片与普通页面外壳完全一致；开启单页背景时，微博列表的标题、正文、日期与分割线对齐主题文章列表。浅/深双模式 × 6 档宽度实测通过。
 
 == 升级提示 ==
+
+= 1.9.8 =
+无数据库迁移。升级时插件会自动重建一次重写规则；若微博链接仍 404，请打开「设置 → 固定链接」保存一次，并清理 LiteSpeed / CDN 缓存。另请清理页面缓存，让灯箱脚本生效。
+
+= 1.9.7 =
+无数据库迁移，也不改动任何编辑器设置。更新后清理一次页面缓存或 opcode 缓存，让新的侧栏脚本、样式与语言包生效。
 
 = 1.9.6 =
 无数据库迁移。请与 KoneyGao 主题一起更新：更长的摘要依赖主题的新样式（5 行上限 + 收紧字号），旧样式下卡片会变高。更新后清理一次页面缓存。

@@ -334,19 +334,54 @@ add_filter('wp_insert_post_data', 'mbfun_micropost_placeholder_title', 10, 2);
 
 /* 重写规则 */
 
+/* 持久化的规则里是否真的有微博归档页与详情页 */
+function mbfun_micropost_rewrite_rules_present()
+{
+    $rules = get_option('rewrite_rules');
+
+    if (!is_array($rules) || empty($rules)) {
+        return false;
+    }
+
+    $slug    = mbfun_get_micropost_slug();
+    $archive = $slug . '/?$';
+    $detail  = '^' . preg_quote($slug, '/') . '/([0-9]+)\.html/?$';
+
+    if (!isset($rules[$archive], $rules[$detail])) {
+        return false;
+    }
+
+    return false !== strpos((string) $rules[$archive], 'post_type=micropost')
+        && false !== strpos((string) $rules[$detail], 'post_type=micropost');
+}
+
 function mbfun_maybe_flush_rewrite_rules()
 {
     $supports  = (array) mbfun_setting('mb_editor_func', array());
+    $structure = (string) get_option('permalink_structure');
     $signature = md5(implode('|', array(
         mbfun_get_micropost_slug(),
         implode(',', $supports),
         MICROBLOG_VERSION,
-        (string) get_option('permalink_structure'),
+        $structure,
         mbfun_get_general_option('mb_liveblog_regist', false) ? 'liveblog-on' : 'liveblog-off',
     )));
 
-    if (get_option('microblog_rewrite_signature') === $signature) {
+    $signature_ok = (get_option('microblog_rewrite_signature') === $signature);
+    /* 朴素固定链接不依赖 rewrite 规则，无需校验。 */
+    $rules_ok = ('' === $structure) ? true : mbfun_micropost_rewrite_rules_present();
+
+    if ($signature_ok && $rules_ok) {
         return false;
+    }
+
+    /* 签名未变但规则被外部清空时也要自愈；节流避免每个请求都重建。 */
+    if ($signature_ok && !$rules_ok) {
+        if (get_transient('microblog_rewrite_rules_repair')) {
+            return false;
+        }
+
+        set_transient('microblog_rewrite_rules_repair', 1, 5 * MINUTE_IN_SECONDS);
     }
 
     flush_rewrite_rules(false);

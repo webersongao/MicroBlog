@@ -912,3 +912,7 @@ msgstr "留空则使用「连载」设置页中的标题，最多 45 个字。"
 #: templates/sharing.php
 msgid "Share on WeChat"
 msgstr "分享到微信"
+
+#: liveblog/includes/live-metabox.php
+msgid "Liveblog source:"
+msgstr "连载原文："

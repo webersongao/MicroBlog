@@ -64,7 +64,16 @@ function mbfun_get_images_html($content, $lightbox = false)
         $html .= "<div class='mb-shortcode-post-content-image-item'>" . $image . "</div>";
     }
 
-    return $html . '</div>';
+    $html .= '</div>';
+
+    /* 页面模板与小工具直接 echo 列表，不经过 the_content；Simple Lightbox 只在
+       the_content 上扫描并缓存媒体项，缓存为空时 wp_footer 不输出主脚本。
+       用官方 slb_activate() 主动激活自定义内容，覆盖三条渲染路径。 */
+    if ($lightbox && !is_admin() && !is_feed() && function_exists('slb_activate')) {
+        $html = slb_activate($html);
+    }
+
+    return $html;
 }
 
 /* 作者头像 + 昵称 */

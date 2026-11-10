@@ -455,3 +455,87 @@ function mlb_handle_toggle_liveblog()
 	exit;
 }
 add_action('admin_post_mlb_toggle_liveblog', 'mlb_handle_toggle_liveblog');
+
+/* ------------------------------------------------------------------
+ * 区块编辑器文档侧栏：显示本条连载所属的原文
+ * 仅渲染，不写入任何数据。新建时读 mlb_parent 查询参数，
+ * 编辑既有条目时优先读 _micro_live_post_id。
+ * ------------------------------------------------------------------ */
+
+function mlb_get_editor_parent_source($post = null)
+{
+	$parent_id = 0;
+
+	if ($post instanceof WP_Post) {
+		$parent_id = (int) get_post_meta($post->ID, '_micro_live_post_id', true);
+	}
+
+	if (! $parent_id && isset($_GET['mlb_parent'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- 仅读取用于显示。
+		$parent_id = absint($_GET['mlb_parent']);
+	}
+
+	if (! $parent_id || ! function_exists('mlb_is_valid_entry_parent') || ! mlb_is_valid_entry_parent($parent_id)) {
+		return null;
+	}
+
+	$title = wp_strip_all_tags(html_entity_decode(get_the_title($parent_id), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+
+	if ('' === $title) {
+		return null;
+	}
+
+	$url = get_edit_post_link($parent_id, '');
+
+	return array(
+		'id'    => $parent_id,
+		'title' => $title,
+		'url'   => $url ? esc_url_raw($url) : '',
+	);
+}
+
+function mlb_enqueue_editor_parent_info($hook)
+{
+	if (! in_array($hook, array('post.php', 'post-new.php'), true)) {
+		return;
+	}
+
+	$screen = function_exists('get_current_screen') ? get_current_screen() : null;
+
+	if (! $screen || 'microlive' !== $screen->post_type) {
+		return;
+	}
+
+	/* 经典编辑器没有文档侧栏，SlotFill 也无从挂载 */
+	if (! function_exists('use_block_editor_for_post_type') || ! use_block_editor_for_post_type('microlive')) {
+		return;
+	}
+
+	$source = mlb_get_editor_parent_source(get_post());
+
+	if (! $source) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'mlb-editor-parent',
+		mbfun_asset_url('css/liveblog-editor-parent.css'),
+		array(),
+		mbfun_get_plugin_version()
+	);
+
+	wp_enqueue_script(
+		'mlb-editor-parent',
+		mbfun_asset_url('js/liveblog-editor-parent.js'),
+		array('wp-plugins', 'wp-edit-post', 'wp-element', 'wp-i18n'),
+		mbfun_get_plugin_version(),
+		true
+	);
+
+	wp_localize_script('mlb-editor-parent', 'mlbEditorParent', array(
+		'label' => __('Liveblog source:', MICROBLOG_DOMAIN),
+		'title' => $source['title'],
+		'url'   => $source['url'],
+		'id'    => (int) $source['id'],
+	));
+}
+add_action('admin_enqueue_scripts', 'mlb_enqueue_editor_parent_info', 20);
