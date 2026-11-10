@@ -193,27 +193,17 @@ function mlb_add_post_dropdown_filter_to_manage_posts()
 
 function mlb_handle_query_vars_for_post_filter($query)
 {
-
 	$state = $query->get('live_id');
 
-	if (! $query->is_main_query() || empty($state)) {
+	if (! $query->is_main_query() || empty($state) || 'all' === $state) {
 		return;
 	}
 
-	if ('all' === $state) {
-	} else {
-		$new_meta_query_clause = array(
-			'key'   => '_micro_live_post_id',
-			'value' => $state,
-		);
-	}
+	$meta_query   = (array) $query->get('meta_query');
+	$meta_query[] = array(
+		'key'   => '_micro_live_post_id',
+		'value' => $state,
+	);
 
-	if (isset($new_meta_query_clause) || !empty($state)) {
-		$meta_query = $query->get('meta_query');
-		if (empty($meta_query)) {
-			$meta_query = array();
-		}
-		array_push($meta_query, $new_meta_query_clause);
-		$query->set('meta_query', $meta_query);
-	}
+	$query->set('meta_query', $meta_query);
 }

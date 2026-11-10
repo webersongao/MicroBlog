@@ -169,9 +169,3 @@ function mbfun_fix_category_pagination($qs)
 }
 add_filter('request', 'mbfun_fix_category_pagination');
 
-/* 规则变化后刷新重写规则 */
-function mbfun_maybe_flush_rewrite_rules_on_init()
-{
-    mbfun_maybe_flush_rewrite_rules();
-}
-add_action('init', 'mbfun_maybe_flush_rewrite_rules_on_init', 99);

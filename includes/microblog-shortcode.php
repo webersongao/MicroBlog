@@ -13,29 +13,14 @@ function microblog_render_list($atts = array())
         'q'           => '',
     ), $atts, 'microblog');
 
-    $options   = mbfun_get_micropost_settings();
-    $per_page  = isset($options['mb_codepost_num']) ? (int) $options['mb_codepost_num'] : 5;
-    $per_page  = min(20, max(3, $per_page > 0 ? $per_page : 5));
-    $title_on  = !empty($options['mb_title_show']);
-    $lightbox  = !empty($options['mb_image_lightbox']);
-    $bottom    = (isset($options['mb_content_bottom']) && is_array($options['mb_content_bottom']))
-        ? $options['mb_content_bottom']
-        : array();
-
-    $args = array(
-        'post_type'      => 'micropost',
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-        'posts_per_page' => $per_page,
-        'post_status'    => mbfun_get_micropost_types(),
-        'paged'          => max(1, (int) get_query_var('paged')),
-    );
+    $settings = mbfun_get_micropost_list_settings();
+    $extra    = array();
 
     if ('' !== $atts['q']) {
-        $args['s'] = sanitize_text_field($atts['q']);
+        $extra['s'] = sanitize_text_field($atts['q']);
     }
 
-    $query = new WP_Query($args);
+    $query = mbfun_get_micropost_list_query($settings, $extra);
 
     if (!$query->have_posts()) {
         wp_reset_postdata();
@@ -52,8 +37,7 @@ function microblog_render_list($atts = array())
         $query->the_post();
 
         $post_id    = get_the_ID();
-        $post_title = $title_on ? get_the_title() : '';
-        $show_user  = in_array('conbottomuser', $bottom, true);
+        $post_title = $settings['title_on'] ? get_the_title() : '';
 
         $out .= "<div class='mb-shortcode-post-main micropost-main-" . (int) $post_id . "'>";
 
@@ -83,11 +67,11 @@ function microblog_render_list($atts = array())
             $out .= mbfun_get_micropost_content($post_id);
         }
 
-        $out .= mbfun_get_images_html(get_the_content(), $lightbox);
+        $out .= mbfun_get_images_html(get_the_content(), $settings['lightbox']);
         $out .= '</div>';
 
         $out .= "<div class='mb-shortcode-post-bottom'>";
-        $out .= "<div class='mb-shortcode-post-user'>" . ($show_user ? mbfun_get_author_html($post_id) : '') . '</div>';
+        $out .= "<div class='mb-shortcode-post-user'>" . ($settings['show_user'] ? mbfun_get_author_html($post_id) : '') . '</div>';
         $out .= mbfun_get_action_link_html($post_id);
         $out .= '</div>';
 

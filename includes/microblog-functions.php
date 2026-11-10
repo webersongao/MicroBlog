@@ -19,6 +19,39 @@ function mbfun_get_micropost_option($key = '', $default = false)
     return mbfun_setting($key, $default, 'micropost');
 }
 
+/* 微博列表共用的显示设置（短代码 / 小工具 / 页面模板） */
+function mbfun_get_micropost_list_settings()
+{
+    $options  = mbfun_get_micropost_settings();
+    $per_page = isset($options['mb_codepost_num']) ? (int) $options['mb_codepost_num'] : 5;
+    $per_page = min(20, max(3, $per_page > 0 ? $per_page : 5));
+    $bottom   = (isset($options['mb_content_bottom']) && is_array($options['mb_content_bottom']))
+        ? $options['mb_content_bottom']
+        : array();
+
+    return array(
+        'per_page'  => $per_page,
+        'title_on'  => !empty($options['mb_title_show']),
+        'lightbox'  => !empty($options['mb_image_lightbox']),
+        'show_user' => in_array('conbottomuser', $bottom, true),
+    );
+}
+
+/* 微博列表查询 */
+function mbfun_get_micropost_list_query($settings, $extra_args = array())
+{
+    $args = array(
+        'post_type'      => 'micropost',
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+        'posts_per_page' => (int) $settings['per_page'],
+        'post_status'    => mbfun_get_micropost_types(),
+        'paged'          => max(1, (int) get_query_var('paged')),
+    );
+
+    return new WP_Query(array_merge($args, (array) $extra_args));
+}
+
 /* 连载配置 */
 function mbfun_get_liveblog_settings()
 {
@@ -77,12 +110,6 @@ function mbfun_color_mode_attr()
     return ' data-mlb-color-mode="' . esc_attr(mbfun_get_color_mode()) . '"';
 }
 
-/* 连载选项 */
-function mbfun_get_live_options()
-{
-    return mbfun_get_settings('liveblog');
-}
-
 /* 连载单项选项 */
 function mbfun_get_live_option($key = '', $default = false)
 {
@@ -126,22 +153,10 @@ function mbfun_get_micropost_slug($refresh = false)
     return $slug;
 }
 
-/* 微博 slug */
+/* 微博 slug（主题模板通过 function_exists 调用，保留此别名） */
 function mbfun_get_micropost_slug_name()
 {
     return mbfun_get_micropost_slug();
-}
-
-/* 微博 slug */
-function mbfun_get_lasted_micropost_slug_name()
-{
-    return mbfun_get_micropost_slug();
-}
-
-/* 让 slug 缓存失效 */
-function mbfun_update_global_microblog_slug_name($new_value)
-{
-    mbfun_get_micropost_slug(true);
 }
 
 function mbfun_update_microblog_display_module()
@@ -334,27 +349,8 @@ add_filter('wp_insert_post_data', 'mbfun_micropost_placeholder_title', 10, 2);
 
 /* 重写规则 */
 
-/* 持久化的规则里是否真的有微博归档页与详情页 */
-function mbfun_micropost_rewrite_rules_present()
-{
-    $rules = get_option('rewrite_rules');
-
-    if (!is_array($rules) || empty($rules)) {
-        return false;
-    }
-
-    $slug    = mbfun_get_micropost_slug();
-    $archive = $slug . '/?$';
-    $detail  = '^' . preg_quote($slug, '/') . '/([0-9]+)\.html/?$';
-
-    if (!isset($rules[$archive], $rules[$detail])) {
-        return false;
-    }
-
-    return false !== strpos((string) $rules[$archive], 'post_type=micropost')
-        && false !== strpos((string) $rules[$detail], 'post_type=micropost');
-}
-
+/* 只在签名变化时刷新规则；不再每请求读取 rewrite_rules 做完整校验。
+   触发点：插件激活/升级、后台保存设置。404 自愈单独在 template_redirect 处理。 */
 function mbfun_maybe_flush_rewrite_rules()
 {
     $supports  = (array) mbfun_setting('mb_editor_func', array());
@@ -367,21 +363,8 @@ function mbfun_maybe_flush_rewrite_rules()
         mbfun_get_general_option('mb_liveblog_regist', false) ? 'liveblog-on' : 'liveblog-off',
     )));
 
-    $signature_ok = (get_option('microblog_rewrite_signature') === $signature);
-    /* 朴素固定链接不依赖 rewrite 规则，无需校验。 */
-    $rules_ok = ('' === $structure) ? true : mbfun_micropost_rewrite_rules_present();
-
-    if ($signature_ok && $rules_ok) {
+    if (get_option('microblog_rewrite_signature') === $signature) {
         return false;
-    }
-
-    /* 签名未变但规则被外部清空时也要自愈；节流避免每个请求都重建。 */
-    if ($signature_ok && !$rules_ok) {
-        if (get_transient('microblog_rewrite_rules_repair')) {
-            return false;
-        }
-
-        set_transient('microblog_rewrite_rules_repair', 1, 5 * MINUTE_IN_SECONDS);
     }
 
     flush_rewrite_rules(false);
@@ -389,3 +372,52 @@ function mbfun_maybe_flush_rewrite_rules()
 
     return true;
 }
+
+/* 升级后自动刷新（激活钩子在自动更新时不一定执行） */
+function mbfun_check_plugin_version_flush()
+{
+    $stored = get_option('microblog_plugin_version');
+    if ($stored === MICROBLOG_VERSION) {
+        return;
+    }
+
+    mbfun_create_micropost_type();
+    mbfun_maybe_flush_rewrite_rules();
+    update_option('microblog_plugin_version', MICROBLOG_VERSION);
+}
+add_action('admin_init', 'mbfun_check_plugin_version_flush');
+
+/* 微博 slug/编辑器支持变化后刷新 */
+add_action('update_option_microblog_micropost_data', 'mbfun_maybe_flush_rewrite_rules');
+
+/* 404 自愈：当访问微博 URL 且是 404 时，5 分钟内最多重建一次规则。
+   这覆盖规则被外部插件清空、但签名仍匹配的场景，无需每请求读规则。 */
+function mbfun_rewrite_rules_404_heal()
+{
+    if (!is_404()) {
+        return;
+    }
+
+    $slug = mbfun_get_micropost_slug();
+    if (!$slug) {
+        return;
+    }
+
+    $request_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '';
+    $home_path    = parse_url(home_url(), PHP_URL_PATH) ?: '';
+    if ($home_path && 0 === strpos($request_path, $home_path)) {
+        $request_path = substr($request_path, strlen($home_path));
+    }
+
+    if (!preg_match('#^/' . preg_quote($slug, '#') . '(/|$)#', $request_path)) {
+        return;
+    }
+
+    if (get_transient('microblog_rewrite_rules_repair')) {
+        return;
+    }
+
+    set_transient('microblog_rewrite_rules_repair', 1, 5 * MINUTE_IN_SECONDS);
+    flush_rewrite_rules(false);
+}
+add_action('template_redirect', 'mbfun_rewrite_rules_404_heal', 1);

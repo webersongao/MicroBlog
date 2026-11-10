@@ -37,12 +37,14 @@ jQuery(function ($) {
 			return;
 		}
 
+		var locked = !!(editorSelect && typeof editorSelect.isPostSavingLocked === 'function'
+			&& editorSelect.isPostSavingLocked());
+
 		if (parentSelected()) {
-			if (editorSelect && typeof editorSelect.isPostSavingLocked === 'function'
-				&& editorSelect.isPostSavingLocked()) {
+			if (locked) {
 				editorDispatch.unlockPostSaving(lockName);
 			}
-		} else {
+		} else if (!locked) {
 			editorDispatch.lockPostSaving(lockName);
 		}
 	}
@@ -50,25 +52,10 @@ jQuery(function ($) {
 	if ($select.length) {
 		$select.on('change', applyGutenbergState);
 
-		var tries = 0;
+		if (window.wp && window.wp.data && typeof window.wp.data.subscribe === 'function') {
+			window.wp.data.subscribe(applyGutenbergState);
+		}
 
-		(function waitStore() {
-			applyGutenbergState();
-
-			var locked = false;
-
-			try {
-				locked = window.wp && window.wp.data
-					&& window.wp.data.select('core/editor')
-					&& typeof window.wp.data.select('core/editor').isPostSavingLocked === 'function'
-					&& window.wp.data.select('core/editor').isPostSavingLocked();
-			} catch (err) {
-				locked = false;
-			}
-
-			if (!locked && tries++ < 40) {
-				setTimeout(waitStore, 250);
-			}
-		})();
+		applyGutenbergState();
 	}
 });

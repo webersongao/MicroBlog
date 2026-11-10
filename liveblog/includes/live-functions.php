@@ -132,46 +132,34 @@ function mlb_get_display_mode($post_id)
 	return 'off';
 }
 
-function mlb_get_liveblog_source_ids()
+function mlb_has_liveblog_entries($post_id)
 {
-	static $map = null;
+	static $cache = array();
 
-	if (null !== $map) {
-		return $map;
+	$post_id = (int) $post_id;
+
+	if (! $post_id) {
+		return false;
+	}
+
+	if (isset($cache[$post_id])) {
+		return $cache[$post_id];
 	}
 
 	$entries = get_posts(array(
 		'post_type'        => 'microlive',
 		'post_status'      => 'any',
-		'posts_per_page'   => -1,
+		'posts_per_page'   => 1,
 		'fields'           => 'ids',
 		'no_found_rows'    => true,
 		'meta_key'         => '_micro_live_post_id',
+		'meta_value'       => $post_id,
 		'suppress_filters' => true,
 	));
 
-	$map = array();
+	$cache[$post_id] = ! empty($entries);
 
-	if ($entries) {
-		update_meta_cache('post', $entries);
-
-		foreach ($entries as $entry_id) {
-			$parent_id = (int) get_post_meta($entry_id, '_micro_live_post_id', true);
-
-			if ($parent_id) {
-				$map[$parent_id] = true;
-			}
-		}
-	}
-
-	return $map;
-}
-
-function mlb_has_liveblog_entries($post_id)
-{
-	$map = mlb_get_liveblog_source_ids();
-
-	return ! empty($map[(int) $post_id]);
+	return $cache[$post_id];
 }
 
 /* 列表页四态的状态键 */

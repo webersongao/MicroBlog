@@ -43,12 +43,6 @@ function microblog_admin_enqueue_scripts($hook)
     }
 
     wp_enqueue_style('microblog-admin-css', mbfun_asset_url('css/admin-style.css'), array(), mbfun_get_plugin_version());
-
-    if (in_array($hook, array('post.php', 'post-new.php'), true)) {
-        return;
-    }
-
-    wp_enqueue_script('microblog-admin-script', mbfun_asset_url('js/admin-scripts.js'), array(), mbfun_get_plugin_version(), true);
 }
 add_action('admin_enqueue_scripts', 'microblog_admin_enqueue_scripts');
 

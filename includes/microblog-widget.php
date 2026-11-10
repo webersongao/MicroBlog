@@ -92,24 +92,8 @@ class Microblog_SideWidget extends WP_Widget
         $instance = wp_parse_args((array) $instance, $this->defaults());
 
         /* 与 [microblog] 短代码 / 微博列表页面模板共用同一组全局显示设置 */
-        $options   = mbfun_get_micropost_settings();
-        $per_page  = isset($options['mb_codepost_num']) ? (int) $options['mb_codepost_num'] : 5;
-        $per_page  = min(20, max(3, $per_page > 0 ? $per_page : 5));
-        $title_on  = !empty($options['mb_title_show']);
-        $lightbox  = !empty($options['mb_image_lightbox']);
-        $bottom    = (isset($options['mb_content_bottom']) && is_array($options['mb_content_bottom']))
-            ? $options['mb_content_bottom']
-            : array();
-        $show_user = in_array('conbottomuser', $bottom, true);
-
-        $query = new WP_Query(array(
-            'post_type'      => 'micropost',
-            'orderby'        => 'date',
-            'order'          => 'DESC',
-            'posts_per_page' => $per_page,
-            'post_status'    => mbfun_get_micropost_types(),
-            'paged'          => max(1, (int) get_query_var('paged')),
-        ));
+        $settings = mbfun_get_micropost_list_settings();
+        $query    = mbfun_get_micropost_list_query($settings);
 
         if (!$query->have_posts()) {
             return;
@@ -136,7 +120,7 @@ class Microblog_SideWidget extends WP_Widget
 
             echo '<li>';
 
-            $title = $title_on ? get_the_title() : '';
+            $title = $settings['title_on'] ? get_the_title() : '';
 
             if ('' !== $title) {
                 echo "<div class='microblog-widget-head'><span class='microblog-widget-head-title'>"
@@ -153,7 +137,7 @@ class Microblog_SideWidget extends WP_Widget
                 echo mbfun_get_micropost_content($post_id); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             }
 
-            echo mbfun_get_images_html(get_the_content(), $lightbox);
+            echo mbfun_get_images_html(get_the_content(), $settings['lightbox']);
 
             echo '</div>';
 
@@ -165,7 +149,7 @@ class Microblog_SideWidget extends WP_Widget
                 echo "<span class='microblog-widget-bottom-date'>" . esc_html($date) . '</span>';
             }
 
-            if ($show_user) {
+            if ($settings['show_user']) {
                 echo "<span class='microblog-widget-bottom-user'>" . mbfun_get_author_html($post_id) . '</span>';
             }
 

@@ -4,7 +4,7 @@ Tags: microblog, weibo, liveblog, shortcode
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.9.8
+Stable tag: 1.9.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,15 @@ No. The front end only polls for posts set to "Auto refresh" and skips checks wh
 3. A single microblog entry with its author card and comment form.
 
 == Changelog ==
+
+= 1.9.9 =
+* Liveblog detection now checks only the current article for entries instead of loading every liveblog entry and its meta on each request; the per-post result is cached for the request.
+* Removed the dead admin script and its stylesheet rule left over from the old quick-publish message, plus unused compatibility aliases.
+* Replaced the 40-step polling that applied the block-editor save lock with one wp.data.subscribe() listener, and stop re-locking when the editor is already locked.
+* The Microblog widget and shortcode now share one settings/query helper.
+* Fixed a latent undefined-variable branch in the Liveblog admin filter when "All liveblogs" is selected.
+* Rewrite rules are no longer validated by reading the full `rewrite_rules` option on every request. They are checked only when the plugin is activated, updated, or a setting that affects them is saved; a 404 on a microblog URL still triggers a one-time self-heal.
+* Bumped the asset version so browsers and CDNs pick up the changes.
 
 = 1.9.8 =
 * Fixed microblog images not opening in the lightbox. The "Microblog list (plugin)" page template and the sidebar widget output their markup directly, bypassing the_content; Simple Lightbox only scans the_content and therefore never loaded its main script on those pages. With the image lightbox option enabled, image markup is now passed through Simple Lightbox's official slb_activate() template tag, so the shortcode, page template and widget behave the same.

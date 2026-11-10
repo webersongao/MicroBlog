@@ -4,7 +4,7 @@ Tags: microblog, weibo, liveblog, shortcode
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.9.8
+Stable tag: 1.9.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,15 @@ MicroBlog 增加 `micropost` 内容类型，让短动态不与正式文章混在
 这三张图对应 `screenshot-1.png` / `screenshot-2.png` / `screenshot-3.png`（1200×900）。它们属于 WordPress.org 插件 SVN **根目录的 `assets/`**，用于官方插件页展示；与插件运行时目录里的 `assets/`（css / js / images）不是同一个位置，不要混放。
 
 == 更新日志 ==
+
+= 1.9.9 =
+* 连载判定改为只查当前文章是否有条目，不再每次请求拉取全部连载条目并预热 meta；结果在单次请求内缓存。
+* 删除快速发布提示遗留的死后台脚本与对应样式规则，并移除未使用的兼容别名函数。
+* 区块编辑器保存锁由 40 次轮询改为一次 wp.data.subscribe() 监听；编辑器已被锁定时不再重复加锁。
+* 微博小工具与短代码共用同一组设置/查询助手。
+* 修复连载后台筛选选择「全部连载」时潜在的未定义变量分支。
+* 重写规则不再每请求都读取完整的 `rewrite_rules` 选项做校验，只在插件激活、升级或影响规则的设置保存时检查；访问微博 URL 出现 404 时仍会触发一次自愈重建。
+* 提升资源版本号，确保浏览器与 CDN 拉到新文件。
 
 = 1.9.8 =
 * 修复微博图片没有灯箱效果：「微博列表（插件）」页面模板与侧栏小工具直接输出 HTML，不经过 the_content；Simple Lightbox 只扫描 the_content，因此这些页面从未加载灯箱主脚本。开启「图片灯箱」后，图片 HTML 现在经官方 slb_activate() 主动激活，短代码、页面模板、小工具三条路径一致。
