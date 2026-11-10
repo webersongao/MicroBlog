@@ -105,15 +105,37 @@ ul.mlb-liveblog-list {
 
 .mlb-liveblog-action-share {
 	float: right;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
 }
 
 .mlb-liveblog-action-share a {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
 	color: var(--mlb-share);
 }
 
 .mlb-liveblog-action-share a:hover {
 	color: var(--mlb-share-hover);
+}
+
+/* 微信分享：与右侧 X / 微博一样是无底色纯图标，点击后由主题弹出二维码分享卡片 */
+.mlb-liveblog-action-share a.mlb-weixin-share {
+	background: none;
+	border-radius: 0;
+	color: var(--mlb-share);
+}
+
+.mlb-liveblog-action-share a.mlb-weixin-share:hover {
+	background: none;
+	color: var(--mlb-share-hover);
+}
+
+.mlb-liveblog-action-share a.mlb-weixin-share i {
+	display: inline-block;
+	font-size: 20px;
+	line-height: 1;
 }
 
 .mlb-liveblog-content {
@@ -224,4 +246,44 @@ ul.mlb-liveblog-list {
 	border: 1px solid var(--mlb-button-border);
 	margin-top: 10px;
 	margin-right: 8px;
+}
+
+/* 正文与连载之间的「后续」标题 */
+.mlb-followup-title {
+	--mlb-followup-color: #767676;
+	/* 与正文相邻两个 p 的间距一致（主题 p 的 margin-bottom: 20px） */
+	margin: 20px 0 16px;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--mlb-followup-color);
+	font-family: inherit;
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: normal;
+	text-decoration: none;
+	overflow-wrap: anywhere;
+}
+
+.mlb-followup-title[data-mlb-color-mode="dark"] {
+	--mlb-followup-color: #8e8e8e;
+}
+
+[data-color-mode="dark"] .mlb-followup-title[data-mlb-color-mode="auto"] {
+	--mlb-followup-color: #8e8e8e;
+}
+
+@media (prefers-color-scheme: dark) {
+	[data-color-mode="auto"] .mlb-followup-title[data-mlb-color-mode="auto"],
+	html:not([data-color-mode]) .mlb-followup-title[data-mlb-color-mode="auto"] {
+		--mlb-followup-color: #8e8e8e;
+	}
+}
+
+@media (max-width: 600px) {
+	.mlb-followup-title {
+		margin: 20px 0 14px;
+		font-size: 18px;
+	}
 }

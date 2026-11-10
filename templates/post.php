@@ -9,16 +9,14 @@ do_action( 'mlb_before_liveblog_post', $post );
 <div class="mlb-liveblog-head">
 
     <span class="mlb-liveblog-action-edit">
-        <?php if ( is_user_logged_in() ) {
-                mlb_edit_entry_link(); 
+        <?php if ( mlb_can_edit_entry( $post->ID ) ) {
+                mlb_edit_entry_link();
             } else { ?>
                 <a class="comments-highlighted" href="<?php echo mbfun_get_live_entry_url(); ?>" rel="nofollow" target="_blank">Live</a>
         <?php } ?>
     </span>
 
-    <?php if ( mlb_display_liveblog_layout('ml_layout_title') ) { ?>
-        <span class="mlb-liveblog-post-title"><?php mlb_entry_title(); ?></span>
-    <?php } ?>
+    <span class="mlb-liveblog-post-title"><?php mlb_entry_title(); ?></span>
 
     <span class="mlb-liveblog-post-time">
     	<?php mbfun_get_live_entry_display_date(); ?>

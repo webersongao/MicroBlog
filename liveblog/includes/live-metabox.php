@@ -11,6 +11,89 @@ function mlb_add_meta_box()
 }
 add_action('add_meta_boxes', 'mlb_add_meta_box');
 
+/* 「后续」标题：仅对已有连载条目的原文显示文章级覆盖 */
+function mlb_add_followup_title_meta_box($post_type, $post)
+{
+	if (! $post instanceof WP_Post) {
+		return;
+	}
+
+	if (! in_array($post_type, (array) mbfun_get_live_supported_post_types(), true)) {
+		return;
+	}
+
+	if (! mlb_has_liveblog_entries($post->ID)) {
+		return;
+	}
+
+	add_meta_box(
+		'mlb_followup_title_box',
+		__('Follow-up heading', MICROBLOG_DOMAIN),
+		'mlb_render_followup_title_meta_box',
+		$post_type,
+		'side',
+		'default'
+	);
+}
+add_action('add_meta_boxes', 'mlb_add_followup_title_meta_box', 10, 2);
+
+function mlb_render_followup_title_meta_box($post)
+{
+	wp_nonce_field('mlb_followup_title_save_' . $post->ID, 'mlb_followup_title_nonce');
+
+	$value    = get_post_meta($post->ID, '_mlb_followup_title', true);
+	$max      = mlb_followup_title_max_length();
+	$field_id = '_mlb_followup_title';
+
+	printf(
+		'<label class="screen-reader-text" for="%1$s">%2$s</label>',
+		esc_attr($field_id),
+		esc_html__('Custom heading', MICROBLOG_DOMAIN)
+	);
+
+	printf(
+		'<input type="text" id="%1$s" name="%1$s" value="%2$s" maxlength="%3$d" class="widefat" placeholder="%4$s" />',
+		esc_attr($field_id),
+		esc_attr((string) $value),
+		(int) $max,
+		esc_attr(mlb_followup_title_default())
+	);
+
+	echo '<p class="description">'
+		. esc_html__('Leave blank to use the heading from the Liveblog settings tab. Up to 45 characters.', MICROBLOG_DOMAIN)
+		. '</p>';
+}
+
+function mlb_save_followup_title_meta_box($post_id, $post)
+{
+	if (! isset($_POST['mlb_followup_title_nonce'])
+		|| ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mlb_followup_title_nonce'])), 'mlb_followup_title_save_' . $post_id)) {
+		return;
+	}
+
+	if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || wp_is_post_revision($post_id)) {
+		return;
+	}
+
+	if (! $post instanceof WP_Post || ! current_user_can('edit_post', $post_id)) {
+		return;
+	}
+
+	if (! in_array($post->post_type, (array) mbfun_get_live_supported_post_types(), true)) {
+		return;
+	}
+
+	$raw   = isset($_POST['_mlb_followup_title']) ? wp_unslash($_POST['_mlb_followup_title']) : '';
+	$value = mlb_sanitize_followup_title($raw);
+
+	if ('' === $value) {
+		delete_post_meta($post_id, '_mlb_followup_title');
+	} else {
+		update_post_meta($post_id, '_mlb_followup_title', $value);
+	}
+}
+add_action('save_post', 'mlb_save_followup_title_meta_box', 10, 2);
+
 function mlb_entry_meta_box_fields()
 {
 	return apply_filters('mlb_entry_meta_box_fields_save', array('_micro_live_post_id'));

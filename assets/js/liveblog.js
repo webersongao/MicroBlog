@@ -44,13 +44,21 @@
 			return url;
 		},
 
+		/* 登录用户携带 REST nonce，让核心保留当前用户身份，条目才按权限渲染编辑入口 */
+		nonceHeaders: function () {
+			var nonce = l10n.rest_nonce || '';
+
+			return nonce ? { 'X-WP-Nonce': nonce } : {};
+		},
+
 		fetch: function () {
 			var self = this;
 
 			$.ajax({
 				url: this.endpoint(),
 				method: 'GET',
-				dataType: 'json'
+				dataType: 'json',
+				headers: self.nonceHeaders()
 			}).done(function (feed) {
 				self.render(feed);
 			}).fail(function () {
@@ -127,7 +135,8 @@
 				url: this.endpoint(true),
 				method: 'GET',
 				dataType: 'json',
-				cache: false
+				cache: false,
+				headers: self.nonceHeaders()
 			}).done(function (feed) {
 				var updates = (feed && feed.updates) || [];
 				var fresh = $.grep(updates, function (entry) {

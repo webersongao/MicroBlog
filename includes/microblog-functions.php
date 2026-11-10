@@ -162,7 +162,7 @@ function mbfun_update_microblog_display_module()
 /* 按设置格式化微博时间 */
 function mbfun_micropost_format_time($post_time)
 {
-    $format = (string) mbfun_setting('mb_date_format', '');
+    $format = (string) mbfun_setting('mb_date_format', 'date_human');
 
     if ('date_hide' === $format) {
         return '';

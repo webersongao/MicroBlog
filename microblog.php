@@ -3,7 +3,7 @@
  * Plugin Name: MicroBlog
  * Plugin URI: https://www.webersongao.com/tag/microblog
  * Description: Use WordPress as a microblog: publish short posts and show them with a shortcode or a widget. (微博 / 说说)
- * Version: 1.9.2
+ * Version: 1.9.6
  * Author: WebersonGao
  * Author URI: https://www.webersongao.com
  * Requires at least: 6.0
@@ -26,7 +26,7 @@ define('MICROBLOG_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('MICROBLOG_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('MICROBLOG_BASEFOLDER', plugin_basename(dirname(__FILE__)));
 define('MICROBLOG_DOMAIN', 'microblog');
-define('MICROBLOG_VERSION', '1.9.2');
+define('MICROBLOG_VERSION', '1.9.6');
 
 /* 加载顺序 */
 $microblog_includes = array(

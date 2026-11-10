@@ -4,7 +4,7 @@ Tags: microblog, weibo, liveblog, shortcode
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.9.2
+Stable tag: 1.9.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,30 @@ No. The front end only polls for posts set to "Auto refresh" and skips checks wh
 
 == Changelog ==
 
+= 1.9.6 =
+* Liveblog WeChat share cards now carry a longer excerpt. The old wp_trim_words() call treated a whole Chinese paragraph as one word and produced only about 40 characters, leaving most of the card body empty; the card now supplies enough text for the theme's five-line clamp.
+* Requires the matching KoneyGao update: the share-card stylesheet trims the header and spacing and reduces the title and body font sizes, so the extra text fits without growing the card.
+
+= 1.9.5 =
+* The sidebar Microblog widget now follows the same global settings as the `[microblog]` shortcode and the "Microblog list (plugin)" page template: title visibility, number of items, image lightbox markup and author avatar. The per-widget "Number of items" field was removed in favour of the global value.
+* Suppressed the_post broadcasts while liveblog entry HTML is generated. Previously the WPJAM related-posts extension registered a new the_content callback on every broadcast, which produced duplicate "Related posts" blocks on liveblog articles for logged-in users. Related posts now appear once, tied to the article only.
+* Bumped the stylesheet version so browsers and CDNs pick up the new widget styles.
+
+= 1.9.4 =
+* Replaced the Facebook icon on liveblog entries with a bare WeChat glyph that matches the X and Weibo icons in color, size and alignment; clicking it opens the same QR-code share card as the article page.
+* The "Edit" link on liveblog entries is now shown only to administrators or the entry author. Other visitors, including logged-in subscribers, see the "Live" link.
+* Removed the "Title" checkbox from Layout: liveblog entry titles are always shown. Fixed the Layout default value and added server-side clamping for "Entries per Page".
+* The follow-up heading defaults to 后续： (no brackets) and now uses the same spacing as two body paragraphs.
+* Chinese copy fix: the Show Prefix description now reads 自动在连载原文前加上「连载」.
+* Audited all settings groups: normalized micropost checkbox saves, unified the time-format default, clamped the microblog count, and aligned the single-page background default with its reader.
+* Versioned the liveblog feed cache key so template changes take effect without a manual cache purge. Logged-in feed requests now carry a REST nonce, are never read from or written to the shared cache, and send no-cache headers, so entry "Edit" links render for the right user and never leak to anonymous visitors.
+* Bumped the stylesheet version so browsers and CDNs pick up the new CSS.
+
+= 1.9.3 =
+* Added a configurable follow-up heading between the article body and its liveblog entries. The default text is 【后续：】 and both the global and per-article values are capped at 45 characters.
+* The heading can be set on the Liveblog settings tab, or overridden for a single article from the post editor. Leaving a field blank falls back to the next level.
+* Bumped the stylesheet version so browsers and CDNs pick up the new CSS.
+
 = 1.9.2 =
 * Renamed the two General settings in the Chinese admin UI to "微博List页面顺序" and "微博List单页背景"; shortened their Chinese descriptions. English strings are unchanged.
 * Swapped the resting and hover colors of microblog list titles under KoneyGao and set them to 16px bold.
@@ -84,6 +108,18 @@ No. The front end only polls for posts set to "Auto refresh" and skips checks wh
 * Page template cards match a standard page under KoneyGao in light and dark mode across six widths; the microblog list title, body text, date and divider now follow the theme's article list when the shell is enabled.
 
 == Upgrade Notice ==
+
+= 1.9.6 =
+No database migration. Update the KoneyGao theme together with this plugin: the longer excerpt is capped by the theme's five-line clamp and tighter font sizes, so an older stylesheet will make the card taller. Clear the page cache after updating.
+
+= 1.9.5 =
+No database migration. Existing widget instances keep working; their saved item count is ignored from now on. Clear the page cache after updating so the new stylesheet version takes effect.
+
+= 1.9.4 =
+No database migration. Clear the page cache after updating so the new stylesheet version takes effect; the liveblog feed cache is versioned and switches over automatically, so no manual transient cleanup is needed. If you use the WeChat share button, keep the KoneyGao theme installed: its share-card script and QR endpoint are reused.
+
+= 1.9.3 =
+No database migration. Clear the page cache after updating so the new stylesheet version takes effect.
 
 = 1.9.2 =
 No database migration. Purge the page cache after updating so the new stylesheet version is served.

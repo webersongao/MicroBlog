@@ -129,7 +129,7 @@ msgstr "显示前缀"
 
 #: admin/setting-admin-liveblog.php:183
 msgid "Automatically prefix the liveblog title with \"%s\"."
-msgstr "自动在连载标题前加上「%s」。"
+msgstr "自动在连载原文前加上「%s」。"
 
 #: admin/setting-admin-micropost.php:62
 msgid "Time Format"
@@ -444,9 +444,9 @@ msgstr "查看全部..."
 msgid "Displays the latest microblogs."
 msgstr "显示最新微博列表。"
 
-#: includes/microblog-widget.php:63
-msgid "Number of items:"
-msgstr "展示数量:"
+#: includes/microblog-widget.php
+msgid "Titles, number of items, images and avatars follow the global settings under Tools > MicroBlog Settings > Microblog."
+msgstr "标题、展示数量、图片与头像由「工具 → MicroBlog 设置 → 微博」统一控制。"
 
 #: includes/microblog-widget.php:64
 msgid "Show excerpt?"
@@ -891,3 +891,24 @@ msgstr "开启（单页卡片背景）"
 #: admin/setting-admin-general.php
 msgid "Enabled: the \"Microblog list (plugin)\" page matches a standard KoneyGao page, with the same card background, spacing, rounded corners, shadow and article-list typography. Disabled: a plain WordPress page with no card background, using the plugin's default list styling. Other themes are not affected."
 msgstr "开启：微博List页面模板页面会附带浅灰卡片背景。关闭：普通页面样式，没有卡片背景。"
+
+#: admin/setting-admin-liveblog.php
+#: liveblog/includes/live-metabox.php
+msgid "Follow-up heading"
+msgstr "后续标题"
+
+#: admin/setting-admin-liveblog.php
+msgid "Heading shown between the article and its liveblog entries. Leave blank for the default. Up to 45 characters."
+msgstr "显示在文章正文与连载之间，留空使用默认「后续：」，最多 45 个字。"
+
+#: liveblog/includes/live-metabox.php
+msgid "Custom heading"
+msgstr "自定义标题"
+
+#: liveblog/includes/live-metabox.php
+msgid "Leave blank to use the heading from the Liveblog settings tab. Up to 45 characters."
+msgstr "留空则使用「连载」设置页中的标题，最多 45 个字。"
+
+#: templates/sharing.php
+msgid "Share on WeChat"
+msgstr "分享到微信"

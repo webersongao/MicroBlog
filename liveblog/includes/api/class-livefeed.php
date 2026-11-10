@@ -26,6 +26,11 @@ class LiveFeed {
 	}
 
 	public function feed( \WP_REST_Request $request ) {
+		/* 登录用户的条目 HTML 含权限相关的「编辑」链接，禁止被 CDN / 页面缓存共享 */
+		if ( is_user_logged_in() ) {
+			nocache_headers();
+		}
+
 		$feed = mbfun_get_live_feed_local( $request->get_param( 'id' ) );
 
 		if ( ! is_array( $feed ) ) {

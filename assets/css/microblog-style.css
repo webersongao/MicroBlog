@@ -250,3 +250,34 @@
 .microblog-widget-bottom-comment a {
     color: var(--mb-text);
 }
+
+/* 侧栏小工具跟随全局「显示头像」与「图片灯箱」设置 */
+.microblog-widget-bottom-user {
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.microblog-widget-bottom-user .mb-shortcode-post-user-avatar {
+    margin-right: 4px;
+}
+
+.microblog-widget-bottom-user .mb-shortcode-post-user-avatar img {
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    vertical-align: middle;
+}
+
+.microblog-widget-bottom-user .mb-shortcode-post-user-name {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.microblog-widget .mb-shortcode-post-content-image-single,
+.microblog-widget .mb-shortcode-post-content-image-double,
+.microblog-widget .mb-shortcode-post-content-image-grid {
+    max-width: 100%;
+    grid-gap: 6px;
+    margin: 8px auto;
+}

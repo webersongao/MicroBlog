@@ -205,8 +205,8 @@ msgstr ""
 msgid "Displays the latest microblogs."
 msgstr ""
 
-#: includes/microblog-widget.php:63
-msgid "Number of items:"
+#: includes/microblog-widget.php
+msgid "Titles, number of items, images and avatars follow the global settings under Tools > MicroBlog Settings > Microblog."
 msgstr ""
 
 #: includes/microblog-widget.php:64
@@ -878,4 +878,25 @@ msgstr ""
 #: liveblog/liveblog-index.php:89
 #, php-format
 msgid "Show %s new updates"
+msgstr ""
+
+#: admin/setting-admin-liveblog.php
+#: liveblog/includes/live-metabox.php
+msgid "Follow-up heading"
+msgstr ""
+
+#: admin/setting-admin-liveblog.php
+msgid "Heading shown between the article and its liveblog entries. Leave blank for the default. Up to 45 characters."
+msgstr ""
+
+#: liveblog/includes/live-metabox.php
+msgid "Custom heading"
+msgstr ""
+
+#: liveblog/includes/live-metabox.php
+msgid "Leave blank to use the heading from the Liveblog settings tab. Up to 45 characters."
+msgstr ""
+
+#: templates/sharing.php
+msgid "Share on WeChat"
 msgstr ""

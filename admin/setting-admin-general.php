@@ -74,7 +74,13 @@ function microblog_general_data_sanitize($input)
         $input['mb_page_content_order'] = 'content_first';
     }
 
-    $input['mb_page_background'] = empty($input['mb_page_background']) ? 0 : 1;
+    /* 键缺失时按「开启」处理，与 mbfun_page_background_enabled() 的缺省值 1 一致；
+       正常表单提交会带 hidden 0，仍可显式关闭 */
+    if (!array_key_exists('mb_page_background', $input)) {
+        $input['mb_page_background'] = 1;
+    } else {
+        $input['mb_page_background'] = empty($input['mb_page_background']) ? 0 : 1;
+    }
 
     return $input;
 }

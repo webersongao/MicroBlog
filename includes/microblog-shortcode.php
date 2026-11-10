@@ -15,7 +15,7 @@ function microblog_render_list($atts = array())
 
     $options   = mbfun_get_micropost_settings();
     $per_page  = isset($options['mb_codepost_num']) ? (int) $options['mb_codepost_num'] : 5;
-    $per_page  = $per_page > 0 ? $per_page : 5;
+    $per_page  = min(20, max(3, $per_page > 0 ? $per_page : 5));
     $title_on  = !empty($options['mb_title_show']);
     $lightbox  = !empty($options['mb_image_lightbox']);
     $bottom    = (isset($options['mb_content_bottom']) && is_array($options['mb_content_bottom']))

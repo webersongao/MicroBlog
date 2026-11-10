@@ -85,6 +85,9 @@ if (!class_exists('Micro_Liveblog')) {
                     wp_localize_script('micro_lb_script', 'micro_lb_data', [
                         'now_more_posts'  => __("That's All.", MICROBLOG_DOMAIN),
                         'show_new_posts'  => __('Show %s new updates', MICROBLOG_DOMAIN),
+                        /* 登录用户带上 REST nonce，否则核心 rest_cookie_check_errors()
+                           会把带 cookie 的 feed 请求降为匿名，编辑入口就不会出现。 */
+                        'rest_nonce'      => is_user_logged_in() ? wp_create_nonce('wp_rest') : '',
                     ]);
                     wp_enqueue_script('micro_lb_script');
 

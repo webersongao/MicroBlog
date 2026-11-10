@@ -69,6 +69,19 @@ function microblog_liveblog_data_sanitize($input) {
 		$input['ml_entry_date_format'] = in_array( $format, $allowed, true ) ? $format : 'human';
 	}
 
+	/* 每页条目数：与设置页的 3-50 范围一致 */
+	if ( isset( $input['ml_show_entries'] ) ) {
+		$number = absint( $input['ml_show_entries'] );
+		$input['ml_show_entries'] = min( 50, max( 3, $number ?: 10 ) );
+	}
+
+	/* 「后续」标题：纯文本 + 最多 45 个字 */
+	if ( isset( $input['ml_followup_title'] ) ) {
+		$input['ml_followup_title'] = function_exists( 'mlb_sanitize_followup_title' )
+			? mlb_sanitize_followup_title( $input['ml_followup_title'] )
+			: sanitize_text_field( $input['ml_followup_title'] );
+	}
+
 	return $input;
 }
 
@@ -121,11 +134,16 @@ function mbfun_get_registered_settings() {
 				'desc'          => __('Information shown for each liveblog entry.', MICROBLOG_DOMAIN ),
 				'type'          => 'multiple_checkbox',
 				'options'       => array(
-					'ml_layout_title' => __('Title', MICROBLOG_DOMAIN ),
 					'ml_layout_author' => __('Author', MICROBLOG_DOMAIN ),
 					'ml_layout_tshare' => __('Share buttons', MICROBLOG_DOMAIN ),
 				),
-				'default_value' => array('post' ),
+				'default_value' => array('ml_layout_author', 'ml_layout_tshare' ),
+			),
+			array(
+				'id'   => 'ml_followup_title',
+				'name' => __('Follow-up heading', MICROBLOG_DOMAIN ),
+				'desc' => __('Heading shown between the article and its liveblog entries. Leave blank for the default. Up to 45 characters.', MICROBLOG_DOMAIN ),
+				'type' => 'followup_title',
 			),
 			array(
 				'id'   => 'ml_display_revort_sort',
@@ -199,6 +217,27 @@ function microblog_live_text_callback( $args ) {
 	$html .= '<label for="microblog_liveblog_data[' . esc_attr( $args['id'] ) . ']">' . wp_kses_post( $args['desc'] ) . '</label>';
 
 	echo $html;
+}
+
+/* 「后续」标题：带字数上限与默认值占位符 */
+function microblog_live_followup_title_callback( $args ) {
+	$mlb_options = mbfun_get_liveblog_settings();
+	$value = isset( $mlb_options[ $args['id'] ] ) ? $mlb_options[ $args['id'] ] : '';
+	$max   = function_exists( 'mlb_followup_title_max_length' ) ? mlb_followup_title_max_length() : 45;
+	$default = function_exists( 'mlb_followup_title_default' ) ? mlb_followup_title_default() : '后续：';
+
+	$name = 'microblog_liveblog_data[' . $args['id'] . ']';
+
+	printf(
+		'<input type="text" class="regular-text" id="%1$s" name="%2$s" value="%3$s" maxlength="%4$d" placeholder="%5$s" />',
+		esc_attr( $name ),
+		esc_attr( $name ),
+		esc_attr( (string) $value ),
+		(int) $max,
+		esc_attr( $default )
+	);
+
+	echo '<p class="description">' . wp_kses_post( $args['desc'] ) . '</p>';
 }
 
 function microblog_live_select_callback( $args ) {

@@ -124,6 +124,22 @@ function mlb_populate_herf_liveblog_column($column, $post_id)
 }
 add_action('manage_microlive_posts_custom_column', 'mlb_populate_herf_liveblog_column', 10, 2);
 
+/* 「后续」标题 HTML；返回空串可用来彻底隐藏 */
+function mlb_followup_title_html($post_id = null)
+{
+	if (! $post_id) {
+		$post_id = get_the_ID();
+	}
+
+	$title = mlb_get_followup_title($post_id);
+
+	if ('' === $title) {
+		return '';
+	}
+
+	return '<h2 class="mlb-followup-title"' . mbfun_color_mode_attr() . '>' . esc_html($title) . '</h2>';
+}
+
 function mlb_maybe_add_liveblog($content)
 {
 	if (is_feed()) {
@@ -134,6 +150,7 @@ function mlb_maybe_add_liveblog($content)
 	}
 	$liveblog = MLB_Liveblog::mlb_fromId(get_the_ID());
 	$content  = $content;
+	$content .= mlb_followup_title_html(get_the_ID());
 	$content .= $liveblog->mlb_content_render();
 
 	return $content;

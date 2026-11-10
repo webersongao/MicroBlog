@@ -274,6 +274,69 @@ function mlb_is_liveblog()
 	return apply_filters('mlb_is_liveblog', $is_liveblog);
 }
 
+/* 「后续」标题：正文与连载之间的分隔小标题 */
+
+/* 默认文案 */
+function mlb_followup_title_default()
+{
+	return apply_filters('mlb_followup_title_default', '后续：');
+}
+
+/* 允许的最大字数（按字符计，非字节） */
+function mlb_followup_title_max_length()
+{
+	return (int) apply_filters('mlb_followup_title_max_length', 45);
+}
+
+/* 统一清洗：纯文本、合并空白、最多 N 个字 */
+function mlb_sanitize_followup_title($value)
+{
+	$value = sanitize_text_field(is_scalar($value) ? (string) $value : '');
+	$value = trim(preg_replace('/\s+/u', ' ', $value));
+
+	$max = mlb_followup_title_max_length();
+
+	if ($max > 0) {
+		$value = function_exists('mb_substr')
+			? mb_substr($value, 0, $max, 'UTF-8')
+			: substr($value, 0, $max);
+	}
+
+	return trim($value);
+}
+
+/* 取值优先级：文章级自定义 > 连载设置 > 默认文案 */
+function mlb_get_followup_title($post_id = null)
+{
+	if (! $post_id) {
+		$post_id = get_the_ID();
+	}
+
+	$title = '';
+
+	if ($post_id) {
+		$per_post = get_post_meta($post_id, '_mlb_followup_title', true);
+
+		if (is_scalar($per_post) && '' !== trim((string) $per_post)) {
+			$title = mlb_sanitize_followup_title($per_post);
+		}
+	}
+
+	if ('' === $title) {
+		$global = mbfun_get_liveblog_option('ml_followup_title', '');
+
+		if (is_scalar($global) && '' !== trim((string) $global)) {
+			$title = mlb_sanitize_followup_title($global);
+		}
+	}
+
+	if ('' === $title) {
+		$title = mlb_followup_title_default();
+	}
+
+	return apply_filters('mlb_followup_title', $title, $post_id);
+}
+
 /* Get liveblog */
 function mbfun_get_live_liveblog($post_id = null)
 {
@@ -424,11 +487,37 @@ function mbfun_get_live_edit_entry_url($post_id)
 	);
 }
 
+/* 「编辑」入口：仅管理员或该连载条目的作者（且已登录） */
+function mlb_can_edit_entry($post_id = null)
+{
+	if (! is_user_logged_in()) {
+		return false;
+	}
+
+	if (! $post_id) {
+		global $post;
+		$post_id = $post ? $post->ID : 0;
+	}
+
+	$post_id = absint($post_id);
+	$entry   = get_post($post_id);
+
+	if (! $entry || ! current_user_can('edit_post', $post_id)) {
+		return false;
+	}
+
+	if (current_user_can('manage_options')) {
+		return true;
+	}
+
+	return (int) $entry->post_author === (int) get_current_user_id();
+}
+
 function mlb_edit_entry_link()
 {
 	global $post;
 
-	if (empty($post->ID)) {
+	if (empty($post->ID) || ! mlb_can_edit_entry($post->ID)) {
 		return;
 	}
 
@@ -532,6 +621,44 @@ function mlb_add_meta_data()
 }
 add_action('wp_head', 'mlb_add_meta_data');
 
+/**
+ * feed 缓存键。
+ *
+ * 条目 HTML 由 templates/post.php、templates/sharing.php 渲染，模板或插件版本变化后
+ * 旧缓存仍会返回旧 HTML；把版本摘要写进键名，升级后无需手工清缓存即可自然换键。
+ * 旧键由 WordPress 按 TTL 自行过期，不需要任何写库操作。
+ */
+function mbfun_live_feed_cache_key($liveblog_id)
+{
+	$version = (string) apply_filters('mbfun_live_feed_cache_version', MICROBLOG_VERSION);
+
+	return 'microblog_liveblog_feed_' . absint($liveblog_id) . '_' . substr(md5($version), 0, 8);
+}
+
+/**
+ * 连载条目是主文章的附属产物。生成条目 HTML 时 setup_postdata() / wp_reset_postdata()
+ * 会在主查询上广播 the_post，第三方「相关文章」扩展每收到一次广播就往 the_content
+ * 追加一个回调，导致主文章末尾出现多个相关文章模块。这里临时屏蔽广播，渲染完恢复。
+ */
+function mbfun_without_postdata_broadcast($callback)
+{
+	global $wp_filter;
+
+	$saved = isset($wp_filter['the_post']) ? $wp_filter['the_post'] : null;
+
+	if (null !== $saved) {
+		unset($wp_filter['the_post']);
+	}
+
+	try {
+		return call_user_func($callback);
+	} finally {
+		if (null !== $saved) {
+			$wp_filter['the_post'] = $saved;
+		}
+	}
+}
+
 function mbfun_get_live_feed_local($liveblog_id)
 {
 	$liveblog_id = absint($liveblog_id);
@@ -540,12 +667,20 @@ function mbfun_get_live_feed_local($liveblog_id)
 		return null;
 	}
 
-	$cache_key = 'microblog_liveblog_feed_' . $liveblog_id;
+	/*
+	 * 条目 HTML 内含「编辑」链接，是否显示取决于当前用户权限。登录用户不读也不写共享
+	 * 缓存，避免管理员访问后把带编辑链接的 HTML 缓存下来泄漏给后续匿名访客。
+	 * 匿名访客共用一份不含编辑链接的缓存。
+	 */
+	$cacheable = ! is_user_logged_in();
+	$cache_key = mbfun_live_feed_cache_key($liveblog_id);
 
-	$feed = get_transient($cache_key);
+	if ($cacheable) {
+		$feed = get_transient($cache_key);
 
-	if (is_array($feed)) {
-		return $feed;
+		if (is_array($feed)) {
+			return $feed;
+		}
 	}
 
 	$liveblog = get_post($liveblog_id);
@@ -554,21 +689,25 @@ function mbfun_get_live_feed_local($liveblog_id)
 		return null;
 	}
 
-	$feed = \MicroLiveblogs\API\FeedFactory::make($liveblog_id);
+	$feed = mbfun_without_postdata_broadcast(function () use ($liveblog_id) {
+		return \MicroLiveblogs\API\FeedFactory::make($liveblog_id);
+	});
 
 	if (! is_array($feed)) {
 		return null;
 	}
 
-	set_transient($cache_key, $feed, 5 * MINUTE_IN_SECONDS);
+	if ($cacheable) {
+		set_transient($cache_key, $feed, 5 * MINUTE_IN_SECONDS);
+	}
 
 	return $feed;
 }
 
-/* 清除 feed 缓存 */
+/* 清除 feed 缓存（只清匿名共享键；登录用户不写缓存） */
 function mbfun_purge_live_feed_cache($liveblog_id)
 {
-	delete_transient('microblog_liveblog_feed_' . absint($liveblog_id));
+	delete_transient(mbfun_live_feed_cache_key($liveblog_id));
 }
 add_action('mlb_purge_feed_cache', 'mbfun_purge_live_feed_cache');
 

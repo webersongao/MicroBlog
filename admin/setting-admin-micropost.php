@@ -94,6 +94,27 @@ function microblog_micropost_data_sanitize($input) {
         return mbfun_get_micropost_settings();
     }
 
+    /* checkbox 取消勾选时不会提交：显式补 0 / 空数组，避免整组键被抹掉 */
+    foreach (array('mb_title_show', 'mb_rss_feed', 'mb_image_lightbox') as $key) {
+        $input[$key] = empty($input[$key]) ? 0 : 1;
+    }
+
+    foreach (array('mb_editor_func', 'mb_content_bottom') as $key) {
+        $input[$key] = (isset($input[$key]) && is_array($input[$key]))
+            ? array_values(array_map('sanitize_key', $input[$key]))
+            : array();
+    }
+
+    /* 三处默认值统一为 date_human（页面 / 读取 / 激活） */
+    if (!isset($input['mb_date_format'])
+        || !in_array($input['mb_date_format'], array('date_hide', 'date_date', 'date_human'), true)) {
+        $input['mb_date_format'] = 'date_human';
+    }
+
+    /* 与设置页 3-20 的范围一致 */
+    $number = isset($input['mb_codepost_num']) ? absint($input['mb_codepost_num']) : 5;
+    $input['mb_codepost_num'] = min(20, max(3, $number ?: 5));
+
     if (isset($input['mb_slug_name']) && '' !== $input['mb_slug_name']) {
         $slug_name = strtolower(sanitize_title($input['mb_slug_name']));
 
@@ -142,7 +163,7 @@ function microblog_post_title_show_input() {
 
 function microblog_post_title_listdate_input() {
     $options = mbfun_get_micropost_settings();
-    $value = isset($options['mb_date_format']) ? $options['mb_date_format'] : '';
+    $value = isset($options['mb_date_format']) ? $options['mb_date_format'] : 'date_human';
     ?>
     <label class="microblog-admin-option-label">
         <input type='radio' name='microblog_micropost_data[mb_date_format]' value='<?php echo esc_attr('date_hide'); ?>' <?php checked($value, 'date_hide'); ?> />

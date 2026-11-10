@@ -19,7 +19,6 @@ class Microblog_SideWidget extends WP_Widget
     {
         return array(
             'title'       => '',
-            'numberposts' => '5',
             'use_excerpt' => '',
             'rss'         => '',
         );
@@ -40,10 +39,13 @@ class Microblog_SideWidget extends WP_Widget
         $instance = wp_parse_args((array) $instance, $this->defaults());
         $fields   = array(
             'title'       => array('label' => __('Title:', MICROBLOG_DOMAIN), 'type' => 'text'),
-            'numberposts' => array('label' => __('Number of items:', MICROBLOG_DOMAIN), 'type' => 'text'),
             'use_excerpt' => array('label' => __('Show excerpt?', MICROBLOG_DOMAIN), 'type' => 'checkbox'),
             'rss'         => array('label' => __('Show RSS link?', MICROBLOG_DOMAIN), 'type' => 'checkbox'),
         );
+
+        echo '<p class="description">'
+            . esc_html__('Titles, number of items, images and avatars follow the global settings under Tools > MicroBlog Settings > Microblog.', MICROBLOG_DOMAIN)
+            . '</p>';
 
         foreach ($fields as $key => $field) {
             $id    = $this->get_field_id($key);
@@ -79,7 +81,6 @@ class Microblog_SideWidget extends WP_Widget
     {
         return array(
             'title'       => sanitize_text_field($new_instance['title'] ?? ''),
-            'numberposts' => (string) max(1, min(50, (int) ($new_instance['numberposts'] ?? 5))),
             'use_excerpt' => empty($new_instance['use_excerpt']) ? '' : 1,
             'rss'         => empty($new_instance['rss']) ? '' : 1,
         );
@@ -90,11 +91,22 @@ class Microblog_SideWidget extends WP_Widget
     {
         $instance = wp_parse_args((array) $instance, $this->defaults());
 
+        /* 与 [microblog] 短代码 / 微博列表页面模板共用同一组全局显示设置 */
+        $options   = mbfun_get_micropost_settings();
+        $per_page  = isset($options['mb_codepost_num']) ? (int) $options['mb_codepost_num'] : 5;
+        $per_page  = min(20, max(3, $per_page > 0 ? $per_page : 5));
+        $title_on  = !empty($options['mb_title_show']);
+        $lightbox  = !empty($options['mb_image_lightbox']);
+        $bottom    = (isset($options['mb_content_bottom']) && is_array($options['mb_content_bottom']))
+            ? $options['mb_content_bottom']
+            : array();
+        $show_user = in_array('conbottomuser', $bottom, true);
+
         $query = new WP_Query(array(
             'post_type'      => 'micropost',
             'orderby'        => 'date',
             'order'          => 'DESC',
-            'posts_per_page' => max(1, (int) $instance['numberposts']),
+            'posts_per_page' => $per_page,
             'post_status'    => mbfun_get_micropost_types(),
             'paged'          => max(1, (int) get_query_var('paged')),
         ));
@@ -124,7 +136,7 @@ class Microblog_SideWidget extends WP_Widget
 
             echo '<li>';
 
-            $title = get_the_title();
+            $title = $title_on ? get_the_title() : '';
 
             if ('' !== $title) {
                 echo "<div class='microblog-widget-head'><span class='microblog-widget-head-title'>"
@@ -141,6 +153,8 @@ class Microblog_SideWidget extends WP_Widget
                 echo mbfun_get_micropost_content($post_id); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             }
 
+            echo mbfun_get_images_html(get_the_content(), $lightbox);
+
             echo '</div>';
 
             $date = mbfun_micropost_format_time((int) get_post_time('U', true, $post_id));
@@ -149,6 +163,10 @@ class Microblog_SideWidget extends WP_Widget
 
             if ('' !== $date) {
                 echo "<span class='microblog-widget-bottom-date'>" . esc_html($date) . '</span>';
+            }
+
+            if ($show_user) {
+                echo "<span class='microblog-widget-bottom-user'>" . mbfun_get_author_html($post_id) . '</span>';
             }
 
             echo mbfun_get_action_link_html($post_id, 'microblog-widget-bottom-comment');
