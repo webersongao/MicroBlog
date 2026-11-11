@@ -916,3 +916,7 @@ msgstr "分享到微信"
 #: liveblog/includes/live-metabox.php
 msgid "Liveblog source:"
 msgstr "连载原文："
+
+#: includes/microblog-render.php
+msgid "View all images in this microblog post"
+msgstr "查看该微博的全部图片"

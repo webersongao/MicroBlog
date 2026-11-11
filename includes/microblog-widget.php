@@ -137,7 +137,7 @@ class Microblog_SideWidget extends WP_Widget
                 echo mbfun_get_micropost_content($post_id); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             }
 
-            echo mbfun_get_images_html(get_the_content(), $settings['lightbox']);
+            echo mbfun_get_images_html(get_the_content(), $settings['lightbox'], get_permalink($post_id));
 
             echo '</div>';
 

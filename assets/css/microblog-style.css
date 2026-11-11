@@ -281,3 +281,66 @@
     grid-gap: 6px;
     margin: 8px auto;
 }
+
+/* 列表最多展示 3 张：第 3 张不压暗、不遮挡，保留灯箱预览；
+   右下角 +N 胶囊是唯一的「还有几张」提示与详情页入口
+   （与图片链接是兄弟节点，不嵌套） */
+.mb-shortcode-post-content-image-item.mb-image-item-more {
+    position: relative;
+}
+
+/* 高特异性覆盖 .mb-shortcode-post-content a 的链接色与主题下划线 */
+.mb-shortcode-post-content a.mb-image-more-link,
+.microblog-widget a.mb-image-more-link {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    padding: 3px 9px;
+    background: rgba(0, 0, 0, .62);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+    border-radius: 999px;
+    pointer-events: auto;
+}
+
+.mb-shortcode-post-content a.mb-image-more-link:hover,
+.microblog-widget a.mb-image-more-link:hover {
+    background: rgba(0, 0, 0, .8);
+    color: #fff;
+    text-decoration: none;
+}
+
+.mb-image-more-count {
+    display: block;
+}
+
+.microblog-widget a.mb-image-more-link {
+    right: 5px;
+    bottom: 5px;
+    padding: 2px 7px;
+    font-size: 11px;
+}
+
+@media (max-width: 480px) {
+    .mb-shortcode-post-content a.mb-image-more-link {
+        right: 6px;
+        bottom: 6px;
+        padding: 2px 7px;
+        font-size: 12px;
+    }
+
+    .microblog-widget a.mb-image-more-link {
+        right: 4px;
+        bottom: 4px;
+        padding: 1px 6px;
+        font-size: 11px;
+    }
+}

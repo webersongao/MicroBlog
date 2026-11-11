@@ -4,7 +4,7 @@ Tags: microblog, weibo, liveblog, shortcode
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.9.9
+Stable tag: 1.9.12
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,7 +44,7 @@ Highlights
 * Developer filters: `microblog_page_content_before_list` (bool) overrides the body position, and `microblog_page_background_enabled` (bool) overrides the single-page background switch. The template never injects content into the page body.
 * `[microblog]` is retained as an optional shortcode for embedding the feed inside a post or page body. Attributes: `null_text` (default `(none)`), `use_excerpt`, and `q` for extra WP_Query arguments. With Liveblog enabled, `[micro_liveblog endpoint="..."]` or `[micro_liveblog live_id="..."]` renders a stream. WordPress.org permits plugins to register shortcodes (Plugin Developer Handbook > Shortcodes); themes may not, which is why the companion theme ships page templates instead.
 * Liveblog is off by default. Turning it off does not delete entries or settings. The "Liveblog display" column on the post list switches between Not enabled / Hidden / Default display / Auto refresh; only the last state polls, and polling pauses while the tab is hidden.
-* The image lightbox option emits linked image markup and, when Simple Lightbox is active, passes that markup through its official slb_activate() template tag. This is required because the page template and widget output their HTML directly instead of going through the_content. Simple Lightbox is still not a dependency.
+* The image lightbox option keeps every image from an entry, wraps unlinked images in a media-file link, and, when Simple Lightbox is active, passes the markup through its official slb_activate() template tag. This is required because the page template and widget output their HTML directly instead of going through the_content. Simple Lightbox is still not a dependency.
 
 == Frequently Asked Questions ==
 
@@ -70,6 +70,16 @@ No. The front end only polls for posts set to "Auto refresh" and skips checks wh
 3. A single microblog entry with its author card and comment form.
 
 == Changelog ==
+
+= 1.9.12 =
+* The microblog list now shows at most three images (one row) per entry. When an entry has more than three images, the third image is left completely untouched: no overlay, no darkening, so it stays fully visible.
+* The third image stays fully previewable: it keeps its original lightbox link, so clicking it opens the lightbox like any other image. The hidden-image count (`+1`, `+2`, ...) is a separate small pill in the bottom-right corner and is the only indicator that more images are hidden; clicking that pill opens the microblog entry's own page. The entry title and the comment/more link already lead there as well.
+* Entries with three or fewer images are unchanged; existing media/attachment/custom links are untouched. Added an accessible label and a Chinese translation for the pill, and bumped the asset version so browsers and CDNs pick up the new stylesheet.
+
+= 1.9.10 =
+* Fixed the microblog feed dropping images without a link. With the image lightbox option enabled, the shortcode, page template and widget previously kept only `<a><img></a>` fragments, so every image block set to "Link to: None" or the block editor's "Expand on click" disappeared from the list. Images are now collected in document order, regardless of their link setting.
+* Unlinked images are wrapped in a link to the media file (processing query strings stripped, WordPress' own image extension list used, including HEIC/AVIF) so Simple Lightbox can activate every image. Existing media/attachment/custom links are left untouched. With the lightbox option disabled, plain `<img>` tags are output as before.
+* Bumped the asset version so browsers and CDNs pick up the changes.
 
 = 1.9.9 =
 * Liveblog detection now checks only the current article for entries instead of loading every liveblog entry and its meta on each request; the per-post result is cached for the request.
@@ -126,6 +136,12 @@ No. The front end only polls for posts set to "Auto refresh" and skips checks wh
 * Page template cards match a standard page under KoneyGao in light and dark mode across six widths; the microblog list title, body text, date and divider now follow the theme's article list when the shell is enabled.
 
 == Upgrade Notice ==
+
+= 1.9.12 =
+No database migration and no settings change. Clear the page cache (LiteSpeed / CDN) after updating so the new stylesheet and image markup are served.
+
+= 1.9.10 =
+No database migration. Clear the page cache (LiteSpeed / CDN) after updating so the new image markup and lightbox links are served; rewrite rules are rebuilt once on the next admin visit.
 
 = 1.9.8 =
 No database migration. The plugin rebuilds rewrite rules once on update; if microblog links still return 404, open Settings > Permalinks and save once, then purge the LiteSpeed / CDN cache. Clear the page cache so the lightbox script is picked up.

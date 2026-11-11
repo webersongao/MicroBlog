@@ -904,3 +904,7 @@ msgstr ""
 #: liveblog/includes/live-metabox.php
 msgid "Liveblog source:"
 msgstr ""
+
+#: includes/microblog-render.php
+msgid "View all images in this microblog post"
+msgstr ""

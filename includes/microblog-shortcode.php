@@ -67,7 +67,7 @@ function microblog_render_list($atts = array())
             $out .= mbfun_get_micropost_content($post_id);
         }
 
-        $out .= mbfun_get_images_html(get_the_content(), $settings['lightbox']);
+        $out .= mbfun_get_images_html(get_the_content(), $settings['lightbox'], get_permalink($post_id));
         $out .= '</div>';
 
         $out .= "<div class='mb-shortcode-post-bottom'>";
