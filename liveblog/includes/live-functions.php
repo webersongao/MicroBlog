@@ -340,6 +340,26 @@ function mbfun_get_live_liveblog_api_endpoint($id)
 	return apply_filters('mlb_liveblog_api_endpoint', get_rest_url(null, "microlives/v1/liveblog/{$id}"), $id);
 }
 
+/* 连载可见性继承原文：仅公开可见或当前用户有权阅读的原文可取 feed。 */
+function mbfun_liveblog_source_is_viewable($post_id)
+{
+	$post_id = absint($post_id);
+	$source  = $post_id ? get_post($post_id) : null;
+
+	if (! $source
+		|| ! in_array($source->post_type, (array) mbfun_get_live_supported_post_types(), true)
+		|| post_password_required($source)) {
+		return false;
+	}
+
+	if (is_post_publicly_viewable($source)) {
+		return true;
+	}
+
+	return is_user_logged_in() && current_user_can('read_post', $post_id);
+}
+
+
 function mbfun_get_live_all_post_types()
 {
 
@@ -631,6 +651,10 @@ function mbfun_get_live_feed_local($liveblog_id)
 	$liveblog_id = absint($liveblog_id);
 
 	if (! $liveblog_id) {
+		return null;
+	}
+
+	if (! mbfun_liveblog_source_is_viewable($liveblog_id)) {
 		return null;
 	}
 

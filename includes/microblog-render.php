@@ -61,6 +61,12 @@ function mbfun_get_post_images($content, $lightbox = false)
         /* 裸图补一层指向媒体文件的链接，让 slb_activate() 能统一激活。
            src 用官方 WP_HTML_Tag_Processor 读取，避免正则解析属性；
            缩放/水印 query 不属于媒体文件地址，按 URL 规则从第一个 ? 或 # 处截断。 */
+        if (!class_exists('WP_HTML_Tag_Processor')) {
+            /* WP 6.0/6.1 没有标签处理器时保留裸图并停用灯箱，避免页面报错。 */
+            $images[] = $img_tag;
+            continue;
+        }
+
         $tag = new WP_HTML_Tag_Processor($img_tag);
         $src = $tag->next_tag('img') ? (string) $tag->get_attribute('src') : '';
         $src = html_entity_decode($src, ENT_QUOTES, 'UTF-8');

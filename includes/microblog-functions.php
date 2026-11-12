@@ -193,7 +193,7 @@ function mbfun_micropost_format_time($post_time)
 /* 模糊时间 */
 function mbfun_post_fuzzy_time($post_time)
 {
-    $diff = current_time('timestamp') - (int) $post_time;
+    $diff = current_time('timestamp', true) - (int) $post_time;
 
     if ($diff < 60) {
         return __('just now', MICROBLOG_DOMAIN);
@@ -208,7 +208,7 @@ function mbfun_post_fuzzy_time($post_time)
     }
 
     if ($diff < YEAR_IN_SECONDS) {
-        return gmdate('m/d H:i', $post_time);
+        return wp_date('m/d H:i', $post_time);
     }
 
     return date_i18n(get_option('date_format'), $post_time);

@@ -11,7 +11,11 @@ class LiveEntry {
 	public $title;
 	public $content;
 	public $time;
+	public $date;
 	public $datetime;
+	public $html;
+	public $modified;
+	public $author;
 
 	public function __construct() {
 	}
