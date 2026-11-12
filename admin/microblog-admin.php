@@ -42,7 +42,7 @@ function microblog_admin_enqueue_scripts($hook)
         return;
     }
 
-    wp_enqueue_style('microblog-admin-css', mbfun_asset_url('css/admin-style.css'), array(), mbfun_get_plugin_version());
+    wp_enqueue_style('microblog-admin-css', mbfun_asset_url('css/admin-style.css'), array(), mbfun_asset_version('css/admin-style.css'));
 }
 add_action('admin_enqueue_scripts', 'microblog_admin_enqueue_scripts');
 

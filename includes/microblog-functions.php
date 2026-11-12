@@ -278,13 +278,35 @@ function mbfun_get_recent_excerpt_microblogs($atts = array())
 
 /* 资源与版本 */
 
+/* 取 assets/ 下文件内容哈希作为资源版本号。
+   旧实现统一用 MICROBLOG_VERSION：只改 CSS/JS 而没提插件版本时 URL 不变，
+   CDN（实测 max-age=43200）与浏览器会继续命中旧文件。
+   内容哈希保证「内容变 → ?ver= 必变」，与是否提版本无关；内容不变则继续命中缓存。
+   线上 CDN 实测把完整 URL（含 ?ver=）作为缓存键，换 ver 即回源。
+   $relative 与 mbfun_asset_url() 的参数一致，均相对插件 assets/ 目录。 */
+function mbfun_asset_version($relative)
+{
+    static $versions = array();
+
+    $relative = ltrim((string) $relative, '/');
+
+    if (isset($versions[$relative])) {
+        return $versions[$relative];
+    }
+
+    $path = MICROBLOG_PLUGIN_PATH . 'assets/' . $relative;
+    $hash = is_readable($path) ? md5_file($path) : false;
+
+    $versions[$relative] = $hash ? substr($hash, 0, 10) : mbfun_get_plugin_version();
+
+    return $versions[$relative];
+}
+
 /* 前端样式与脚本 */
 function mbfun_enqueue_scripts_and_styles()
 {
-    $version = mbfun_get_plugin_version();
-
-    wp_enqueue_style('microblog-style', mbfun_asset_url('css/microblog-style.css'), array(), $version);
-    wp_enqueue_script('microblog-script', mbfun_asset_url('js/microblog-script.js'), array(), $version, true);
+    wp_enqueue_style('microblog-style', mbfun_asset_url('css/microblog-style.css'), array(), mbfun_asset_version('css/microblog-style.css'));
+    wp_enqueue_script('microblog-script', mbfun_asset_url('js/microblog-script.js'), array(), mbfun_asset_version('js/microblog-script.js'), true);
 }
 
 /* 插件 URL */
@@ -299,6 +321,8 @@ function mbfun_get_plugin_path()
     return MICROBLOG_PLUGIN_PATH;
 }
 
+/* 插件自身版本号（后台页头显示、rewrite 与 feed 缓存等语义）。
+   资源 URL 的版本号请用 mbfun_asset_version()，不要再用本函数。 */
 function mbfun_get_plugin_version()
 {
     if (function_exists('wp_get_environment_type') && 'development' === wp_get_environment_type()) {
@@ -350,7 +374,7 @@ add_filter('wp_insert_post_data', 'mbfun_micropost_placeholder_title', 10, 2);
 /* 重写规则 */
 
 /* 只在签名变化时刷新规则；不再每请求读取 rewrite_rules 做完整校验。
-   触发点：插件激活/升级、后台保存设置。404 自愈单独在 template_redirect 处理。 */
+   触发点：插件激活/升级、后台保存设置。 */
 function mbfun_maybe_flush_rewrite_rules()
 {
     $supports  = (array) mbfun_setting('mb_editor_func', array());
@@ -389,35 +413,3 @@ add_action('admin_init', 'mbfun_check_plugin_version_flush');
 
 /* 微博 slug/编辑器支持变化后刷新 */
 add_action('update_option_microblog_micropost_data', 'mbfun_maybe_flush_rewrite_rules');
-
-/* 404 自愈：当访问微博 URL 且是 404 时，5 分钟内最多重建一次规则。
-   这覆盖规则被外部插件清空、但签名仍匹配的场景，无需每请求读规则。 */
-function mbfun_rewrite_rules_404_heal()
-{
-    if (!is_404()) {
-        return;
-    }
-
-    $slug = mbfun_get_micropost_slug();
-    if (!$slug) {
-        return;
-    }
-
-    $request_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '';
-    $home_path    = parse_url(home_url(), PHP_URL_PATH) ?: '';
-    if ($home_path && 0 === strpos($request_path, $home_path)) {
-        $request_path = substr($request_path, strlen($home_path));
-    }
-
-    if (!preg_match('#^/' . preg_quote($slug, '#') . '(/|$)#', $request_path)) {
-        return;
-    }
-
-    if (get_transient('microblog_rewrite_rules_repair')) {
-        return;
-    }
-
-    set_transient('microblog_rewrite_rules_repair', 1, 5 * MINUTE_IN_SECONDS);
-    flush_rewrite_rules(false);
-}
-add_action('template_redirect', 'mbfun_rewrite_rules_404_heal', 1);

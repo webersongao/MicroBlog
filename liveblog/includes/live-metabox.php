@@ -406,7 +406,7 @@ function mlb_enqueue_display_column_assets($hook)
 		'mlb-display-column',
 		mbfun_asset_url('css/liveblog-admin-column.css'),
 		array(),
-		mbfun_get_plugin_version()
+		mbfun_asset_version('css/liveblog-admin-column.css')
 	);
 }
 add_action('admin_enqueue_scripts', 'mlb_enqueue_display_column_assets');
@@ -520,14 +520,14 @@ function mlb_enqueue_editor_parent_info($hook)
 		'mlb-editor-parent',
 		mbfun_asset_url('css/liveblog-editor-parent.css'),
 		array(),
-		mbfun_get_plugin_version()
+		mbfun_asset_version('css/liveblog-editor-parent.css')
 	);
 
 	wp_enqueue_script(
 		'mlb-editor-parent',
 		mbfun_asset_url('js/liveblog-editor-parent.js'),
 		array('wp-plugins', 'wp-edit-post', 'wp-element', 'wp-i18n'),
-		mbfun_get_plugin_version(),
+		mbfun_asset_version('js/liveblog-editor-parent.js'),
 		true
 	);
 

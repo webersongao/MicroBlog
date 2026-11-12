@@ -624,29 +624,8 @@ function mbfun_live_feed_cache_key($liveblog_id)
 }
 
 /**
- * 连载条目是主文章的附属产物。生成条目 HTML 时 setup_postdata() / wp_reset_postdata()
- * 会在主查询上广播 the_post，第三方「相关文章」扩展每收到一次广播就往 the_content
- * 追加一个回调，导致主文章末尾出现多个相关文章模块。这里临时屏蔽广播，渲染完恢复。
+ * 读取连载条目的本地 feed 数据（匿名访客走 5 分钟共享缓存，登录用户不缓存）。
  */
-function mbfun_without_postdata_broadcast($callback)
-{
-	global $wp_filter;
-
-	$saved = isset($wp_filter['the_post']) ? $wp_filter['the_post'] : null;
-
-	if (null !== $saved) {
-		unset($wp_filter['the_post']);
-	}
-
-	try {
-		return call_user_func($callback);
-	} finally {
-		if (null !== $saved) {
-			$wp_filter['the_post'] = $saved;
-		}
-	}
-}
-
 function mbfun_get_live_feed_local($liveblog_id)
 {
 	$liveblog_id = absint($liveblog_id);
@@ -677,9 +656,7 @@ function mbfun_get_live_feed_local($liveblog_id)
 		return null;
 	}
 
-	$feed = mbfun_without_postdata_broadcast(function () use ($liveblog_id) {
-		return \MicroLiveblogs\API\FeedFactory::make($liveblog_id);
-	});
+	$feed = \MicroLiveblogs\API\FeedFactory::make($liveblog_id);
 
 	if (! is_array($feed)) {
 		return null;

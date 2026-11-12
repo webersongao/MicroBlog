@@ -48,7 +48,7 @@ function microblog_page_template_assets()
         'microblog-page-template',
         MICROBLOG_PLUGIN_URL . 'assets/css/page-template.css',
         array(),
-        function_exists('mbfun_get_plugin_version') ? mbfun_get_plugin_version() : MICROBLOG_VERSION
+        function_exists('mbfun_asset_version') ? mbfun_asset_version('css/page-template.css') : MICROBLOG_VERSION
     );
 
     if (function_exists('mbfun_enqueue_scripts_and_styles')) {

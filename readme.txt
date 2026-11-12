@@ -4,7 +4,7 @@ Tags: microblog, weibo, liveblog, shortcode
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.9.12
+Stable tag: 1.9.15
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,19 @@ No. The front end only polls for posts set to "Auto refresh" and skips checks wh
 
 == Changelog ==
 
+= 1.9.15 =
+* Stylesheet and script URLs now use a short hash of the file contents as their `ver` parameter instead of the plugin version constant. Changing a CSS or JS file changes its URL immediately, without having to bump the plugin version; unchanged files keep their URL so CDN and browser caches still hit. Verified against the live CDN: the full URL including `?ver=` is the cache key, so a new hash triggers a fresh origin fetch.
+* No markup, settings, database or functional changes. The KoneyGao theme applies the same content-hash rule to its own assets.
+* The version string still participates in the rewrite-rule signature and the liveblog feed cache key, so this update rebuilds rewrite rules once on the next admin request and rebuilds the liveblog feed cache under a new key. Clear the opcode cache plus the LiteSpeed / CDN page cache after updating: cached HTML pages contain the old resource URLs and must be purged for visitors to see the new ones.
+
+= 1.9.14 =
+* Removed a stale source comment that still described the retired front-end 404 self-heal (`template_redirect`); that handler was already removed in 1.9.9. No functional, markup, settings or database changes in this release.
+* The version string is part of the rewrite-rule signature and the liveblog feed cache key, so updating rebuilds rewrite rules once on the next admin request and rebuilds the liveblog feed cache under a new key. Clear the LiteSpeed / CDN page cache and any opcode cache after updating.
+
+= 1.9.13 =
+* Fixed duplicate "related posts" blocks on articles with liveblog entries. Liveblog entries now set up their post data on a dedicated WP_Query instance instead of the main query, so the core `the_post` broadcast no longer makes third-party plugins (WPJAM related posts) register the same `the_content` callback once per entry. The main article renders exactly one related-posts block, whether the liveblog feed is served from cache or built on the fly.
+* This is a correctness fix for custom-loop handling: no hook table manipulation, no core prototype patching and no rewriting of third-party HTML. Liveblog entry content, titles, dates and authors are unchanged.
+
 = 1.9.12 =
 * The microblog list now shows at most three images (one row) per entry. When an entry has more than three images, the third image is left completely untouched: no overlay, no darkening, so it stays fully visible.
 * The third image stays fully previewable: it keeps its original lightbox link, so clicking it opens the lightbox like any other image. The hidden-image count (`+1`, `+2`, ...) is a separate small pill in the bottom-right corner and is the only indicator that more images are hidden; clicking that pill opens the microblog entry's own page. The entry title and the comment/more link already lead there as well.
@@ -136,6 +149,15 @@ No. The front end only polls for posts set to "Auto refresh" and skips checks wh
 * Page template cards match a standard page under KoneyGao in light and dark mode across six widths; the microblog list title, body text, date and divider now follow the theme's article list when the shell is enabled.
 
 == Upgrade Notice ==
+
+= 1.9.15 =
+No database migration and no settings change. This update rebuilds rewrite rules once on the next admin request and changes the liveblog feed cache key; clear the opcode cache and, most importantly, purge the LiteSpeed full-page cache (and the CDN page cache if used) so cached HTML no longer points at old `?ver=` URLs.
+
+= 1.9.14 =
+No database migration, no settings change and no functional change. The version bump rebuilds rewrite rules once on the next admin request and changes the liveblog feed cache key; clear the opcode cache plus the LiteSpeed / CDN page cache so every node serves the same PHP.
+
+= 1.9.13 =
+No database migration and no settings change. The liveblog feed cache key is derived from the plugin version, so the cached feed is rebuilt automatically after updating; clear any opcode cache (and the LiteSpeed / CDN page cache) so the new PHP is served everywhere.
 
 = 1.9.12 =
 No database migration and no settings change. Clear the page cache (LiteSpeed / CDN) after updating so the new stylesheet and image markup are served.

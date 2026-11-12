@@ -59,11 +59,11 @@ function mbfun_get_post_images($content, $lightbox = false)
         }
 
         /* 裸图补一层指向媒体文件的链接，让 slb_activate() 能统一激活。
-           src 上的缩放/水印 query 不属于媒体文件地址，需要去掉。 */
-        $src = '';
-        if (preg_match('/\bsrc=["\']([^"\']+)["\']/i', $img_tag, $src_match)) {
-            $src = html_entity_decode($src_match[1], ENT_QUOTES, 'UTF-8');
-        }
+           src 用官方 WP_HTML_Tag_Processor 读取，避免正则解析属性；
+           缩放/水印 query 不属于媒体文件地址，按 URL 规则从第一个 ? 或 # 处截断。 */
+        $tag = new WP_HTML_Tag_Processor($img_tag);
+        $src = $tag->next_tag('img') ? (string) $tag->get_attribute('src') : '';
+        $src = html_entity_decode($src, ENT_QUOTES, 'UTF-8');
 
         $href = $src ? preg_replace('/[?#].*$/', '', $src) : '';
         $path = $href ? (string) parse_url($href, PHP_URL_PATH) : '';

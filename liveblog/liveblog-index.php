@@ -66,7 +66,7 @@ if (!class_exists('Micro_Liveblog')) {
         {
             if (is_admin()) {
                 wp_register_script('selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.min.js', ['jquery'], '0.12.4');
-                wp_register_script('mlb-admin', mbfun_get_plugin_url() . 'assets/js/liveblog-admin.js', ['jquery', 'selectize'], mbfun_get_plugin_version());
+                wp_register_script('mlb-admin', mbfun_get_plugin_url() . 'assets/js/liveblog-admin.js', ['jquery', 'selectize'], mbfun_asset_version('js/liveblog-admin.js'));
                 wp_register_style('selectize', mbfun_get_plugin_url() . 'assets/selectize/selectize.default.css', null, '0.12.4');
 
                 $screen = function_exists('get_current_screen') ? get_current_screen() : null;
@@ -81,7 +81,7 @@ if (!class_exists('Micro_Liveblog')) {
                 }
             } else {
                 if (in_array(get_post_type(), mbfun_get_live_supported_post_types())) {
-                    wp_register_script('micro_lb_script', mbfun_get_plugin_url() . 'assets/js/liveblog.js', ['jquery'], mbfun_get_plugin_version());
+                    wp_register_script('micro_lb_script', mbfun_get_plugin_url() . 'assets/js/liveblog.js', ['jquery'], mbfun_asset_version('js/liveblog.js'));
                     wp_localize_script('micro_lb_script', 'micro_lb_data', [
                         'now_more_posts'  => __("That's All.", MICROBLOG_DOMAIN),
                         'show_new_posts'  => __('Show %s new updates', MICROBLOG_DOMAIN),
@@ -103,7 +103,7 @@ if (!class_exists('Micro_Liveblog')) {
                 'mlb-liveblog',
                 mbfun_get_plugin_url() . 'assets/css/liveblog.css',
                 null,
-                mbfun_get_plugin_version()
+                mbfun_asset_version('css/liveblog.css')
             );
         }
 
